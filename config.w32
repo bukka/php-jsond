@@ -1,0 +1,9 @@
+// $Id$
+// vim:ft=javascript
+
+ARG_ENABLE("jsond", "enable jsond support", "no");
+
+if (PHP_JSOND != "no") {
+	EXTENSION("jsond", "jsond.c");
+}
+
