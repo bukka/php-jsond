@@ -62,25 +62,20 @@ extern zend_module_entry jsond_module_entry;
 #define PHP_JSOND_FE(jname, arginfo) PHP_FE(PHP_JSOND_IDENT(jname), arginfo)
 #define PHP_JSOND_REGISTER_LONG_CONSTANT(name, lval, flags) REGISTER_LONG_CONSTANT(PHP_JSOND_CONSTANT name, lval, flags)
 
-ZEND_BEGIN_MODULE_GLOBALS(jsond)
-	int encoder_depth;
-	int error_code;
-	int encode_max_depth;
-ZEND_END_MODULE_GLOBALS(jsond)
-
-#ifdef ZTS
-# define JSOND_G(v) TSRMG(jsond_globals_id, zend_jsond_globals *, v)
-#else
-# define JSOND_G(v) (jsond_globals.v)
-#endif
-
-PHP_JSOND_API void PHP_JSOND_NAME(encode)(smart_str *buf, zval *val, int options TSRMLS_DC);
-PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, int str_len, int options, long depth TSRMLS_DC);
-extern PHP_JSOND_API zend_class_entry *PHP_JSOND_NAME(serializable_ce);
-
+typedef enum {
+	PHP_JSON_ERROR_NONE = 0,
+    PHP_JSON_ERROR_DEPTH,
+    PHP_JSON_ERROR_STATE_MISMATCH, /* not used */
+    PHP_JSON_ERROR_CTRL_CHAR,
+    PHP_JSON_ERROR_SYNTAX,
+    PHP_JSON_ERROR_UTF8,
+	PHP_JSON_ERROR_UTF16,
+    PHP_JSON_ERROR_RECURSION,
+    PHP_JSON_ERROR_INF_OR_NAN,
+    PHP_JSON_ERROR_UNSUPPORTED_TYPE
+} php_json_error_codes;
 
 /* json_encode() options */
-#ifndef PHP_JSON_API
 #define PHP_JSON_HEX_TAG	(1<<0)
 #define PHP_JSON_HEX_AMP	(1<<1)
 #define PHP_JSON_HEX_APOS	(1<<2)
@@ -99,13 +94,31 @@ extern PHP_JSOND_API zend_class_entry *PHP_JSOND_NAME(serializable_ce);
 /* json_decode() options */
 #define PHP_JSON_OBJECT_AS_ARRAY	(1<<0)
 #define PHP_JSON_BIGINT_AS_STRING	(1<<1)
+
+/* default depth */
+#define PHP_JSON_PARSER_DEFAULT_DEPTH 512
+
+
+ZEND_BEGIN_MODULE_GLOBALS(jsond)
+	int encoder_depth;
+	int encode_max_depth;
+	php_json_error_codes error_code;
+ZEND_END_MODULE_GLOBALS(jsond)
+
+#ifdef ZTS
+# define JSOND_G(v) TSRMG(jsond_globals_id, zend_jsond_globals *, v)
+#else
+# define JSOND_G(v) (jsond_globals.v)
 #endif
+
+PHP_JSOND_API void PHP_JSOND_NAME(encode)(smart_str *buf, zval *val, int options TSRMLS_DC);
+PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, int str_len, int options, long depth TSRMLS_DC);
+extern PHP_JSOND_API zend_class_entry *PHP_JSOND_NAME(serializable_ce);
 
 static inline void PHP_JSOND_NAME(decode)(zval *return_value, char *str, int str_len, zend_bool assoc, long depth TSRMLS_DC)
 {
 	PHP_JSOND_NAME(decode_ex)(return_value, str, str_len, assoc ? PHP_JSON_OBJECT_AS_ARRAY : 0, depth TSRMLS_CC);
 }
-
 
 #endif	/* PHP_JSOND_H */
 
