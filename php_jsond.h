@@ -2,7 +2,7 @@
   +----------------------------------------------------------------------+
   | PHP Version 5                                                        |
   +----------------------------------------------------------------------+
-  | Copyright (c) 1997-2013 The PHP Group                                |
+  | Copyright (c) 1997-2014 The PHP Group                                |
   +----------------------------------------------------------------------+
   | This source file is subject to version 3.01 of the PHP license,      |
   | that is bundled with this package in the file LICENSE, and is        |
@@ -73,7 +73,7 @@ typedef enum {
     PHP_JSON_ERROR_RECURSION,
     PHP_JSON_ERROR_INF_OR_NAN,
     PHP_JSON_ERROR_UNSUPPORTED_TYPE
-} php_json_error_codes;
+} php_json_error_code;
 
 /* json_encode() options */
 #define PHP_JSON_HEX_TAG	(1<<0)
@@ -102,7 +102,7 @@ typedef enum {
 ZEND_BEGIN_MODULE_GLOBALS(jsond)
 	int encoder_depth;
 	int encode_max_depth;
-	php_json_error_codes error_code;
+	php_json_error_code error_code;
 ZEND_END_MODULE_GLOBALS(jsond)
 
 #ifdef ZTS
