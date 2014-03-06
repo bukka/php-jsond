@@ -27,9 +27,13 @@ typedef struct _php_json_parser {
 	zval result;
 	long depth;
 	long max_depth;
+	unsigned int options;
+#if ZTS
+	void *zts_ctx;
+#endif
 } php_json_parser;
 
-void php_json_parser_init(php_json_parser *parser);
+void php_json_parser_init(php_json_parser *parser TSRMLS_DC);
 
 int php_json_yyparse(php_json_parser *parser);
 

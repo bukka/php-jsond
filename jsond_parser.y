@@ -68,7 +68,11 @@ int json_yydebug = 1;
 %code {
 int php_json_yylex(union YYSTYPE *value, php_json_parser *parser);
 void php_json_yyerror(php_json_parser *parser, char const *msg);
-void php_json_object_set(zval *zv, HashTable *ht);
+void php_json_parser_object_to_zval(php_json_parser *parser, zval *zv, HashTable *ht);
+void php_json_parser_array_to_zval(zval *zv, HashTable *ht);
+void php_json_parser_ht_init(HashTable *ht);
+void php_json_parser_ht_update(HashTable *ht, zval *zkey, zval *zvalue);
+void php_json_parser_ht_append(HashTable *ht, zval *zvalue);
 
 #define PHP_JSON_DEPTH_DEC --parser->depth
 #define PHP_JSON_DEPTH_INC \
@@ -88,30 +92,17 @@ start:
 ;
 
 object:
-		'{' { PHP_JSON_DEPTH_INC; } members '}' { PHP_JSON_DEPTH_DEC; php_json_object_set(&$$, $3); }
+		'{' { PHP_JSON_DEPTH_INC; } members '}' { PHP_JSON_DEPTH_DEC; php_json_parser_object_to_zval(parser, &$$, $3); }
 ;
 
 members:
-		/* empty */             { ALLOC_HASHTABLE($$); zend_hash_init($$, 0, NULL, ZVAL_PTR_DTOR, 0); }
+		/* empty */             { php_json_parser_ht_init(&$$, 0); }
 	|	member
 ;
 
 member:
-		pair                    { 
-									zval *data;
-									MAKE_STD_ZVAL(data);
-									ZVAL_ZVAL(data, &$1.value, 1, 0);
-									ALLOC_HASHTABLE($$); 
-									zend_hash_init($$, 4, NULL, ZVAL_PTR_DTOR, 0); 
-									zend_symtable_update($$, Z_STRVAL($1.key), Z_STRLEN($1.key), &data, sizeof(zval *), NULL); 
-								}
-	|	member ',' pair         {
-									zval *data;
-									MAKE_STD_ZVAL(data);
-									ZVAL_ZVAL(data, &$3.value, 1, 0);
-									zend_symtable_update($1, Z_STRVAL($3.key), Z_STRLEN($3.key), &data, sizeof(zval *), NULL);
-									$$ = $1;
-								}
+		pair                    { php_json_parser_ht_init(&$$, 4); php_json_parser_ht_update($$, &$1.value, &$1.key); }
+	|	member ',' pair         { php_json_parser_ht_update($1, &$3.value, &$3.key); $$ = $1; }
 	|	member errlex           { PHP_JSON_USE_2($$, $1, $2); }
 ;
 
@@ -121,30 +112,17 @@ pair:
 ;
 
 array:
-		'[' { PHP_JSON_DEPTH_INC; } elements ']' { PHP_JSON_DEPTH_DEC; Z_TYPE($$) = IS_ARRAY; Z_ARRVAL($$) = $3; }
+		'[' { PHP_JSON_DEPTH_INC; } elements ']' { PHP_JSON_DEPTH_DEC; php_json_parser_array_to_zval(&$$, $3); }
 ;
 
 elements:
-		/* empty */             { ALLOC_HASHTABLE($$); zend_hash_init($$, 0, NULL, ZVAL_PTR_DTOR, 0); }
+		/* empty */             { php_json_parser_ht_init(&$$, 0); }
 	|	element
 ;
 
 element:
-		value                   {
-									zval *data;
-									MAKE_STD_ZVAL(data);
-									ZVAL_ZVAL(data, &$1, 1, 0);
-									ALLOC_HASHTABLE($$); 
-									zend_hash_init($$, 4, NULL, ZVAL_PTR_DTOR, 0); 
-									zend_hash_next_index_insert($$, &data, sizeof(zval *), NULL); 
-								}
-	|	element ',' value       {
-									zval *data;
-									MAKE_STD_ZVAL(data);
-									ZVAL_ZVAL(data, &$3, 1, 0);
-									zend_hash_next_index_insert($1, &data, sizeof(zval *), NULL);
-									$$ = $1;
-								}
+		value                   { php_json_parser_ht_init(&$$, 4); php_json_parser_ht_append($$, &$1); }
+	|	element ',' value       { php_json_parser_ht_append($1, &$3); $$ = $1; }
 	|	element errlex          { PHP_JSON_USE_2($$, $1, $2); }
 ;
 
@@ -171,6 +149,51 @@ errlex:
 ;
 	
 %% /* Functions */
+
+void php_json_parser_init(php_json_parser *parser TSRMLS_DC)
+{
+	memset(parser, 0, sizeof(php_json_parser));
+	TSRMLS_SET_CTX(parser->zts_ctx);
+}
+
+void php_json_parser_object_to_zval(php_json_parser *parser, zval *zv, HashTable *ht)
+{
+	TSRMLS_FETCH_FROM_CTX(parser->zts_ctx);
+	
+	if (parser->options & PHP_JSON_OBJECT_AS_ARRAY) {
+		php_json_parser_array_to_zval(zv, ht);
+	} else {
+		object_and_properties_init(zv, zend_standard_class_def, ht TSRMLS_CC);
+	}
+}
+
+void php_json_parser_array_to_zval(zval *zv, HashTable *ht)
+{
+	Z_TYPE_P(zv) = IS_ARRAY;
+	Z_ARRVAL_P(zv) = ht;
+}
+
+void php_json_parser_ht_init(HashTable **ht, uint nSize)
+{
+	ALLOC_HASHTABLE(*ht);
+	zend_hash_init(*ht, nSize, NULL, ZVAL_PTR_DTOR, 0);
+}
+
+void php_json_parser_ht_update(HashTable *ht, zval *zkey, zval *zvalue)
+{
+	zval *data;
+	MAKE_STD_ZVAL(data);
+	ZVAL_ZVAL(data, zvalue, 1, 0);
+	zend_symtable_update(ht, Z_STRVAL_P(zkey), Z_STRLEN_P(zkey), &data, sizeof(zval *), NULL);
+}
+
+void php_json_parser_ht_append(HashTable *ht, zval *zvalue)
+{
+	zval *data;
+	MAKE_STD_ZVAL(data);
+	ZVAL_ZVAL(data, zvalue, 1, 0);
+	zend_hash_next_index_insert(ht, &data, sizeof(zval *), NULL);
+}
 	
 int php_json_yylex(union YYSTYPE *value, php_json_parser *parser)
 {
@@ -180,11 +203,6 @@ int php_json_yylex(union YYSTYPE *value, php_json_parser *parser)
 }
 
 void php_json_yyerror(php_json_parser *parser, char const *msg)
-{
-	
-}
-
-void php_json_object_set(zval *zv, HashTable *ht)
 {
 	
 }
