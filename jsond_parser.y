@@ -28,6 +28,7 @@ int json_yydebug = 1;
 #endif
 
 #define PHP_JSON_USE(uv) ((void) (uv))
+#define PHP_JSON_USE_1(uvr, uv1) PHP_JSON_USE(uvr); PHP_JSON_USE(uv1)
 #define PHP_JSON_USE_2(uvr, uv1, uv2) PHP_JSON_USE(uvr); PHP_JSON_USE(uv1); PHP_JSON_USE(uv2)
 
 }
@@ -77,17 +78,16 @@ void php_json_parser_ht_append(HashTable *ht, zval *zvalue);
 #define PHP_JSON_DEPTH_DEC --parser->depth
 #define PHP_JSON_DEPTH_INC \
 	if (parser->max_depth && parser->depth >= parser->max_depth) { \
-		/* PHP_JSON_VALUE_SET_ERROR(parser->result, PHP_JSON_ERROR_DEPTH); */ \
+		parser->scanner.errcode = PHP_JSON_ERROR_DEPTH; \
 		YYERROR; \
 	} \
 	++parser->depth
 }
 
-
 %% /* Rules */
 
 start:
-		value PHP_JSON_T_EOI    { $$ = $1; parser->result = $1; PHP_JSON_USE($2); YYACCEPT; }
+		value PHP_JSON_T_EOI    { $$ = $1; ZVAL_ZVAL(parser->return_value, &$1, 0, 0); PHP_JSON_USE($2); YYACCEPT; }
 	|	value errlex            { PHP_JSON_USE_2($$, $1, $2); }
 ;
 
@@ -145,15 +145,24 @@ value:
 ;
 
 errlex:
-		PHP_JSON_T_ERROR             { parser->result = $1; PHP_JSON_USE($$); YYERROR; }
+		PHP_JSON_T_ERROR             { PHP_JSON_USE_1($$, $1); YYERROR; }
 ;
 	
 %% /* Functions */
 
-void php_json_parser_init(php_json_parser *parser TSRMLS_DC)
+void php_json_parser_init(php_json_parser *parser, zval *return_value, const char *str, int str_len, long max_depth, long options TSRMLS_DC)
 {
 	memset(parser, 0, sizeof(php_json_parser));
+	php_json_scanner_init(&parser->scanner, str, str_len);
+	parser->max_depth = max_depth;
+	parser->options = options;
+	parser->return_value = return_value;
 	TSRMLS_SET_CTX(parser->zts_ctx);
+}
+
+php_json_error_code php_json_parser_error_code(php_json_parser *parser)
+{
+	return parser->scanner.errcode;
 }
 
 void php_json_parser_object_to_zval(php_json_parser *parser, zval *zv, HashTable *ht)

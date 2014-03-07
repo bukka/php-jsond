@@ -29,6 +29,7 @@
 #include "ext/standard/html.h"
 #include "ext/standard/php_smart_str.h"
 #include "php_jsond.h"
+#include "php_jsond_parser.h"
 #include <zend_exceptions.h>
 
 
@@ -664,9 +665,17 @@ PHP_JSOND_API void PHP_JSOND_NAME(encode)(smart_str *buf, zval *val, int options
 }
 /* }}} */
 
-PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, int str_len, int options, long depth TSRMLS_DC) /* {{{ */
+PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, int str_len, long options, long depth TSRMLS_DC) /* {{{ */
 {
-	RETURN_NULL();
+	php_json_parser parser;
+	
+	php_json_parser_init(&parser, return_value, str, str_len, options, depth TSRMLS_CC);
+	
+	if (php_json_yyparse(&parser)) {
+		JSOND_G(error_code) = php_json_parser_error_code(&parser);
+		RETURN_NULL();
+	}
+	
 #if 0
 	int utf16_len;
 	zval *z;
