@@ -150,7 +150,7 @@ errlex:
 	
 %% /* Functions */
 
-void php_json_parser_init(php_json_parser *parser, zval *return_value, const char *str, int str_len, long max_depth, long options TSRMLS_DC)
+void php_json_parser_init(php_json_parser *parser, zval *return_value, const char *str, int str_len, long options, long max_depth TSRMLS_DC)
 {
 	memset(parser, 0, sizeof(php_json_parser));
 	php_json_scanner_init(&parser->scanner, str, str_len);

@@ -23,7 +23,6 @@
 #include "php_jsond.h"
 
 typedef struct _php_json_scanner {
-	char *buffer;                   /* the position of  first character in the buffer */
 	char *cursor;                   /* cursor position */
 	char *token;                    /* token position */
 	char *limit;                    /* the last read character + 1 position */
@@ -32,7 +31,6 @@ typedef struct _php_json_scanner {
 	char *str_start;                /* start position of the string */
 	char *pstr;                     /* string pointer for escapes conversion */
 	int str_esc;                    /* number of extra characters for escaping */
-	int size;                       /* size of the buffer */
 	int state;                      /* condition state */             
 	zval value;                     /* value */
 	php_json_error_code errcode;    /* error type if there is an error */
