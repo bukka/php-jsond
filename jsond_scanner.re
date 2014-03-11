@@ -16,6 +16,7 @@
   +----------------------------------------------------------------------+
 */
 
+#include "php.h"
 #include "php_jsond_scanner.h"
 
 /* #include "jsond_scanner_defs.h" */
@@ -85,16 +86,17 @@ static int php_json_ucs2_to_int(php_json_scanner *s, int size)
 	return php_json_ucs2_to_int_ex(s, size, 1);
 }
 
-void php_json_scanner_init(php_json_scanner *s, const char *str, int str_len)
+void php_json_scanner_init(php_json_scanner *s, const char *str, int str_len, long options)
 {
 	s->cursor = str;
 	s->limit = str + str_len;
+	s->options = options;
 	PHP_JSON_CONDITION_SET(JS);
 }
 
 int php_json_scan(php_json_scanner *s)
 {
-
+ZVAL_NULL
 std:
 	s->token = s->cursor;
 
@@ -140,8 +142,210 @@ std:
 	UTF16_2 = UTFPREF "0" HEX7 HEX{2} ;
 	UTF16_3 = UTFPREF ( ( ( HEXC | [efEF] ) HEX ) | ( [dD] HEX7 ) ) HEX{2} ;
 	UTF16_4 = UTFPREF [dD] [89abAB] HEX{2} UTFPREF [dD] [c-fC-F] HEX{2} ;
+	
+	<JS>"{"                  { return '{'; }
+	<JS>"}"                  { return '}'; }
+	<JS>"["                  { return '['; }
+	<JS>"]"                  { return ']'; }
+	<JS>":"                  { return ':'; }
+	<JS>","                  { return ','; }
+	<JS>"null"               {
+		ZVAL_NULL(s->value);
+		PHP_JSON_TOKEN_RETURN(NUL);
+	}
+	<JS>"true"               {
+		ZVAL_TRUE(s->value);
+		PHP_JSON_TOKEN_RETURN(TRUE);
+	}
+	<JS>"false"              {
+		ZVAL_FALSE(s->value);
+		PHP_JSON_TOKEN_RETURN(FALSE);
+	}
+	<JS>INT                  {
+		zend_bool bigint = 0, negative = s->token[0] == '-';
+		int digits = s->cursor - s->token - negative;
+		int max_digits = MAX_LENGTH_OF_LONG - 1;
+		if (digits >= max_digits) {
+			if (digits == max_digits) {
+				int cmp = strncmp(s->token + negative, long_min_digits, max_digits);
+				if (!(cmp < 0 || (cmp == 0 && negative))) {
+					bigint = 1;
+				}
+			} else {
+				bigint = 1;
+			}
+		}
+		if (!bigint) {
+			ZVAL_LONG(s->value, strtol(s->token, NULL, 10));
+			PHP_JSON_TOKEN_RETURN(INT);
+		} else if (s->options & PHP_JSON_BIGINT_AS_STRING)
+			ZVAL_STRINGL(s->value, s->token, s->cursor - s->token, 1);
+			PHP_JSON_TOKEN_RETURN(STRING);
+		} else {
+			ZVAL_DOUBLE(s->value, zend_strtod(s->token, NULL));
+			PHP_JSON_TOKEN_RETURN(DOUBLE);
+		}
+	}
+	<JS>FLOAT|EXP            {
+		ZVAL_DOUBLE(s->value, zend_strtod(s->token, NULL));
+		PHP_JSON_TOKEN_RETURN(DOUBLE);
+	}
+	<JS>WS|NL                { goto std; }
+	<JS>EOI                  {
+		if (s->limit < s->cursor) {
+			PHP_JSON_TOKEN_RETURN(EOI);
+		} else {
+			s->errcode = PHP_JSON_ERROR_SYNTAX;
+			PHP_JSON_TOKEN_RETURN(ERROR);
+		}
+	}
+	<JS>["]                  {
+		s->str_start = s->cursor;
+		s->str_esc = 0;
+		PHP_JSON_CONDITION_SET(STR_P1);
+		PHP_JSON_CONDITION_GOTO(STR_P1);
+	}
 
+	<STR_P1>CTRL             {
+		s->errcode = PHP_JSON_ERROR_CTRL_CHAR;
+		PHP_JSON_TOKEN_RETURN(ERROR);
+	}
+	<STR_P1>UTF16_1          {
+		s->str_esc += 5;
+		PHP_JSON_CONDITION_GOTO(STR_P1);
+	}
+	<STR_P1>UTF16_2          {
+		s->str_esc += 4;
+		PHP_JSON_CONDITION_GOTO(STR_P1);
+	}
+	<STR_P1>UTF16_3          {
+		s->str_esc += 3;
+		PHP_JSON_CONDITION_GOTO(STR_P1);
+	}
+	<STR_P1>UTF16_4          {
+		s->str_esc += 8;
+		PHP_JSON_CONDITION_GOTO(STR_P1);
+	}
+	<STR_P1>UCS2             {
+		s->errcode = PHP_JSON_ERROR_UTF16;
+		PHP_JSON_TOKEN_RETURN(ERROR);
+	}
+	<STR_P1>ESC              {
+		s->str_esc++;
+		PHP_JSON_CONDITION_GOTO(STR_P1);
+	}
+	<STR_P1>ESCPREF           {
+		s->errcode = PHP_JSON_ERROR_SYNTAX;
+		PHP_JSON_TOKEN_RETURN(ERROR);
+	}
+	<STR_P1>["]              {
+		char *str;
+		size_t len = s->cursor - s->str_start - s->str_esc - 1;
+		if (len == 0) {
+			PHP_JSON_CONDITION_SET(JS);
+			ZVAL_EMPTY_STRING(s->value);
+			PHP_JSON_TOKEN_RETURN(ESTRING);
+		}
+		str = emalloc(len + 1);
+		str[len] = 0;
+		ZVAL_STRINGL(s->value, str, len, 0);
+		if (s->str_esc) {
+			s->pstr = Z_STRVAL(s->value);
+			s->cursor = s->str_start;
+			PHP_JSON_CONDITION_SET(STR_P2);
+			PHP_JSON_CONDITION_GOTO(STR_P2);
+		} else {
+			memcpy(Z_STRVAL(s->value), s->str_start, len);
+			PHP_JSON_CONDITION_SET(JS);
+			PHP_JSON_TOKEN_RETURN(STRING);
+		}
+	}
+	<STR_P1>UTF8             { PHP_JSON_CONDITION_GOTO(STR_P1); }
+	<STR_P1>ANY              {
+		s->errcode = PHP_JSON_ERROR_UTF8;
+		PHP_JSON_TOKEN_RETURN(ERROR);
+	}
 
+	<STR_P2>UTF16_1             {
+		int utf16 = php_json_ucs2_to_int(s, 2);
+		PHP_JSON_SCANNER_COPY_UTF();
+		*(s->pstr++) = (char) utf16;
+		s->str_start = s->cursor;
+		PHP_JSON_CONDITION_GOTO(STR_P2);
+	}
+	<STR_P2>UTF16_2             {
+		int utf16 = php_json_ucs2_to_int(s, 3);
+		PHP_JSON_SCANNER_COPY_UTF();
+		*(s->pstr++) = (char) (0xc0 | (utf16 >> 6));
+		*(s->pstr++) = (char) (0x80 | (utf16 & 0x3f));
+		s->str_start = s->cursor;
+		PHP_JSON_CONDITION_GOTO(STR_P2);
+	}
+	<STR_P2>UTF16_3             {
+		int utf16 = php_json_ucs2_to_int(s, 4);
+		PHP_JSON_SCANNER_COPY_UTF();
+		*(s->pstr++) = (char) (0xe0 | (utf16 >> 12));
+		*(s->pstr++) = (char) (0x80 | ((utf16 >> 6) & 0x3f));
+		*(s->pstr++) = (char) (0x80 | (utf16 & 0x3f));
+		s->str_start = s->cursor;
+		PHP_JSON_CONDITION_GOTO(STR_P2);
+	}
+	<STR_P2>UTF16_4             {
+		int utf32, utf16_hi, utf16_lo;
+		utf16_hi = php_json_ucs2_to_int(s, 4);
+		utf16_lo = php_json_ucs2_to_int_ex(s, 4, 7);
+		utf32 = ((utf16_hi & 0x3FF) << 10) + (utf16_lo & 0x3FF) + 0x10000;
+		php_json_scanner_copy_string(s, 11);
+		*(s->pstr++) = (char) (0xf0 | (utf32 >> 18));
+		*(s->pstr++) = (char) (0x80 | ((utf32 >> 12) & 0x3f));
+		*(s->pstr++) = (char) (0x80 | ((utf32 >> 6) & 0x3f));
+		*(s->pstr++) = (char) (0x80 | (utf32 & 0x3f));
+		s->str_start = s->cursor;
+		PHP_JSON_CONDITION_GOTO(STR_P2);
+	}
+	<STR_P2>ESCPREF          {
+		char esc;
+		PHP_JSON_SCANNER_COPY_ESC();
+		switch (*s->cursor) {
+			case 'b':
+				esc = '\b';
+				break;
+			case 'f':
+				esc = '\f';
+				break;
+			case 'n':
+				esc = '\n';
+				break;
+			case 'r':
+				esc = '\r';
+				break;
+			case 't':
+				esc = '\t';
+				break;
+			case '\\':
+			case '/':
+			case '"':
+				esc = *s->cursor;
+				break;
+			default:
+				s->errcode = PHP_JSON_ERROR_SYNTAX;
+				PHP_JSON_TOKEN_RETURN(ERROR);
+		}
+		*(s->pstr++) = esc;
+		++YYCURSOR;
+		s->str_start = s->cursor;
+		PHP_JSON_CONDITION_GOTO(STR_P2);
+	}
+	<STR_P2>["] => JS        {
+		PHP_JSON_SCANNER_COPY_ESC();
+		PHP_JSON_TOKEN_RETURN(STRING);
+	}
+	<STR_P2>ANY              { PHP_JSON_CONDITION_GOTO(STR_P2); }
+
+	<*>ANY                   {
+		s->errcode = PHP_JSON_ERROR_TOKEN;
+		PHP_JSON_TOKEN_RETURN(ERROR);
+	}
 */
 
 }

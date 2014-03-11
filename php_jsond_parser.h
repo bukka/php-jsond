@@ -27,7 +27,6 @@ typedef struct _php_json_parser {
 	zval *return_value;
 	long depth;
 	long max_depth;
-	long options;
 #if ZTS
 	void *zts_ctx;
 #endif

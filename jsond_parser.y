@@ -153,9 +153,8 @@ errlex:
 void php_json_parser_init(php_json_parser *parser, zval *return_value, const char *str, int str_len, long options, long max_depth TSRMLS_DC)
 {
 	memset(parser, 0, sizeof(php_json_parser));
-	php_json_scanner_init(&parser->scanner, str, str_len);
+	php_json_scanner_init(&parser->scanner, str, str_len, options);
 	parser->max_depth = max_depth;
-	parser->options = options;
 	parser->return_value = return_value;
 	TSRMLS_SET_CTX(parser->zts_ctx);
 }
@@ -169,7 +168,7 @@ void php_json_parser_object_to_zval(php_json_parser *parser, zval *zv, HashTable
 {
 	TSRMLS_FETCH_FROM_CTX(parser->zts_ctx);
 	
-	if (parser->options & PHP_JSON_OBJECT_AS_ARRAY) {
+	if (parser->scanner.options & PHP_JSON_OBJECT_AS_ARRAY) {
 		php_json_parser_array_to_zval(zv, ht);
 	} else {
 		object_and_properties_init(zv, zend_standard_class_def, ht TSRMLS_CC);
