@@ -19,7 +19,7 @@
 #include "php.h"
 #include "php_jsond_scanner.h"
 
-/* #include "jsond_scanner_defs.h" */
+#include "jsond_scanner_defs.h"
 
 #define	YYCTYPE     char
 #define	YYCURSOR    s->cursor
@@ -39,6 +39,7 @@
 
 #define PHP_JSON_SCANNER_COPY_ESC() php_json_scanner_copy_string(s, 0)
 #define PHP_JSON_SCANNER_COPY_UTF() php_json_scanner_copy_string(s, 5)
+#define PHP_JSON_SCANNER_COPY_UTF_SP() php_json_scanner_copy_string(s, 11)
 
 
 static void php_json_scanner_copy_string(php_json_scanner *s, int esc_size)
@@ -96,7 +97,7 @@ void php_json_scanner_init(php_json_scanner *s, const char *str, int str_len, lo
 
 int php_json_scan(php_json_scanner *s)
 {
-ZVAL_NULL
+
 std:
 	s->token = s->cursor;
 
@@ -295,7 +296,7 @@ std:
 		utf16_hi = php_json_ucs2_to_int(s, 4);
 		utf16_lo = php_json_ucs2_to_int_ex(s, 4, 7);
 		utf32 = ((utf16_hi & 0x3FF) << 10) + (utf16_lo & 0x3FF) + 0x10000;
-		php_json_scanner_copy_string(s, 11);
+		PHP_JSON_SCANNER_COPY_UTF_SP();
 		*(s->pstr++) = (char) (0xf0 | (utf32 >> 18));
 		*(s->pstr++) = (char) (0x80 | ((utf32 >> 12) & 0x3f));
 		*(s->pstr++) = (char) (0x80 | ((utf32 >> 6) & 0x3f));

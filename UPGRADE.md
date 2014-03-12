@@ -8,3 +8,4 @@
   - JSON_ERROR_STATE_MISMATCH is not used
   - macro JSON_PARSER_DEFAULT_DEPTH renamed to PHP_JSON_PARSER_DEFAULT_DEPTH
 - ext global `error_code` type changed from `int` to `php_json_error_codes`
+- fix: consider minus character for overflow check
