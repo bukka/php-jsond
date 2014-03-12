@@ -18,8 +18,8 @@
 
 #include "php.h"
 #include "php_jsond_scanner.h"
-
-#include "jsond_scanner_defs.h"
+#include "php_jsond_scanner_defs.h"
+#include "jsond_parser.tab.h"
 
 #define	YYCTYPE     char
 #define	YYCURSOR    s->cursor
@@ -87,7 +87,7 @@ static int php_json_ucs2_to_int(php_json_scanner *s, int size)
 	return php_json_ucs2_to_int_ex(s, size, 1);
 }
 
-void php_json_scanner_init(php_json_scanner *s, const char *str, int str_len, long options)
+void php_json_scanner_init(php_json_scanner *s, char *str, int str_len, long options)
 {
 	s->cursor = str;
 	s->limit = str + str_len;
@@ -151,15 +151,15 @@ std:
 	<JS>":"                  { return ':'; }
 	<JS>","                  { return ','; }
 	<JS>"null"               {
-		ZVAL_NULL(s->value);
+		ZVAL_NULL(&s->value);
 		PHP_JSON_TOKEN_RETURN(NUL);
 	}
 	<JS>"true"               {
-		ZVAL_TRUE(s->value);
+		ZVAL_TRUE(&s->value);
 		PHP_JSON_TOKEN_RETURN(TRUE);
 	}
 	<JS>"false"              {
-		ZVAL_FALSE(s->value);
+		ZVAL_FALSE(&s->value);
 		PHP_JSON_TOKEN_RETURN(FALSE);
 	}
 	<JS>INT                  {
@@ -177,18 +177,18 @@ std:
 			}
 		}
 		if (!bigint) {
-			ZVAL_LONG(s->value, strtol(s->token, NULL, 10));
+			ZVAL_LONG(&s->value, strtol(s->token, NULL, 10));
 			PHP_JSON_TOKEN_RETURN(INT);
-		} else if (s->options & PHP_JSON_BIGINT_AS_STRING)
-			ZVAL_STRINGL(s->value, s->token, s->cursor - s->token, 1);
+		} else if (s->options & PHP_JSON_BIGINT_AS_STRING) {
+			ZVAL_STRINGL(&s->value, s->token, s->cursor - s->token, 1);
 			PHP_JSON_TOKEN_RETURN(STRING);
 		} else {
-			ZVAL_DOUBLE(s->value, zend_strtod(s->token, NULL));
+			ZVAL_DOUBLE(&s->value, zend_strtod(s->token, NULL));
 			PHP_JSON_TOKEN_RETURN(DOUBLE);
 		}
 	}
 	<JS>FLOAT|EXP            {
-		ZVAL_DOUBLE(s->value, zend_strtod(s->token, NULL));
+		ZVAL_DOUBLE(&s->value, zend_strtod(s->token, NULL));
 		PHP_JSON_TOKEN_RETURN(DOUBLE);
 	}
 	<JS>WS|NL                { goto std; }
@@ -244,12 +244,12 @@ std:
 		size_t len = s->cursor - s->str_start - s->str_esc - 1;
 		if (len == 0) {
 			PHP_JSON_CONDITION_SET(JS);
-			ZVAL_EMPTY_STRING(s->value);
+			ZVAL_EMPTY_STRING(&s->value);
 			PHP_JSON_TOKEN_RETURN(ESTRING);
 		}
 		str = emalloc(len + 1);
 		str[len] = 0;
-		ZVAL_STRINGL(s->value, str, len, 0);
+		ZVAL_STRINGL(&s->value, str, len, 0);
 		if (s->str_esc) {
 			s->pstr = Z_STRVAL(s->value);
 			s->cursor = s->str_start;
@@ -344,7 +344,7 @@ std:
 	<STR_P2>ANY              { PHP_JSON_CONDITION_GOTO(STR_P2); }
 
 	<*>ANY                   {
-		s->errcode = PHP_JSON_ERROR_TOKEN;
+		s->errcode = PHP_JSON_ERROR_SYNTAX;
 		PHP_JSON_TOKEN_RETURN(ERROR);
 	}
 */

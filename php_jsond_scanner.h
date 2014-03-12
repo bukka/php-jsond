@@ -38,7 +38,7 @@ typedef struct _php_json_scanner {
 } php_json_scanner;
 
 
-void php_json_scanner_init(php_json_scanner *scanner, const char *str, int str_len, long options);
+void php_json_scanner_init(php_json_scanner *scanner, char *str, int str_len, long options);
 int php_json_scan(php_json_scanner *s);
 
 #endif	/* PHP_JSOND_SCANNER_H */

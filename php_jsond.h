@@ -112,7 +112,7 @@ ZEND_END_MODULE_GLOBALS(jsond)
 #endif
 
 PHP_JSOND_API void PHP_JSOND_NAME(encode)(smart_str *buf, zval *val, int options TSRMLS_DC);
-PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, int str_len, int options, long depth TSRMLS_DC);
+PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, int str_len, long options, long depth TSRMLS_DC);
 extern PHP_JSOND_API zend_class_entry *PHP_JSOND_NAME(serializable_ce);
 
 static inline void PHP_JSOND_NAME(decode)(zval *return_value, char *str, int str_len, zend_bool assoc, long depth TSRMLS_DC)

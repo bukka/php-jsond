@@ -62,16 +62,16 @@ int json_yydebug = 1;
 %type <ht> members member elements element
 %type <pair> pair
 
-%destructor { zval_ptr_dtor(&$$); } <value>
+%destructor { zval_dtor(&$$); } <value>
 %destructor { zend_hash_destroy($$); FREE_HASHTABLE($$); } <ht>
-%destructor { zval_ptr_dtor(&$$.key); zval_ptr_dtor(&$$.val); } <pair>
+%destructor { zval_dtor(&$$.key); zval_dtor(&$$.val); } <pair>
 
 %code {
 int php_json_yylex(union YYSTYPE *value, php_json_parser *parser);
 void php_json_yyerror(php_json_parser *parser, char const *msg);
 void php_json_parser_object_to_zval(php_json_parser *parser, zval *zv, HashTable *ht);
 void php_json_parser_array_to_zval(zval *zv, HashTable *ht);
-void php_json_parser_ht_init(HashTable *ht);
+void php_json_parser_ht_init(HashTable **ht, uint nSize);
 void php_json_parser_ht_update(HashTable *ht, zval *zkey, zval *zvalue);
 void php_json_parser_ht_append(HashTable *ht, zval *zvalue);
 
@@ -101,8 +101,8 @@ members:
 ;
 
 member:
-		pair                    { php_json_parser_ht_init(&$$, 4); php_json_parser_ht_update($$, &$1.value, &$1.key); }
-	|	member ',' pair         { php_json_parser_ht_update($1, &$3.value, &$3.key); $$ = $1; }
+		pair                    { php_json_parser_ht_init(&$$, 4); php_json_parser_ht_update($$, &$1.key, &$1.val); }
+	|	member ',' pair         { php_json_parser_ht_update($1, &$3.key, &$3.val); $$ = $1; }
 	|	member errlex           { PHP_JSON_USE_2($$, $1, $2); }
 ;
 
@@ -150,7 +150,7 @@ errlex:
 	
 %% /* Functions */
 
-void php_json_parser_init(php_json_parser *parser, zval *return_value, const char *str, int str_len, long options, long max_depth TSRMLS_DC)
+void php_json_parser_init(php_json_parser *parser, zval *return_value, char *str, int str_len, long options, long max_depth TSRMLS_DC)
 {
 	memset(parser, 0, sizeof(php_json_parser));
 	php_json_scanner_init(&parser->scanner, str, str_len, options);
@@ -171,7 +171,7 @@ void php_json_parser_object_to_zval(php_json_parser *parser, zval *zv, HashTable
 	if (parser->scanner.options & PHP_JSON_OBJECT_AS_ARRAY) {
 		php_json_parser_array_to_zval(zv, ht);
 	} else {
-		object_and_properties_init(zv, zend_standard_class_def, ht TSRMLS_CC);
+		object_and_properties_init(zv, zend_standard_class_def, ht);
 	}
 }
 
