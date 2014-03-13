@@ -72,7 +72,7 @@ void php_json_yyerror(php_json_parser *parser, char const *msg);
 void php_json_parser_object_to_zval(php_json_parser *parser, zval *zv, HashTable *ht);
 void php_json_parser_array_to_zval(zval *zv, HashTable *ht);
 void php_json_parser_ht_init(HashTable **ht, uint nSize);
-void php_json_parser_ht_update(HashTable *ht, zval *zkey, zval *zvalue);
+void php_json_parser_ht_update(php_json_parser *parser, HashTable *ht, zval *zkey, zval *zvalue);
 void php_json_parser_ht_append(HashTable *ht, zval *zvalue);
 
 #define PHP_JSON_DEPTH_DEC --parser->depth
@@ -101,8 +101,8 @@ members:
 ;
 
 member:
-		pair                    { php_json_parser_ht_init(&$$, 4); php_json_parser_ht_update($$, &$1.key, &$1.val); }
-	|	member ',' pair         { php_json_parser_ht_update($1, &$3.key, &$3.val); $$ = $1; }
+		pair                    { php_json_parser_ht_init(&$$, 4); php_json_parser_ht_update(parser, $$, &$1.key, &$1.val); }
+	|	member ',' pair         { php_json_parser_ht_update(parser, $1, &$3.key, &$3.val); $$ = $1; }
 	|	member errlex           { PHP_JSON_USE_2($$, $1, $2); }
 ;
 
@@ -187,19 +187,28 @@ void php_json_parser_ht_init(HashTable **ht, uint nSize)
 	zend_hash_init(*ht, nSize, NULL, ZVAL_PTR_DTOR, 0);
 }
 
-void php_json_parser_ht_update(HashTable *ht, zval *zkey, zval *zvalue)
+void php_json_parser_ht_update(php_json_parser *parser, HashTable *ht, zval *zkey, zval *zvalue)
 {
 	zval *data;
+	char *key = Z_STRVAL_P(zkey);
+	int key_len = Z_STRLEN_P(zkey)+1;
 	MAKE_STD_ZVAL(data);
-	ZVAL_ZVAL(data, zvalue, 1, 0);
-	zend_symtable_update(ht, Z_STRVAL_P(zkey), Z_STRLEN_P(zkey), &data, sizeof(zval *), NULL);
+	ZVAL_ZVAL(data, zvalue, 0, 0);
+	/* check if it's an object and the key is */
+	if (key_len == 1 && !(parser->scanner.options & PHP_JSON_OBJECT_AS_ARRAY)) {
+		key = "_empty_";
+		key_len = sizeof("_empty_");
+	}
+
+	zend_symtable_update(ht, key, key_len, &data, sizeof(zval *), NULL);
+	zval_dtor(zkey);
 }
 
 void php_json_parser_ht_append(HashTable *ht, zval *zvalue)
 {
 	zval *data;
 	MAKE_STD_ZVAL(data);
-	ZVAL_ZVAL(data, zvalue, 1, 0);
+	ZVAL_ZVAL(data, zvalue, 0, 0);
 	zend_hash_next_index_insert(ht, &data, sizeof(zval *), NULL);
 }
 	
