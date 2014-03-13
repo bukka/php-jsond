@@ -113,8 +113,8 @@ std:
 	HEXNZ   = DIGITNZ | [a-fA-F] ;
 	HEX7    = [0-7] ;
 	HEXC    = DIGIT | [a-cA-C] ;
-	FLOAT   = INT "." UINT ;
-	EXP     = ( INT | FLOAT ) [eE] [+-]? UINT ;
+	FLOAT   = INT "." DIGIT+ ;
+	EXP     = ( INT | FLOAT ) [eE] [+-]? DIGIT+ ;
 	WS      = [ \t]+ ;
 	NL      = "\r"? "\n" ;
 	EOI     = "\000";
