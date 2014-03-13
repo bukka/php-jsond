@@ -221,5 +221,5 @@ int php_json_yylex(union YYSTYPE *value, php_json_parser *parser)
 
 void php_json_yyerror(php_json_parser *parser, char const *msg)
 {
-	
+	parser->scanner.errcode = PHP_JSON_ERROR_SYNTAX;
 }
