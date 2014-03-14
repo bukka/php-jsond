@@ -115,8 +115,8 @@ std:
 	HEXC    = DIGIT | [a-cA-C] ;
 	FLOAT   = INT "." DIGIT+ ;
 	EXP     = ( INT | FLOAT ) [eE] [+-]? DIGIT+ ;
-	WS      = [ \t]+ ;
 	NL      = "\r"? "\n" ;
+	WS      = [ \t\r]+ ;
 	EOI     = "\000";
 	CTRL    = [\x00-\x1F] ;
 	UTF8T   = [\x80-\xBF] ;
@@ -191,7 +191,7 @@ std:
 		ZVAL_DOUBLE(&s->value, zend_strtod(s->token, NULL));
 		PHP_JSON_TOKEN_RETURN(DOUBLE);
 	}
-	<JS>WS|NL                { goto std; }
+	<JS>NL|WS                { goto std; }
 	<JS>EOI                  {
 		if (s->limit < s->cursor) {
 			PHP_JSON_TOKEN_RETURN(EOI);

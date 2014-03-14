@@ -120,7 +120,7 @@ yyc_JS:
 		{
 			static const unsigned char yybm[] = {
 				  0,   0,   0,   0,   0,   0,   0,   0, 
-				  0, 128,   0,   0,   0,   0,   0,   0, 
+				  0, 128,   0,   0,   0, 128,   0,   0, 
 				  0,   0,   0,   0,   0,   0,   0,   0, 
 				  0,   0,   0,   0,   0,   0,   0,   0, 
 				128,   0,   0,   0,   0,   0,   0,   0, 
@@ -220,7 +220,7 @@ yy6:
 yy7:
 			++YYCURSOR;
 			yych = *YYCURSOR;
-			goto yy59;
+			goto yy58;
 yy8:
 			{ goto std; }
 yy9:
@@ -228,8 +228,8 @@ yy9:
 			goto yy8;
 yy10:
 			yych = *++YYCURSOR;
-			if (yych == '\n') goto yy57;
-			goto yy6;
+			if (yych == '\n') goto yy59;
+			goto yy58;
 yy11:
 			++YYCURSOR;
 			{
@@ -429,15 +429,16 @@ yy56:
 				goto yy17;
 			}
 yy57:
-			yych = *++YYCURSOR;
-			goto yy8;
-yy58:
 			++YYCURSOR;
 			yych = *YYCURSOR;
-yy59:
+yy58:
 			if (yybm[0+yych] & 128) {
-				goto yy58;
+				goto yy57;
 			}
+			goto yy8;
+yy59:
+			++YYCURSOR;
+			yych = *YYCURSOR;
 			goto yy8;
 		}
 /* *********************************** */
