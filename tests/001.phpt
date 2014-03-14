@@ -1,21 +1,71 @@
 --TEST--
-Check for jsond presence
+json_decode() tests
 --SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+<?php if (!extension_loaded("json")) print "skip"; ?>
 --FILE--
-<?php 
-echo "jsond extension is available";
-/*
-	you can add regression tests for your extension here
+<?php
 
-  the output of your test code has to be equal to the
-  text in the --EXPECT-- section below for the tests
-  to pass, differences between the output and the
-  expected text are interpreted as failure
+var_dump(json_decode());
+var_dump(json_decode(""));
+var_dump(json_decode("", 1));
+var_dump(json_decode("", 0));
+var_dump(json_decode(".", 1));
+var_dump(json_decode(".", 0));
+var_dump(json_decode("<?>"));
+var_dump(json_decode(";"));
+var_dump(json_decode("руссиш"));
+var_dump(json_decode("blah"));
+var_dump(json_decode(NULL));
+var_dump(json_decode('{ "test": { "foo": "bar" } }'));
+var_dump(json_decode('{ "test": { "foo": "" } }'));
+var_dump(json_decode('{ "": { "foo": "" } }'));
+var_dump(json_decode('{ "": { "": "" } }'));
+var_dump(json_decode('{ "": { "": "" }'));
+var_dump(json_decode('{ "": "": "" } }'));
 
-	see php5/README.TESTING for further information on
-  writing regression tests
-*/
 ?>
---EXPECT--
-jsond extension is available
+===DONE===
+--EXPECTF--
+Warning: json_decode() expects at least 1 parameter, 0 given in %s on line %d
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+NULL
+object(stdClass)#%d (1) {
+  ["test"]=>
+  object(stdClass)#%d (1) {
+    ["foo"]=>
+    string(3) "bar"
+  }
+}
+object(stdClass)#%d (1) {
+  ["test"]=>
+  object(stdClass)#%d (1) {
+    ["foo"]=>
+    string(0) ""
+  }
+}
+object(stdClass)#%d (1) {
+  ["_empty_"]=>
+  object(stdClass)#%d (1) {
+    ["foo"]=>
+    string(0) ""
+  }
+}
+object(stdClass)#%d (1) {
+  ["_empty_"]=>
+  object(stdClass)#%d (1) {
+    ["_empty_"]=>
+    string(0) ""
+  }
+}
+NULL
+NULL
+===DONE===
