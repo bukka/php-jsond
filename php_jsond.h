@@ -44,7 +44,6 @@ extern zend_module_entry jsond_module_entry;
 #define PHP_JSOND_CONSTANT "JSON"
 #define PHP_JSOND_SERIALIZABLE_INTERFACE JsonSerializable
 #define PHP_JSOND_SERIALIZABLE_INTERFACE_STRING "JsondSerializable"
-#define PHP_JSOND_SERIALIZABLE_METHOD jsonSerializable
 #define PHP_JSOND_NAME(name) php_json_ ## name
 #define PHP_JSOND_IDENT(name) json_ ## name
 #else
@@ -53,7 +52,6 @@ extern zend_module_entry jsond_module_entry;
 #define PHP_JSOND_CONSTANT "JSOND"
 #define PHP_JSOND_SERIALIZABLE_INTERFACE JsondSerializable
 #define PHP_JSOND_SERIALIZABLE_INTERFACE_STRING "JsondSerializable"
-#define PHP_JSOND_SERIALIZABLE_METHOD jsondSerializable
 #define PHP_JSOND_NAME(jname) php_jsond_ ## jname
 #define PHP_JSOND_IDENT(jname) jsond_ ## jname
 #endif
@@ -69,10 +67,10 @@ typedef enum {
     PHP_JSON_ERROR_CTRL_CHAR,
     PHP_JSON_ERROR_SYNTAX,
     PHP_JSON_ERROR_UTF8,
-	PHP_JSON_ERROR_UTF16,
     PHP_JSON_ERROR_RECURSION,
     PHP_JSON_ERROR_INF_OR_NAN,
-    PHP_JSON_ERROR_UNSUPPORTED_TYPE
+    PHP_JSON_ERROR_UNSUPPORTED_TYPE,
+	PHP_JSON_ERROR_UTF16
 } php_json_error_code;
 
 /* json_encode() options */
