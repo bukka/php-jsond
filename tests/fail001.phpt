@@ -1,8 +1,8 @@
 --TEST--
-JSON (http://www.crockford.com/JSON/JSON_checker/test/fail*.json)
+JSON (http://www.crockford.com/JSON/JSOND_checker/test/fail*.jsond)
 --SKIPIF--
 <?php
-  if (!extension_loaded('json')) die('skip: json extension not available');
+  if (!extension_loaded('jsond')) die('skip: jsond extension not available');
 ?>
 --FILE--
 <?php
@@ -36,9 +36,9 @@ foreach ($tests as $test)
 {
     echo 'Testing: ' . $test . "\n";
     echo "AS OBJECT\n";
-    var_dump(json_decode($test));
+    var_dump(jsond_decode($test));
     echo "AS ARRAY\n";
-    var_dump(json_decode($test, true));
+    var_dump(jsond_decode($test, true));
 }
 
 ?>

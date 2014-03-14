@@ -1,8 +1,8 @@
 --TEST--
-Bug #46215 (json_encode mutates its parameter and has some class-specific state)
+Bug #46215 (jsond_encode mutates its parameter and has some class-specific state)
 --SKIPIF--
 <?php
-if (!extension_loaded("json")) {
+if (!extension_loaded("jsond")) {
  	die('skip JSON extension not available in this build');
 }	 
 ?>
@@ -14,7 +14,7 @@ class foo {
 }
 
 $a = new foo;
-$x = json_encode($a);
+$x = jsond_encode($a);
 
 print_r($a);
 

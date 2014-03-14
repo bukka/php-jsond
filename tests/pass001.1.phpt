@@ -1,10 +1,10 @@
 --TEST--
-JSON (http://www.crockford.com/JSON/JSON_checker/test/pass1.json)
+JSON (http://www.crockford.com/JSON/JSOND_checker/test/pass1.jsond)
 --INI--
 precision=14
 --SKIPIF--
 <?php
-  if (!extension_loaded('json')) die('skip: json extension not available');
+  if (!extension_loaded('jsond')) die('skip: jsond extension not available');
   if (PHP_INT_SIZE != 4) die("skip this test is for 32bit platform only");
 ?>
 --FILE--
@@ -65,7 +65,7 @@ $test = "
 
 4 , 5        ,          6           ,7        ],
         \"compact\": [1,2,3,4,5,6,7],
-        \"jsontext\": \"{\\\"object with 1 member\\\":[\\\"array with 1 element\\\"]}\",
+        \"jsondtext\": \"{\\\"object with 1 member\\\":[\\\"array with 1 element\\\"]}\",
         \"quotes\": \"&#34; \\u0022 %22 0x22 034 &#x22;\",
         \"\\/\\\\\\\"\\uCAFE\\uBABE\\uAB98\\uFCDE\\ubcda\\uef4A\\b\\f\\n\\r\\t`1~!@#$%^&*()_+-=[]{}|;:',./<>?\"
 : \"A key can be any string\"
@@ -83,24 +83,24 @@ $test = "
 
 echo 'Testing: ' . $test . "\n";
 echo "DECODE: AS OBJECT\n";
-$obj = json_decode($test);
+$obj = jsond_decode($test);
 var_dump($obj);
 echo "DECODE: AS ARRAY\n";
-$arr = json_decode($test, true);
+$arr = jsond_decode($test, true);
 var_dump($arr);
 
 echo "ENCODE: FROM OBJECT\n";
-$obj_enc = json_encode($obj, JSON_PARTIAL_OUTPUT_ON_ERROR);
+$obj_enc = jsond_encode($obj, JSOND_PARTIAL_OUTPUT_ON_ERROR);
 echo $obj_enc . "\n";
 echo "ENCODE: FROM ARRAY\n";
-$arr_enc = json_encode($arr, JSON_PARTIAL_OUTPUT_ON_ERROR);
+$arr_enc = jsond_encode($arr, JSOND_PARTIAL_OUTPUT_ON_ERROR);
 echo $arr_enc . "\n";
 
 echo "DECODE AGAIN: AS OBJECT\n";
-$obj = json_decode($obj_enc);
+$obj = jsond_decode($obj_enc);
 var_dump($obj);
 echo "DECODE AGAIN: AS ARRAY\n";
-$arr = json_decode($arr_enc, true);
+$arr = jsond_decode($arr_enc, true);
 var_dump($arr);
 
 ?>
@@ -153,7 +153,7 @@ Testing:
 
 4 , 5        ,          6           ,7        ],
         "compact": [1,2,3,4,5,6,7],
-        "jsontext": "{\"object with 1 member\":[\"array with 1 element\"]}",
+        "jsondtext": "{\"object with 1 member\":[\"array with 1 element\"]}",
         "quotes": "&#34; \u0022 %22 0x22 034 &#x22;",
         "\/\\\"\uCAFE\uBABE\uAB98\uFCDE\ubcda\uef4A\b\f\n\r\t`1~!@#$%^&*()_+-=[]{}|;:',./<>?"
 : "A key can be any string"
@@ -328,7 +328,7 @@ array(14) {
       [6]=>
       int(7)
     }
-    ["jsontext"]=>
+    ["jsondtext"]=>
     string(49) "{"object with 1 member":["array with 1 element"]}"
     ["quotes"]=>
     string(27) "&#34; " %22 0x22 034 &#x22;"
@@ -507,7 +507,7 @@ array(14) {
       [6]=>
       int(7)
     }
-    ["jsontext"]=>
+    ["jsondtext"]=>
     string(49) "{"object with 1 member":["array with 1 element"]}"
     ["quotes"]=>
     string(27) "&#34; " %22 0x22 034 &#x22;"
@@ -527,9 +527,9 @@ array(14) {
   string(7) "rosebud"
 }
 ENCODE: FROM OBJECT
-["JSON Test Pattern pass1",{"object with 1 member":["array with 1 element"]},{},[],-42,true,false,null,{"integer":1234567890,"real":-9876.54321,"e":1.23456789e-13,"E":1.23456789e+34,"_empty_":0,"E no .":4000000000000,"zero":0,"one":1,"space":" ","quote":"\"","backslash":"\\","controls":"\b\f\n\r\t","slash":"\/ & \/","alpha":"abcdefghijklmnopqrstuvwyz","ALPHA":"ABCDEFGHIJKLMNOPQRSTUVWYZ","digit":"0123456789","special":"`1~!@#$%^&*()_+-={':[,]}|;.<\/>?","hex":"\u0123\u4567\u89ab\ucdef\uabcd\uef4a","unicode":"\u30d7\u30ec\u30b9\u30ad\u30c3\u30c8","\u30d7\u30ec\u30b9\u30ad\u30c3\u30c8":"\u30d7\u30ec\u30b9\u30ad\u30c3\u30c8","empty_string":"","true":true,"false":false,"null":null,"array":[],"object":{},"123":{"456":{"abc":{"789":"def","012":[1,2,"5",500],"ghi":[1,2,"five",50,"sixty"]}}},"address":"50 St. James Street","url":"http:\/\/www.JSON.org\/","comment":"\/\/ \/* <!-- --","# -- --> *\/":" "," s p a c e d ":[1,2,3,4,5,6,7],"compact":[1,2,3,4,5,6,7],"jsontext":"{\"object with 1 member\":[\"array with 1 element\"]}","quotes":"&#34; \" %22 0x22 034 &#x22;","\/\\\"\ucafe\ubabe\uab98\ufcde\ubcda\uef4a\b\f\n\r\t`1~!@#$%^&*()_+-=[]{}|;:',.\/<>?":"A key can be any string"},0.5,98.6,99.44,1066,"rosebud"]
+["JSON Test Pattern pass1",{"object with 1 member":["array with 1 element"]},{},[],-42,true,false,null,{"integer":1234567890,"real":-9876.54321,"e":1.23456789e-13,"E":1.23456789e+34,"_empty_":0,"E no .":4000000000000,"zero":0,"one":1,"space":" ","quote":"\"","backslash":"\\","controls":"\b\f\n\r\t","slash":"\/ & \/","alpha":"abcdefghijklmnopqrstuvwyz","ALPHA":"ABCDEFGHIJKLMNOPQRSTUVWYZ","digit":"0123456789","special":"`1~!@#$%^&*()_+-={':[,]}|;.<\/>?","hex":"\u0123\u4567\u89ab\ucdef\uabcd\uef4a","unicode":"\u30d7\u30ec\u30b9\u30ad\u30c3\u30c8","\u30d7\u30ec\u30b9\u30ad\u30c3\u30c8":"\u30d7\u30ec\u30b9\u30ad\u30c3\u30c8","empty_string":"","true":true,"false":false,"null":null,"array":[],"object":{},"123":{"456":{"abc":{"789":"def","012":[1,2,"5",500],"ghi":[1,2,"five",50,"sixty"]}}},"address":"50 St. James Street","url":"http:\/\/www.JSON.org\/","comment":"\/\/ \/* <!-- --","# -- --> *\/":" "," s p a c e d ":[1,2,3,4,5,6,7],"compact":[1,2,3,4,5,6,7],"jsondtext":"{\"object with 1 member\":[\"array with 1 element\"]}","quotes":"&#34; \" %22 0x22 034 &#x22;","\/\\\"\ucafe\ubabe\uab98\ufcde\ubcda\uef4a\b\f\n\r\t`1~!@#$%^&*()_+-=[]{}|;:',.\/<>?":"A key can be any string"},0.5,98.6,99.44,1066,"rosebud"]
 ENCODE: FROM ARRAY
-["JSON Test Pattern pass1",{"object with 1 member":["array with 1 element"]},[],[],-42,true,false,null,{"integer":1234567890,"real":-9876.54321,"e":1.23456789e-13,"E":1.23456789e+34,"":0,"E no .":4000000000000,"zero":0,"one":1,"space":" ","quote":"\"","backslash":"\\","controls":"\b\f\n\r\t","slash":"\/ & \/","alpha":"abcdefghijklmnopqrstuvwyz","ALPHA":"ABCDEFGHIJKLMNOPQRSTUVWYZ","digit":"0123456789","special":"`1~!@#$%^&*()_+-={':[,]}|;.<\/>?","hex":"\u0123\u4567\u89ab\ucdef\uabcd\uef4a","unicode":"\u30d7\u30ec\u30b9\u30ad\u30c3\u30c8","\u30d7\u30ec\u30b9\u30ad\u30c3\u30c8":"\u30d7\u30ec\u30b9\u30ad\u30c3\u30c8","empty_string":"","true":true,"false":false,"null":null,"array":[],"object":[],"123":{"456":{"abc":{"789":"def","012":[1,2,"5",500],"ghi":[1,2,"five",50,"sixty"]}}},"address":"50 St. James Street","url":"http:\/\/www.JSON.org\/","comment":"\/\/ \/* <!-- --","# -- --> *\/":" "," s p a c e d ":[1,2,3,4,5,6,7],"compact":[1,2,3,4,5,6,7],"jsontext":"{\"object with 1 member\":[\"array with 1 element\"]}","quotes":"&#34; \" %22 0x22 034 &#x22;","\/\\\"\ucafe\ubabe\uab98\ufcde\ubcda\uef4a\b\f\n\r\t`1~!@#$%^&*()_+-=[]{}|;:',.\/<>?":"A key can be any string"},0.5,98.6,99.44,1066,"rosebud"]
+["JSON Test Pattern pass1",{"object with 1 member":["array with 1 element"]},[],[],-42,true,false,null,{"integer":1234567890,"real":-9876.54321,"e":1.23456789e-13,"E":1.23456789e+34,"":0,"E no .":4000000000000,"zero":0,"one":1,"space":" ","quote":"\"","backslash":"\\","controls":"\b\f\n\r\t","slash":"\/ & \/","alpha":"abcdefghijklmnopqrstuvwyz","ALPHA":"ABCDEFGHIJKLMNOPQRSTUVWYZ","digit":"0123456789","special":"`1~!@#$%^&*()_+-={':[,]}|;.<\/>?","hex":"\u0123\u4567\u89ab\ucdef\uabcd\uef4a","unicode":"\u30d7\u30ec\u30b9\u30ad\u30c3\u30c8","\u30d7\u30ec\u30b9\u30ad\u30c3\u30c8":"\u30d7\u30ec\u30b9\u30ad\u30c3\u30c8","empty_string":"","true":true,"false":false,"null":null,"array":[],"object":[],"123":{"456":{"abc":{"789":"def","012":[1,2,"5",500],"ghi":[1,2,"five",50,"sixty"]}}},"address":"50 St. James Street","url":"http:\/\/www.JSON.org\/","comment":"\/\/ \/* <!-- --","# -- --> *\/":" "," s p a c e d ":[1,2,3,4,5,6,7],"compact":[1,2,3,4,5,6,7],"jsondtext":"{\"object with 1 member\":[\"array with 1 element\"]}","quotes":"&#34; \" %22 0x22 034 &#x22;","\/\\\"\ucafe\ubabe\uab98\ufcde\ubcda\uef4a\b\f\n\r\t`1~!@#$%^&*()_+-=[]{}|;:',.\/<>?":"A key can be any string"},0.5,98.6,99.44,1066,"rosebud"]
 DECODE AGAIN: AS OBJECT
 array(14) {
   [0]=>
@@ -690,7 +690,7 @@ array(14) {
       [6]=>
       int(7)
     }
-    ["jsontext"]=>
+    ["jsondtext"]=>
     string(49) "{"object with 1 member":["array with 1 element"]}"
     ["quotes"]=>
     string(27) "&#34; " %22 0x22 034 &#x22;"
@@ -869,7 +869,7 @@ array(14) {
       [6]=>
       int(7)
     }
-    ["jsontext"]=>
+    ["jsondtext"]=>
     string(49) "{"object with 1 member":["array with 1 element"]}"
     ["quotes"]=>
     string(27) "&#34; " %22 0x22 034 &#x22;"

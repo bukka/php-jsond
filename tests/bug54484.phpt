@@ -1,22 +1,22 @@
 --TEST--
-Bug #54484 (Empty string in json_decode doesn't reset json_last_error)
+Bug #54484 (Empty string in jsond_decode doesn't reset jsond_last_error)
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
-json_decode('{"test":"test"}');
-var_dump(json_last_error());
+jsond_decode('{"test":"test"}');
+var_dump(jsond_last_error());
 
-json_decode("");
-var_dump(json_last_error());
-
-
-json_decode("invalid json");
-var_dump(json_last_error());
+jsond_decode("");
+var_dump(jsond_last_error());
 
 
-json_decode("");
-var_dump(json_last_error());
+jsond_decode("invalid jsond");
+var_dump(jsond_last_error());
+
+
+jsond_decode("");
+var_dump(jsond_last_error());
 ?>
 --EXPECT--
 int(0)

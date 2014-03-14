@@ -1,9 +1,9 @@
 --TEST--
-Bug #40503 (json_encode() value corruption on 32bit systems with overflown values)
+Bug #40503 (jsond_encode() value corruption on 32bit systems with overflown values)
 --INI--
 precision=14
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 function show_eq($x,$y) {
@@ -11,9 +11,9 @@ function show_eq($x,$y) {
 }
 
 $value = 0x7FFFFFFF; #2147483647;
-show_eq("$value", json_encode($value));
+show_eq("$value", jsond_encode($value));
 $value++;
-show_eq("$value", json_encode($value));
+show_eq("$value", jsond_encode($value));
 
 ?>
 --EXPECT--

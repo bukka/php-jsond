@@ -1,20 +1,20 @@
 --TEST--
-Test json_encode() function with numeric flag
+Test jsond_encode() function with numeric flag
 --SKIPIF--
 <?php
-if (!extension_loaded("json")) {
+if (!extension_loaded("jsond")) {
 	die('skip JSON extension not available in this build');
 }	 
 ?>
 --FILE--
 <?php
 var_dump(
-	json_encode("1", JSON_NUMERIC_CHECK),
-	json_encode("9.4324", JSON_NUMERIC_CHECK),
-	json_encode(array("122321", "3232595.33423"), JSON_NUMERIC_CHECK),
-	json_encode("1"),
-	json_encode("9.4324"),
-	json_encode(array("122321", "3232595.33423"))
+	jsond_encode("1", JSOND_NUMERIC_CHECK),
+	jsond_encode("9.4324", JSOND_NUMERIC_CHECK),
+	jsond_encode(array("122321", "3232595.33423"), JSOND_NUMERIC_CHECK),
+	jsond_encode("1"),
+	jsond_encode("9.4324"),
+	jsond_encode(array("122321", "3232595.33423"))
 );
 ?>
 --EXPECT--

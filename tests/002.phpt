@@ -1,24 +1,24 @@
 --TEST--
-json_encode() tests
+jsond_encode() tests
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 
-var_dump(json_encode(""));
-var_dump(json_encode(NULL));
-var_dump(json_encode(TRUE));
+var_dump(jsond_encode(""));
+var_dump(jsond_encode(NULL));
+var_dump(jsond_encode(TRUE));
 
-var_dump(json_encode(array(""=>"")));
-var_dump(json_encode(array(array(1))));
-var_dump(json_encode(array()));
+var_dump(jsond_encode(array(""=>"")));
+var_dump(jsond_encode(array(array(1))));
+var_dump(jsond_encode(array()));
 
-var_dump(json_encode(array(""=>""), JSON_FORCE_OBJECT));
-var_dump(json_encode(array(array(1)), JSON_FORCE_OBJECT));
-var_dump(json_encode(array(), JSON_FORCE_OBJECT));
+var_dump(jsond_encode(array(""=>""), JSOND_FORCE_OBJECT));
+var_dump(jsond_encode(array(array(1)), JSOND_FORCE_OBJECT));
+var_dump(jsond_encode(array(), JSOND_FORCE_OBJECT));
 
-var_dump(json_encode(1));
-var_dump(json_encode("руссиш"));
+var_dump(jsond_encode(1));
+var_dump(jsond_encode("руссиш"));
 
 
 echo "Done\n";

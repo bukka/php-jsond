@@ -1,14 +1,14 @@
 --TEST--
-json_encode() with JSON_PRETTY_PRINT
+jsond_encode() with JSOND_PRETTY_PRINT
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
-function encode_decode($json) {
-	$struct = json_decode($json);
-	$pretty = json_encode($struct, JSON_PRETTY_PRINT);
+function encode_decode($jsond) {
+	$struct = jsond_decode($jsond);
+	$pretty = jsond_encode($struct, JSOND_PRETTY_PRINT);
 	echo "$pretty\n";
-	$pretty = json_decode($pretty);
+	$pretty = jsond_decode($pretty);
 	printf("Match: %d\n", $pretty == $struct);
 }
 

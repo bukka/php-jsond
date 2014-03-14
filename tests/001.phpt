@@ -1,32 +1,32 @@
 --TEST--
-json_decode() tests
+jsond_decode() tests
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 
-var_dump(json_decode());
-var_dump(json_decode(""));
-var_dump(json_decode("", 1));
-var_dump(json_decode("", 0));
-var_dump(json_decode(".", 1));
-var_dump(json_decode(".", 0));
-var_dump(json_decode("<?>"));
-var_dump(json_decode(";"));
-var_dump(json_decode("руссиш"));
-var_dump(json_decode("blah"));
-var_dump(json_decode(NULL));
-var_dump(json_decode('{ "test": { "foo": "bar" } }'));
-var_dump(json_decode('{ "test": { "foo": "" } }'));
-var_dump(json_decode('{ "": { "foo": "" } }'));
-var_dump(json_decode('{ "": { "": "" } }'));
-var_dump(json_decode('{ "": { "": "" }'));
-var_dump(json_decode('{ "": "": "" } }'));
+var_dump(jsond_decode());
+var_dump(jsond_decode(""));
+var_dump(jsond_decode("", 1));
+var_dump(jsond_decode("", 0));
+var_dump(jsond_decode(".", 1));
+var_dump(jsond_decode(".", 0));
+var_dump(jsond_decode("<?>"));
+var_dump(jsond_decode(";"));
+var_dump(jsond_decode("руссиш"));
+var_dump(jsond_decode("blah"));
+var_dump(jsond_decode(NULL));
+var_dump(jsond_decode('{ "test": { "foo": "bar" } }'));
+var_dump(jsond_decode('{ "test": { "foo": "" } }'));
+var_dump(jsond_decode('{ "": { "foo": "" } }'));
+var_dump(jsond_decode('{ "": { "": "" } }'));
+var_dump(jsond_decode('{ "": { "": "" }'));
+var_dump(jsond_decode('{ "": "": "" } }'));
 
 ?>
 ===DONE===
 --EXPECTF--
-Warning: json_decode() expects at least 1 parameter, 0 given in %s on line %d
+Warning: jsond_decode() expects at least 1 parameter, 0 given in %s on line %d
 NULL
 NULL
 NULL

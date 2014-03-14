@@ -1,9 +1,9 @@
 --TEST--
-Bug #41403 (json_decode cannot decode floats if localeconv decimal_point is not '.')
+Bug #41403 (jsond_decode cannot decode floats if localeconv decimal_point is not '.')
 --SKIPIF--
 <?php
 
-if (!extension_loaded('json')) die('skip'); 
+if (!extension_loaded('jsond')) die('skip'); 
 
 if (setlocale(LC_NUMERIC, "de_DE") === false) {
 	die("skip no de_DE locale");
@@ -15,10 +15,10 @@ precision=14
 <?php
 
 setlocale(LC_NUMERIC, 'de_DE');
-var_dump(json_decode('[2.1]'));
-var_dump(json_decode('[0.15]'));
-var_dump(json_decode('[123.13452345]'));
-var_dump(json_decode('[123,13452345]'));
+var_dump(jsond_decode('[2.1]'));
+var_dump(jsond_decode('[0.15]'));
+var_dump(jsond_decode('[123.13452345]'));
+var_dump(jsond_decode('[123,13452345]'));
 
 echo "Done\n";
 ?>

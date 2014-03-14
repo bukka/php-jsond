@@ -1,7 +1,7 @@
 --TEST--
-FR #62369 (Segfault on json_encode(deeply_nested_array)
+FR #62369 (Segfault on jsond_encode(deeply_nested_array)
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 
@@ -10,22 +10,22 @@ for ($i=0; $i<550; $i++) {
     $array = array($array);
 }
 
-json_encode($array, 0, 551);
-switch (json_last_error()) {
-    case JSON_ERROR_NONE:
+jsond_encode($array, 0, 551);
+switch (jsond_last_error()) {
+    case JSOND_ERROR_NONE:
         echo 'OK'.PHP_EOL;
     break;
-    case JSON_ERROR_DEPTH:
+    case JSOND_ERROR_DEPTH:
         echo 'ERROR'.PHP_EOL;
     break;
 }
 
-json_encode($array, 0, 540);
-switch (json_last_error()) {
-    case JSON_ERROR_NONE:
+jsond_encode($array, 0, 540);
+switch (jsond_last_error()) {
+    case JSOND_ERROR_NONE:
         echo 'OK'.PHP_EOL;
     break;
-    case JSON_ERROR_DEPTH:
+    case JSOND_ERROR_DEPTH:
         echo 'ERROR'.PHP_EOL;
     break;
 }

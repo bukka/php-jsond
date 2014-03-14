@@ -1,18 +1,18 @@
 --TEST--
-json_encode() & extended encoding
+jsond_encode() & extended encoding
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 
 $a = array('<foo>',"'bar'",'"baz"','&blong&');
 
-echo "Normal: ", json_encode($a), "\n";
-echo "Tags: ",   json_encode($a,JSON_HEX_TAG), "\n";
-echo "Apos: ",   json_encode($a,JSON_HEX_APOS), "\n";
-echo "Quot: ",   json_encode($a,JSON_HEX_QUOT), "\n";
-echo "Amp: ",    json_encode($a,JSON_HEX_AMP), "\n";
-echo "All: ",    json_encode($a,JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_AMP), "\n";
+echo "Normal: ", jsond_encode($a), "\n";
+echo "Tags: ",   jsond_encode($a,JSOND_HEX_TAG), "\n";
+echo "Apos: ",   jsond_encode($a,JSOND_HEX_APOS), "\n";
+echo "Quot: ",   jsond_encode($a,JSOND_HEX_QUOT), "\n";
+echo "Amp: ",    jsond_encode($a,JSOND_HEX_AMP), "\n";
+echo "All: ",    jsond_encode($a,JSOND_HEX_TAG|JSOND_HEX_APOS|JSOND_HEX_QUOT|JSOND_HEX_AMP), "\n";
 ?>
 --EXPECT--
 Normal: ["<foo>","'bar'","\"baz\"","&blong&"]

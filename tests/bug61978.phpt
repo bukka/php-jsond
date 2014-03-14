@@ -1,7 +1,7 @@
 --TEST--
 Bug #61978 (Object recursion not detected for classes that implement JsonSerializable)
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 
@@ -14,7 +14,7 @@ class JsonTest1 {
     }
 }
 
-class JsonTest2 implements JsonSerializable {
+class JsonTest2 implements JsondSerializable {
     public $test;
     public function __construct() {
         $this->test = '123';
@@ -29,12 +29,12 @@ class JsonTest2 implements JsonSerializable {
 
 
 $obj1 = new JsonTest1();
-var_dump(json_encode($obj1, JSON_PARTIAL_OUTPUT_ON_ERROR));
+var_dump(jsond_encode($obj1, JSOND_PARTIAL_OUTPUT_ON_ERROR));
 
 echo "==\n";
 
 $obj2 = new JsonTest2();
-var_dump(json_encode($obj2, JSON_PARTIAL_OUTPUT_ON_ERROR));
+var_dump(jsond_encode($obj2, JSOND_PARTIAL_OUTPUT_ON_ERROR));
 
 ?>
 --EXPECTF--

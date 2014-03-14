@@ -1,13 +1,13 @@
 --TEST--
-Bug #63737 (json_decode does not properly decode with options parameter)
+Bug #63737 (jsond_decode does not properly decode with options parameter)
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
-function decode($json) {
-    $x = json_decode($json);
+function decode($jsond) {
+    $x = jsond_decode($jsond);
     var_dump($x);
-    $x = json_decode($json, false, 512, JSON_BIGINT_AS_STRING);
+    $x = jsond_decode($jsond, false, 512, JSOND_BIGINT_AS_STRING);
     var_dump($x);
 }
 

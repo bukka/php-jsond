@@ -1,17 +1,17 @@
 --TEST--
-Bug #42090 (json_decode causes segmentation fault)
+Bug #42090 (jsond_decode causes segmentation fault)
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 var_dump(
-	json_decode('""'),
-	json_decode('"..".'),
-	json_decode('"'),
-	json_decode('""""'),
-	json_encode('"'),
-	json_decode(json_encode('"')),
-	json_decode(json_encode('""'))
+	jsond_decode('""'),
+	jsond_decode('"..".'),
+	jsond_decode('"'),
+	jsond_decode('""""'),
+	jsond_encode('"'),
+	jsond_decode(jsond_encode('"')),
+	jsond_decode(jsond_encode('""'))
 );
 ?>
 --EXPECT--

@@ -1,19 +1,19 @@
 --TEST--
-Test json_encode() function : basic functionality
+Test jsond_encode() function : basic functionality
 --SKIPIF--
 <?php
-if (!extension_loaded("json")) {
+if (!extension_loaded("jsond")) {
  	die('skip JSON extension not available in this build');
 }	 
 ?>
 --FILE--
 <?php
-/* Prototype  : string json_encode  ( mixed $value  )
+/* Prototype  : string jsond_encode  ( mixed $value  )
  * Description: Returns the JSON representation of a value
- * Source code: ext/json/php_json.c
+ * Source code: ext/jsond/php_jsond.c
  * Alias to functions: 
  */
-echo "*** Testing json_encode() : basic functionality ***\n";
+echo "*** Testing jsond_encode() : basic functionality ***\n";
 
 //get an unset variable
 $unset_var = 10;
@@ -87,18 +87,18 @@ $inputs =  array (
   
 );  
 
-// loop through with each element of the $inputs array to test json_encode() function
+// loop through with each element of the $inputs array to test jsond_encode() function
 $count = 1;
 foreach($inputs as $input) {
   echo "-- Iteration $count --\n";	
-  var_dump(json_encode($input)); 
+  var_dump(jsond_encode($input)); 
   $count ++;
 }
 
 ?>
 ===Done===
 --EXPECTF-- 
-*** Testing json_encode() : basic functionality ***
+*** Testing jsond_encode() : basic functionality ***
 -- Iteration 1 --
 string(1) "0"
 -- Iteration 2 --

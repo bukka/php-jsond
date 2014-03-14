@@ -1,7 +1,7 @@
 --TEST--
-json_encode() & endless loop - 1
+jsond_encode() & endless loop - 1
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 
@@ -12,13 +12,13 @@ var_dump($a);
 
 echo "\n";
 
-var_dump(json_encode($a));
-var_dump(json_last_error(), json_last_error_msg());
+var_dump(jsond_encode($a));
+var_dump(jsond_last_error(), jsond_last_error_msg());
 
 echo "\n";
 
-var_dump(json_encode($a, JSON_PARTIAL_OUTPUT_ON_ERROR));
-var_dump(json_last_error(), json_last_error_msg());
+var_dump(jsond_encode($a, JSOND_PARTIAL_OUTPUT_ON_ERROR));
+var_dump(jsond_last_error(), jsond_last_error_msg());
 
 echo "Done\n";
 ?>

@@ -1,19 +1,19 @@
 --TEST--
-json_last_error() tests
+jsond_last_error() tests
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
-var_dump(json_decode("[1]"));
-var_dump(json_last_error(), json_last_error_msg());
-var_dump(json_decode("[[1]]", false, 2));
-var_dump(json_last_error(), json_last_error_msg());
-var_dump(json_decode("[1}"));
-var_dump(json_last_error(), json_last_error_msg());
-var_dump(json_decode('["' . chr(0) . 'abcd"]'));
-var_dump(json_last_error(), json_last_error_msg());
-var_dump(json_decode("[1"));
-var_dump(json_last_error(), json_last_error_msg());
+var_dump(jsond_decode("[1]"));
+var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump(jsond_decode("[[1]]", false, 2));
+var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump(jsond_decode("[1}"));
+var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump(jsond_decode('["' . chr(0) . 'abcd"]'));
+var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump(jsond_decode("[1"));
+var_dump(jsond_last_error(), jsond_last_error_msg());
 
 
 echo "Done\n";

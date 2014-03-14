@@ -1,7 +1,7 @@
 --TEST--
-json_encode() Serialization tests
+jsond_encode() Serialization tests
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 
@@ -15,7 +15,7 @@ class NonSerializingTest
 	}
 }
 
-class SerializingTest extends NonSerializingTest implements JsonSerializable
+class SerializingTest extends NonSerializingTest implements JsondSerializable
 {
 	public function jsonSerialize()
 	{
@@ -55,10 +55,11 @@ $odata = (object)$adata;
 
 foreach(array('NonSerializingTest','SerializingTest','ValueSerializingTest','SelfSerializingTest') as $class) {
 	echo "==$class==\n";
-	echo json_encode(new $class($adata)), "\n";
-	echo json_encode(new $class($ndata)), "\n";
-	echo json_encode(new $class($odata)), "\n";
+	echo jsond_encode(new $class($adata)), "\n";
+	echo jsond_encode(new $class($ndata)), "\n";
+	echo jsond_encode(new $class($odata)), "\n";
 }
+?>
 --EXPECT--
 ==NonSerializingTest==
 {"data":{"str":"foo","int":1,"float":2.3,"bool":false,"nil":null,"arr":[1,2,3],"obj":{}}}
