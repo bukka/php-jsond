@@ -156,16 +156,16 @@ std:
 	}
 	<JS>"true"               {
 		ZVAL_TRUE(&s->value);
-		PHP_JSON_TOKEN_RETURN(TRUE);
+		return PHP_JSON_T_TRUE;
 	}
 	<JS>"false"              {
 		ZVAL_FALSE(&s->value);
-		PHP_JSON_TOKEN_RETURN(FALSE);
+		return PHP_JSON_T_FALSE;
 	}
 	<JS>INT                  {
 		zend_bool bigint = 0, negative = s->token[0] == '-';
-		int digits = s->cursor - s->token - negative;
-		int max_digits = MAX_LENGTH_OF_LONG - 1;
+		ptrdiff_t digits = s->cursor - s->token - negative;
+		ptrdiff_t max_digits = MAX_LENGTH_OF_LONG - 1;
 		if (digits >= max_digits) {
 			if (digits == max_digits) {
 				int cmp = strncmp(s->token + negative, long_min_digits, max_digits);
@@ -197,7 +197,7 @@ std:
 			PHP_JSON_TOKEN_RETURN(EOI);
 		} else {
 			s->errcode = PHP_JSON_ERROR_SYNTAX;
-			PHP_JSON_TOKEN_RETURN(ERROR);
+			return PHP_JSON_T_ERROR;
 		}
 	}
 	<JS>["]                  {
@@ -209,7 +209,7 @@ std:
 
 	<STR_P1>CTRL             {
 		s->errcode = PHP_JSON_ERROR_CTRL_CHAR;
-		PHP_JSON_TOKEN_RETURN(ERROR);
+		return PHP_JSON_T_ERROR;
 	}
 	<STR_P1>UTF16_1          {
 		s->str_esc += 5;
@@ -229,7 +229,7 @@ std:
 	}
 	<STR_P1>UCS2             {
 		s->errcode = PHP_JSON_ERROR_UTF16;
-		PHP_JSON_TOKEN_RETURN(ERROR);
+		return PHP_JSON_T_ERROR;
 	}
 	<STR_P1>ESC              {
 		s->str_esc++;
@@ -237,7 +237,7 @@ std:
 	}
 	<STR_P1>ESCPREF           {
 		s->errcode = PHP_JSON_ERROR_SYNTAX;
-		PHP_JSON_TOKEN_RETURN(ERROR);
+		return PHP_JSON_T_ERROR;
 	}
 	<STR_P1>["]              {
 		char *str;
@@ -264,7 +264,7 @@ std:
 	<STR_P1>UTF8             { PHP_JSON_CONDITION_GOTO(STR_P1); }
 	<STR_P1>ANY              {
 		s->errcode = PHP_JSON_ERROR_UTF8;
-		PHP_JSON_TOKEN_RETURN(ERROR);
+		return PHP_JSON_T_ERROR;
 	}
 
 	<STR_P2>UTF16_1             {
@@ -330,7 +330,7 @@ std:
 				break;
 			default:
 				s->errcode = PHP_JSON_ERROR_SYNTAX;
-				PHP_JSON_TOKEN_RETURN(ERROR);
+				return PHP_JSON_T_ERROR;
 		}
 		*(s->pstr++) = esc;
 		++YYCURSOR;
@@ -345,7 +345,7 @@ std:
 
 	<*>ANY                   {
 		s->errcode = PHP_JSON_ERROR_SYNTAX;
-		PHP_JSON_TOKEN_RETURN(ERROR);
+		return PHP_JSON_T_ERROR;
 	}
 */
 
