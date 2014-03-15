@@ -93,7 +93,7 @@ $arr = jsond_decode($arr_enc, true);
 var_dump($arr);
 
 ?>
---EXPECT--
+--EXPECTF--
 Testing: 
 [
     "JSON Test Pattern pass1",
@@ -157,7 +157,7 @@ array(14) {
   [0]=>
   string(23) "JSON Test Pattern pass1"
   [1]=>
-  object(stdClass)#1 (1) {
+  object(stdClass)#%d (1) {
     ["object with 1 member"]=>
     array(1) {
       [0]=>
@@ -165,7 +165,7 @@ array(14) {
     }
   }
   [2]=>
-  object(stdClass)#2 (0) {
+  object(stdClass)#%d (0) {
   }
   [3]=>
   array(0) {
@@ -179,7 +179,7 @@ array(14) {
   [7]=>
   NULL
   [8]=>
-  object(stdClass)#3 (31) {
+  object(stdClass)#%d (31) {
     ["integer"]=>
     int(1234567890)
     ["real"]=>
@@ -225,7 +225,7 @@ array(14) {
     array(0) {
     }
     ["object"]=>
-    object(stdClass)#4 (0) {
+    object(stdClass)#%d (0) {
     }
     ["address"]=>
     string(19) "50 St. James Street"
@@ -433,7 +433,7 @@ array(14) {
   [0]=>
   string(23) "JSON Test Pattern pass1"
   [1]=>
-  object(stdClass)#5 (1) {
+  object(stdClass)#%d (1) {
     ["object with 1 member"]=>
     array(1) {
       [0]=>
@@ -441,7 +441,7 @@ array(14) {
     }
   }
   [2]=>
-  object(stdClass)#6 (0) {
+  object(stdClass)#%d (0) {
   }
   [3]=>
   array(0) {
@@ -455,7 +455,7 @@ array(14) {
   [7]=>
   NULL
   [8]=>
-  object(stdClass)#7 (31) {
+  object(stdClass)#%d (31) {
     ["integer"]=>
     int(1234567890)
     ["real"]=>
@@ -501,7 +501,7 @@ array(14) {
     array(0) {
     }
     ["object"]=>
-    object(stdClass)#8 (0) {
+    object(stdClass)#%d (0) {
     }
     ["address"]=>
     string(19) "50 St. James Street"
