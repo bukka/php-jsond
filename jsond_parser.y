@@ -164,6 +164,7 @@ void php_json_parser_init(php_json_parser *parser, zval *return_value, char *str
 {
 	memset(parser, 0, sizeof(php_json_parser));
 	php_json_scanner_init(&parser->scanner, str, str_len, options);
+	parser->depth = 1;
 	parser->max_depth = max_depth;
 	parser->return_value = return_value;
 	TSRMLS_SET_CTX(parser->zts_ctx);
