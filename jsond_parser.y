@@ -194,13 +194,17 @@ void php_json_parser_ht_update(php_json_parser *parser, HashTable *ht, zval *zke
 	int key_len = Z_STRLEN_P(zkey)+1;
 	MAKE_STD_ZVAL(data);
 	ZVAL_ZVAL(data, zvalue, 0, 0);
-	/* check if it's an object and the key is */
-	if (key_len == 1 && !(parser->scanner.options & PHP_JSON_OBJECT_AS_ARRAY)) {
-		key = "_empty_";
-		key_len = sizeof("_empty_");
+	
+	if (parser->scanner.options & PHP_JSON_OBJECT_AS_ARRAY) {
+		zend_symtable_update(ht, key, key_len, &data, sizeof(zval *), NULL);
+	} else {
+		if (key_len == 1) {
+			key = "_empty_";
+			key_len = sizeof("_empty_");
+		}
+		zend_hash_update(ht, key, key_len, &data, sizeof(zval *), NULL);
 	}
-
-	zend_symtable_update(ht, key, key_len, &data, sizeof(zval *), NULL);
+	
 	zval_dtor(zkey);
 }
 
