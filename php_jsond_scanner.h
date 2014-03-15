@@ -22,14 +22,16 @@
 #include "php.h"
 #include "php_jsond.h"
 
+typedef unsigned char php_json_ctype;
+
 typedef struct _php_json_scanner {
-	char *cursor;                   /* cursor position */
-	char *token;                    /* token position */
-	char *limit;                    /* the last read character + 1 position */
-	char *marker;                   /* marker position for backtracking */
-	char *ctxmarker;                /* marker position for context backtracking */
-	char *str_start;                /* start position of the string */
-	char *pstr;                     /* string pointer for escapes conversion */
+	php_json_ctype *cursor;                   /* cursor position */
+	php_json_ctype *token;                    /* token position */
+	php_json_ctype *limit;                    /* the last read character + 1 position */
+	php_json_ctype *marker;                   /* marker position for backtracking */
+	php_json_ctype *ctxmarker;                /* marker position for context backtracking */
+	php_json_ctype *str_start;                /* start position of the string */
+	php_json_ctype *pstr;                     /* string pointer for escapes conversion */
 	int str_esc;                    /* number of extra characters for escaping */
 	int state;                      /* condition state */             
 	zval value;                     /* value */

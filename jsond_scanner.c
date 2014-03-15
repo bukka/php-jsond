@@ -22,7 +22,7 @@
 #include "php_jsond_scanner_defs.h"
 #include "jsond_parser.tab.h"
 
-#define	YYCTYPE     char
+#define	YYCTYPE     php_json_ctype
 #define	YYCURSOR    s->cursor
 #define	YYLIMIT     s->limit
 #define	YYMARKER    s->marker
@@ -88,8 +88,8 @@ static int php_json_ucs2_to_int(php_json_scanner *s, int size)
 
 void php_json_scanner_init(php_json_scanner *s, char *str, int str_len, long options)
 {
-	s->cursor = str;
-	s->limit = str + str_len;
+	s->cursor = (php_json_ctype *) str;
+	s->limit = (php_json_ctype *) str + str_len;
 	s->options = options;
 	PHP_JSON_CONDITION_SET(JS);
 }
