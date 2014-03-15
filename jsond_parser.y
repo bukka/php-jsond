@@ -92,7 +92,12 @@ start:
 ;
 
 object:
-		'{' { PHP_JSON_DEPTH_INC; } members '}' { PHP_JSON_DEPTH_DEC; php_json_parser_object_to_zval(parser, &$$, $3); }
+		'{' { PHP_JSON_DEPTH_INC; } members object_end { PHP_JSON_DEPTH_DEC; php_json_parser_object_to_zval(parser, &$$, $3); }
+;
+
+object_end:
+		'}'
+	|	']'                     { parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH; YYERROR; }
 ;
 
 members:
@@ -112,7 +117,12 @@ pair:
 ;
 
 array:
-		'[' { PHP_JSON_DEPTH_INC; } elements ']' { PHP_JSON_DEPTH_DEC; php_json_parser_array_to_zval(&$$, $3); }
+		'[' { PHP_JSON_DEPTH_INC; } elements array_end { PHP_JSON_DEPTH_DEC; php_json_parser_array_to_zval(&$$, $3); }
+;
+
+array_end:
+		']'
+	|	'}'                     { parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH; YYERROR; }
 ;
 
 elements:

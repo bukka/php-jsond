@@ -429,16 +429,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  18
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   33
+#define YYLAST   34
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  18
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  14
+#define YYNNTS  16
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  32
+#define YYNRULES  36
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  41
+#define YYNSTATES  45
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -454,12 +454,12 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    14,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,    15,     2,
+       2,     2,     2,     2,    15,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,    16,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,    16,     2,    17,     2,     2,     2,     2,     2,     2,
+       2,    17,     2,    14,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,    12,     2,    13,     2,     2,     2,     2,
@@ -484,32 +484,33 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
 {
-       0,     0,     3,     6,     9,    10,    15,    16,    18,    20,
-      24,    27,    31,    34,    35,    40,    41,    43,    45,    49,
-      52,    54,    56,    58,    60,    62,    64,    66,    68,    70,
-      72,    74,    76
+       0,     0,     3,     6,     9,    10,    15,    17,    19,    20,
+      22,    24,    28,    31,    35,    38,    39,    44,    46,    48,
+      49,    51,    53,    57,    60,    62,    64,    66,    68,    70,
+      72,    74,    76,    78,    80,    82,    84
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      19,     0,    -1,    30,    10,    -1,    30,    31,    -1,    -1,
-      12,    21,    22,    13,    -1,    -1,    23,    -1,    24,    -1,
-      23,    14,    24,    -1,    23,    31,    -1,    29,    15,    30,
-      -1,    29,    31,    -1,    -1,    16,    26,    27,    17,    -1,
-      -1,    28,    -1,    30,    -1,    28,    14,    30,    -1,    28,
-      31,    -1,     8,    -1,     9,    -1,    20,    -1,    25,    -1,
-       8,    -1,     9,    -1,     6,    -1,     7,    -1,     3,    -1,
-       4,    -1,     5,    -1,    31,    -1,    11,    -1
+      19,     0,    -1,    32,    10,    -1,    32,    33,    -1,    -1,
+      12,    21,    23,    22,    -1,    13,    -1,    14,    -1,    -1,
+      24,    -1,    25,    -1,    24,    15,    25,    -1,    24,    33,
+      -1,    31,    16,    32,    -1,    31,    33,    -1,    -1,    17,
+      27,    29,    28,    -1,    14,    -1,    13,    -1,    -1,    30,
+      -1,    32,    -1,    30,    15,    32,    -1,    30,    33,    -1,
+       8,    -1,     9,    -1,    20,    -1,    26,    -1,     8,    -1,
+       9,    -1,     6,    -1,     7,    -1,     3,    -1,     4,    -1,
+       5,    -1,    33,    -1,    11,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
        0,    90,    90,    91,    95,    95,    99,   100,   104,   105,
-     106,   110,   111,   115,   115,   119,   120,   124,   125,   126,
-     130,   131,   135,   136,   137,   138,   139,   140,   141,   142,
-     143,   144,   148
+     109,   110,   111,   115,   116,   120,   120,   124,   125,   129,
+     130,   134,   135,   136,   140,   141,   145,   146,   147,   148,
+     149,   150,   151,   152,   153,   154,   158
 };
 #endif
 
@@ -521,9 +522,10 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "PHP_JSON_T_NUL", "PHP_JSON_T_TRUE",
   "PHP_JSON_T_FALSE", "PHP_JSON_T_INT", "PHP_JSON_T_DOUBLE",
   "PHP_JSON_T_STRING", "PHP_JSON_T_ESTRING", "PHP_JSON_T_EOI",
-  "PHP_JSON_T_ERROR", "'{'", "'}'", "','", "':'", "'['", "']'", "$accept",
-  "start", "object", "$@1", "members", "member", "pair", "array", "$@2",
-  "elements", "element", "key", "value", "errlex", 0
+  "PHP_JSON_T_ERROR", "'{'", "'}'", "']'", "','", "':'", "'['", "$accept",
+  "start", "object", "$@1", "object_end", "members", "member", "pair",
+  "array", "$@2", "array_end", "elements", "element", "key", "value",
+  "errlex", 0
 };
 #endif
 
@@ -533,7 +535,7 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   123,   125,    44,    58,    91,    93
+     265,   266,   123,   125,    93,    44,    58,    91
 };
 # endif
 
@@ -541,18 +543,18 @@ static const yytype_uint16 yytoknum[] =
 static const yytype_uint8 yyr1[] =
 {
        0,    18,    19,    19,    21,    20,    22,    22,    23,    23,
-      23,    24,    24,    26,    25,    27,    27,    28,    28,    28,
-      29,    29,    30,    30,    30,    30,    30,    30,    30,    30,
-      30,    30,    31
+      24,    24,    24,    25,    25,    27,    26,    28,    28,    29,
+      29,    30,    30,    30,    31,    31,    32,    32,    32,    32,
+      32,    32,    32,    32,    32,    32,    33
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     2,     0,     4,     0,     1,     1,     3,
-       2,     3,     2,     0,     4,     0,     1,     1,     3,     2,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1
+       0,     2,     2,     2,     0,     4,     1,     1,     0,     1,
+       1,     3,     2,     3,     2,     0,     4,     1,     1,     0,
+       1,     1,     3,     2,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -560,18 +562,18 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    28,    29,    30,    26,    27,    24,    25,    32,     4,
-      13,     0,    22,    23,     0,    31,     6,    15,     1,     2,
-       3,    20,    21,     0,     7,     8,     0,     0,    16,    17,
-       5,     0,    10,     0,    12,    14,     0,    19,     9,    11,
-      18
+       0,    32,    33,    34,    30,    31,    28,    29,    36,     4,
+      15,     0,    26,    27,     0,    35,     8,    19,     1,     2,
+       3,    24,    25,     0,     9,    10,     0,     0,    20,    21,
+       6,     7,     5,     0,    12,     0,    14,    18,    17,    16,
+       0,    23,    11,    13,    22
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    11,    12,    16,    23,    24,    25,    13,    17,    27,
-      28,    26,    14,    15
+      -1,    11,    12,    16,    32,    23,    24,    25,    13,    17,
+      39,    27,    28,    26,    14,    15
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
@@ -579,18 +581,18 @@ static const yytype_int8 yydefgoto[] =
 #define YYPACT_NINF -18
 static const yytype_int8 yypact[] =
 {
-      17,   -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,
-     -18,     3,   -18,   -18,    -1,   -18,     9,    17,   -18,   -18,
-     -18,   -18,   -18,     1,    -7,   -18,    -9,    -5,    -6,   -18,
-     -18,     9,   -18,    17,   -18,   -18,    17,   -18,   -18,   -18,
-     -18
+      -2,   -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,
+     -18,    11,   -18,   -18,     9,   -18,    21,    -2,   -18,   -18,
+     -18,   -18,   -18,    18,     1,   -18,    -3,    20,     6,   -18,
+     -18,   -18,   -18,    21,   -18,    -2,   -18,   -18,   -18,   -18,
+      -2,   -18,   -18,   -18,   -18
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -18,   -18,   -18,   -18,   -18,   -18,    -4,   -18,   -18,   -18,
-     -18,   -18,   -17,   -13
+     -18,   -18,   -18,   -18,   -18,   -18,   -18,   -11,   -18,   -18,
+     -18,   -18,   -18,   -18,   -17,     0
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -600,18 +602,18 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      29,    20,     8,    18,     8,     8,    33,    31,    36,    19,
-       8,    32,    35,    34,    30,    37,    39,    21,    22,    40,
-       1,     2,     3,     4,     5,     6,     7,    38,     8,     9,
-       0,     0,     0,    10
+      29,     1,     2,     3,     4,     5,     6,     7,     8,     8,
+       9,    18,     8,    35,    20,    10,    33,     8,    43,    19,
+       8,    40,    42,    44,    34,     0,    36,     0,    41,    21,
+      22,    30,    31,    37,    38
 };
 
 static const yytype_int8 yycheck[] =
 {
-      17,    14,    11,     0,    11,    11,    15,    14,    14,    10,
-      11,    24,    17,    26,    13,    28,    33,     8,     9,    36,
-       3,     4,     5,     6,     7,     8,     9,    31,    11,    12,
-      -1,    -1,    -1,    16
+      17,     3,     4,     5,     6,     7,     8,     9,    11,    11,
+      12,     0,    11,    16,    14,    17,    15,    11,    35,    10,
+      11,    15,    33,    40,    24,    -1,    26,    -1,    28,     8,
+       9,    13,    14,    13,    14
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -619,10 +621,10 @@ static const yytype_int8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     3,     4,     5,     6,     7,     8,     9,    11,    12,
-      16,    19,    20,    25,    30,    31,    21,    26,     0,    10,
-      31,     8,     9,    22,    23,    24,    29,    27,    28,    30,
-      13,    14,    31,    15,    31,    17,    14,    31,    24,    30,
-      30
+      17,    19,    20,    26,    32,    33,    21,    27,     0,    10,
+      33,     8,     9,    23,    24,    25,    31,    29,    30,    32,
+      13,    14,    22,    15,    33,    16,    33,    13,    14,    28,
+      15,    33,    25,    32,    32
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1146,7 +1148,7 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1150 "jsond_parser.tab.c"
+#line 1152 "jsond_parser.tab.c"
 	break;
       case 4: /* "PHP_JSON_T_TRUE" */
 
@@ -1155,7 +1157,7 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1159 "jsond_parser.tab.c"
+#line 1161 "jsond_parser.tab.c"
 	break;
       case 5: /* "PHP_JSON_T_FALSE" */
 
@@ -1164,7 +1166,7 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1168 "jsond_parser.tab.c"
+#line 1170 "jsond_parser.tab.c"
 	break;
       case 6: /* "PHP_JSON_T_INT" */
 
@@ -1173,7 +1175,7 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1177 "jsond_parser.tab.c"
+#line 1179 "jsond_parser.tab.c"
 	break;
       case 7: /* "PHP_JSON_T_DOUBLE" */
 
@@ -1182,7 +1184,7 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1186 "jsond_parser.tab.c"
+#line 1188 "jsond_parser.tab.c"
 	break;
       case 8: /* "PHP_JSON_T_STRING" */
 
@@ -1191,7 +1193,7 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1195 "jsond_parser.tab.c"
+#line 1197 "jsond_parser.tab.c"
 	break;
       case 9: /* "PHP_JSON_T_ESTRING" */
 
@@ -1200,7 +1202,7 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1204 "jsond_parser.tab.c"
+#line 1206 "jsond_parser.tab.c"
 	break;
       case 10: /* "PHP_JSON_T_EOI" */
 
@@ -1209,7 +1211,7 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1213 "jsond_parser.tab.c"
+#line 1215 "jsond_parser.tab.c"
 	break;
       case 11: /* "PHP_JSON_T_ERROR" */
 
@@ -1218,7 +1220,7 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1222 "jsond_parser.tab.c"
+#line 1224 "jsond_parser.tab.c"
 	break;
       case 19: /* "start" */
 
@@ -1227,7 +1229,7 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1231 "jsond_parser.tab.c"
+#line 1233 "jsond_parser.tab.c"
 	break;
       case 20: /* "object" */
 
@@ -1236,88 +1238,88 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1240 "jsond_parser.tab.c"
+#line 1242 "jsond_parser.tab.c"
 	break;
-      case 22: /* "members" */
+      case 23: /* "members" */
 
 /* Line 1000 of yacc.c  */
 #line 66 "jsond_parser.y"
 	{ zend_hash_destroy((yyvaluep->ht)); FREE_HASHTABLE((yyvaluep->ht)); };
 
 /* Line 1000 of yacc.c  */
-#line 1249 "jsond_parser.tab.c"
+#line 1251 "jsond_parser.tab.c"
 	break;
-      case 23: /* "member" */
+      case 24: /* "member" */
 
 /* Line 1000 of yacc.c  */
 #line 66 "jsond_parser.y"
 	{ zend_hash_destroy((yyvaluep->ht)); FREE_HASHTABLE((yyvaluep->ht)); };
 
 /* Line 1000 of yacc.c  */
-#line 1258 "jsond_parser.tab.c"
+#line 1260 "jsond_parser.tab.c"
 	break;
-      case 24: /* "pair" */
+      case 25: /* "pair" */
 
 /* Line 1000 of yacc.c  */
 #line 67 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->pair).key); zval_dtor(&(yyvaluep->pair).val); };
 
 /* Line 1000 of yacc.c  */
-#line 1267 "jsond_parser.tab.c"
+#line 1269 "jsond_parser.tab.c"
 	break;
-      case 25: /* "array" */
+      case 26: /* "array" */
 
 /* Line 1000 of yacc.c  */
 #line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1276 "jsond_parser.tab.c"
+#line 1278 "jsond_parser.tab.c"
 	break;
-      case 27: /* "elements" */
+      case 29: /* "elements" */
 
 /* Line 1000 of yacc.c  */
 #line 66 "jsond_parser.y"
 	{ zend_hash_destroy((yyvaluep->ht)); FREE_HASHTABLE((yyvaluep->ht)); };
 
 /* Line 1000 of yacc.c  */
-#line 1285 "jsond_parser.tab.c"
+#line 1287 "jsond_parser.tab.c"
 	break;
-      case 28: /* "element" */
+      case 30: /* "element" */
 
 /* Line 1000 of yacc.c  */
 #line 66 "jsond_parser.y"
 	{ zend_hash_destroy((yyvaluep->ht)); FREE_HASHTABLE((yyvaluep->ht)); };
 
 /* Line 1000 of yacc.c  */
-#line 1294 "jsond_parser.tab.c"
+#line 1296 "jsond_parser.tab.c"
 	break;
-      case 29: /* "key" */
+      case 31: /* "key" */
 
 /* Line 1000 of yacc.c  */
 #line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1303 "jsond_parser.tab.c"
+#line 1305 "jsond_parser.tab.c"
 	break;
-      case 30: /* "value" */
+      case 32: /* "value" */
 
 /* Line 1000 of yacc.c  */
 #line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1312 "jsond_parser.tab.c"
+#line 1314 "jsond_parser.tab.c"
 	break;
-      case 31: /* "errlex" */
+      case 33: /* "errlex" */
 
 /* Line 1000 of yacc.c  */
 #line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
 /* Line 1000 of yacc.c  */
-#line 1321 "jsond_parser.tab.c"
+#line 1323 "jsond_parser.tab.c"
 	break;
 
       default:
@@ -1646,101 +1648,115 @@ yyreduce:
     { PHP_JSON_DEPTH_DEC; php_json_parser_object_to_zval(parser, &(yyval.value), (yyvsp[(3) - (4)].ht)); ;}
     break;
 
-  case 6:
+  case 7:
 
 /* Line 1455 of yacc.c  */
-#line 99 "jsond_parser.y"
-    { php_json_parser_ht_init(&(yyval.ht), 0); ;}
+#line 100 "jsond_parser.y"
+    { parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH; YYERROR; ;}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
 #line 104 "jsond_parser.y"
-    { php_json_parser_ht_init(&(yyval.ht), 4); php_json_parser_ht_update(parser, (yyval.ht), &(yyvsp[(1) - (1)].pair).key, &(yyvsp[(1) - (1)].pair).val); ;}
-    break;
-
-  case 9:
-
-/* Line 1455 of yacc.c  */
-#line 105 "jsond_parser.y"
-    { php_json_parser_ht_update(parser, (yyvsp[(1) - (3)].ht), &(yyvsp[(3) - (3)].pair).key, &(yyvsp[(3) - (3)].pair).val); (yyval.ht) = (yyvsp[(1) - (3)].ht); ;}
+    { php_json_parser_ht_init(&(yyval.ht), 0); ;}
     break;
 
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 106 "jsond_parser.y"
-    { PHP_JSON_USE_2((yyval.ht), (yyvsp[(1) - (2)].ht), (yyvsp[(2) - (2)].value)); ;}
+#line 109 "jsond_parser.y"
+    { php_json_parser_ht_init(&(yyval.ht), 4); php_json_parser_ht_update(parser, (yyval.ht), &(yyvsp[(1) - (1)].pair).key, &(yyvsp[(1) - (1)].pair).val); ;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
 #line 110 "jsond_parser.y"
-    { (yyval.pair).key = (yyvsp[(1) - (3)].value); (yyval.pair).val = (yyvsp[(3) - (3)].value); ;}
+    { php_json_parser_ht_update(parser, (yyvsp[(1) - (3)].ht), &(yyvsp[(3) - (3)].pair).key, &(yyvsp[(3) - (3)].pair).val); (yyval.ht) = (yyvsp[(1) - (3)].ht); ;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
 #line 111 "jsond_parser.y"
-    { PHP_JSON_USE_2((yyval.pair), (yyvsp[(1) - (2)].value), (yyvsp[(2) - (2)].value)); ;}
+    { PHP_JSON_USE_2((yyval.ht), (yyvsp[(1) - (2)].ht), (yyvsp[(2) - (2)].value)); ;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
 #line 115 "jsond_parser.y"
-    { PHP_JSON_DEPTH_INC; ;}
+    { (yyval.pair).key = (yyvsp[(1) - (3)].value); (yyval.pair).val = (yyvsp[(3) - (3)].value); ;}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 115 "jsond_parser.y"
-    { PHP_JSON_DEPTH_DEC; php_json_parser_array_to_zval(&(yyval.value), (yyvsp[(3) - (4)].ht)); ;}
+#line 116 "jsond_parser.y"
+    { PHP_JSON_USE_2((yyval.pair), (yyvsp[(1) - (2)].value), (yyvsp[(2) - (2)].value)); ;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 119 "jsond_parser.y"
-    { php_json_parser_ht_init(&(yyval.ht), 0); ;}
+#line 120 "jsond_parser.y"
+    { PHP_JSON_DEPTH_INC; ;}
     break;
 
-  case 17:
+  case 16:
 
 /* Line 1455 of yacc.c  */
-#line 124 "jsond_parser.y"
-    { php_json_parser_ht_init(&(yyval.ht), 4); php_json_parser_ht_append((yyval.ht), &(yyvsp[(1) - (1)].value)); ;}
+#line 120 "jsond_parser.y"
+    { PHP_JSON_DEPTH_DEC; php_json_parser_array_to_zval(&(yyval.value), (yyvsp[(3) - (4)].ht)); ;}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
 #line 125 "jsond_parser.y"
-    { php_json_parser_ht_append((yyvsp[(1) - (3)].ht), &(yyvsp[(3) - (3)].value)); (yyval.ht) = (yyvsp[(1) - (3)].ht); ;}
+    { parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH; YYERROR; ;}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 126 "jsond_parser.y"
+#line 129 "jsond_parser.y"
+    { php_json_parser_ht_init(&(yyval.ht), 0); ;}
+    break;
+
+  case 21:
+
+/* Line 1455 of yacc.c  */
+#line 134 "jsond_parser.y"
+    { php_json_parser_ht_init(&(yyval.ht), 4); php_json_parser_ht_append((yyval.ht), &(yyvsp[(1) - (1)].value)); ;}
+    break;
+
+  case 22:
+
+/* Line 1455 of yacc.c  */
+#line 135 "jsond_parser.y"
+    { php_json_parser_ht_append((yyvsp[(1) - (3)].ht), &(yyvsp[(3) - (3)].value)); (yyval.ht) = (yyvsp[(1) - (3)].ht); ;}
+    break;
+
+  case 23:
+
+/* Line 1455 of yacc.c  */
+#line 136 "jsond_parser.y"
     { PHP_JSON_USE_2((yyval.ht), (yyvsp[(1) - (2)].ht), (yyvsp[(2) - (2)].value)); ;}
     break;
 
-  case 32:
+  case 36:
 
 /* Line 1455 of yacc.c  */
-#line 148 "jsond_parser.y"
+#line 158 "jsond_parser.y"
     { PHP_JSON_USE_1((yyval.value), (yyvsp[(1) - (1)].value)); YYERROR; ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1744 "jsond_parser.tab.c"
+#line 1760 "jsond_parser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1952,7 +1968,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 151 "jsond_parser.y"
+#line 161 "jsond_parser.y"
  /* Functions */
 
 void php_json_parser_init(php_json_parser *parser, zval *return_value, char *str, int str_len, long options, long max_depth TSRMLS_DC)
