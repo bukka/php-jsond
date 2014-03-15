@@ -32,8 +32,6 @@
 
 #define	YYFILL(n)
 
-#define PHP_JSON_TOKEN(token)  PHP_JSON_T_##token
-#define	PHP_JSON_TOKEN_RETURN(token)  return PHP_JSON_TOKEN(token)
 #define PHP_JSON_CONDITION_SET(condition) YYSETCONDITION(yyc##condition)
 #define PHP_JSON_CONDITION_GOTO(condition) goto yyc_##condition
 
@@ -97,7 +95,8 @@ void php_json_scanner_init(php_json_scanner *s, char *str, int str_len, long opt
 
 int php_json_scan(php_json_scanner *s)
 {
-
+	ZVAL_NULL(&s->value);
+	
 std:
 	s->token = s->cursor;
 
@@ -152,7 +151,7 @@ std:
 	<JS>","                  { return ','; }
 	<JS>"null"               {
 		ZVAL_NULL(&s->value);
-		PHP_JSON_TOKEN_RETURN(NUL);
+		return PHP_JSON_T_NUL;
 	}
 	<JS>"true"               {
 		ZVAL_TRUE(&s->value);
@@ -178,23 +177,23 @@ std:
 		}
 		if (!bigint) {
 			ZVAL_LONG(&s->value, strtol(s->token, NULL, 10));
-			PHP_JSON_TOKEN_RETURN(INT);
+			return PHP_JSON_T_INT;
 		} else if (s->options & PHP_JSON_BIGINT_AS_STRING) {
 			ZVAL_STRINGL(&s->value, s->token, s->cursor - s->token, 1);
-			PHP_JSON_TOKEN_RETURN(STRING);
+			return PHP_JSON_T_STRING;
 		} else {
 			ZVAL_DOUBLE(&s->value, zend_strtod(s->token, NULL));
-			PHP_JSON_TOKEN_RETURN(DOUBLE);
+			return PHP_JSON_T_DOUBLE;
 		}
 	}
 	<JS>FLOAT|EXP            {
 		ZVAL_DOUBLE(&s->value, zend_strtod(s->token, NULL));
-		PHP_JSON_TOKEN_RETURN(DOUBLE);
+		return PHP_JSON_T_DOUBLE;
 	}
 	<JS>NL|WS                { goto std; }
 	<JS>EOI                  {
 		if (s->limit < s->cursor) {
-			PHP_JSON_TOKEN_RETURN(EOI);
+			return PHP_JSON_T_EOI;
 		} else {
 			s->errcode = PHP_JSON_ERROR_SYNTAX;
 			return PHP_JSON_T_ERROR;
@@ -245,7 +244,7 @@ std:
 		if (len == 0) {
 			PHP_JSON_CONDITION_SET(JS);
 			ZVAL_EMPTY_STRING(&s->value);
-			PHP_JSON_TOKEN_RETURN(ESTRING);
+			return PHP_JSON_T_ESTRING;
 		}
 		str = emalloc(len + 1);
 		str[len] = 0;
@@ -258,7 +257,7 @@ std:
 		} else {
 			memcpy(Z_STRVAL(s->value), s->str_start, len);
 			PHP_JSON_CONDITION_SET(JS);
-			PHP_JSON_TOKEN_RETURN(STRING);
+			return PHP_JSON_T_STRING;
 		}
 	}
 	<STR_P1>UTF8             { PHP_JSON_CONDITION_GOTO(STR_P1); }
@@ -339,7 +338,7 @@ std:
 	}
 	<STR_P2>["] => JS        {
 		PHP_JSON_SCANNER_COPY_ESC();
-		PHP_JSON_TOKEN_RETURN(STRING);
+		return PHP_JSON_T_STRING;
 	}
 	<STR_P2>ANY              { PHP_JSON_CONDITION_GOTO(STR_P2); }
 
