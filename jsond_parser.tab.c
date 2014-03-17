@@ -1624,7 +1624,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 90 "jsond_parser.y"
-    { (yyval.value) = (yyvsp[(1) - (2)].value); ZVAL_ZVAL(parser->return_value, &(yyvsp[(1) - (2)].value), 0, 0); PHP_JSON_USE((yyvsp[(2) - (2)].value)); YYACCEPT; ;}
+    { (yyval.value) = (yyvsp[(1) - (2)].value); INIT_PZVAL_COPY(parser->return_value, &(yyvsp[(1) - (2)].value)); PHP_JSON_USE((yyvsp[(2) - (2)].value)); YYACCEPT; ;}
     break;
 
   case 3:
