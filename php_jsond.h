@@ -40,10 +40,10 @@ extern zend_module_entry jsond_module_entry;
 
 #ifdef PHP_JSOND_PRIMARY
 #define PHP_JSOND_PREFIX json
-#define PHP_JSOND_PREFIX_STRING "jsond"
+#define PHP_JSOND_PREFIX_STRING "json"
 #define PHP_JSOND_CONSTANT "JSON"
 #define PHP_JSOND_SERIALIZABLE_INTERFACE JsonSerializable
-#define PHP_JSOND_SERIALIZABLE_INTERFACE_STRING "JsondSerializable"
+#define PHP_JSOND_SERIALIZABLE_INTERFACE_STRING "JsonSerializable"
 #define PHP_JSOND_SERIALIZABLE_METHOD jsonSerializable
 #define PHP_JSOND_NAME(name) php_json_ ## name
 #define PHP_JSOND_IDENT(name) json_ ## name
