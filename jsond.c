@@ -73,7 +73,7 @@ static const zend_function_entry jsond_functions[] = {
 	PHP_JSOND_FE(decode, arginfo_jsond_decode)
 	PHP_JSOND_FE(last_error, arginfo_jsond_last_error)
 	PHP_JSOND_FE(last_error_msg, arginfo_jsond_last_error_msg)
-	PHP_FE_END
+	PHP_JSOND_FE_END
 };
 /* }}} */
 
@@ -84,7 +84,7 @@ ZEND_END_ARG_INFO();
 
 static const zend_function_entry jsond_serializable_interface[] = {
 	PHP_ABSTRACT_ME(PHP_JSOND_SERIALIZABLE_INTERFACE, jsonSerialize, jsond_serialize_arginfo)
-	PHP_FE_END
+	PHP_JSOND_FE_END
 };
 /* }}} */
 

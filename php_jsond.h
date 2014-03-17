@@ -60,6 +60,16 @@ extern zend_module_entry jsond_module_entry;
 #define PHP_JSOND_FE(jname, arginfo) PHP_FE(PHP_JSOND_IDENT(jname), arginfo)
 #define PHP_JSOND_REGISTER_LONG_CONSTANT(name, lval, flags) REGISTER_LONG_CONSTANT(PHP_JSOND_CONSTANT"_"name, lval, flags)
 
+#if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION == 3 && PHP_RELEASE_VERSION >= 7) || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 4) || (PHP_MAJOR_VERSION > 5)
+#define PHP_JSOND_FE_END PHP_FE_END
+#else
+#define PHP_JSOND_FE_END {NULL,NULL,NULL}
+#endif
+
+#ifndef HASH_KEY_NON_EXISTENT
+#define HASH_KEY_NON_EXISTENT HASH_KEY_NON_EXISTANT
+#endif
+
 typedef enum {
 	PHP_JSON_ERROR_NONE = 0,
     PHP_JSON_ERROR_DEPTH,
