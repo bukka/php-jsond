@@ -194,8 +194,10 @@ std:
 	<JS>WS|NL                { goto std; }
 	<JS>EOI                  {
 		if (s->limit < s->cursor) {
+			ZVAL_NULL(&s->value);
 			PHP_JSON_TOKEN_RETURN(EOI);
 		} else {
+			ZVAL_NULL(&s->value);
 			s->errcode = PHP_JSON_ERROR_SYNTAX;
 			PHP_JSON_TOKEN_RETURN(ERROR);
 		}
