@@ -73,7 +73,7 @@ static int php_json_hex_to_int(char c)
 static int php_json_ucs2_to_int_ex(php_json_scanner *s, int size, int start)
 {
 	int i, code = 0;
-	char *pc = s->cursor - start;
+	php_json_ctype *pc = s->cursor - start;
 	for (i = 0; i < size; i++) {
 		code |= php_json_hex_to_int(*(pc--)) << (i * 4);
 	}
@@ -167,7 +167,7 @@ std:
 		ptrdiff_t max_digits = MAX_LENGTH_OF_LONG - 1;
 		if (digits >= max_digits) {
 			if (digits == max_digits) {
-				int cmp = strncmp(s->token + negative, long_min_digits, max_digits);
+				int cmp = strncmp((char *) (s->token + negative), long_min_digits, max_digits);
 				if (!(cmp < 0 || (cmp == 0 && negative))) {
 					bigint = 1;
 				}
@@ -176,18 +176,18 @@ std:
 			}
 		}
 		if (!bigint) {
-			ZVAL_LONG(&s->value, strtol(s->token, NULL, 10));
+			ZVAL_LONG(&s->value, strtol((char *) s->token, NULL, 10));
 			return PHP_JSON_T_INT;
 		} else if (s->options & PHP_JSON_BIGINT_AS_STRING) {
-			ZVAL_STRINGL(&s->value, s->token, s->cursor - s->token, 1);
+			ZVAL_STRINGL(&s->value, (char *) s->token, s->cursor - s->token, 1);
 			return PHP_JSON_T_STRING;
 		} else {
-			ZVAL_DOUBLE(&s->value, zend_strtod(s->token, NULL));
+			ZVAL_DOUBLE(&s->value, zend_strtod((char *) s->token, NULL));
 			return PHP_JSON_T_DOUBLE;
 		}
 	}
 	<JS>FLOAT|EXP            {
-		ZVAL_DOUBLE(&s->value, zend_strtod(s->token, NULL));
+		ZVAL_DOUBLE(&s->value, zend_strtod((char *) s->token, NULL));
 		return PHP_JSON_T_DOUBLE;
 	}
 	<JS>NL|WS                { goto std; }
@@ -250,7 +250,7 @@ std:
 		str[len] = 0;
 		ZVAL_STRINGL(&s->value, str, len, 0);
 		if (s->str_esc) {
-			s->pstr = Z_STRVAL(s->value);
+			s->pstr = (php_json_ctype *) Z_STRVAL(s->value);
 			s->cursor = s->str_start;
 			PHP_JSON_CONDITION_SET(STR_P2);
 			PHP_JSON_CONDITION_GOTO(STR_P2);
