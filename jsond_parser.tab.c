@@ -1,10 +1,8 @@
+/* A Bison parser, made by GNU Bison 2.7.  */
 
-/* A Bison parser, made by GNU Bison 2.4.1.  */
-
-/* Skeleton implementation for Bison's Yacc-like parsers in C
+/* Bison implementation for Yacc-like parsers in C
    
-      Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
-   Free Software Foundation, Inc.
+      Copyright (C) 1984, 1989-1990, 2000-2012 Free Software Foundation, Inc.
    
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -46,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "2.4.1"
+#define YYBISON_VERSION "2.7"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -60,12 +58,8 @@
 /* Pull parsers.  */
 #define YYPULL 1
 
-/* Using locations.  */
-#define YYLSP_NEEDED 0
-
 /* "%code top" blocks.  */
-
-/* Line 171 of yacc.c  */
+/* Line 349 of yacc.c  */
 #line 1 "jsond_parser.y"
 
 /*
@@ -82,7 +76,8 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Author: Jakub Zelenka <bukka@php.net>                                |
+  | Author: Jakub Zelenka  <bukka@php.net>                               |
+  |         Xinchen Hui    <laruence@php.net>                            |
   +----------------------------------------------------------------------+
 */
 
@@ -99,12 +94,13 @@ int json_yydebug = 1;
 #define PHP_JSON_USE(uv) ((void) (uv))
 #define PHP_JSON_USE_1(uvr, uv1) PHP_JSON_USE(uvr); PHP_JSON_USE(uv1)
 #define PHP_JSON_USE_2(uvr, uv1, uv2) PHP_JSON_USE(uvr); PHP_JSON_USE(uv1); PHP_JSON_USE(uv2)
+#define YYSTYPE zval
 
 
 
+/* Line 349 of yacc.c  */
+#line 103 "jsond_parser.tab.c"
 
-/* Line 171 of yacc.c  */
-#line 108 "jsond_parser.tab.c"
 /* Substitute the variable and function names.  */
 #define yyparse         php_json_yyparse
 #define yylex           php_json_yylex
@@ -114,17 +110,18 @@ int json_yydebug = 1;
 #define yydebug         php_json_yydebug
 #define yynerrs         php_json_yynerrs
 
-
 /* Copy the first part of user declarations.  */
 
+/* Line 371 of yacc.c  */
+#line 117 "jsond_parser.tab.c"
 
-/* Line 189 of yacc.c  */
-#line 123 "jsond_parser.tab.c"
-
-/* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
+# ifndef YY_NULL
+#  if defined __cplusplus && 201103L <= __cplusplus
+#   define YY_NULL nullptr
+#  else
+#   define YY_NULL 0
+#  endif
+# endif
 
 /* Enabling verbose error messages.  */
 #ifdef YYERROR_VERBOSE
@@ -134,11 +131,14 @@ int json_yydebug = 1;
 # define YYERROR_VERBOSE 0
 #endif
 
-/* Enabling the token table.  */
-#ifndef YYTOKEN_TABLE
-# define YYTOKEN_TABLE 0
-#endif
 
+/* Enabling traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 0
+#endif
+#if YYDEBUG
+extern int php_json_yydebug;
+#endif
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -159,49 +159,45 @@ int json_yydebug = 1;
 #endif
 
 
-
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
-{
-
-/* Line 214 of yacc.c  */
-#line 41 "jsond_parser.y"
-
-	zval value;
-	struct {
-		zval key;
-		zval val;
-	} pair;
-	HashTable *ht;
-
-
-
-/* Line 214 of yacc.c  */
-#line 181 "jsond_parser.tab.c"
-} YYSTYPE;
+typedef int YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
 
+#ifdef YYPARSE_PARAM
+#if defined __STDC__ || defined __cplusplus
+int php_json_yyparse (void *YYPARSE_PARAM);
+#else
+int php_json_yyparse ();
+#endif
+#else /* ! YYPARSE_PARAM */
+#if defined __STDC__ || defined __cplusplus
+int php_json_yyparse (php_json_parser *parser);
+#else
+int php_json_yyparse ();
+#endif
+#endif /* ! YYPARSE_PARAM */
+
+
+
 /* Copy the second part of user declarations.  */
 
-
-/* Line 264 of yacc.c  */
-#line 193 "jsond_parser.tab.c"
+/* Line 390 of yacc.c  */
+#line 190 "jsond_parser.tab.c"
 /* Unqualified %code blocks.  */
+/* Line 391 of yacc.c  */
+#line 55 "jsond_parser.y"
 
-/* Line 265 of yacc.c  */
-#line 69 "jsond_parser.y"
-
-int php_json_yylex(union YYSTYPE *value, php_json_parser *parser);
+int php_json_yylex(YYSTYPE *value, php_json_parser *parser);
 void php_json_yyerror(php_json_parser *parser, char const *msg);
-void php_json_parser_object_to_zval(php_json_parser *parser, zval *zv, HashTable *ht);
-void php_json_parser_array_to_zval(zval *zv, HashTable *ht);
-void php_json_parser_ht_init(HashTable **ht, uint nSize);
-void php_json_parser_ht_update(php_json_parser *parser, HashTable *ht, zval *zkey, zval *zvalue);
-void php_json_parser_ht_append(HashTable *ht, zval *zvalue);
+void php_json_parser_object_to_zval(php_json_parser *parser, zval *zv, zval *ht);
+void php_json_parser_array_to_zval(zval *zv, zval *ht);
+void php_json_parser_ht_init(zval *ht, uint nSize);
+void php_json_parser_ht_update(php_json_parser *parser, zval *ht, zval *zkey, zval *zvalue);
+void php_json_parser_ht_append(zval *ht, zval *zvalue);
 
 #define PHP_JSON_DEPTH_DEC --parser->depth
 #define PHP_JSON_DEPTH_INC \
@@ -212,9 +208,8 @@ void php_json_parser_ht_append(HashTable *ht, zval *zvalue);
 	++parser->depth
 
 
-
-/* Line 265 of yacc.c  */
-#line 218 "jsond_parser.tab.c"
+/* Line 391 of yacc.c  */
+#line 213 "jsond_parser.tab.c"
 
 #ifdef short
 # undef short
@@ -264,27 +259,27 @@ typedef short int yytype_int16;
 #define YYSIZE_MAXIMUM ((YYSIZE_T) -1)
 
 #ifndef YY_
-# if YYENABLE_NLS
+# if defined YYENABLE_NLS && YYENABLE_NLS
 #  if ENABLE_NLS
 #   include <libintl.h> /* INFRINGES ON USER NAME SPACE */
-#   define YY_(msgid) dgettext ("bison-runtime", msgid)
+#   define YY_(Msgid) dgettext ("bison-runtime", Msgid)
 #  endif
 # endif
 # ifndef YY_
-#  define YY_(msgid) msgid
+#  define YY_(Msgid) Msgid
 # endif
 #endif
 
 /* Suppress unused-variable warnings by "using" E.  */
 #if ! defined lint || defined __GNUC__
-# define YYUSE(e) ((void) (e))
+# define YYUSE(E) ((void) (E))
 #else
-# define YYUSE(e) /* empty */
+# define YYUSE(E) /* empty */
 #endif
 
 /* Identity function, used to suppress warnings about constant conditions.  */
 #ifndef lint
-# define YYID(n) (n)
+# define YYID(N) (N)
 #else
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
@@ -317,11 +312,12 @@ YYID (yyi)
 #    define alloca _alloca
 #   else
 #    define YYSTACK_ALLOC alloca
-#    if ! defined _ALLOCA_H && ! defined _STDLIB_H && (defined __STDC__ || defined __C99__FUNC__ \
+#    if ! defined _ALLOCA_H && ! defined EXIT_SUCCESS && (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 #     include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
-#     ifndef _STDLIB_H
-#      define _STDLIB_H 1
+      /* Use EXIT_SUCCESS as a witness for stdlib.h.  */
+#     ifndef EXIT_SUCCESS
+#      define EXIT_SUCCESS 0
 #     endif
 #    endif
 #   endif
@@ -344,24 +340,24 @@ YYID (yyi)
 #  ifndef YYSTACK_ALLOC_MAXIMUM
 #   define YYSTACK_ALLOC_MAXIMUM YYSIZE_MAXIMUM
 #  endif
-#  if (defined __cplusplus && ! defined _STDLIB_H \
+#  if (defined __cplusplus && ! defined EXIT_SUCCESS \
        && ! ((defined YYMALLOC || defined malloc) \
 	     && (defined YYFREE || defined free)))
 #   include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
-#   ifndef _STDLIB_H
-#    define _STDLIB_H 1
+#   ifndef EXIT_SUCCESS
+#    define EXIT_SUCCESS 0
 #   endif
 #  endif
 #  ifndef YYMALLOC
 #   define YYMALLOC malloc
-#   if ! defined malloc && ! defined _STDLIB_H && (defined __STDC__ || defined __C99__FUNC__ \
+#   if ! defined malloc && ! defined EXIT_SUCCESS && (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 void *malloc (YYSIZE_T); /* INFRINGES ON USER NAME SPACE */
 #   endif
 #  endif
 #  ifndef YYFREE
 #   define YYFREE free
-#   if ! defined free && ! defined _STDLIB_H && (defined __STDC__ || defined __C99__FUNC__ \
+#   if ! defined free && ! defined EXIT_SUCCESS && (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 void free (void *); /* INFRINGES ON USER NAME SPACE */
 #   endif
@@ -390,23 +386,7 @@ union yyalloc
      ((N) * (sizeof (yytype_int16) + sizeof (YYSTYPE)) \
       + YYSTACK_GAP_MAXIMUM)
 
-/* Copy COUNT objects from FROM to TO.  The source and destination do
-   not overlap.  */
-# ifndef YYCOPY
-#  if defined __GNUC__ && 1 < __GNUC__
-#   define YYCOPY(To, From, Count) \
-      __builtin_memcpy (To, From, (Count) * sizeof (*(From)))
-#  else
-#   define YYCOPY(To, From, Count)		\
-      do					\
-	{					\
-	  YYSIZE_T yyi;				\
-	  for (yyi = 0; yyi < (Count); yyi++)	\
-	    (To)[yyi] = (From)[yyi];		\
-	}					\
-      while (YYID (0))
-#  endif
-# endif
+# define YYCOPY_NEEDED 1
 
 /* Relocate STACK from its old location to the new one.  The
    local variables YYSIZE and YYSTACKSIZE give the old and new number of
@@ -426,6 +406,26 @@ union yyalloc
 
 #endif
 
+#if defined YYCOPY_NEEDED && YYCOPY_NEEDED
+/* Copy COUNT objects from SRC to DST.  The source and destination do
+   not overlap.  */
+# ifndef YYCOPY
+#  if defined __GNUC__ && 1 < __GNUC__
+#   define YYCOPY(Dst, Src, Count) \
+      __builtin_memcpy (Dst, Src, (Count) * sizeof (*(Src)))
+#  else
+#   define YYCOPY(Dst, Src, Count)              \
+      do                                        \
+        {                                       \
+          YYSIZE_T yyi;                         \
+          for (yyi = 0; yyi < (Count); yyi++)   \
+            (Dst)[yyi] = (Src)[yyi];            \
+        }                                       \
+      while (YYID (0))
+#  endif
+# endif
+#endif /* !YYCOPY_NEEDED */
+
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  18
 /* YYLAST -- Last index in YYTABLE.  */
@@ -434,11 +434,11 @@ union yyalloc
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  18
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  14
+#define YYNNTS  13
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  32
+#define YYNRULES  31
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  41
+#define YYNSTATES  42
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -454,8 +454,8 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    14,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,    15,     2,
+       2,     2,     2,     2,    15,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,    14,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -484,36 +484,36 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
 {
-       0,     0,     3,     6,     9,    10,    15,    16,    18,    20,
-      24,    27,    31,    34,    35,    40,    41,    43,    45,    49,
-      52,    54,    56,    58,    60,    62,    64,    66,    68,    70,
-      72,    74,    76
+       0,     0,     3,     6,     9,    10,    15,    16,    18,    22,
+      28,    31,    34,    35,    40,    41,    43,    45,    49,    52,
+      54,    56,    58,    60,    62,    64,    66,    68,    70,    72,
+      74,    76
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      19,     0,    -1,    30,    10,    -1,    30,    31,    -1,    -1,
-      12,    21,    22,    13,    -1,    -1,    23,    -1,    24,    -1,
-      23,    14,    24,    -1,    23,    31,    -1,    29,    15,    30,
-      -1,    29,    31,    -1,    -1,    16,    26,    27,    17,    -1,
-      -1,    28,    -1,    30,    -1,    28,    14,    30,    -1,    28,
-      31,    -1,     8,    -1,     9,    -1,    20,    -1,    25,    -1,
+      19,     0,    -1,    29,    10,    -1,    29,    30,    -1,    -1,
+      12,    21,    22,    13,    -1,    -1,    23,    -1,    28,    14,
+      29,    -1,    23,    15,    28,    14,    29,    -1,    23,    30,
+      -1,    28,    30,    -1,    -1,    16,    25,    26,    17,    -1,
+      -1,    27,    -1,    29,    -1,    27,    15,    29,    -1,    27,
+      30,    -1,     8,    -1,     9,    -1,    20,    -1,    24,    -1,
        8,    -1,     9,    -1,     6,    -1,     7,    -1,     3,    -1,
-       4,    -1,     5,    -1,    31,    -1,    11,    -1
+       4,    -1,     5,    -1,    30,    -1,    11,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    90,    90,    91,    95,    95,    99,   100,   104,   105,
-     106,   110,   111,   115,   115,   119,   120,   124,   125,   126,
-     130,   131,   135,   136,   137,   138,   139,   140,   141,   142,
-     143,   144,   148
+       0,    76,    76,    77,    81,    81,    85,    86,    90,    91,
+      92,    93,    97,    97,   101,   102,   106,   107,   108,   112,
+     113,   117,   118,   119,   120,   121,   122,   123,   124,   125,
+     126,   130
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || YYTOKEN_TABLE
+#if YYDEBUG || YYERROR_VERBOSE || 0
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
@@ -521,9 +521,9 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "PHP_JSON_T_NUL", "PHP_JSON_T_TRUE",
   "PHP_JSON_T_FALSE", "PHP_JSON_T_INT", "PHP_JSON_T_DOUBLE",
   "PHP_JSON_T_STRING", "PHP_JSON_T_ESTRING", "PHP_JSON_T_EOI",
-  "PHP_JSON_T_ERROR", "'{'", "'}'", "','", "':'", "'['", "']'", "$accept",
-  "start", "object", "$@1", "members", "member", "pair", "array", "$@2",
-  "elements", "element", "key", "value", "errlex", 0
+  "PHP_JSON_T_ERROR", "'{'", "'}'", "':'", "','", "'['", "']'", "$accept",
+  "start", "object", "$@1", "members", "member", "array", "$@2",
+  "elements", "element", "key", "value", "errlex", YY_NULL
 };
 #endif
 
@@ -533,7 +533,7 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   123,   125,    44,    58,    91,    93
+     265,   266,   123,   125,    58,    44,    91,    93
 };
 # endif
 
@@ -541,37 +541,37 @@ static const yytype_uint16 yytoknum[] =
 static const yytype_uint8 yyr1[] =
 {
        0,    18,    19,    19,    21,    20,    22,    22,    23,    23,
-      23,    24,    24,    26,    25,    27,    27,    28,    28,    28,
-      29,    29,    30,    30,    30,    30,    30,    30,    30,    30,
-      30,    30,    31
+      23,    23,    25,    24,    26,    26,    27,    27,    27,    28,
+      28,    29,    29,    29,    29,    29,    29,    29,    29,    29,
+      29,    30
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     2,     0,     4,     0,     1,     1,     3,
-       2,     3,     2,     0,     4,     0,     1,     1,     3,     2,
+       0,     2,     2,     2,     0,     4,     0,     1,     3,     5,
+       2,     2,     0,     4,     0,     1,     1,     3,     2,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1
+       1,     1
 };
 
-/* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
-   STATE-NUM when YYTABLE doesn't specify something else to do.  Zero
+/* YYDEFACT[STATE-NAME] -- Default reduction number in state STATE-NUM.
+   Performed when YYTABLE doesn't specify something else to do.  Zero
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    28,    29,    30,    26,    27,    24,    25,    32,     4,
-      13,     0,    22,    23,     0,    31,     6,    15,     1,     2,
-       3,    20,    21,     0,     7,     8,     0,     0,    16,    17,
-       5,     0,    10,     0,    12,    14,     0,    19,     9,    11,
-      18
+       0,    27,    28,    29,    25,    26,    23,    24,    31,     4,
+      12,     0,    21,    22,     0,    30,     6,    14,     1,     2,
+       3,    19,    20,     0,     7,     0,     0,    15,    16,     5,
+       0,    10,     0,    11,    13,     0,    18,     0,     8,    17,
+       0,     9
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    11,    12,    16,    23,    24,    25,    13,    17,    27,
-      28,    26,    14,    15
+      -1,    11,    12,    16,    23,    24,    13,    17,    26,    27,
+      25,    14,    15
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
@@ -579,39 +579,44 @@ static const yytype_int8 yydefgoto[] =
 #define YYPACT_NINF -18
 static const yytype_int8 yypact[] =
 {
-      17,   -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,
-     -18,     3,   -18,   -18,    -1,   -18,     9,    17,   -18,   -18,
-     -18,   -18,   -18,     1,    -7,   -18,    -9,    -5,    -6,   -18,
-     -18,     9,   -18,    17,   -18,   -18,    17,   -18,   -18,   -18,
-     -18
+      -2,   -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,
+     -18,     8,   -18,   -18,     9,   -18,    18,    -2,   -18,   -18,
+     -18,   -18,   -18,    16,     1,    14,    13,     2,   -18,   -18,
+      18,   -18,    -2,   -18,   -18,    -2,   -18,    17,   -18,   -18,
+      -2,   -18
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -18,   -18,   -18,   -18,   -18,   -18,    -4,   -18,   -18,   -18,
-     -18,   -18,   -17,   -13
+     -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,
+       3,   -17,    -3
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
-   number is the opposite.  If zero, do what YYDEFACT says.
-   If YYTABLE_NINF, syntax error.  */
+   number is the opposite.  If YYTABLE_NINF, syntax error.  */
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      29,    20,     8,    18,     8,     8,    33,    31,    36,    19,
-       8,    32,    35,    34,    30,    37,    39,    21,    22,    40,
-       1,     2,     3,     4,     5,     6,     7,    38,     8,     9,
-       0,     0,     0,    10
+      28,     1,     2,     3,     4,     5,     6,     7,    18,     8,
+       9,    20,     8,     8,    10,    38,    30,    35,    39,    19,
+       8,    31,    33,    41,    36,     8,    21,    22,    32,    29,
+      34,    40,     0,    37
 };
+
+#define yypact_value_is_default(Yystate) \
+  (!!((Yystate) == (-18)))
+
+#define yytable_value_is_error(Yytable_value) \
+  YYID (0)
 
 static const yytype_int8 yycheck[] =
 {
-      17,    14,    11,     0,    11,    11,    15,    14,    14,    10,
-      11,    24,    17,    26,    13,    28,    33,     8,     9,    36,
-       3,     4,     5,     6,     7,     8,     9,    31,    11,    12,
-      -1,    -1,    -1,    16
+      17,     3,     4,     5,     6,     7,     8,     9,     0,    11,
+      12,    14,    11,    11,    16,    32,    15,    15,    35,    10,
+      11,    24,    25,    40,    27,    11,     8,     9,    14,    13,
+      17,    14,    -1,    30
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -619,10 +624,10 @@ static const yytype_int8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     3,     4,     5,     6,     7,     8,     9,    11,    12,
-      16,    19,    20,    25,    30,    31,    21,    26,     0,    10,
-      31,     8,     9,    22,    23,    24,    29,    27,    28,    30,
-      13,    14,    31,    15,    31,    17,    14,    31,    24,    30,
-      30
+      16,    19,    20,    24,    29,    30,    21,    25,     0,    10,
+      30,     8,     9,    22,    23,    28,    26,    27,    29,    13,
+      15,    30,    14,    30,    17,    15,    30,    28,    29,    29,
+      14,    29
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -637,78 +642,50 @@ static const yytype_uint8 yystos[] =
 
 /* Like YYERROR except do call yyerror.  This remains here temporarily
    to ease the transition to the new meaning of YYERROR, for GCC.
-   Once GCC version 2 has supplanted version 1, this can go.  */
+   Once GCC version 2 has supplanted version 1, this can go.  However,
+   YYFAIL appears to be in use.  Nevertheless, it is formally deprecated
+   in Bison 2.4.2's NEWS entry, where a plan to phase it out is
+   discussed.  */
 
 #define YYFAIL		goto yyerrlab
+#if defined YYFAIL
+  /* This is here to suppress warnings from the GCC cpp's
+     -Wunused-macros.  Normally we don't worry about that warning, but
+     some users do, and we want to make it easy for users to remove
+     YYFAIL uses, which will produce warnings from Bison 2.5.  */
+#endif
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
-#define YYBACKUP(Token, Value)					\
-do								\
-  if (yychar == YYEMPTY && yylen == 1)				\
-    {								\
-      yychar = (Token);						\
-      yylval = (Value);						\
-      yytoken = YYTRANSLATE (yychar);				\
-      YYPOPSTACK (1);						\
-      goto yybackup;						\
-    }								\
-  else								\
-    {								\
+#define YYBACKUP(Token, Value)                                  \
+do                                                              \
+  if (yychar == YYEMPTY)                                        \
+    {                                                           \
+      yychar = (Token);                                         \
+      yylval = (Value);                                         \
+      YYPOPSTACK (yylen);                                       \
+      yystate = *yyssp;                                         \
+      goto yybackup;                                            \
+    }                                                           \
+  else                                                          \
+    {                                                           \
       yyerror (parser, YY_("syntax error: cannot back up")); \
       YYERROR;							\
     }								\
 while (YYID (0))
 
-
+/* Error token number */
 #define YYTERROR	1
 #define YYERRCODE	256
 
 
-/* YYLLOC_DEFAULT -- Set CURRENT to span from RHS[1] to RHS[N].
-   If N is 0, then set CURRENT to the empty location which ends
-   the previous symbol: RHS[0] (always defined).  */
-
-#define YYRHSLOC(Rhs, K) ((Rhs)[K])
-#ifndef YYLLOC_DEFAULT
-# define YYLLOC_DEFAULT(Current, Rhs, N)				\
-    do									\
-      if (YYID (N))                                                    \
-	{								\
-	  (Current).first_line   = YYRHSLOC (Rhs, 1).first_line;	\
-	  (Current).first_column = YYRHSLOC (Rhs, 1).first_column;	\
-	  (Current).last_line    = YYRHSLOC (Rhs, N).last_line;		\
-	  (Current).last_column  = YYRHSLOC (Rhs, N).last_column;	\
-	}								\
-      else								\
-	{								\
-	  (Current).first_line   = (Current).last_line   =		\
-	    YYRHSLOC (Rhs, 0).last_line;				\
-	  (Current).first_column = (Current).last_column =		\
-	    YYRHSLOC (Rhs, 0).last_column;				\
-	}								\
-    while (YYID (0))
-#endif
-
-
-/* YY_LOCATION_PRINT -- Print the location on the stream.
-   This macro was not mandated originally: define only if we know
-   we won't break user code: when these are the locations we know.  */
-
+/* This macro is provided for backward compatibility. */
 #ifndef YY_LOCATION_PRINT
-# if YYLTYPE_IS_TRIVIAL
-#  define YY_LOCATION_PRINT(File, Loc)			\
-     fprintf (File, "%d.%d-%d.%d",			\
-	      (Loc).first_line, (Loc).first_column,	\
-	      (Loc).last_line,  (Loc).last_column)
-# else
-#  define YY_LOCATION_PRINT(File, Loc) ((void) 0)
-# endif
+# define YY_LOCATION_PRINT(File, Loc) ((void) 0)
 #endif
 
 
 /* YYLEX -- calling `yylex' with the right arguments.  */
-
 #ifdef YYLEX_PARAM
 # define YYLEX yylex (&yylval, YYLEX_PARAM)
 #else
@@ -759,6 +736,8 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep, parser)
     php_json_parser *parser;
 #endif
 {
+  FILE *yyo = yyoutput;
+  YYUSE (yyo);
   if (!yyvaluep)
     return;
   YYUSE (parser);
@@ -771,7 +750,7 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep, parser)
   switch (yytype)
     {
       default:
-	break;
+        break;
     }
 }
 
@@ -899,7 +878,6 @@ int yydebug;
 # define YYMAXDEPTH 10000
 #endif
 
-
 
 #if YYERROR_VERBOSE
 
@@ -1002,115 +980,145 @@ yytnamerr (char *yyres, const char *yystr)
 }
 # endif
 
-/* Copy into YYRESULT an error message about the unexpected token
-   YYCHAR while in state YYSTATE.  Return the number of bytes copied,
-   including the terminating null byte.  If YYRESULT is null, do not
-   copy anything; just return the number of bytes that would be
-   copied.  As a special case, return 0 if an ordinary "syntax error"
-   message will do.  Return YYSIZE_MAXIMUM if overflow occurs during
-   size calculation.  */
-static YYSIZE_T
-yysyntax_error (char *yyresult, int yystate, int yychar)
+/* Copy into *YYMSG, which is of size *YYMSG_ALLOC, an error message
+   about the unexpected token YYTOKEN for the state stack whose top is
+   YYSSP.
+
+   Return 0 if *YYMSG was successfully written.  Return 1 if *YYMSG is
+   not large enough to hold the message.  In that case, also set
+   *YYMSG_ALLOC to the required number of bytes.  Return 2 if the
+   required number of bytes is too large to store.  */
+static int
+yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
+                yytype_int16 *yyssp, int yytoken)
 {
-  int yyn = yypact[yystate];
+  YYSIZE_T yysize0 = yytnamerr (YY_NULL, yytname[yytoken]);
+  YYSIZE_T yysize = yysize0;
+  enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
+  /* Internationalized format string. */
+  const char *yyformat = YY_NULL;
+  /* Arguments of yyformat. */
+  char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
+  /* Number of reported tokens (one for the "unexpected", one per
+     "expected"). */
+  int yycount = 0;
 
-  if (! (YYPACT_NINF < yyn && yyn <= YYLAST))
-    return 0;
-  else
+  /* There are many possibilities here to consider:
+     - Assume YYFAIL is not used.  It's too flawed to consider.  See
+       <http://lists.gnu.org/archive/html/bison-patches/2009-12/msg00024.html>
+       for details.  YYERROR is fine as it does not invoke this
+       function.
+     - If this state is a consistent state with a default action, then
+       the only way this function was invoked is if the default action
+       is an error action.  In that case, don't check for expected
+       tokens because there are none.
+     - The only way there can be no lookahead present (in yychar) is if
+       this state is a consistent state with a default action.  Thus,
+       detecting the absence of a lookahead is sufficient to determine
+       that there is no unexpected or expected token to report.  In that
+       case, just report a simple "syntax error".
+     - Don't assume there isn't a lookahead just because this state is a
+       consistent state with a default action.  There might have been a
+       previous inconsistent state, consistent state with a non-default
+       action, or user semantic action that manipulated yychar.
+     - Of course, the expected token list depends on states to have
+       correct lookahead information, and it depends on the parser not
+       to perform extra reductions after fetching a lookahead from the
+       scanner and before detecting a syntax error.  Thus, state merging
+       (from LALR or IELR) and default reductions corrupt the expected
+       token list.  However, the list is correct for canonical LR with
+       one exception: it will still contain any token that will not be
+       accepted due to an error action in a later state.
+  */
+  if (yytoken != YYEMPTY)
     {
-      int yytype = YYTRANSLATE (yychar);
-      YYSIZE_T yysize0 = yytnamerr (0, yytname[yytype]);
-      YYSIZE_T yysize = yysize0;
-      YYSIZE_T yysize1;
-      int yysize_overflow = 0;
-      enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
-      char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
-      int yyx;
+      int yyn = yypact[*yyssp];
+      yyarg[yycount++] = yytname[yytoken];
+      if (!yypact_value_is_default (yyn))
+        {
+          /* Start YYX at -YYN if negative to avoid negative indexes in
+             YYCHECK.  In other words, skip the first -YYN actions for
+             this state because they are default actions.  */
+          int yyxbegin = yyn < 0 ? -yyn : 0;
+          /* Stay within bounds of both yycheck and yytname.  */
+          int yychecklim = YYLAST - yyn + 1;
+          int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
+          int yyx;
 
-# if 0
-      /* This is so xgettext sees the translatable formats that are
-	 constructed on the fly.  */
-      YY_("syntax error, unexpected %s");
-      YY_("syntax error, unexpected %s, expecting %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s or %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s");
-# endif
-      char *yyfmt;
-      char const *yyf;
-      static char const yyunexpected[] = "syntax error, unexpected %s";
-      static char const yyexpecting[] = ", expecting %s";
-      static char const yyor[] = " or %s";
-      char yyformat[sizeof yyunexpected
-		    + sizeof yyexpecting - 1
-		    + ((YYERROR_VERBOSE_ARGS_MAXIMUM - 2)
-		       * (sizeof yyor - 1))];
-      char const *yyprefix = yyexpecting;
-
-      /* Start YYX at -YYN if negative to avoid negative indexes in
-	 YYCHECK.  */
-      int yyxbegin = yyn < 0 ? -yyn : 0;
-
-      /* Stay within bounds of both yycheck and yytname.  */
-      int yychecklim = YYLAST - yyn + 1;
-      int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
-      int yycount = 1;
-
-      yyarg[0] = yytname[yytype];
-      yyfmt = yystpcpy (yyformat, yyunexpected);
-
-      for (yyx = yyxbegin; yyx < yyxend; ++yyx)
-	if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
-	  {
-	    if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
-	      {
-		yycount = 1;
-		yysize = yysize0;
-		yyformat[sizeof yyunexpected - 1] = '\0';
-		break;
-	      }
-	    yyarg[yycount++] = yytname[yyx];
-	    yysize1 = yysize + yytnamerr (0, yytname[yyx]);
-	    yysize_overflow |= (yysize1 < yysize);
-	    yysize = yysize1;
-	    yyfmt = yystpcpy (yyfmt, yyprefix);
-	    yyprefix = yyor;
-	  }
-
-      yyf = YY_(yyformat);
-      yysize1 = yysize + yystrlen (yyf);
-      yysize_overflow |= (yysize1 < yysize);
-      yysize = yysize1;
-
-      if (yysize_overflow)
-	return YYSIZE_MAXIMUM;
-
-      if (yyresult)
-	{
-	  /* Avoid sprintf, as that infringes on the user's name space.
-	     Don't have undefined behavior even if the translation
-	     produced a string with the wrong number of "%s"s.  */
-	  char *yyp = yyresult;
-	  int yyi = 0;
-	  while ((*yyp = *yyf) != '\0')
-	    {
-	      if (*yyp == '%' && yyf[1] == 's' && yyi < yycount)
-		{
-		  yyp += yytnamerr (yyp, yyarg[yyi++]);
-		  yyf += 2;
-		}
-	      else
-		{
-		  yyp++;
-		  yyf++;
-		}
-	    }
-	}
-      return yysize;
+          for (yyx = yyxbegin; yyx < yyxend; ++yyx)
+            if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR
+                && !yytable_value_is_error (yytable[yyx + yyn]))
+              {
+                if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
+                  {
+                    yycount = 1;
+                    yysize = yysize0;
+                    break;
+                  }
+                yyarg[yycount++] = yytname[yyx];
+                {
+                  YYSIZE_T yysize1 = yysize + yytnamerr (YY_NULL, yytname[yyx]);
+                  if (! (yysize <= yysize1
+                         && yysize1 <= YYSTACK_ALLOC_MAXIMUM))
+                    return 2;
+                  yysize = yysize1;
+                }
+              }
+        }
     }
+
+  switch (yycount)
+    {
+# define YYCASE_(N, S)                      \
+      case N:                               \
+        yyformat = S;                       \
+      break
+      YYCASE_(0, YY_("syntax error"));
+      YYCASE_(1, YY_("syntax error, unexpected %s"));
+      YYCASE_(2, YY_("syntax error, unexpected %s, expecting %s"));
+      YYCASE_(3, YY_("syntax error, unexpected %s, expecting %s or %s"));
+      YYCASE_(4, YY_("syntax error, unexpected %s, expecting %s or %s or %s"));
+      YYCASE_(5, YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s"));
+# undef YYCASE_
+    }
+
+  {
+    YYSIZE_T yysize1 = yysize + yystrlen (yyformat);
+    if (! (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM))
+      return 2;
+    yysize = yysize1;
+  }
+
+  if (*yymsg_alloc < yysize)
+    {
+      *yymsg_alloc = 2 * yysize;
+      if (! (yysize <= *yymsg_alloc
+             && *yymsg_alloc <= YYSTACK_ALLOC_MAXIMUM))
+        *yymsg_alloc = YYSTACK_ALLOC_MAXIMUM;
+      return 1;
+    }
+
+  /* Avoid sprintf, as that infringes on the user's name space.
+     Don't have undefined behavior even if the translation
+     produced a string with the wrong number of "%s"s.  */
+  {
+    char *yyp = *yymsg;
+    int yyi = 0;
+    while ((*yyp = *yyformat) != '\0')
+      if (*yyp == '%' && yyformat[1] == 's' && yyi < yycount)
+        {
+          yyp += yytnamerr (yyp, yyarg[yyi++]);
+          yyformat += 2;
+        }
+      else
+        {
+          yyp++;
+          yyformat++;
+        }
+  }
+  return 0;
 }
 #endif /* YYERROR_VERBOSE */
-
 
 /*-----------------------------------------------.
 | Release the memory associated to this symbol.  |
@@ -1139,214 +1147,193 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
 
   switch (yytype)
     {
-      case 3: /* "PHP_JSON_T_NUL" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
-#line 1150 "jsond_parser.tab.c"
-	break;
-      case 4: /* "PHP_JSON_T_TRUE" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
-#line 1159 "jsond_parser.tab.c"
-	break;
-      case 5: /* "PHP_JSON_T_FALSE" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
-#line 1168 "jsond_parser.tab.c"
-	break;
-      case 6: /* "PHP_JSON_T_INT" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
+      case 3: /* PHP_JSON_T_NUL */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1156 "jsond_parser.tab.c"
+        break;
+      case 4: /* PHP_JSON_T_TRUE */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1163 "jsond_parser.tab.c"
+        break;
+      case 5: /* PHP_JSON_T_FALSE */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1170 "jsond_parser.tab.c"
+        break;
+      case 6: /* PHP_JSON_T_INT */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
 #line 1177 "jsond_parser.tab.c"
-	break;
-      case 7: /* "PHP_JSON_T_DOUBLE" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
-#line 1186 "jsond_parser.tab.c"
-	break;
-      case 8: /* "PHP_JSON_T_STRING" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
-#line 1195 "jsond_parser.tab.c"
-	break;
-      case 9: /* "PHP_JSON_T_ESTRING" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
-#line 1204 "jsond_parser.tab.c"
-	break;
-      case 10: /* "PHP_JSON_T_EOI" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
-#line 1213 "jsond_parser.tab.c"
-	break;
-      case 11: /* "PHP_JSON_T_ERROR" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
-#line 1222 "jsond_parser.tab.c"
-	break;
-      case 19: /* "start" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
-#line 1231 "jsond_parser.tab.c"
-	break;
-      case 20: /* "object" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
+        break;
+      case 7: /* PHP_JSON_T_DOUBLE */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1184 "jsond_parser.tab.c"
+        break;
+      case 8: /* PHP_JSON_T_STRING */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1191 "jsond_parser.tab.c"
+        break;
+      case 9: /* PHP_JSON_T_ESTRING */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1198 "jsond_parser.tab.c"
+        break;
+      case 10: /* PHP_JSON_T_EOI */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1205 "jsond_parser.tab.c"
+        break;
+      case 11: /* PHP_JSON_T_ERROR */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1212 "jsond_parser.tab.c"
+        break;
+      case 12: /* '{' */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1219 "jsond_parser.tab.c"
+        break;
+      case 13: /* '}' */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1226 "jsond_parser.tab.c"
+        break;
+      case 14: /* ':' */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1233 "jsond_parser.tab.c"
+        break;
+      case 15: /* ',' */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
 #line 1240 "jsond_parser.tab.c"
-	break;
-      case 22: /* "members" */
-
-/* Line 1000 of yacc.c  */
-#line 66 "jsond_parser.y"
-	{ zend_hash_destroy((yyvaluep->ht)); FREE_HASHTABLE((yyvaluep->ht)); };
-
-/* Line 1000 of yacc.c  */
-#line 1249 "jsond_parser.tab.c"
-	break;
-      case 23: /* "member" */
-
-/* Line 1000 of yacc.c  */
-#line 66 "jsond_parser.y"
-	{ zend_hash_destroy((yyvaluep->ht)); FREE_HASHTABLE((yyvaluep->ht)); };
-
-/* Line 1000 of yacc.c  */
-#line 1258 "jsond_parser.tab.c"
-	break;
-      case 24: /* "pair" */
-
-/* Line 1000 of yacc.c  */
-#line 67 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->pair).key); zval_dtor(&(yyvaluep->pair).val); };
-
-/* Line 1000 of yacc.c  */
-#line 1267 "jsond_parser.tab.c"
-	break;
-      case 25: /* "array" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
-#line 1276 "jsond_parser.tab.c"
-	break;
-      case 27: /* "elements" */
-
-/* Line 1000 of yacc.c  */
-#line 66 "jsond_parser.y"
-	{ zend_hash_destroy((yyvaluep->ht)); FREE_HASHTABLE((yyvaluep->ht)); };
-
-/* Line 1000 of yacc.c  */
-#line 1285 "jsond_parser.tab.c"
-	break;
-      case 28: /* "element" */
-
-/* Line 1000 of yacc.c  */
-#line 66 "jsond_parser.y"
-	{ zend_hash_destroy((yyvaluep->ht)); FREE_HASHTABLE((yyvaluep->ht)); };
-
-/* Line 1000 of yacc.c  */
-#line 1294 "jsond_parser.tab.c"
-	break;
-      case 29: /* "key" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
+        break;
+      case 16: /* '[' */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1247 "jsond_parser.tab.c"
+        break;
+      case 17: /* ']' */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1254 "jsond_parser.tab.c"
+        break;
+      case 19: /* start */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1261 "jsond_parser.tab.c"
+        break;
+      case 20: /* object */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1268 "jsond_parser.tab.c"
+        break;
+      case 22: /* members */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1275 "jsond_parser.tab.c"
+        break;
+      case 23: /* member */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1282 "jsond_parser.tab.c"
+        break;
+      case 24: /* array */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1289 "jsond_parser.tab.c"
+        break;
+      case 26: /* elements */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1296 "jsond_parser.tab.c"
+        break;
+      case 27: /* element */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
 #line 1303 "jsond_parser.tab.c"
-	break;
-      case 30: /* "value" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
-#line 1312 "jsond_parser.tab.c"
-	break;
-      case 31: /* "errlex" */
-
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
-	{ zval_dtor(&(yyvaluep->value)); };
-
-/* Line 1000 of yacc.c  */
-#line 1321 "jsond_parser.tab.c"
-	break;
+        break;
+      case 28: /* key */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1310 "jsond_parser.tab.c"
+        break;
+      case 29: /* value */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1317 "jsond_parser.tab.c"
+        break;
+      case 30: /* errlex */
+/* Line 1398 of yacc.c  */
+#line 53 "jsond_parser.y"
+        { zval_dtor(&(*yyvaluep)); };
+/* Line 1398 of yacc.c  */
+#line 1324 "jsond_parser.tab.c"
+        break;
 
       default:
-	break;
+        break;
     }
 }
 
-/* Prevent warnings from -Wmissing-prototypes.  */
-#ifdef YYPARSE_PARAM
-#if defined __STDC__ || defined __cplusplus
-int yyparse (void *YYPARSE_PARAM);
-#else
-int yyparse ();
-#endif
-#else /* ! YYPARSE_PARAM */
-#if defined __STDC__ || defined __cplusplus
-int yyparse (php_json_parser *parser);
-#else
-int yyparse ();
-#endif
-#endif /* ! YYPARSE_PARAM */
 
 
 
-
-
-/*-------------------------.
-| yyparse or yypush_parse.  |
-`-------------------------*/
+/*----------.
+| yyparse.  |
+`----------*/
 
 #ifdef YYPARSE_PARAM
 #if (defined __STDC__ || defined __C99__FUNC__ \
@@ -1373,8 +1360,31 @@ yyparse (parser)
 /* The lookahead symbol.  */
 int yychar;
 
+
+#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
+/* Suppress an incorrect diagnostic about yylval being uninitialized.  */
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
+    _Pragma ("GCC diagnostic push") \
+    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")\
+    _Pragma ("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END \
+    _Pragma ("GCC diagnostic pop")
+#else
+/* Default value used for initialization, for pacifying older GCCs
+   or non-GCC compilers.  */
+static YYSTYPE yyval_default;
+# define YY_INITIAL_VALUE(Value) = Value
+#endif
+#ifndef YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END
+#endif
+#ifndef YY_INITIAL_VALUE
+# define YY_INITIAL_VALUE(Value) /* Nothing. */
+#endif
+
 /* The semantic value of the lookahead symbol.  */
-YYSTYPE yylval;
+YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
 
     /* Number of syntax errors so far.  */
     int yynerrs;
@@ -1387,7 +1397,7 @@ YYSTYPE yylval;
        `yyss': related to states.
        `yyvs': related to semantic values.
 
-       Refer to the stacks thru separate pointers, to allow yyoverflow
+       Refer to the stacks through separate pointers, to allow yyoverflow
        to reallocate them elsewhere.  */
 
     /* The state stack.  */
@@ -1405,7 +1415,7 @@ YYSTYPE yylval;
   int yyn;
   int yyresult;
   /* Lookahead token as an internal (translated) token number.  */
-  int yytoken;
+  int yytoken = 0;
   /* The variables used to return semantic value and location from the
      action routines.  */
   YYSTYPE yyval;
@@ -1423,9 +1433,8 @@ YYSTYPE yylval;
      Keep to zero when no symbol should be popped.  */
   int yylen = 0;
 
-  yytoken = 0;
-  yyss = yyssa;
-  yyvs = yyvsa;
+  yyssp = yyss = yyssa;
+  yyvsp = yyvs = yyvsa;
   yystacksize = YYINITDEPTH;
 
   YYDPRINTF ((stderr, "Starting parse\n"));
@@ -1434,14 +1443,6 @@ YYSTYPE yylval;
   yyerrstatus = 0;
   yynerrs = 0;
   yychar = YYEMPTY; /* Cause a token to be read.  */
-
-  /* Initialize stack pointers.
-     Waste one element of value and location stack
-     so that they stay on the same level as the state stack.
-     The wasted elements are never initialized.  */
-  yyssp = yyss;
-  yyvsp = yyvs;
-
   goto yysetstate;
 
 /*------------------------------------------------------------.
@@ -1533,7 +1534,7 @@ yybackup:
 
   /* First try to decide what to do without reference to lookahead token.  */
   yyn = yypact[yystate];
-  if (yyn == YYPACT_NINF)
+  if (yypact_value_is_default (yyn))
     goto yydefault;
 
   /* Not known => get a lookahead token if don't already have one.  */
@@ -1564,8 +1565,8 @@ yybackup:
   yyn = yytable[yyn];
   if (yyn <= 0)
     {
-      if (yyn == 0 || yyn == YYTABLE_NINF)
-	goto yyerrlab;
+      if (yytable_value_is_error (yyn))
+        goto yyerrlab;
       yyn = -yyn;
       goto yyreduce;
     }
@@ -1582,7 +1583,9 @@ yybackup:
   yychar = YYEMPTY;
 
   yystate = yyn;
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 
   goto yynewstate;
 
@@ -1619,130 +1622,117 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-
-/* Line 1455 of yacc.c  */
-#line 90 "jsond_parser.y"
-    { (yyval.value) = (yyvsp[(1) - (2)].value); ZVAL_ZVAL(parser->return_value, &(yyvsp[(1) - (2)].value), 0, 0); PHP_JSON_USE((yyvsp[(2) - (2)].value)); YYACCEPT; ;}
+/* Line 1807 of yacc.c  */
+#line 76 "jsond_parser.y"
+    { (yyval) = (yyvsp[(1) - (2)]); ZVAL_ZVAL(parser->return_value, &(yyvsp[(1) - (2)]), 0, 0); ZVAL_NULL(&(yyval)); PHP_JSON_USE((yyvsp[(2) - (2)])); YYACCEPT; }
     break;
 
   case 3:
-
-/* Line 1455 of yacc.c  */
-#line 91 "jsond_parser.y"
-    { PHP_JSON_USE_2((yyval.value), (yyvsp[(1) - (2)].value), (yyvsp[(2) - (2)].value)); ;}
+/* Line 1807 of yacc.c  */
+#line 77 "jsond_parser.y"
+    { PHP_JSON_USE_2((yyval), (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 4:
-
-/* Line 1455 of yacc.c  */
-#line 95 "jsond_parser.y"
-    { PHP_JSON_DEPTH_INC; ;}
+/* Line 1807 of yacc.c  */
+#line 81 "jsond_parser.y"
+    { PHP_JSON_DEPTH_INC; }
     break;
 
   case 5:
-
-/* Line 1455 of yacc.c  */
-#line 95 "jsond_parser.y"
-    { PHP_JSON_DEPTH_DEC; php_json_parser_object_to_zval(parser, &(yyval.value), (yyvsp[(3) - (4)].ht)); ;}
+/* Line 1807 of yacc.c  */
+#line 81 "jsond_parser.y"
+    { PHP_JSON_DEPTH_DEC; php_json_parser_object_to_zval(parser, &(yyval), &(yyvsp[(3) - (4)])); }
     break;
 
   case 6:
-
-/* Line 1455 of yacc.c  */
-#line 99 "jsond_parser.y"
-    { php_json_parser_ht_init(&(yyval.ht), 0); ;}
+/* Line 1807 of yacc.c  */
+#line 85 "jsond_parser.y"
+    { php_json_parser_ht_init(&(yyval), 0); }
     break;
 
   case 8:
-
-/* Line 1455 of yacc.c  */
-#line 104 "jsond_parser.y"
-    { php_json_parser_ht_init(&(yyval.ht), 4); php_json_parser_ht_update(parser, (yyval.ht), &(yyvsp[(1) - (1)].pair).key, &(yyvsp[(1) - (1)].pair).val); ;}
+/* Line 1807 of yacc.c  */
+#line 90 "jsond_parser.y"
+    { php_json_parser_ht_init(&(yyval), 4); php_json_parser_ht_update(parser, &(yyval), &(yyvsp[(1) - (3)]), &(yyvsp[(3) - (3)])); }
     break;
 
   case 9:
-
-/* Line 1455 of yacc.c  */
-#line 105 "jsond_parser.y"
-    { php_json_parser_ht_update(parser, (yyvsp[(1) - (3)].ht), &(yyvsp[(3) - (3)].pair).key, &(yyvsp[(3) - (3)].pair).val); (yyval.ht) = (yyvsp[(1) - (3)].ht); ;}
+/* Line 1807 of yacc.c  */
+#line 91 "jsond_parser.y"
+    { php_json_parser_ht_update(parser, &(yyvsp[(1) - (5)]), &(yyvsp[(3) - (5)]), &(yyvsp[(5) - (5)])); (yyval) = (yyvsp[(1) - (5)]); }
     break;
 
   case 10:
-
-/* Line 1455 of yacc.c  */
-#line 106 "jsond_parser.y"
-    { PHP_JSON_USE_2((yyval.ht), (yyvsp[(1) - (2)].ht), (yyvsp[(2) - (2)].value)); ;}
+/* Line 1807 of yacc.c  */
+#line 92 "jsond_parser.y"
+    { PHP_JSON_USE_2((yyval), (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 11:
-
-/* Line 1455 of yacc.c  */
-#line 110 "jsond_parser.y"
-    { (yyval.pair).key = (yyvsp[(1) - (3)].value); (yyval.pair).val = (yyvsp[(3) - (3)].value); ;}
+/* Line 1807 of yacc.c  */
+#line 93 "jsond_parser.y"
+    { PHP_JSON_USE_2((yyval), (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 12:
-
-/* Line 1455 of yacc.c  */
-#line 111 "jsond_parser.y"
-    { PHP_JSON_USE_2((yyval.pair), (yyvsp[(1) - (2)].value), (yyvsp[(2) - (2)].value)); ;}
+/* Line 1807 of yacc.c  */
+#line 97 "jsond_parser.y"
+    { PHP_JSON_DEPTH_INC; }
     break;
 
   case 13:
-
-/* Line 1455 of yacc.c  */
-#line 115 "jsond_parser.y"
-    { PHP_JSON_DEPTH_INC; ;}
+/* Line 1807 of yacc.c  */
+#line 97 "jsond_parser.y"
+    { PHP_JSON_DEPTH_DEC; php_json_parser_array_to_zval(&(yyval), &(yyvsp[(3) - (4)])); }
     break;
 
   case 14:
-
-/* Line 1455 of yacc.c  */
-#line 115 "jsond_parser.y"
-    { PHP_JSON_DEPTH_DEC; php_json_parser_array_to_zval(&(yyval.value), (yyvsp[(3) - (4)].ht)); ;}
+/* Line 1807 of yacc.c  */
+#line 101 "jsond_parser.y"
+    { php_json_parser_ht_init(&(yyval), 0); }
     break;
 
-  case 15:
-
-/* Line 1455 of yacc.c  */
-#line 119 "jsond_parser.y"
-    { php_json_parser_ht_init(&(yyval.ht), 0); ;}
+  case 16:
+/* Line 1807 of yacc.c  */
+#line 106 "jsond_parser.y"
+    { php_json_parser_ht_init(&(yyval), 4); php_json_parser_ht_append(&(yyval), &(yyvsp[(1) - (1)])); }
     break;
 
   case 17:
-
-/* Line 1455 of yacc.c  */
-#line 124 "jsond_parser.y"
-    { php_json_parser_ht_init(&(yyval.ht), 4); php_json_parser_ht_append((yyval.ht), &(yyvsp[(1) - (1)].value)); ;}
+/* Line 1807 of yacc.c  */
+#line 107 "jsond_parser.y"
+    { php_json_parser_ht_append(&(yyvsp[(1) - (3)]), &(yyvsp[(3) - (3)])); (yyval) = (yyvsp[(1) - (3)]); }
     break;
 
   case 18:
-
-/* Line 1455 of yacc.c  */
-#line 125 "jsond_parser.y"
-    { php_json_parser_ht_append((yyvsp[(1) - (3)].ht), &(yyvsp[(3) - (3)].value)); (yyval.ht) = (yyvsp[(1) - (3)].ht); ;}
+/* Line 1807 of yacc.c  */
+#line 108 "jsond_parser.y"
+    { PHP_JSON_USE_2((yyval), (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
-  case 19:
-
-/* Line 1455 of yacc.c  */
-#line 126 "jsond_parser.y"
-    { PHP_JSON_USE_2((yyval.ht), (yyvsp[(1) - (2)].ht), (yyvsp[(2) - (2)].value)); ;}
-    break;
-
-  case 32:
-
-/* Line 1455 of yacc.c  */
-#line 148 "jsond_parser.y"
-    { PHP_JSON_USE_1((yyval.value), (yyvsp[(1) - (1)].value)); YYERROR; ;}
+  case 31:
+/* Line 1807 of yacc.c  */
+#line 130 "jsond_parser.y"
+    { PHP_JSON_USE_1((yyval), (yyvsp[(1) - (1)])); YYERROR;}
     break;
 
 
-
-/* Line 1455 of yacc.c  */
-#line 1744 "jsond_parser.tab.c"
+/* Line 1807 of yacc.c  */
+#line 1723 "jsond_parser.tab.c"
       default: break;
     }
+  /* User semantic actions sometimes alter yychar, and that requires
+     that yytoken be updated with the new translation.  We take the
+     approach of translating immediately before every use of yytoken.
+     One alternative is translating here after every semantic action,
+     but that translation would be missed if the semantic action invokes
+     YYABORT, YYACCEPT, or YYERROR immediately after altering yychar or
+     if it invokes YYBACKUP.  In the case of YYABORT or YYACCEPT, an
+     incorrect destructor might then be invoked immediately.  In the
+     case of YYERROR or YYBACKUP, subsequent parser actions might lead
+     to an incorrect destructor call or verbose syntax error message
+     before the lookahead is translated.  */
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
 
   YYPOPSTACK (yylen);
@@ -1770,6 +1760,10 @@ yyreduce:
 | yyerrlab -- here on detecting error |
 `------------------------------------*/
 yyerrlab:
+  /* Make sure we have latest lookahead translation.  See comments at
+     user semantic actions for why this is necessary.  */
+  yytoken = yychar == YYEMPTY ? YYEMPTY : YYTRANSLATE (yychar);
+
   /* If not already recovering from an error, report this error.  */
   if (!yyerrstatus)
     {
@@ -1777,37 +1771,36 @@ yyerrlab:
 #if ! YYERROR_VERBOSE
       yyerror (parser, YY_("syntax error"));
 #else
+# define YYSYNTAX_ERROR yysyntax_error (&yymsg_alloc, &yymsg, \
+                                        yyssp, yytoken)
       {
-	YYSIZE_T yysize = yysyntax_error (0, yystate, yychar);
-	if (yymsg_alloc < yysize && yymsg_alloc < YYSTACK_ALLOC_MAXIMUM)
-	  {
-	    YYSIZE_T yyalloc = 2 * yysize;
-	    if (! (yysize <= yyalloc && yyalloc <= YYSTACK_ALLOC_MAXIMUM))
-	      yyalloc = YYSTACK_ALLOC_MAXIMUM;
-	    if (yymsg != yymsgbuf)
-	      YYSTACK_FREE (yymsg);
-	    yymsg = (char *) YYSTACK_ALLOC (yyalloc);
-	    if (yymsg)
-	      yymsg_alloc = yyalloc;
-	    else
-	      {
-		yymsg = yymsgbuf;
-		yymsg_alloc = sizeof yymsgbuf;
-	      }
-	  }
-
-	if (0 < yysize && yysize <= yymsg_alloc)
-	  {
-	    (void) yysyntax_error (yymsg, yystate, yychar);
-	    yyerror (parser, yymsg);
-	  }
-	else
-	  {
-	    yyerror (parser, YY_("syntax error"));
-	    if (yysize != 0)
-	      goto yyexhaustedlab;
-	  }
+        char const *yymsgp = YY_("syntax error");
+        int yysyntax_error_status;
+        yysyntax_error_status = YYSYNTAX_ERROR;
+        if (yysyntax_error_status == 0)
+          yymsgp = yymsg;
+        else if (yysyntax_error_status == 1)
+          {
+            if (yymsg != yymsgbuf)
+              YYSTACK_FREE (yymsg);
+            yymsg = (char *) YYSTACK_ALLOC (yymsg_alloc);
+            if (!yymsg)
+              {
+                yymsg = yymsgbuf;
+                yymsg_alloc = sizeof yymsgbuf;
+                yysyntax_error_status = 2;
+              }
+            else
+              {
+                yysyntax_error_status = YYSYNTAX_ERROR;
+                yymsgp = yymsg;
+              }
+          }
+        yyerror (parser, yymsgp);
+        if (yysyntax_error_status == 2)
+          goto yyexhaustedlab;
       }
+# undef YYSYNTAX_ERROR
 #endif
     }
 
@@ -1866,7 +1859,7 @@ yyerrlab1:
   for (;;)
     {
       yyn = yypact[yystate];
-      if (yyn != YYPACT_NINF)
+      if (!yypact_value_is_default (yyn))
 	{
 	  yyn += YYTERROR;
 	  if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
@@ -1889,7 +1882,9 @@ yyerrlab1:
       YY_STACK_PRINT (yyss, yyssp);
     }
 
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 
 
   /* Shift the error token.  */
@@ -1913,7 +1908,7 @@ yyabortlab:
   yyresult = 1;
   goto yyreturn;
 
-#if !defined(yyoverflow) || YYERROR_VERBOSE
+#if !defined yyoverflow || YYERROR_VERBOSE
 /*-------------------------------------------------.
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
@@ -1925,8 +1920,13 @@ yyexhaustedlab:
 
 yyreturn:
   if (yychar != YYEMPTY)
-     yydestruct ("Cleanup: discarding lookahead",
-		 yytoken, &yylval, parser);
+    {
+      /* Make sure we have latest lookahead translation.  See comments at
+         user semantic actions for why this is necessary.  */
+      yytoken = YYTRANSLATE (yychar);
+      yydestruct ("Cleanup: discarding lookahead",
+                  yytoken, &yylval, parser);
+    }
   /* Do not reclaim the symbols of the rule which action triggered
      this YYABORT or YYACCEPT.  */
   YYPOPSTACK (yylen);
@@ -1950,9 +1950,8 @@ yyreturn:
 }
 
 
-
-/* Line 1675 of yacc.c  */
-#line 151 "jsond_parser.y"
+/* Line 2055 of yacc.c  */
+#line 133 "jsond_parser.y"
  /* Functions */
 
 void php_json_parser_init(php_json_parser *parser, zval *return_value, char *str, int str_len, long options, long max_depth TSRMLS_DC)
@@ -1969,30 +1968,29 @@ php_json_error_code php_json_parser_error_code(php_json_parser *parser)
 	return parser->scanner.errcode;
 }
 
-void php_json_parser_object_to_zval(php_json_parser *parser, zval *zv, HashTable *ht)
+void php_json_parser_object_to_zval(php_json_parser *parser, zval *zv, zval *ht)
 {
 	TSRMLS_FETCH_FROM_CTX(parser->zts_ctx);
 	
 	if (parser->scanner.options & PHP_JSON_OBJECT_AS_ARRAY) {
 		php_json_parser_array_to_zval(zv, ht);
 	} else {
-		object_and_properties_init(zv, zend_standard_class_def, ht);
+		object_and_properties_init(zv, zend_standard_class_def, Z_ARRVAL_P(ht));
 	}
 }
 
-void php_json_parser_array_to_zval(zval *zv, HashTable *ht)
+void php_json_parser_array_to_zval(zval *zv, zval *ht)
 {
+	Z_ARRVAL_P(zv) = Z_ARRVAL_P(ht);
 	Z_TYPE_P(zv) = IS_ARRAY;
-	Z_ARRVAL_P(zv) = ht;
 }
 
-void php_json_parser_ht_init(HashTable **ht, uint nSize)
+void php_json_parser_ht_init(zval *ht, uint nSize)
 {
-	ALLOC_HASHTABLE(*ht);
-	zend_hash_init(*ht, nSize, NULL, ZVAL_PTR_DTOR, 0);
+	array_init(ht);
 }
 
-void php_json_parser_ht_update(php_json_parser *parser, HashTable *ht, zval *zkey, zval *zvalue)
+void php_json_parser_ht_update(php_json_parser *parser, zval *ht, zval *zkey, zval *zvalue)
 {
 	zval *data;
 	char *key = Z_STRVAL_P(zkey);
@@ -2005,22 +2003,22 @@ void php_json_parser_ht_update(php_json_parser *parser, HashTable *ht, zval *zke
 		key_len = sizeof("_empty_");
 	}
 
-	zend_symtable_update(ht, key, key_len, &data, sizeof(zval *), NULL);
+	zend_symtable_update(Z_ARRVAL_P(ht), key, key_len, &data, sizeof(zval *), NULL);
 	zval_dtor(zkey);
 }
 
-void php_json_parser_ht_append(HashTable *ht, zval *zvalue)
+void php_json_parser_ht_append(zval *ht, zval *zvalue)
 {
 	zval *data;
 	MAKE_STD_ZVAL(data);
 	ZVAL_ZVAL(data, zvalue, 0, 0);
-	zend_hash_next_index_insert(ht, &data, sizeof(zval *), NULL);
+	zend_hash_next_index_insert(Z_ARRVAL_P(ht), &data, sizeof(zval *), NULL);
 }
 	
-int php_json_yylex(union YYSTYPE *value, php_json_parser *parser)
+int php_json_yylex(YYSTYPE *value, php_json_parser *parser)
 {
 	int token = php_json_scan(&parser->scanner);
-	value->value = parser->scanner.value;
+	*value = parser->scanner.value;
 	return token;
 }
 
@@ -2028,4 +2026,3 @@ void php_json_yyerror(php_json_parser *parser, char const *msg)
 {
 	parser->scanner.errcode = PHP_JSON_ERROR_SYNTAX;
 }
-
