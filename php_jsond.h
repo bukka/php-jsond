@@ -58,6 +58,10 @@ extern zend_module_entry jsond_module_entry;
 #define PHP_JSOND_IDENT(jname) jsond_ ## jname
 #endif
 
+#ifndef HASH_KEY_NON_EXISTENT
+#define HASH_KEY_NON_EXISTENT HASH_KEY_NON_EXISTANT
+#endif
+
 #define PHP_JSOND_FUNCTION(jname) PHP_FUNCTION(PHP_JSOND_IDENT(jname))
 #define PHP_JSOND_FE(jname, arginfo) PHP_FE(PHP_JSOND_IDENT(jname), arginfo)
 #define PHP_JSOND_REGISTER_LONG_CONSTANT(name, lval, flags) REGISTER_LONG_CONSTANT(PHP_JSOND_CONSTANT name, lval, flags)
