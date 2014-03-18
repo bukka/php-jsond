@@ -163,8 +163,8 @@ std:
 	}
 	<JS>INT                  {
 		zend_bool bigint = 0, negative = s->token[0] == '-';
-		ptrdiff_t digits = s->cursor - s->token - negative;
-		ptrdiff_t max_digits = MAX_LENGTH_OF_LONG - 1;
+		size_t digits = (size_t) (s->cursor - s->token - negative);
+		size_t max_digits = MAX_LENGTH_OF_LONG - 1;
 		if (digits >= max_digits) {
 			if (digits == max_digits) {
 				int cmp = strncmp((char *) (s->token + negative), long_min_digits, max_digits);
