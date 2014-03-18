@@ -21,6 +21,10 @@
 #include "php_jsond_scanner_defs.h"
 #include "jsond_parser.tab.h"
 
+#ifndef PHP_WIN32
+# include <stddef.h>
+#endif
+
 #define	YYCTYPE     php_json_ctype
 #define	YYCURSOR    s->cursor
 #define	YYLIMIT     s->limit
