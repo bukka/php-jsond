@@ -68,7 +68,7 @@ ZEND_END_ARG_INFO()
 /* }}} */
 
 /* {{{ json_functions[] */
-static const zend_function_entry jsond_functions[] = {
+static zend_function_entry jsond_functions[] = {
 	PHP_JSOND_FE(encode, arginfo_jsond_encode)
 	PHP_JSOND_FE(decode, arginfo_jsond_decode)
 	PHP_JSOND_FE(last_error, arginfo_jsond_last_error)
@@ -82,7 +82,7 @@ ZEND_BEGIN_ARG_INFO(jsond_serialize_arginfo, 0)
 	/* No arguments */
 ZEND_END_ARG_INFO();
 
-static const zend_function_entry jsond_serializable_interface[] = {
+static zend_function_entry jsond_serializable_interface[] = {
 	PHP_ABSTRACT_ME(PHP_JSOND_SERIALIZABLE_INTERFACE, jsonSerialize, jsond_serialize_arginfo)
 	PHP_JSOND_FE_END
 };
