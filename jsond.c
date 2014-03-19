@@ -362,6 +362,113 @@ static void json_encode_array(smart_str *buf, zval **val, int options TSRMLS_DC)
 }
 /* }}} */
 
+#define MB_FAILURE(pos, advance) do { \
+	*cursor = pos + (advance); \
+	*status = FAILURE; \
+	return 0; \
+} while (0)
+
+#define CHECK_LEN(pos, chars_need) ((str_len - (pos)) >= (chars_need))
+
+/* valid as single byte character or leading byte */
+#define utf8_lead(c)  ((c) < 0x80 || ((c) >= 0xC2 && (c) <= 0xF4))
+/* whether it's actually valid depends on other stuff;
+ * this macro cannot check for non-shortest forms, surrogates or
+ * code points above 0x10FFFF */
+#define utf8_trail(c) ((c) >= 0x80 && (c) <= 0xBF)
+
+/* {{{ json_next_utf8_char
+ * Copied from ext/standard/html.c for compatibility with PHP 5.3 and 5.2 */
+static unsigned int json_next_utf8_char(
+		const unsigned char *str,
+		size_t str_len,
+		size_t *cursor,
+		int *status)
+{
+	size_t pos = *cursor;
+	unsigned int this_char = 0;
+
+	*status = SUCCESS;
+	assert(pos <= str_len);
+
+	if (!CHECK_LEN(pos, 1))
+		MB_FAILURE(pos, 1);
+
+	{
+		/* We'll follow strategy 2. from section 3.6.1 of UTR #36:
+		 * "In a reported illegal byte sequence, do not include any
+		 *  non-initial byte that encodes a valid character or is a leading
+		 *  byte for a valid sequence." */
+		unsigned char c;
+		c = str[pos];
+		if (c < 0x80) {
+			this_char = c;
+			pos++;
+		} else if (c < 0xc2) {
+			MB_FAILURE(pos, 1);
+		} else if (c < 0xe0) {
+			if (!CHECK_LEN(pos, 2))
+				MB_FAILURE(pos, 1);
+
+			if (!utf8_trail(str[pos + 1])) {
+				MB_FAILURE(pos, utf8_lead(str[pos + 1]) ? 1 : 2);
+			}
+			this_char = ((c & 0x1f) << 6) | (str[pos + 1] & 0x3f);
+			if (this_char < 0x80) { /* non-shortest form */
+				MB_FAILURE(pos, 2);
+			}
+			pos += 2;
+		} else if (c < 0xf0) {
+			size_t avail = str_len - pos;
+
+			if (avail < 3 ||
+					!utf8_trail(str[pos + 1]) || !utf8_trail(str[pos + 2])) {
+				if (avail < 2 || utf8_lead(str[pos + 1]))
+					MB_FAILURE(pos, 1);
+				else if (avail < 3 || utf8_lead(str[pos + 2]))
+					MB_FAILURE(pos, 2);
+				else
+					MB_FAILURE(pos, 3);
+			}
+
+			this_char = ((c & 0x0f) << 12) | ((str[pos + 1] & 0x3f) << 6) | (str[pos + 2] & 0x3f);
+			if (this_char < 0x800) { /* non-shortest form */
+				MB_FAILURE(pos, 3);
+			} else if (this_char >= 0xd800 && this_char <= 0xdfff) { /* surrogate */
+				MB_FAILURE(pos, 3);
+			}
+			pos += 3;
+		} else if (c < 0xf5) {
+			size_t avail = str_len - pos;
+
+			if (avail < 4 ||
+					!utf8_trail(str[pos + 1]) || !utf8_trail(str[pos + 2]) ||
+					!utf8_trail(str[pos + 3])) {
+				if (avail < 2 || utf8_lead(str[pos + 1]))
+					MB_FAILURE(pos, 1);
+				else if (avail < 3 || utf8_lead(str[pos + 2]))
+					MB_FAILURE(pos, 2);
+				else if (avail < 4 || utf8_lead(str[pos + 3]))
+					MB_FAILURE(pos, 3);
+				else
+					MB_FAILURE(pos, 4);
+			}
+
+			this_char = ((c & 0x07) << 18) | ((str[pos + 1] & 0x3f) << 12) | ((str[pos + 2] & 0x3f) << 6) | (str[pos + 3] & 0x3f);
+			if (this_char < 0x10000 || this_char > 0x10FFFF) { /* non-shortest form or outside range */
+				MB_FAILURE(pos, 4);
+			}
+			pos += 4;
+		} else {
+			MB_FAILURE(pos, 1);
+		}
+	}
+
+	*cursor = pos;
+  	return this_char;
+}
+/* }}} */
+
 static int json_utf8_to_utf16(unsigned short *utf16, char utf8[], int len) /* {{{ */
 {
 	size_t pos = 0, us;
@@ -370,7 +477,7 @@ static int json_utf8_to_utf16(unsigned short *utf16, char utf8[], int len) /* {{
 	if (utf16) {
 		/* really convert the utf8 string */
 		for (j=0 ; pos < len ; j++) {
-			us = php_next_utf8_char((const unsigned char *)utf8, len, &pos, &status);
+			us = json_next_utf8_char((const unsigned char *)utf8, len, &pos, &status);
 			if (status != SUCCESS) {
 				return -1;
 			}
@@ -386,7 +493,7 @@ static int json_utf8_to_utf16(unsigned short *utf16, char utf8[], int len) /* {{
 	} else {
 		/* Only check if utf8 string is valid, and compute utf16 lenght */
 		for (j=0 ; pos < len ; j++) {
-			us = php_next_utf8_char((const unsigned char *)utf8, len, &pos, &status);
+			us = json_next_utf8_char((const unsigned char *)utf8, len, &pos, &status);
 			if (status != SUCCESS) {
 				return -1;
 			}
