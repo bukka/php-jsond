@@ -1,7 +1,12 @@
 --TEST--
 jsond_encode() & endless loop - 2
 --SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+<?php
+if (!extension_loaded("jsond"))
+	print "skip";
+if (PHP_VERSION_ID < 50400)
+	print "skip Only for 5.4+";
+?>
 --FILE--
 <?php
 
