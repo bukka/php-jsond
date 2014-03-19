@@ -164,10 +164,9 @@ std:
 	<JS>INT                  {
 		zend_bool bigint = 0, negative = s->token[0] == '-';
 		size_t digits = (size_t) (s->cursor - s->token - negative);
-		size_t max_digits = MAX_LENGTH_OF_LONG - 1;
-		if (digits >= max_digits) {
-			if (digits == max_digits) {
-				int cmp = strncmp((char *) (s->token + negative), long_min_digits, max_digits);
+		if (digits >= PHP_JSON_INT_MAX_LENGTH) {
+			if (digits == PHP_JSON_INT_MAX_LENGTH) {
+				int cmp = strncmp((char *) (s->token + negative), PHP_JSON_INT_MAX_DIGITS, PHP_JSON_INT_MAX_LENGTH);
 				if (!(cmp < 0 || (cmp == 0 && negative))) {
 					bigint = 1;
 				}

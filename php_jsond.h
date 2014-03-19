@@ -79,6 +79,17 @@ extern zend_module_entry jsond_module_entry;
 	} while (0)
 #endif
 
+/* long limits */
+#if SIZEOF_LONG == 4
+#define PHP_JSON_INT_MAX_LENGTH 10
+#define PHP_JSON_INT_MAX_DIGITS "2147483648"
+#elif SIZEOF_LONG == 8
+#define PHP_JSON_INT_MAX_LENGTH 19
+#define PHP_JSON_INT_MAX_DIGITS "9223372036854775808"
+#else
+#error "Unknown SIZEOF_LONG"
+#endif
+
 typedef enum {
 	PHP_JSON_ERROR_NONE = 0,
     PHP_JSON_ERROR_DEPTH,
