@@ -70,6 +70,16 @@ extern zend_module_entry jsond_module_entry;
 #define HASH_KEY_NON_EXISTENT HASH_KEY_NON_EXISTANT
 #endif
 
+#ifndef INIT_PZVAL_COPY
+#define INIT_PZVAL_COPY(z, v)           \
+	do {                                \
+		(z)->value = (v)->value;        \
+		Z_TYPE_P(z) = Z_TYPE_P(v);      \
+		Z_SET_REFCOUNT_P(z, 1);         \
+		Z_UNSET_ISREF_P(z);             \
+	} while (0)
+#endif
+
 typedef enum {
 	PHP_JSON_ERROR_NONE = 0,
     PHP_JSON_ERROR_DEPTH,
