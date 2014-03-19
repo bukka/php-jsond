@@ -850,7 +850,7 @@ static PHP_JSOND_FUNCTION(decode)
    Returns the error code of the last json_encode() or json_decode() call. */
 static PHP_JSOND_FUNCTION(last_error)
 {
-	if (zend_parse_parameters_none() == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "") == FAILURE) {
 		return;
 	}
 
@@ -874,7 +874,7 @@ static PHP_JSOND_FUNCTION(last_error)
    Returns the error string of the last json_encode() or json_decode() call. */
 static PHP_JSOND_FUNCTION(last_error_msg)
 {
-	if (zend_parse_parameters_none() == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "") == FAILURE) {
 		return;
 	}
 
