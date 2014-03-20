@@ -34,6 +34,10 @@ $conf = array(
 	),
 	array(
 		'role' => 'src',
+		'pattern' => 'jsond*.h',
+	),
+	array(
+		'role' => 'src',
 		'pattern' => 'jsond*.c',
 	),
 	array(
