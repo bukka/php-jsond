@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0"
+         xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
+         xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+                             http://pear.php.net/dtd/tasks-1.0.xsd
+                             http://pear.php.net/dtd/package-2.0
+                             http://pear.php.net/dtd/package-2.0.xsd">
+ <name>jsond</name>
+ <channel>pecl.php.net</channel>
+ <summary>JavaScript Object Notation</summary>
+ <description>This is a drop-in alternative to the standard PHP JSON extension.</description>
+ <lead>
+  <name>Jakub Zelenka</name>
+  <user>bukka</user>
+  <email>bukka@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2014-03-20</date>
+ <version>
+  <release>1.3.0</release>
+  <api>1.3.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.php.net/license">PHP 3.01</license>
+ <notes><![CDATA[
+ * New JSON parser implemented using re2c and bison
+ ]]></notes>
+ <contents>
+  <dir name="/">
+   <file role="doc" name="CREDITS"/>
+   <file role="doc" name="LICENSE"/>
+   <file role="doc" name="README.md"/>
+   <file role="doc" name="UPGRADE.md"/>
+   <file role="src" name="config.m4"/>
+   <file role="src" name="config.w32"/>
+   <file role="src" name="Makefile.frag"/>
+   <file role="src" name="php_jsond.h"/>
+   <file role="src" name="php_jsond_parser.h"/>
+   <file role="src" name="php_jsond_scanner.h"/>
+   <file role="src" name="php_jsond_scanner_defs.h"/>
+   <file role="src" name="jsond_parser.tab.h"/>
+   <file role="src" name="jsond.c"/>
+   <file role="src" name="jsond_parser.tab.c"/>
+   <file role="src" name="jsond_scanner.c"/>
+   <file role="src" name="jsond_parser.y"/>
+   <file role="src" name="jsond_scanner.re"/>
+   <dir name="tests">
+    <file role="test" name="001.phpt"/>
+    <file role="test" name="002.phpt"/>
+    <file role="test" name="003.phpt"/>
+    <file role="test" name="004.phpt"/>
+    <file role="test" name="005.phpt"/>
+    <file role="test" name="006.phpt"/>
+    <file role="test" name="007.phpt"/>
+    <file role="test" name="008.phpt"/>
+    <file role="test" name="bug40503.phpt"/>
+    <file role="test" name="bug41034.phpt"/>
+    <file role="test" name="bug41067.phpt"/>
+    <file role="test" name="bug41403.phpt"/>
+    <file role="test" name="bug41504.phpt"/>
+    <file role="test" name="bug41567.phpt"/>
+    <file role="test" name="bug42090.phpt"/>
+    <file role="test" name="bug42785.phpt"/>
+    <file role="test" name="bug43941.phpt"/>
+    <file role="test" name="bug45791.phpt"/>
+    <file role="test" name="bug46215.phpt"/>
+    <file role="test" name="bug46944.phpt"/>
+    <file role="test" name="bug47644.phpt"/>
+    <file role="test" name="bug53946.phpt"/>
+    <file role="test" name="bug54058.phpt"/>
+    <file role="test" name="bug54484.phpt"/>
+    <file role="test" name="bug55543.phpt"/>
+    <file role="test" name="bug61537.phpt"/>
+    <file role="test" name="bug61978.phpt"/>
+    <file role="test" name="bug62369.phpt"/>
+    <file role="test" name="bug63737.phpt"/>
+    <file role="test" name="bug64874_part1.phpt"/>
+    <file role="test" name="bug64874_part2.phpt"/>
+    <file role="test" name="fail001.phpt"/>
+    <file role="test" name="inf_nan_error.phpt"/>
+    <file role="test" name="json_decode_basic.phpt"/>
+    <file role="test" name="json_decode_error.phpt"/>
+    <file role="test" name="json_encode_basic.phpt"/>
+    <file role="test" name="json_encode_basic_utf8.phpt"/>
+    <file role="test" name="json_encode_error.phpt"/>
+    <file role="test" name="json_encode_numeric.phpt"/>
+    <file role="test" name="json_encode_pretty_print.phpt"/>
+    <file role="test" name="json_encode_unescaped_slashes.phpt"/>
+    <file role="test" name="pass001.1.phpt"/>
+    <file role="test" name="pass001.1_64bit.phpt"/>
+    <file role="test" name="pass001.phpt"/>
+    <file role="test" name="pass002.phpt"/>
+    <file role="test" name="pass003.phpt"/>
+    <file role="test" name="serialize.phpt"/>
+    <file role="test" name="unsupported_type_error.phpt"/>
+   </dir>
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2.6</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0a1</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <providesextension>jsond</providesextension>
+ <extsrcrelease/>
+ <changelog>
+ </changelog>
+</package>

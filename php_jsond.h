@@ -22,7 +22,7 @@
 #ifndef PHP_JSOND_H
 #define PHP_JSOND_H
 
-#define PHP_JSOND_VERSION "0.1.0"
+#define PHP_JSOND_VERSION "1.3.0"
 #include "ext/standard/php_smart_str.h"
 
 extern zend_module_entry jsond_module_entry;
