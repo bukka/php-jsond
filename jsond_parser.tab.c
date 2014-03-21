@@ -65,8 +65,6 @@
 
 /* "%code top" blocks.  */
 
-/* Line 171 of yacc.c  */
-#line 1 "jsond_parser.y"
 
 /*
   +----------------------------------------------------------------------+
@@ -103,8 +101,6 @@ int json_yydebug = 1;
 
 
 
-/* Line 171 of yacc.c  */
-#line 108 "jsond_parser.tab.c"
 /* Substitute the variable and function names.  */
 #define yyparse         php_json_yyparse
 #define yylex           php_json_yylex
@@ -118,8 +114,6 @@ int json_yydebug = 1;
 /* Copy the first part of user declarations.  */
 
 
-/* Line 189 of yacc.c  */
-#line 123 "jsond_parser.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -157,6 +151,17 @@ int json_yydebug = 1;
      PHP_JSON_T_ERROR = 266
    };
 #endif
+/* Tokens.  */
+#define PHP_JSON_T_NUL 258
+#define PHP_JSON_T_TRUE 259
+#define PHP_JSON_T_FALSE 260
+#define PHP_JSON_T_INT 261
+#define PHP_JSON_T_DOUBLE 262
+#define PHP_JSON_T_STRING 263
+#define PHP_JSON_T_ESTRING 264
+#define PHP_JSON_T_EOI 265
+#define PHP_JSON_T_ERROR 266
+
 
 
 
@@ -164,8 +169,6 @@ int json_yydebug = 1;
 typedef union YYSTYPE
 {
 
-/* Line 214 of yacc.c  */
-#line 41 "jsond_parser.y"
 
 	zval value;
 	struct {
@@ -176,8 +179,6 @@ typedef union YYSTYPE
 
 
 
-/* Line 214 of yacc.c  */
-#line 181 "jsond_parser.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -188,12 +189,8 @@ typedef union YYSTYPE
 /* Copy the second part of user declarations.  */
 
 
-/* Line 264 of yacc.c  */
-#line 193 "jsond_parser.tab.c"
 /* Unqualified %code blocks.  */
 
-/* Line 265 of yacc.c  */
-#line 69 "jsond_parser.y"
 
 int php_json_yylex(union YYSTYPE *value, php_json_parser *parser);
 void php_json_yyerror(php_json_parser *parser, char const *msg);
@@ -213,8 +210,6 @@ void php_json_parser_ht_append(HashTable *ht, zval *zvalue);
 
 
 
-/* Line 265 of yacc.c  */
-#line 218 "jsond_parser.tab.c"
 
 #ifdef short
 # undef short
@@ -1143,183 +1138,103 @@ yydestruct (yymsg, yytype, yyvaluep, parser)
     {
       case 3: /* "PHP_JSON_T_NUL" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1152 "jsond_parser.tab.c"
 	break;
       case 4: /* "PHP_JSON_T_TRUE" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1161 "jsond_parser.tab.c"
 	break;
       case 5: /* "PHP_JSON_T_FALSE" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1170 "jsond_parser.tab.c"
 	break;
       case 6: /* "PHP_JSON_T_INT" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1179 "jsond_parser.tab.c"
 	break;
       case 7: /* "PHP_JSON_T_DOUBLE" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1188 "jsond_parser.tab.c"
 	break;
       case 8: /* "PHP_JSON_T_STRING" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1197 "jsond_parser.tab.c"
 	break;
       case 9: /* "PHP_JSON_T_ESTRING" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1206 "jsond_parser.tab.c"
 	break;
       case 10: /* "PHP_JSON_T_EOI" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1215 "jsond_parser.tab.c"
 	break;
       case 11: /* "PHP_JSON_T_ERROR" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1224 "jsond_parser.tab.c"
 	break;
       case 19: /* "start" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1233 "jsond_parser.tab.c"
 	break;
       case 20: /* "object" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1242 "jsond_parser.tab.c"
 	break;
       case 23: /* "members" */
 
-/* Line 1000 of yacc.c  */
-#line 66 "jsond_parser.y"
 	{ zend_hash_destroy((yyvaluep->ht)); FREE_HASHTABLE((yyvaluep->ht)); };
 
-/* Line 1000 of yacc.c  */
-#line 1251 "jsond_parser.tab.c"
 	break;
       case 24: /* "member" */
 
-/* Line 1000 of yacc.c  */
-#line 66 "jsond_parser.y"
 	{ zend_hash_destroy((yyvaluep->ht)); FREE_HASHTABLE((yyvaluep->ht)); };
 
-/* Line 1000 of yacc.c  */
-#line 1260 "jsond_parser.tab.c"
 	break;
       case 25: /* "pair" */
 
-/* Line 1000 of yacc.c  */
-#line 67 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->pair).key); zval_dtor(&(yyvaluep->pair).val); };
 
-/* Line 1000 of yacc.c  */
-#line 1269 "jsond_parser.tab.c"
 	break;
       case 26: /* "array" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1278 "jsond_parser.tab.c"
 	break;
       case 29: /* "elements" */
 
-/* Line 1000 of yacc.c  */
-#line 66 "jsond_parser.y"
 	{ zend_hash_destroy((yyvaluep->ht)); FREE_HASHTABLE((yyvaluep->ht)); };
 
-/* Line 1000 of yacc.c  */
-#line 1287 "jsond_parser.tab.c"
 	break;
       case 30: /* "element" */
 
-/* Line 1000 of yacc.c  */
-#line 66 "jsond_parser.y"
 	{ zend_hash_destroy((yyvaluep->ht)); FREE_HASHTABLE((yyvaluep->ht)); };
 
-/* Line 1000 of yacc.c  */
-#line 1296 "jsond_parser.tab.c"
 	break;
       case 31: /* "key" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1305 "jsond_parser.tab.c"
 	break;
       case 32: /* "value" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1314 "jsond_parser.tab.c"
 	break;
       case 33: /* "errlex" */
 
-/* Line 1000 of yacc.c  */
-#line 65 "jsond_parser.y"
 	{ zval_dtor(&(yyvaluep->value)); };
 
-/* Line 1000 of yacc.c  */
-#line 1323 "jsond_parser.tab.c"
 	break;
 
       default:
@@ -1622,141 +1537,101 @@ yyreduce:
     {
         case 2:
 
-/* Line 1455 of yacc.c  */
-#line 90 "jsond_parser.y"
-    { (yyval.value) = (yyvsp[(1) - (2)].value); INIT_PZVAL_COPY(parser->return_value, &(yyvsp[(1) - (2)].value)); PHP_JSON_USE((yyvsp[(2) - (2)].value)); YYACCEPT; ;}
+    { (yyval.value) = (yyvsp[(1) - (2)].value); INIT_PZVAL_COPY(parser->return_value, &(yyvsp[(1) - (2)].value)); PHP_JSON_USE((yyvsp[(2) - (2)].value)); YYACCEPT; }
     break;
 
   case 3:
 
-/* Line 1455 of yacc.c  */
-#line 91 "jsond_parser.y"
-    { PHP_JSON_USE_2((yyval.value), (yyvsp[(1) - (2)].value), (yyvsp[(2) - (2)].value)); ;}
+    { PHP_JSON_USE_2((yyval.value), (yyvsp[(1) - (2)].value), (yyvsp[(2) - (2)].value)); }
     break;
 
   case 4:
 
-/* Line 1455 of yacc.c  */
-#line 95 "jsond_parser.y"
-    { PHP_JSON_DEPTH_INC; ;}
+    { PHP_JSON_DEPTH_INC; }
     break;
 
   case 5:
 
-/* Line 1455 of yacc.c  */
-#line 95 "jsond_parser.y"
-    { PHP_JSON_DEPTH_DEC; php_json_parser_object_to_zval(parser, &(yyval.value), (yyvsp[(3) - (4)].ht)); ;}
+    { PHP_JSON_DEPTH_DEC; php_json_parser_object_to_zval(parser, &(yyval.value), (yyvsp[(3) - (4)].ht)); }
     break;
 
   case 7:
 
-/* Line 1455 of yacc.c  */
-#line 100 "jsond_parser.y"
-    { parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH; YYERROR; ;}
+    { parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH; YYERROR; }
     break;
 
   case 8:
 
-/* Line 1455 of yacc.c  */
-#line 104 "jsond_parser.y"
-    { php_json_parser_ht_init(&(yyval.ht), 0); ;}
+    { php_json_parser_ht_init(&(yyval.ht), 0); }
     break;
 
   case 10:
 
-/* Line 1455 of yacc.c  */
-#line 109 "jsond_parser.y"
-    { php_json_parser_ht_init(&(yyval.ht), 4); php_json_parser_ht_update(parser, (yyval.ht), &(yyvsp[(1) - (1)].pair).key, &(yyvsp[(1) - (1)].pair).val); ;}
+    { php_json_parser_ht_init(&(yyval.ht), 4); php_json_parser_ht_update(parser, (yyval.ht), &(yyvsp[(1) - (1)].pair).key, &(yyvsp[(1) - (1)].pair).val); }
     break;
 
   case 11:
 
-/* Line 1455 of yacc.c  */
-#line 110 "jsond_parser.y"
-    { php_json_parser_ht_update(parser, (yyvsp[(1) - (3)].ht), &(yyvsp[(3) - (3)].pair).key, &(yyvsp[(3) - (3)].pair).val); (yyval.ht) = (yyvsp[(1) - (3)].ht); ;}
+    { php_json_parser_ht_update(parser, (yyvsp[(1) - (3)].ht), &(yyvsp[(3) - (3)].pair).key, &(yyvsp[(3) - (3)].pair).val); (yyval.ht) = (yyvsp[(1) - (3)].ht); }
     break;
 
   case 12:
 
-/* Line 1455 of yacc.c  */
-#line 111 "jsond_parser.y"
-    { PHP_JSON_USE_2((yyval.ht), (yyvsp[(1) - (2)].ht), (yyvsp[(2) - (2)].value)); ;}
+    { PHP_JSON_USE_2((yyval.ht), (yyvsp[(1) - (2)].ht), (yyvsp[(2) - (2)].value)); }
     break;
 
   case 13:
 
-/* Line 1455 of yacc.c  */
-#line 115 "jsond_parser.y"
-    { (yyval.pair).key = (yyvsp[(1) - (3)].value); (yyval.pair).val = (yyvsp[(3) - (3)].value); ;}
+    { (yyval.pair).key = (yyvsp[(1) - (3)].value); (yyval.pair).val = (yyvsp[(3) - (3)].value); }
     break;
 
   case 14:
 
-/* Line 1455 of yacc.c  */
-#line 116 "jsond_parser.y"
-    { PHP_JSON_USE_2((yyval.pair), (yyvsp[(1) - (2)].value), (yyvsp[(2) - (2)].value)); ;}
+    { PHP_JSON_USE_2((yyval.pair), (yyvsp[(1) - (2)].value), (yyvsp[(2) - (2)].value)); }
     break;
 
   case 15:
 
-/* Line 1455 of yacc.c  */
-#line 120 "jsond_parser.y"
-    { PHP_JSON_DEPTH_INC; ;}
+    { PHP_JSON_DEPTH_INC; }
     break;
 
   case 16:
 
-/* Line 1455 of yacc.c  */
-#line 120 "jsond_parser.y"
-    { PHP_JSON_DEPTH_DEC; php_json_parser_array_to_zval(&(yyval.value), (yyvsp[(3) - (4)].ht)); ;}
+    { PHP_JSON_DEPTH_DEC; php_json_parser_array_to_zval(&(yyval.value), (yyvsp[(3) - (4)].ht)); }
     break;
 
   case 18:
 
-/* Line 1455 of yacc.c  */
-#line 125 "jsond_parser.y"
-    { parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH; YYERROR; ;}
+    { parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH; YYERROR; }
     break;
 
   case 19:
 
-/* Line 1455 of yacc.c  */
-#line 129 "jsond_parser.y"
-    { php_json_parser_ht_init(&(yyval.ht), 0); ;}
+    { php_json_parser_ht_init(&(yyval.ht), 0); }
     break;
 
   case 21:
 
-/* Line 1455 of yacc.c  */
-#line 134 "jsond_parser.y"
-    { php_json_parser_ht_init(&(yyval.ht), 4); php_json_parser_ht_append((yyval.ht), &(yyvsp[(1) - (1)].value)); ;}
+    { php_json_parser_ht_init(&(yyval.ht), 4); php_json_parser_ht_append((yyval.ht), &(yyvsp[(1) - (1)].value)); }
     break;
 
   case 22:
 
-/* Line 1455 of yacc.c  */
-#line 135 "jsond_parser.y"
-    { php_json_parser_ht_append((yyvsp[(1) - (3)].ht), &(yyvsp[(3) - (3)].value)); (yyval.ht) = (yyvsp[(1) - (3)].ht); ;}
+    { php_json_parser_ht_append((yyvsp[(1) - (3)].ht), &(yyvsp[(3) - (3)].value)); (yyval.ht) = (yyvsp[(1) - (3)].ht); }
     break;
 
   case 23:
 
-/* Line 1455 of yacc.c  */
-#line 136 "jsond_parser.y"
-    { PHP_JSON_USE_2((yyval.ht), (yyvsp[(1) - (2)].ht), (yyvsp[(2) - (2)].value)); ;}
+    { PHP_JSON_USE_2((yyval.ht), (yyvsp[(1) - (2)].ht), (yyvsp[(2) - (2)].value)); }
     break;
 
   case 36:
 
-/* Line 1455 of yacc.c  */
-#line 158 "jsond_parser.y"
-    { PHP_JSON_USE_1((yyval.value), (yyvsp[(1) - (1)].value)); YYERROR; ;}
+    { PHP_JSON_USE_1((yyval.value), (yyvsp[(1) - (1)].value)); YYERROR; }
     break;
 
 
 
-/* Line 1455 of yacc.c  */
-#line 1760 "jsond_parser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1967,8 +1842,6 @@ yyreturn:
 
 
 
-/* Line 1675 of yacc.c  */
-#line 161 "jsond_parser.y"
  /* Functions */
 
 void php_json_parser_init(php_json_parser *parser, zval *return_value, char *str, int str_len, long options, long max_depth TSRMLS_DC)

@@ -50,6 +50,17 @@
      PHP_JSON_T_ERROR = 266
    };
 #endif
+/* Tokens.  */
+#define PHP_JSON_T_NUL 258
+#define PHP_JSON_T_TRUE 259
+#define PHP_JSON_T_FALSE 260
+#define PHP_JSON_T_INT 261
+#define PHP_JSON_T_DOUBLE 262
+#define PHP_JSON_T_STRING 263
+#define PHP_JSON_T_ESTRING 264
+#define PHP_JSON_T_EOI 265
+#define PHP_JSON_T_ERROR 266
+
 
 
 
@@ -57,8 +68,6 @@
 typedef union YYSTYPE
 {
 
-/* Line 1676 of yacc.c  */
-#line 41 "jsond_parser.y"
 
 	zval value;
 	struct {
@@ -69,8 +78,6 @@ typedef union YYSTYPE
 
 
 
-/* Line 1676 of yacc.c  */
-#line 74 "jsond_parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
