@@ -8,12 +8,14 @@ if test "$PHP_JSOND" != "no"; then
   AC_DEFINE([HAVE_JSOND],1 ,[whether to enable new JavaScript Object Serialization support])
   AC_HEADER_STDC
 
-dnl PHP_ADD_MAKEFILE_FRAGMENT($abs_srcdir/Makefile.frag)
   PHP_NEW_EXTENSION(jsond, 
       jsond.c \
       jsond_parser.tab.c \
       jsond_scanner.c,
       $ext_shared)
+dnl PHP_PROG_RE2C()
+  PHP_PROG_BISON()
+  PHP_ADD_MAKEFILE_FRAGMENT()
   PHP_INSTALL_HEADERS([ext/jsond], [php_jsond.h])
   PHP_SUBST(JSOND_SHARED_LIBADD)
 fi
