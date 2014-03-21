@@ -19,6 +19,7 @@
 #include "php.h"
 #include "php_jsond_scanner.h"
 #include "php_jsond_scanner_defs.h"
+#include "php_jsond_parser.h"
 #include "jsond_parser.tab.h"
 
 #define	YYCTYPE     php_json_ctype
