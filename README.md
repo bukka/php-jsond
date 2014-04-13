@@ -106,7 +106,7 @@ JsondSerializable {
 
 ### Drop-in alternative for the standard JSON extension
 
-If the extension is compiled with defined macro `PHP_JSOND_PRIMARY` (non-default), the API is exactly the same as the API documented in [JSON documentation](http://php.net/json). There is just one small difference that a new error constant is defined - `JSON_ERROR_UTF16` that is described above.
+If PHP is compiled without json extension (`--without-json`) and jsond is compiled with defined macro `PHP_JSOND_PRIMARY` (non-default), the API is exactly the same as the API documented in [JSON documentation](http://php.net/json). There is just one small difference that a new error constant is defined - `JSON_ERROR_UTF16` that is described above.
 
 
 ## Benchmarks
@@ -132,3 +132,12 @@ JSOND: time for 100000 iterations: 1.960814
 ```
 
 As you can see the new parser (JSOND) is much faster for long strings.
+
+
+## Upgrading from php-json
+
+There are some small incompatibilities with json ext. They are documented in [UPGRADE.md](https://github.com/bukka/php-jsond/blob/master/TODO.md)
+
+## TODO list
+
+The TODO list can be found in [TODO.md](https://github.com/bukka/php-jsond/blob/master/TODO.md).
