@@ -136,7 +136,7 @@ As you can see the new parser (JSOND) is much faster for long strings.
 
 ## Upgrading from php-json
 
-There are some small incompatibilities with json ext. They are documented in [UPGRADE.md](https://github.com/bukka/php-jsond/blob/master/TODO.md)
+There are some small incompatibilities with the json ext. They are documented in [UPGRADE.md](https://github.com/bukka/php-jsond/blob/master/UPGRADE.md)
 
 ## TODO list
 
