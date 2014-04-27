@@ -6,7 +6,10 @@
 - extended error info containing error location
 
 ## Encoding
+- improve double conversion (https://github.com/php/php-src/pull/642)
+  - use a more sensible buffer size (2048 is a bit too much)
 - use new UTF8 validation (https://github.com/php/php-src/pull/636)
+
 
 ## General
 - Replace functions and constants if PHP_JSOND_PRIMARY defined
@@ -17,7 +20,7 @@
 - add new check for RE2C
 
 ## Testing
-- fork json-test-suite and modify it to generate customizable test sets
+- new generator
 - possible ideas
   - Hoa: https://github.com/Hywan/jsond-test
   - [Comparison JSON impls](http://gggeek.altervista.org/sw/article_20070425.html) and [its source](https://github.com/gggeek/phpxmlrpc-extras/blob/master/jsonrpc/testsuite.php)
