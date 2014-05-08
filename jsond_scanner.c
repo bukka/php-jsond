@@ -51,23 +51,16 @@ static void php_json_scanner_copy_string(php_json_scanner *s, int esc_size)
 	}
 }
 
-static int php_json_hex_to_int(char c)
+static int php_json_hex_to_int(char code)
 {
-	if (c >= '0' && c <= '9')
-	{
-		return c - '0';
-	}
-	else if (c >= 'A' && c <= 'F')
-	{
-		return c - ('A' - 10);
-	}
-	else if (c >= 'a' && c <= 'f')
-	{
-		return c - ('a' - 10);
-	}
-	else
-	{
-		/* this should never happened */
+	if (code >= '0' && code <= '9') {
+		return code - '0';
+	} else if (code >= 'A' && code <= 'F') {
+		return code - ('A' - 10);
+	} else if (code >= 'a' && code <= 'f') {
+		return code - ('a' - 10);
+	} else {
+		/* this should never happened (just to suppress compiler warning) */
 		return -1;
 	}
 }
