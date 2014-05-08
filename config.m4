@@ -14,7 +14,7 @@ if test "$PHP_JSOND" != "no"; then
       jsond_scanner.c,
       $ext_shared)
 dnl PHP_PROG_RE2C()
-  PHP_PROG_BISON()
+dnl PHP_PROG_BISON()
   PHP_ADD_MAKEFILE_FRAGMENT()
   PHP_INSTALL_HEADERS([ext/jsond], [php_jsond.h])
   PHP_SUBST(JSOND_SHARED_LIBADD)
