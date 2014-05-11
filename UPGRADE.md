@@ -5,6 +5,8 @@
   - top level (PHP json_decode check): `07`, `0xff`, `.1`, `-.1`
   - all (JSON_Parser): `[1.]`, [1.e1]
 - New error `JSON_ERROR_UTF16` for invalid \uXXXX code (ill-formed surrogate pairs)
+- Fixed bug 50224 ( keeping the float type when encoding )
+  - modified version of https://github.com/php/php-src/pull/642
 
 ## Internal API changes
 - removed JSON_parser.h header

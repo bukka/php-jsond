@@ -4,12 +4,12 @@
 - error for `{ "\u0000 key starting with zero": "value" }` (`JSON_ERROR_MANGLED_PROPERTY_NAME`)
 - error for empty input (it will be incompatible with json ext but it's compatible with standard)
 - extended error info containing error location
+- fix potential issues with bigint checking
+  - check for max double string length (use string if it's too big)
+  - refactore algorithm in jsond_scanner.re
 
 ## Encoding
-- improve double conversion (https://github.com/php/php-src/pull/642)
-  - use a more sensible buffer size (2048 is a bit too much)
 - use new UTF8 validation (https://github.com/php/php-src/pull/636)
-
 
 ## General
 - Replace functions and constants if PHP_JSOND_PRIMARY defined
