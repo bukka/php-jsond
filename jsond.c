@@ -32,8 +32,11 @@
 #include "php_jsond_parser.h"
 #include <zend_exceptions.h>
 
+/* double limits */
+#include <float.h>
+#define PHP_JSON_DOUBLE_MAX_LENGTH (3 + DBL_MANT_DIG - DBL_MIN_EXP)
 
-
+/* PHP init and user functions */
 static PHP_MINFO_FUNCTION(jsond);
 static PHP_JSOND_FUNCTION(encode);
 static PHP_JSOND_FUNCTION(decode);
@@ -506,7 +509,6 @@ static int json_utf8_to_utf16(unsigned short *utf16, char utf8[], int len) /* {{
 }
 /* }}} */
 
-
 static void json_escape_string(smart_str *buf, char *s, int len, int options TSRMLS_DC) /* {{{ */
 {
 	int pos = 0, ulen = 0;
@@ -529,10 +531,15 @@ static void json_escape_string(smart_str *buf, char *s, int len, int options TSR
 				smart_str_append_long(buf, p);
 			} else if (type == IS_DOUBLE) {
 				if (!zend_isinf(d) && !zend_isnan(d)) {
-					char *tmp;
-					int l = spprintf(&tmp, 0, "%.*k", (int) EG(precision), d);
-					smart_str_appendl(buf, tmp, l);
-					efree(tmp);
+					char num[PHP_JSON_DOUBLE_MAX_LENGTH + 1];
+					size_t len;
+					php_gcvt(d, EG(precision), '.', 'e', &num[0]);
+					len = strlen(num);
+					if (strchr(num, '.') == NULL) {
+						memcpy(&num[len], ".0", sizeof(".0"));
+						len += 2;
+					}
+					smart_str_appendl(buf, num, len);
 				} else {
 					JSOND_G(error_code) = PHP_JSON_ERROR_INF_OR_NAN;
 					smart_str_appendc(buf, '0');
@@ -733,14 +740,18 @@ PHP_JSOND_API void PHP_JSOND_NAME(encode)(smart_str *buf, zval *val, int options
 
 		case IS_DOUBLE:
 			{
-				char *d = NULL;
-				int len;
 				double dbl = Z_DVAL_P(val);
 
 				if (!zend_isinf(dbl) && !zend_isnan(dbl)) {
-					len = spprintf(&d, 0, "%.*k", (int) EG(precision), dbl);
-					smart_str_appendl(buf, d, len);
-					efree(d);
+					char num[PHP_JSON_DOUBLE_MAX_LENGTH + 1];
+					size_t len;
+					php_gcvt(dbl, EG(precision), '.', 'e', &num[0]);
+					len = strlen(num);
+					if (strchr(num, '.') == NULL) {
+						memcpy(&num[len], ".0", sizeof(".0"));
+						len += 2;
+					}
+					smart_str_appendl(buf, num, len);
 				} else {
 					JSOND_G(error_code) = PHP_JSON_ERROR_INF_OR_NAN;
 					smart_str_appendc(buf, '0');
