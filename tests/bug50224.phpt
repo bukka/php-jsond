@@ -1,7 +1,7 @@
 --TEST--
 bug #50224 (jsond_encode() does not always encode a float as a float)
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 echo "* Testing JSON output\n\n";
