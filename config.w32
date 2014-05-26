@@ -4,6 +4,6 @@
 ARG_ENABLE("jsond", "enable jsond support", "no");
 
 if (PHP_JSOND != "no") {
-	EXTENSION("jsond", "jsond.c jsond_parser.tab.c jsond_scanner.c");
+	EXTENSION("jsond", "jsond.c jsond_encoder.c jsond_parser.tab.c jsond_scanner.c");
 }
 
