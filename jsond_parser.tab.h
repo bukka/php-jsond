@@ -1,10 +1,8 @@
+/* A Bison parser, made by GNU Bison 2.7.12-4996.  */
 
-/* A Bison parser, made by GNU Bison 2.4.1.  */
-
-/* Skeleton interface for Bison's Yacc-like parsers in C
+/* Bison interface for Yacc-like parsers in C
    
-      Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
-   Free Software Foundation, Inc.
+      Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
    
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -32,6 +30,15 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
+#ifndef YY_PHP_JSON_YY_HOME_JAKUB_PROG_PHP_EXT_JSOND_JSOND_PARSER_TAB_H_INCLUDED
+# define YY_PHP_JSON_YY_HOME_JAKUB_PROG_PHP_EXT_JSOND_JSOND_PARSER_TAB_H_INCLUDED
+/* Enabling traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 0
+#endif
+#if YYDEBUG
+extern int php_json_yydebug;
+#endif
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -63,7 +70,6 @@
 
 
 
-
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
 {
@@ -85,5 +91,18 @@ typedef union YYSTYPE
 #endif
 
 
+#ifdef YYPARSE_PARAM
+#if defined __STDC__ || defined __cplusplus
+int php_json_yyparse (void *YYPARSE_PARAM);
+#else
+int php_json_yyparse ();
+#endif
+#else /* ! YYPARSE_PARAM */
+#if defined __STDC__ || defined __cplusplus
+int php_json_yyparse (php_json_parser *parser);
+#else
+int php_json_yyparse ();
+#endif
+#endif /* ! YYPARSE_PARAM */
 
-
+#endif /* !YY_PHP_JSON_YY_HOME_JAKUB_PROG_PHP_EXT_JSOND_JSOND_PARSER_TAB_H_INCLUDED  */
