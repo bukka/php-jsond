@@ -150,7 +150,7 @@ static void php_json_escape_string(smart_str *buf, char *s, int len, int options
 	smart_str_appendc(buf, '"');
 
 	for (count = 0; count < len; count++, s++) {
-		if (php_json_utf8_decode(&state, &codepoint, (unsigned int) *s)) {
+		if (php_json_utf8_decode(&state, &codepoint, (unsigned char) *s)) {
 			continue;
 		}
 
