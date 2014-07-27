@@ -33,7 +33,11 @@
 
 /* double limits */
 #include <float.h>
+#if defined(DBL_MANT_DIG) && defined(DBL_MIN_EXP)
 #define PHP_JSON_DOUBLE_MAX_LENGTH (3 + DBL_MANT_DIG - DBL_MIN_EXP)
+#else
+#define PHP_JSON_DOUBLE_MAX_LENGTH 1080
+#endif
 
 ZEND_DECLARE_MODULE_GLOBALS(jsond)
 
