@@ -28,7 +28,17 @@ inline void php_json_buffer_init(php_json_buffer *buf)
 
 inline void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size)
 {
-
+	size_t static_size = PHP_JSON_BUFFER_STATIC_SIZE - buf->left;
+	size_t size = static_size + pre_alloc_size + 1;
+	if (buf->dbuf) {
+		buf->dbuf = erealloc(buf->dbuf, size);
+	} else {
+		buf->dbuf = emalloc(size);
+	}
+	memcpy(buf->dbuf + buf->dsize, &buf->sbuf[0], static_size);
+	buf->dsize += static_size;
+	buf->ptr = &buf->sbuf[0];
+	buf->left = PHP_JSON_BUFFER_STATIC_SIZE;
 }
 
 inline void php_json_buffer_append_char(php_json_buffer *buf, char c)
