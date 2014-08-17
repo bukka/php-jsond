@@ -19,19 +19,24 @@
 #ifndef PHP_JSOND_BUFFER_H
 #define	PHP_JSOND_BUFFER_H
 
-#define PHP_JSON_BUFFER_SIZE 1024
+#include "php.h"
 
-#include <stdlib.h>
+/* static buffer */
+#define PHP_JSON_BUFFER_STATIC_SIZE 1024
 
 typedef struct _php_json_buffer{
-	char *start;
+	char sbuf[PHP_JSON_BUFFER_STATIC_SIZE];
+	char *dbuf;
 	char *ptr;
-	size_t left;
+	size_t dsize;
+	int left;
 } php_json_buffer; 
 
-#define PHP_JSON_BUFFER_APPEND_CHAR(buf, c)
-#define PHP_JSON_BUFFER_APPEND_LONG(buf, l)
-#define PHP_JSON_BUFFER_APPEND_STRL(buf, s, len)
+extern inline void php_json_buffer_init(php_json_buffer *buf);
+extern inline void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size);
+extern inline void php_json_buffer_append_char(php_json_buffer *buf, char c);
+extern inline void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len);
+extern inline void php_json_buffer_append_long(php_json_buffer *buf, long l);
 
 #endif	/* PHP_JSOND_BUFFER_H */
 

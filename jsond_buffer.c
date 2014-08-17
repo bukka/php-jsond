@@ -16,13 +16,29 @@
   +----------------------------------------------------------------------+
 */
 
-#ifndef PHP_JSOND_ENCODER_H
-#define	PHP_JSOND_ENCODER_H
-
-#include "php.h"
 #include "php_jsond_buffer.h"
 
-void php_json_encode_zval(smart_str *buf, zval *val, int options TSRMLS_DC);
+inline void php_json_buffer_init(php_json_buffer *buf)
+{
 
-#endif	/* PHP_JSOND_ENCODER_H */
+}
 
+inline void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size)
+{
+
+}
+
+inline void php_json_buffer_append_char(php_json_buffer *buf, char c)
+{
+
+}
+
+inline void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len)
+{
+	
+}
+
+inline void php_json_buffer_append_long(php_json_buffer *buf, long l)
+{
+	
+}

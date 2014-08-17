@@ -28,6 +28,7 @@
 #include "ext/standard/php_smart_str.h"
 #include "php_jsond.h"
 #include "php_jsond_encoder.h"
+#include "php_jsond_buffer.h"
 #include "php_jsond_utf8_decoder.h"
 #include <zend_exceptions.h>
 

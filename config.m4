@@ -10,6 +10,7 @@ if test "$PHP_JSOND" != "no"; then
 
   PHP_NEW_EXTENSION(jsond, 
       jsond.c \
+      jsond_buffer.c \
       jsond_encoder.c \
       jsond_parser.tab.c \
       jsond_scanner.c,
