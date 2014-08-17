@@ -20,7 +20,10 @@
 
 inline void php_json_buffer_init(php_json_buffer *buf)
 {
-
+	buf->dbuf = NULL;
+	buf->left = PHP_JSON_BUFFER_STATIC_SIZE;
+	buf->ptr = &buf->sbuf[0];
+	buf->dsize = 0;
 }
 
 inline void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size)
