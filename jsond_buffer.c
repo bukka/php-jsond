@@ -43,7 +43,11 @@ inline void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size)
 
 inline void php_json_buffer_append_char(php_json_buffer *buf, char c)
 {
-
+	if (--buf->left == 0) {
+		php_json_buffer_flush(buf, 10);
+	}
+	*buf->ptr = c;
+	buf->ptr++;
 }
 
 inline void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len)
