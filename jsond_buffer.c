@@ -44,7 +44,7 @@ inline void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size)
 inline void php_json_buffer_append_char(php_json_buffer *buf, char c)
 {
 	if (--buf->left == 0) {
-		php_json_buffer_flush(buf, 10);
+		php_json_buffer_flush(buf, PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
 	}
 	*buf->ptr = c;
 	buf->ptr++;
@@ -52,7 +52,13 @@ inline void php_json_buffer_append_char(php_json_buffer *buf, char c)
 
 inline void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len)
 {
-	
+	if (len > PHP_JSON_BUFFER_STATIC_SIZE || buf->left - (int) len <= 0) {
+		php_json_buffer_flush(buf, len + PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
+		memcpy(buf->dbuf + buf->dsize, str, len);
+	} else {
+		memcpy(buf->ptr, str, len);
+		buf->ptr += len;
+	}
 }
 
 inline void php_json_buffer_append_long(php_json_buffer *buf, long l)

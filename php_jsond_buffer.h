@@ -21,8 +21,10 @@
 
 #include "php.h"
 
-/* static buffer */
+/* static buffer size */
 #define PHP_JSON_BUFFER_STATIC_SIZE 1024
+/* size of extra allocation when extending buffer */
+#define PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE 10
 
 typedef struct _php_json_buffer{
 	char sbuf[PHP_JSON_BUFFER_STATIC_SIZE];
@@ -39,4 +41,3 @@ extern inline void php_json_buffer_append_stringl(php_json_buffer *buf, const ch
 extern inline void php_json_buffer_append_long(php_json_buffer *buf, long l);
 
 #endif	/* PHP_JSOND_BUFFER_H */
-
