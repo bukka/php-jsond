@@ -16,6 +16,7 @@
   +----------------------------------------------------------------------+
 */
 
+#include "php_jsond.h"
 #include "php_jsond_buffer.h"
 
 inline void php_json_buffer_init(php_json_buffer *buf)
@@ -63,5 +64,30 @@ inline void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str
 
 inline void php_json_buffer_append_long(php_json_buffer *buf, long l)
 {
-	
+	char str[PHP_JSON_INT_MAX_LENGTH + 1];
+	char *p = &str[PHP_JSON_INT_MAX_LENGTH];
+	size_t len = 0;
+	zend_bool negative;
+
+	if (l < 0) {
+		negative = 1;
+		l = -l;
+	} else {
+		negative = 0;
+	}
+
+	do {
+		*(p--) = (char) (l % 10) + '0';							\
+		l /= 10;
+		len++;
+	} while (l > 0);
+
+	if (negative) {
+		*p = '-';
+		len++;
+	} else {
+		p++;
+	}
+
+	php_json_buffer_append_stringl(buf, p, len);
 }
