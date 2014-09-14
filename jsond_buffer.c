@@ -105,6 +105,9 @@ void php_json_buffer_alloc(php_json_buffer *buf, size_t len) /* {{{ */
 
 char *php_json_buffer_get_block(php_json_buffer *buf, size_t len) /* {{{ */
 {
-
+	if (len > (size_t) buf->left) {
+		php_json_buffer_flush(buf, PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
+	}
+	return buf->ptr;
 }
 /* }}} */
