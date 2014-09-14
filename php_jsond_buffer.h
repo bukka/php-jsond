@@ -40,5 +40,7 @@ void php_json_buffer_append_char(php_json_buffer *buf, char c);
 void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len);
 void php_json_buffer_append_long(php_json_buffer *buf, long l);
 
+#define PHP_JSON_BUFFER_STRVAL(_buf) (_buf)->dbuf
+#define PHP_JSON_BUFFER_STRLEN(_buf) (_buf)->dsize
 
 #endif	/* PHP_JSOND_BUFFER_H */
