@@ -39,6 +39,8 @@ void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size);
 void php_json_buffer_append_char(php_json_buffer *buf, char c);
 void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len);
 void php_json_buffer_append_long(php_json_buffer *buf, long l);
+void php_json_buffer_alloc(php_json_buffer *buf, size_t len);
+char *php_json_buffer_get_block(php_json_buffer *buf, size_t len);
 
 #define PHP_JSON_BUFFER_STRVAL(_buf) (_buf)->dbuf
 #define PHP_JSON_BUFFER_STRLEN(_buf) (_buf)->dsize

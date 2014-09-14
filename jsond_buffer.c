@@ -96,3 +96,15 @@ void php_json_buffer_append_long(php_json_buffer *buf, long l) /* {{{ */
 	php_json_buffer_append_stringl(buf, p, len);
 }
 /* }}} */
+
+void php_json_buffer_alloc(php_json_buffer *buf, size_t len) /* {{{ */
+{
+
+}
+/* }}} */
+
+char *php_json_buffer_get_block(php_json_buffer *buf, size_t len) /* {{{ */
+{
+
+}
+/* }}} */
