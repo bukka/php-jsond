@@ -34,10 +34,11 @@ typedef struct _php_json_buffer{
 	int left;
 } php_json_buffer; 
 
-extern inline void php_json_buffer_init(php_json_buffer *buf);
-extern inline void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size);
-extern inline void php_json_buffer_append_char(php_json_buffer *buf, char c);
-extern inline void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len);
-extern inline void php_json_buffer_append_long(php_json_buffer *buf, long l);
+void php_json_buffer_init(php_json_buffer *buf);
+void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size);
+void php_json_buffer_append_char(php_json_buffer *buf, char c);
+void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len);
+void php_json_buffer_append_long(php_json_buffer *buf, long l);
+
 
 #endif	/* PHP_JSOND_BUFFER_H */

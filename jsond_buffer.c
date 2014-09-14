@@ -16,18 +16,19 @@
   +----------------------------------------------------------------------+
 */
 
-#include "php_jsond.h"
 #include "php_jsond_buffer.h"
+#include "php_jsond.h"
 
-inline void php_json_buffer_init(php_json_buffer *buf)
+void php_json_buffer_init(php_json_buffer *buf) /* {{{ */
 {
 	buf->dbuf = NULL;
 	buf->left = PHP_JSON_BUFFER_STATIC_SIZE;
 	buf->ptr = &buf->sbuf[0];
 	buf->dsize = 0;
 }
+/* }}} */
 
-inline void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size)
+void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size) /* {{{ */
 {
 	size_t static_size = PHP_JSON_BUFFER_STATIC_SIZE - buf->left;
 	size_t size = static_size + pre_alloc_size + 1;
@@ -41,8 +42,9 @@ inline void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size)
 	buf->ptr = &buf->sbuf[0];
 	buf->left = PHP_JSON_BUFFER_STATIC_SIZE;
 }
+/* }}} */
 
-inline void php_json_buffer_append_char(php_json_buffer *buf, char c)
+void php_json_buffer_append_char(php_json_buffer *buf, char c) /* {{{ */
 {
 	if (--buf->left == 0) {
 		php_json_buffer_flush(buf, PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
@@ -50,8 +52,9 @@ inline void php_json_buffer_append_char(php_json_buffer *buf, char c)
 	*buf->ptr = c;
 	buf->ptr++;
 }
+/* }}} */
 
-inline void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len)
+void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len) /* {{{ */
 {
 	if (len > PHP_JSON_BUFFER_STATIC_SIZE || buf->left - (int) len <= 0) {
 		php_json_buffer_flush(buf, len + PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
@@ -61,8 +64,9 @@ inline void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str
 		buf->ptr += len;
 	}
 }
+/* }}} */
 
-inline void php_json_buffer_append_long(php_json_buffer *buf, long l)
+void php_json_buffer_append_long(php_json_buffer *buf, long l) /* {{{ */
 {
 	char str[PHP_JSON_INT_MAX_LENGTH + 1];
 	char *p = &str[PHP_JSON_INT_MAX_LENGTH];
@@ -77,7 +81,7 @@ inline void php_json_buffer_append_long(php_json_buffer *buf, long l)
 	}
 
 	do {
-		*(p--) = (char) (l % 10) + '0';							\
+		*(p--) = (char) (l % 10) + '0';
 		l /= 10;
 		len++;
 	} while (l > 0);
@@ -91,3 +95,4 @@ inline void php_json_buffer_append_long(php_json_buffer *buf, long l)
 
 	php_json_buffer_append_stringl(buf, p, len);
 }
+/* }}} */
