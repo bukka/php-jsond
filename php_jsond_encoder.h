@@ -22,7 +22,7 @@
 #include "php.h"
 #include "php_jsond_buffer.h"
 
-void php_json_encode_zval(smart_str *buf, zval *val, int options TSRMLS_DC);
+void php_json_encode_zval(php_json_buffer *buf, zval *val, int options TSRMLS_DC);
 
 #endif	/* PHP_JSOND_ENCODER_H */
 

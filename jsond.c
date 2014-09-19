@@ -26,9 +26,9 @@
 #include "php_ini.h"
 #include "ext/standard/info.h"
 #include "ext/standard/html.h"
-#include "ext/standard/php_smart_str.h"
 #include "php_jsond.h"
 #include "php_jsond_encoder.h"
+#include "php_jsond_buffer.h"
 #include "php_jsond_parser.h"
 #include <zend_exceptions.h>
 
@@ -174,7 +174,7 @@ static PHP_MINFO_FUNCTION(jsond)
 }
 /* }}} */
 
-PHP_JSOND_API void PHP_JSOND_NAME(encode)(smart_str *buf, zval *val, int options TSRMLS_DC) /* {{{ */
+PHP_JSOND_API void PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int options TSRMLS_DC) /* {{{ */
 {
 	php_json_encode_zval(buf, val, options TSRMLS_CC);
 }
@@ -199,7 +199,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, int 
 static PHP_JSOND_FUNCTION(encode)
 {
 	zval *parameter;
-	smart_str buf = {0};
+	php_json_buffer buf;
 	long options = 0;
     long depth = PHP_JSON_PARSER_DEFAULT_DEPTH;
 
@@ -211,15 +211,16 @@ static PHP_JSOND_FUNCTION(encode)
 
 	JSOND_G(encode_max_depth) = depth;
 
+	php_json_buffer_init(&buf);
 	PHP_JSOND_NAME(encode)(&buf, parameter, options TSRMLS_CC);
 
-	if (JSOND_G(error_code) != PHP_JSON_ERROR_NONE && !(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR)) {
+	if ((JSOND_G(error_code) != PHP_JSON_ERROR_NONE && !(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR)) ||
+			PHP_JSON_BUFFER_STRLEN(buf) > LONG_MAX) {
 		ZVAL_FALSE(return_value);
+		php_json_buffer_destroy(&buf);
 	} else {
-		ZVAL_STRINGL(return_value, buf.c, buf.len, 1);
+		ZVAL_STRINGL(return_value, PHP_JSON_BUFFER_STRVAL(buf), (int) PHP_JSON_BUFFER_STRLEN(buf), 0);
 	}
-
-	smart_str_free(&buf);
 }
 /* }}} */
 

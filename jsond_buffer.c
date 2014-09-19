@@ -28,6 +28,14 @@ void php_json_buffer_init(php_json_buffer *buf) /* {{{ */
 }
 /* }}} */
 
+void php_json_buffer_destroy(php_json_buffer *buf) /* {{{ */
+{
+	if (buf->dbuf) {
+		efree(buf->dbuf);
+	}
+}
+/* }}} */
+
 void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size) /* {{{ */
 {
 	size_t static_size = PHP_JSON_BUFFER_STATIC_SIZE - buf->left;

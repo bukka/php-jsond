@@ -22,7 +22,6 @@
 #define PHP_JSOND_H
 
 #define PHP_JSOND_VERSION "1.3.0"
-#include "ext/standard/php_smart_str.h"
 
 extern zend_module_entry jsond_module_entry;
 #define phpext_jsond_ptr &jsond_module_entry
@@ -138,7 +137,9 @@ ZEND_END_MODULE_GLOBALS(jsond)
 # define JSOND_G(v) (jsond_globals.v)
 #endif
 
-PHP_JSOND_API void PHP_JSOND_NAME(encode)(smart_str *buf, zval *val, int options TSRMLS_DC);
+#include "php_jsond_buffer.h"
+
+PHP_JSOND_API void PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int options TSRMLS_DC);
 PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, int str_len, long options, long depth TSRMLS_DC);
 extern PHP_JSOND_API zend_class_entry *PHP_JSOND_NAME(serializable_ce);
 
