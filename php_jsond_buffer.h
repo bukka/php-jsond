@@ -24,7 +24,7 @@
 /* static buffer size */
 #define PHP_JSON_BUFFER_STATIC_SIZE 1024
 /* size of extra allocation when extending buffer */
-#define PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE 10
+#define PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE 0
 
 typedef struct _php_json_buffer{
 	char sbuf[PHP_JSON_BUFFER_STATIC_SIZE];
@@ -37,6 +37,7 @@ typedef struct _php_json_buffer{
 void php_json_buffer_init(php_json_buffer *buf);
 void php_json_buffer_destroy(php_json_buffer *buf);
 void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size);
+void php_json_buffer_finish(php_json_buffer *buf);
 void php_json_buffer_append_char(php_json_buffer *buf, char c);
 void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len);
 void php_json_buffer_append_long(php_json_buffer *buf, long l);

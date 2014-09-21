@@ -39,7 +39,7 @@ void php_json_buffer_destroy(php_json_buffer *buf) /* {{{ */
 void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size) /* {{{ */
 {
 	size_t static_size = PHP_JSON_BUFFER_STATIC_SIZE - buf->left;
-	size_t size = static_size + pre_alloc_size + 1;
+	size_t size = static_size + pre_alloc_size;
 	if (buf->dbuf) {
 		buf->dbuf = erealloc(buf->dbuf, size);
 	} else {
@@ -49,6 +49,13 @@ void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size) /* {{{ *
 	buf->dsize += static_size;
 	buf->ptr = &buf->sbuf[0];
 	buf->left = PHP_JSON_BUFFER_STATIC_SIZE;
+}
+/* }}} */
+
+void php_json_buffer_finish(php_json_buffer *buf) /* {{{ */
+{
+	php_json_buffer_flush(buf, 1);
+	buf->dbuf[buf->dsize] = 0;
 }
 /* }}} */
 

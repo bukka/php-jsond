@@ -219,6 +219,7 @@ static PHP_JSOND_FUNCTION(encode)
 		ZVAL_FALSE(return_value);
 		php_json_buffer_destroy(&buf);
 	} else {
+		php_json_buffer_finish(&buf);
 		ZVAL_STRINGL(return_value, PHP_JSON_BUFFER_STRVAL(buf), (int) PHP_JSON_BUFFER_STRLEN(buf), 0);
 	}
 }
