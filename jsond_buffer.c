@@ -77,6 +77,7 @@ void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_
 	} else {
 		memcpy(buf->ptr, str, len);
 		buf->ptr += len;
+		buf->left -= len;
 	}
 }
 /* }}} */
