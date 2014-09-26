@@ -127,3 +127,18 @@ char *php_json_buffer_get_block(php_json_buffer *buf, size_t len) /* {{{ */
 	return buf->ptr;
 }
 /* }}} */
+
+void php_json_buffer_mark_set(php_json_buffer *buf) /* {{{ */
+{
+
+}
+
+void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
+{
+
+}
+
+void php_json_buffer_mark_put(php_json_buffer *buf, char *rstr, size_t len) /* {{{ */
+{
+
+}
