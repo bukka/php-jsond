@@ -124,7 +124,6 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 	size_t count;
 	int codepoint;
 	int state = 0;
-	size_t oldlen;
 
 	if (len == 0) {
 		php_json_buffer_append_stringl(buf, "\"\"", 2);
@@ -146,8 +145,8 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 		}
 	}
 
-	/*TODO: check if it can work after flush */
-	oldlen = PHP_JSON_BUFFER_STRLEN(*buf);
+	/* set mark */
+	php_json_buffer_mark_set(buf);
 
 	/* pre-allocate for string length plus 2 quotes */
 	/* smart_str_alloc(buf, len+2, 0); */
@@ -273,13 +272,13 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 	}
 
 	if (state != PHP_JSON_UTF8_ACCEPT) {
-		PHP_JSON_BUFFER_STRLEN(*buf) = oldlen;
 		JSOND_G(error_code) = PHP_JSON_ERROR_UTF8;
+		php_json_buffer_reset(buf);
 		php_json_buffer_append_stringl(buf, "null", 4);
-		return;
+	} else {
+		php_json_buffer_append_char(buf, '"');
 	}
-
-	php_json_buffer_append_char(buf, '"');
+	php_json_buffer_mark_del(buf);
 }
 /* }}} */
 
