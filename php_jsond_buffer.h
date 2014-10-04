@@ -22,7 +22,7 @@
 #include "php.h"
 
 /* static buffer size */
-#define PHP_JSON_BUFFER_STATIC_SIZE 1024
+#define PHP_JSON_BUFFER_STATIC_SIZE 2048
 /* size of extra allocation when extending buffer */
 #define PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE 0
 
@@ -47,7 +47,8 @@ void php_json_buffer_append_char(php_json_buffer *buf, char c);
 void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len);
 void php_json_buffer_append_long(php_json_buffer *buf, long l);
 void php_json_buffer_alloc(php_json_buffer *buf, size_t len);
-char *php_json_buffer_get_block(php_json_buffer *buf, size_t len);
+char *php_json_buffer_block_open(php_json_buffer *buf, size_t len);
+void php_json_buffer_block_close(php_json_buffer *buf, size_t len);
 void php_json_buffer_mark_set(php_json_buffer *buf);
 void php_json_buffer_mark_del(php_json_buffer *buf);
 void php_json_buffer_reset(php_json_buffer *buf);
