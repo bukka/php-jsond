@@ -66,16 +66,6 @@ void php_json_buffer_finish(php_json_buffer *buf) /* {{{ */
 }
 /* }}} */
 
-void php_json_buffer_append_char(php_json_buffer *buf, char c) /* {{{ */
-{
-	if (buf->left == 0) {
-		php_json_buffer_flush(buf, PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
-	}
-	*buf->ptr = c;
-	++buf->ptr;
-	--buf->left;
-}
-/* }}} */
 
 void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len) /* {{{ */
 {

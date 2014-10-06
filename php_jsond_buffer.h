@@ -43,7 +43,6 @@ void php_json_buffer_init(php_json_buffer *buf);
 void php_json_buffer_destroy(php_json_buffer *buf);
 void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size);
 void php_json_buffer_finish(php_json_buffer *buf);
-void php_json_buffer_append_char(php_json_buffer *buf, char c);
 void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len);
 void php_json_buffer_append_long(php_json_buffer *buf, long l);
 void php_json_buffer_alloc(php_json_buffer *buf, size_t len);
@@ -52,6 +51,18 @@ void php_json_buffer_block_close(php_json_buffer *buf, size_t len);
 void php_json_buffer_mark_set(php_json_buffer *buf);
 void php_json_buffer_mark_del(php_json_buffer *buf);
 void php_json_buffer_reset(php_json_buffer *buf);
+
+
+static inline void php_json_buffer_append_char(php_json_buffer *buf, char c) /* {{{ */
+{
+	if (buf->left == 0) {
+		php_json_buffer_flush(buf, PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
+	}
+	*buf->ptr = c;
+	++buf->ptr;
+	--buf->left;
+}
+/* }}} */
 
 #define PHP_JSON_BUFFER_STRVAL(_buf) (_buf).dbuf
 #define PHP_JSON_BUFFER_STRLEN(_buf) (_buf).dsize
