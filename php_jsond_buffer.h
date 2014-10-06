@@ -46,10 +46,6 @@ void php_json_buffer_finish(php_json_buffer *buf);
 void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len);
 void php_json_buffer_append_long(php_json_buffer *buf, long l);
 void php_json_buffer_alloc(php_json_buffer *buf, size_t len);
-char *php_json_buffer_block_open(php_json_buffer *buf, size_t len);
-void php_json_buffer_block_close(php_json_buffer *buf, size_t len);
-void php_json_buffer_mark_set(php_json_buffer *buf);
-void php_json_buffer_mark_del(php_json_buffer *buf);
 void php_json_buffer_reset(php_json_buffer *buf);
 
 
@@ -61,6 +57,35 @@ static inline void php_json_buffer_append_char(php_json_buffer *buf, char c) /* 
 	*buf->ptr = c;
 	++buf->ptr;
 	--buf->left;
+}
+/* }}} */
+
+static inline char *php_json_buffer_block_open(php_json_buffer *buf, size_t len) /* {{{ */
+{
+	if (len > (size_t) buf->left) {
+		php_json_buffer_flush(buf, PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
+	}
+	return buf->ptr;
+}
+/* }}} */
+
+static inline void php_json_buffer_block_close(php_json_buffer *buf, size_t len) /* {{{ */
+{
+	buf->left -= len;
+	buf->ptr += len;
+}
+/* }}} */
+
+static inline void php_json_buffer_mark_set(php_json_buffer *buf) /* {{{ */
+{
+	buf->mark = buf->ptr;
+}
+/* }}} */
+
+static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
+{
+	buf->mark = NULL;
+	buf->flags &= ~PHP_JSON_BUFFER_FLAG_MARK_DBUF;
 }
 /* }}} */
 
