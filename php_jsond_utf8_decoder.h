@@ -28,7 +28,7 @@
 #define PHP_JSON_UTF8_ACCEPT 0
 #define PHP_JSON_UTF8_REJECT 12
 
-static const char utf8d[] = {
+static const char php_json_utf8d[] = {
 	/* The first part of the table maps bytes to character classes that
 	 * to reduce the size of the transition table and create bitmasks. */
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -51,12 +51,12 @@ static const char utf8d[] = {
 
 inline int php_json_utf8_decode(int* state, int* codep, unsigned int byte)
 {
-	int type = utf8d[byte];
+	int type = php_json_utf8d[byte];
 
 	*codep = (*state != PHP_JSON_UTF8_ACCEPT) ?
 		(byte & 0x3fu) | (*codep << 6) : (0xff >> type) & (byte);
 
-	*state = utf8d[256 + *state + type];
+	*state = php_json_utf8d[256 + *state + type];
 	return *state;
 }
 
