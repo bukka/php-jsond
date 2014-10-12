@@ -117,11 +117,26 @@ static void php_json_encode_double(php_json_buffer *buf, double d TSRMLS_DC) /* 
 }
 /* }}} */
 
+
+static inline char *php_json_escape_string_flush(php_json_buffer *buf, char *mark, char *s, char *esc, int esc_len, int extralen)
+{
+	char *prechar = s - extralen;
+	if (prechar != mark) {
+		php_json_buffer_append_stringl(buf, mark, prechar - mark);
+	}
+	if (esc_len) {
+		php_json_buffer_append_stringl(buf, esc, esc_len);
+	}
+	return s + 1;
+}
+
 static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int options TSRMLS_DC) /* {{{ */
 {
 	size_t count;
 	int codepoint;
 	int state = 0;
+	int codelen = 0;
+	char *mark = s;
 
 	if (len == 0) {
 		php_json_buffer_append_stringl(buf, "\"\"", 2);
@@ -152,108 +167,83 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 
 	for (count = 0; count < len; count++, s++) {
 		if (php_json_utf8_decode(&state, &codepoint, (unsigned char) *s)) {
+			codelen++;
 			continue;
 		}
 
 		switch (codepoint) {
 			case '"':
 				if (options & PHP_JSON_HEX_QUOT) {
-					php_json_buffer_append_stringl(buf, "\\u0022", 6);
+					mark = php_json_escape_string_flush(buf, mark, s, "\\u0022", 6, 0);
 				} else {
-					php_json_buffer_append_stringl(buf, "\\\"", 2);
+					mark = php_json_escape_string_flush(buf, mark, s, "\\\"", 2, 0);
 				}
 				break;
 
 			case '\\':
-				php_json_buffer_append_stringl(buf, "\\\\", 2);
+				mark = php_json_escape_string_flush(buf, mark, s, "\\\\", 2, 0);
 				break;
 
 			case '/':
-				if (options & PHP_JSON_UNESCAPED_SLASHES) {
-					php_json_buffer_append_char(buf, '/');
-				} else {
-					php_json_buffer_append_stringl(buf, "\\/", 2);
+				if (!(options & PHP_JSON_UNESCAPED_SLASHES)) {
+					mark = php_json_escape_string_flush(buf, mark, s, "\\/", 2, 0);
 				}
 				break;
 
 			case '\b':
-				php_json_buffer_append_stringl(buf, "\\b", 2);
+				mark = php_json_escape_string_flush(buf, mark, s, "\\b", 2, 0);
 				break;
 
 			case '\f':
-				php_json_buffer_append_stringl(buf, "\\f", 2);
+				mark = php_json_escape_string_flush(buf, mark, s, "\\f", 2, 0);
 				break;
 
 			case '\n':
-				php_json_buffer_append_stringl(buf, "\\n", 2);
+				mark = php_json_escape_string_flush(buf, mark, s, "\\n", 2, 0);
 				break;
 
 			case '\r':
-				php_json_buffer_append_stringl(buf, "\\r", 2);
+				mark = php_json_escape_string_flush(buf, mark, s, "\\r", 2, 0);
 				break;
 
 			case '\t':
-				php_json_buffer_append_stringl(buf, "\\t", 2);
+				mark = php_json_escape_string_flush(buf, mark, s, "\\t", 2, 0);
 				break;
 
 			case '<':
 				if (options & PHP_JSON_HEX_TAG) {
-					php_json_buffer_append_stringl(buf, "\\u003C", 6);
-				} else {
-					php_json_buffer_append_char(buf, '<');
+					mark = php_json_escape_string_flush(buf, mark, s, "\\u003C", 6, 0);
 				}
 				break;
 
 			case '>':
 				if (options & PHP_JSON_HEX_TAG) {
-					php_json_buffer_append_stringl(buf, "\\u003E", 6);
-				} else {
-					php_json_buffer_append_char(buf, '>');
+					mark = php_json_escape_string_flush(buf, mark, s, "\\u003E", 6, 0);
 				}
 				break;
 
 			case '&':
 				if (options & PHP_JSON_HEX_AMP) {
-					php_json_buffer_append_stringl(buf, "\\u0026", 6);
-				} else {
-					php_json_buffer_append_char(buf, '&');
+					mark = php_json_escape_string_flush(buf, mark, s, "\\u0026", 6, 0);
 				}
 				break;
 
 			case '\'':
 				if (options & PHP_JSON_HEX_APOS) {
-					php_json_buffer_append_stringl(buf, "\\u0027", 6);
-				} else {
-					php_json_buffer_append_char(buf, '\'');
+					mark = php_json_escape_string_flush(buf, mark, s, "\\u0027", 6, 0);
 				}
 				break;
 
 			default:
-				if (codepoint >= ' ' && ((options & PHP_JSON_UNESCAPED_UNICODE) || codepoint <= 0x7f)) {
-					if (codepoint <= 0x7f) {
-						php_json_buffer_append_char(buf, (unsigned char) codepoint);
-					} else if (codepoint <= 0x7ff) {
-						php_json_buffer_append_char(buf, (unsigned char) (0xc0 + (codepoint >> 6)));
-						php_json_buffer_append_char(buf, (unsigned char) (0x80 + (codepoint & 0x3f)));
-					} else if (codepoint <= 0xffff) {
-						php_json_buffer_append_char(buf, (unsigned char) (0xe0 + (codepoint >> 12)));
-						php_json_buffer_append_char(buf, (unsigned char) (0x80 + ((codepoint >> 6) & 0x3f)));
-						php_json_buffer_append_char(buf, (unsigned char) (0x80 + (codepoint & 0x3f)));
-					} else if (codepoint <= 0x1ffff) {
-						php_json_buffer_append_char(buf, (unsigned char) (0xf0 + (codepoint >> 18)));
-						php_json_buffer_append_char(buf, (unsigned char) (0x80 + ((codepoint >> 12) & 0x3f)));
-						php_json_buffer_append_char(buf, (unsigned char) (0x80 + ((codepoint >> 6) & 0x3f)));
-						php_json_buffer_append_char(buf, (unsigned char) (0x80 + (codepoint & 0x3f)));
-					}
-				} else {
+				if (codepoint < ' ' || (!(options & PHP_JSON_UNESCAPED_UNICODE) && codepoint > 0x7f)) {
+					mark = php_json_escape_string_flush(buf, mark, s, "\\u", 2, codepoint < ' ' ? 0 : codelen);
+					codelen = 0;
 					if (codepoint <= 0xffff) {
-						php_json_buffer_append_stringl(buf, "\\u", 2);
 						php_json_buffer_append_char(buf, digits[(codepoint & 0xf000) >> 12]);
 						php_json_buffer_append_char(buf, digits[(codepoint & 0xf00)  >> 8]);
 						php_json_buffer_append_char(buf, digits[(codepoint & 0xf0)   >> 4]);
 						php_json_buffer_append_char(buf, digits[(codepoint & 0xf)]);
 					} else {
-						php_json_buffer_append_stringl(buf, "\\u", 2);
 						php_json_buffer_append_char(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf000) >> 12]);
 						php_json_buffer_append_char(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf00)  >> 8]);
 						php_json_buffer_append_char(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf0)   >> 4]);
@@ -274,6 +264,9 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 		php_json_buffer_reset(buf);
 		php_json_buffer_append_stringl(buf, "null", 4);
 	} else {
+		if (mark < s) {
+			php_json_buffer_append_stringl(buf, mark, s - mark);
+		}
 		php_json_buffer_append_char(buf, '"');
 	}
 	php_json_buffer_mark_del(buf);
