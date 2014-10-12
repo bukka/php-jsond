@@ -66,52 +66,6 @@ void php_json_buffer_finish(php_json_buffer *buf) /* {{{ */
 }
 /* }}} */
 
-
-void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len) /* {{{ */
-{
-	if (len > PHP_JSON_BUFFER_STATIC_SIZE || buf->left - (int) len < 0) {
-		php_json_buffer_flush(buf, len + PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
-		memcpy(buf->dbuf + buf->dsize, str, len);
-		buf->dsize += len;
-	} else {
-		memcpy(buf->ptr, str, len);
-		buf->ptr += len;
-		buf->left -= len;
-	}
-}
-/* }}} */
-
-void php_json_buffer_append_long(php_json_buffer *buf, long l) /* {{{ */
-{
-	char str[PHP_JSON_INT_MAX_LENGTH + 1];
-	char *p = &str[PHP_JSON_INT_MAX_LENGTH];
-	size_t len = 0;
-	zend_bool negative;
-
-	if (l < 0) {
-		negative = 1;
-		l = -l;
-	} else {
-		negative = 0;
-	}
-
-	do {
-		*(p--) = (char) (l % 10) + '0';
-		l /= 10;
-		len++;
-	} while (l > 0);
-
-	if (negative) {
-		*p = '-';
-		len++;
-	} else {
-		p++;
-	}
-
-	php_json_buffer_append_stringl(buf, p, len);
-}
-/* }}} */
-
 void php_json_buffer_alloc(php_json_buffer *buf, size_t len) /* {{{ */
 {
 
