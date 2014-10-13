@@ -48,7 +48,7 @@ void php_json_buffer_reset(php_json_buffer *buf);
 
 static inline void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len)
 {
-	if (len > PHP_JSON_BUFFER_STATIC_SIZE || buf->left - (int) len < 0) {
+	if (buf->left < len) {
 		php_json_buffer_flush(buf, len + PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
 		memcpy(buf->dbuf + buf->dsize, str, len);
 		buf->dsize += len;
