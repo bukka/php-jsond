@@ -33,9 +33,9 @@ typedef struct _php_json_buffer{
 	char sbuf[PHP_JSON_BUFFER_STATIC_SIZE];
 	char *dbuf;
 	char *ptr;
+	char *end;
 	char *mark;
 	size_t dsize;
-	int left;
 	int flags;
 } php_json_buffer;
 
@@ -48,26 +48,26 @@ void php_json_buffer_reset(php_json_buffer *buf);
 
 static inline void php_json_buffer_append_stringl(php_json_buffer *buf, const char *str, size_t len)
 {
-	if (buf->left < len) {
+	char *new_ptr = buf->ptr + len;
+	if (new_ptr <= buf->end) {
+		memcpy(buf->ptr, str, len);
+		buf->ptr = new_ptr;
+	} else {
 		php_json_buffer_flush(buf, len + PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
 		memcpy(buf->dbuf + buf->dsize, str, len);
 		buf->dsize += len;
-	} else {
-		memcpy(buf->ptr, str, len);
-		buf->ptr += len;
-		buf->left -= len;
 	}
 }
 
 
 static inline void php_json_buffer_append_char(php_json_buffer *buf, char c) /* {{{ */
 {
-	if (buf->left == 0) {
+	char *new_ptr = buf->ptr + 1;
+	if (new_ptr > buf->end) {
 		php_json_buffer_flush(buf, PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
 	}
 	*buf->ptr = c;
-	++buf->ptr;
-	--buf->left;
+	buf->ptr = new_ptr;
 }
 /* }}} */
 
@@ -106,7 +106,7 @@ static void php_json_buffer_append_long(php_json_buffer *buf, long l) /* {{{ */
 
 static inline char *php_json_buffer_block_open(php_json_buffer *buf, size_t len) /* {{{ */
 {
-	if (len > (size_t) buf->left) {
+	if (buf->ptr + len > buf->end) {
 		php_json_buffer_flush(buf, PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
 	}
 	return buf->ptr;
@@ -115,7 +115,6 @@ static inline char *php_json_buffer_block_open(php_json_buffer *buf, size_t len)
 
 static inline void php_json_buffer_block_close(php_json_buffer *buf, size_t len) /* {{{ */
 {
-	buf->left -= len;
 	buf->ptr += len;
 }
 /* }}} */
