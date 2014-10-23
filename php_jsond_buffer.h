@@ -73,7 +73,7 @@ static inline void php_json_buffer_append_char(php_json_buffer *buf, char c) /* 
 
 #define PHP_JSON_INT_BUFFER_SIZE 32
 
-static void php_json_buffer_append_long(php_json_buffer *buf, long l) /* {{{ */
+static inline void php_json_buffer_append_long(php_json_buffer *buf, long l) /* {{{ */
 {
 	char str[PHP_JSON_INT_BUFFER_SIZE];
 	char *p = &str[PHP_JSON_INT_BUFFER_SIZE - 1];
