@@ -77,7 +77,6 @@ static inline void php_json_buffer_append_long(php_json_buffer *buf, long l) /* 
 {
 	char str[PHP_JSON_INT_BUFFER_SIZE];
 	char *p = &str[PHP_JSON_INT_BUFFER_SIZE];
-	size_t len = 0;
 	zend_bool negative;
 
 	if (l < 0) {
@@ -90,15 +89,13 @@ static inline void php_json_buffer_append_long(php_json_buffer *buf, long l) /* 
 	do {
 		*--p = (char) (l % 10) + '0';
 		l /= 10;
-		len++;
 	} while (l > 0);
 
 	if (negative) {
 		*--p = '-';
-		len++;
 	}
 
-	php_json_buffer_append_stringl(buf, p, len);
+	php_json_buffer_append_stringl(buf, p, &str[PHP_JSON_INT_BUFFER_SIZE] - p);
 }
 /* }}} */
 
