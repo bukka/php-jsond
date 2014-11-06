@@ -130,4 +130,44 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 #define PHP_JSON_BUFFER_STRVAL(_buf) (_buf).dbuf
 #define PHP_JSON_BUFFER_STRLEN(_buf) (_buf).dsize
 
+
+#define PHP_JSON_BUFFER_INIT(_buf) \
+	php_json_buffer_init(_buf)
+
+#define PHP_JSON_BUFFER_DESTROY(_buf) \
+	 php_json_buffer_destroy(_buf)
+
+#define PHP_JSON_BUFFER_FLUSH(_buf, _pre_alloc_size) \
+	php_json_buffer_flush(_buf, _pre_alloc_size)
+
+#define PHP_JSON_BUFFER_FINISH(_buf) \
+	 php_json_buffer_finish(_buf)
+
+#define PHP_JSON_BUFFER_ALLOC(_buf, _len) \
+	php_json_buffer_alloc(_buf, _len)
+
+#define PHP_JSON_BUFFER_RESET(_buf) \
+	php_json_buffer_reset(_buf)
+
+#define PHP_JSON_BUFFER_APPEND_STRING(_buf, _str, _len) \
+	php_json_buffer_append_stringl(_buf, _str, _len)
+
+#define PHP_JSON_BUFFER_APPEND_CHAR(_buf, _c) \
+	php_json_buffer_append_char(_buf, _c)
+
+#define PHP_JSON_BUFFER_APPEND_LONG(_buf, _l) \
+	php_json_buffer_append_long(_buf, _l)
+
+#define PHP_JSON_BUFFER_BLOCK_OPEN(_buf, _len) \
+	php_json_buffer_block_open(_buf, _len)
+
+#define PHP_JSON_BUFFER_BLOCK_CLOSE(_buf, _len) \
+	php_json_buffer_block_open(_buf, _len)
+
+#define PHP_JSON_BUFFER_MARK_SET(_buf) \
+	php_json_buffer_mark_set(_buf)
+
+#define PHP_JSON_BUFFER_MARK_DELETE(_buf) \
+	php_json_buffer_mark_del(_buf)
+
 #endif	/* PHP_JSOND_BUFFER_H */
