@@ -211,16 +211,15 @@ static PHP_JSOND_FUNCTION(encode)
 
 	JSOND_G(encode_max_depth) = depth;
 
-	php_json_buffer_init(&buf);
+	PHP_JSON_BUF_INIT(&buf);
 	PHP_JSOND_NAME(encode)(&buf, parameter, options TSRMLS_CC);
 
 	if ((JSOND_G(error_code) != PHP_JSON_ERROR_NONE && !(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR)) ||
 			PHP_JSON_BUFFER_STRLEN(buf) > LONG_MAX) {
 		ZVAL_FALSE(return_value);
-		php_json_buffer_destroy(&buf);
+		PHP_JSON_BUF_DESTROY(&buf);
 	} else {
-		php_json_buffer_finish(&buf);
-		ZVAL_STRINGL(return_value, PHP_JSON_BUFFER_STRVAL(buf), (int) PHP_JSON_BUFFER_STRLEN(buf), 0);
+		PHP_JSON_BUF_RETURN(buf, return_value);
 	}
 }
 /* }}} */

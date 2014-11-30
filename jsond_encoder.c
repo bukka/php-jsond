@@ -83,7 +83,7 @@ static int php_json_determine_array_type(zval **val TSRMLS_DC) /* {{{ */
 static inline void php_json_pretty_print_char(php_json_buffer *buf, int options, char c TSRMLS_DC) /* {{{ */
 {
 	if (options & PHP_JSON_PRETTY_PRINT) {
-		php_json_buffer_append_char(buf, c);
+		PHP_JSON_BUF_APPEND_CHAR(buf, c);
 	}
 }
 /* }}} */
@@ -94,7 +94,7 @@ static inline void php_json_pretty_print_indent(php_json_buffer *buf, int option
 
 	if (options & PHP_JSON_PRETTY_PRINT) {
 		for (i = 0; i < JSOND_G(encoder_depth); ++i) {
-			php_json_buffer_append_stringl(buf, "    ", 4);
+			PHP_JSON_BUF_APPEND_STRING(buf, "    ", 4);
 		}
 	}
 }
@@ -103,16 +103,15 @@ static inline void php_json_pretty_print_indent(php_json_buffer *buf, int option
 static void php_json_encode_double(php_json_buffer *buf, double d TSRMLS_DC) /* {{{ */
 {
 	if (!zend_isinf(d) && !zend_isnan(d)) {
-		size_t maxlen = MIN(EG(precision) + MAX_LENGTH_OF_DOUBLE, PHP_JSON_DOUBLE_MAX_LENGTH) + 1;
-		char *num = php_json_buffer_block_open(buf, maxlen);
-		php_gcvt(d, EG(precision), '.', 'e', num);
-		php_json_buffer_block_close(buf, strlen(num));
+		PHP_JSON_BUF_DOUBLE_BLOCK_INIT(buf, num, PHP_JSON_DOUBLE_MAX_LENGTH);
+		php_gcvt(d, EG(precision), '.', 'e', &num[0]);
+		PHP_JSON_BUF_DOUBLE_BLOCK_CLOSE(buf, num);
 		if (strchr(num, '.') == NULL) {
-			php_json_buffer_append_stringl(buf, ".0", 2);
+			PHP_JSON_BUF_APPEND_STRING(buf, ".0", 2);
 		}
 	} else {
 		JSOND_G(error_code) = PHP_JSON_ERROR_INF_OR_NAN;
-		php_json_buffer_append_char(buf, '0');
+		PHP_JSON_BUF_APPEND_CHAR(buf, '0');
 	}
 }
 /* }}} */
@@ -122,10 +121,10 @@ static inline char *php_json_escape_string_flush(php_json_buffer *buf, char *mar
 {
 	char *prechar = s - extralen;
 	if (prechar != mark) {
-		php_json_buffer_append_stringl(buf, mark, prechar - mark);
+		PHP_JSON_BUF_APPEND_STRING(buf, mark, prechar - mark);
 	}
 	if (esc_len) {
-		php_json_buffer_append_stringl(buf, esc, esc_len);
+		PHP_JSON_BUF_APPEND_STRING(buf, esc, esc_len);
 	}
 	return s + 1;
 }
@@ -139,7 +138,7 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 	char *mark = s;
 
 	if (len == 0) {
-		php_json_buffer_append_stringl(buf, "\"\"", 2);
+		PHP_JSON_BUF_APPEND_STRING(buf, "\"\"", 2);
 		return;
 	}
 
@@ -150,7 +149,7 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 
 		if ((type = is_numeric_string(s, len, &p, &d, 0)) != 0) {
 			if (type == IS_LONG) {
-				php_json_buffer_append_long(buf, p);
+				PHP_JSON_BUF_APPEND_LONG(buf, p);
 			} else if (type == IS_DOUBLE) {
 				php_json_encode_double(buf, d TSRMLS_CC);
 			}
@@ -163,7 +162,7 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 
 	/* pre-allocate for string length plus 2 quotes */
 	/* smart_str_alloc(buf, len+2, 0); */
-	php_json_buffer_append_char(buf, '"');
+	PHP_JSON_BUF_APPEND_CHAR(buf, '"');
 
 	for (count = 0; count < len; count++, s++) {
 		if (php_json_utf8_decode(&state, &codepoint, (unsigned char) *s)) {
@@ -239,20 +238,20 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 					mark = php_json_escape_string_flush(buf, mark, s, "\\u", 2, codepoint < ' ' ? 0 : codelen);
 					codelen = 0;
 					if (codepoint <= 0xffff) {
-						php_json_buffer_append_char(buf, digits[(codepoint & 0xf000) >> 12]);
-						php_json_buffer_append_char(buf, digits[(codepoint & 0xf00)  >> 8]);
-						php_json_buffer_append_char(buf, digits[(codepoint & 0xf0)   >> 4]);
-						php_json_buffer_append_char(buf, digits[(codepoint & 0xf)]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, digits[(codepoint & 0xf000) >> 12]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, digits[(codepoint & 0xf00)  >> 8]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, digits[(codepoint & 0xf0)   >> 4]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, digits[(codepoint & 0xf)]);
 					} else {
-						php_json_buffer_append_char(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf000) >> 12]);
-						php_json_buffer_append_char(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf00)  >> 8]);
-						php_json_buffer_append_char(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf0)   >> 4]);
-						php_json_buffer_append_char(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf)]);
-						php_json_buffer_append_stringl(buf, "\\u", 2);
-						php_json_buffer_append_char(buf, digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf000) >> 12]);
-						php_json_buffer_append_char(buf, digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf00)  >> 8]);
-						php_json_buffer_append_char(buf, digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf0)   >> 4]);
-						php_json_buffer_append_char(buf, digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf)]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf000) >> 12]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf00)  >> 8]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf0)   >> 4]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf)]);
+						PHP_JSON_BUF_APPEND_STRING(buf, "\\u", 2);
+						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf000) >> 12]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf00)  >> 8]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf0)   >> 4]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf)]);
 					}
 				}
 				break;
@@ -262,12 +261,12 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 	if (state != PHP_JSON_UTF8_ACCEPT) {
 		JSOND_G(error_code) = PHP_JSON_ERROR_UTF8;
 		php_json_buffer_reset(buf);
-		php_json_buffer_append_stringl(buf, "null", 4);
+		PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
 	} else {
 		if (mark < s) {
-			php_json_buffer_append_stringl(buf, mark, s - mark);
+			PHP_JSON_BUF_APPEND_STRING(buf, mark, s - mark);
 		}
-		php_json_buffer_append_char(buf, '"');
+		PHP_JSON_BUF_APPEND_CHAR(buf, '"');
 	}
 	php_json_buffer_mark_del(buf);
 }
@@ -288,14 +287,14 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 
 	if (myht && myht->nApplyCount > 1) {
 		JSOND_G(error_code) = PHP_JSON_ERROR_RECURSION;
-		php_json_buffer_append_stringl(buf, "null", 4);
+		PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
 		return;
 	}
 
 	if (r == PHP_JSON_OUTPUT_ARRAY) {
-		php_json_buffer_append_char(buf, '[');
+		PHP_JSON_BUF_APPEND_CHAR(buf, '[');
 	} else {
-		php_json_buffer_append_char(buf, '{');
+		PHP_JSON_BUF_APPEND_CHAR(buf, '{');
 	}
 
 	php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
@@ -326,7 +325,7 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 
 				if (r == PHP_JSON_OUTPUT_ARRAY) {
 					if (need_comma) {
-						php_json_buffer_append_char(buf, ',');
+						PHP_JSON_BUF_APPEND_CHAR(buf, ',');
 						php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
 					} else {
 						need_comma = 1;
@@ -345,7 +344,7 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 						}
 
 						if (need_comma) {
-							php_json_buffer_append_char(buf, ',');
+							PHP_JSON_BUF_APPEND_CHAR(buf, ',');
 							php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
 						} else {
 							need_comma = 1;
@@ -354,14 +353,14 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 						php_json_pretty_print_indent(buf, options TSRMLS_CC);
 
 						php_json_escape_string(buf, key, key_len - 1, options & ~PHP_JSON_NUMERIC_CHECK TSRMLS_CC);
-						php_json_buffer_append_char(buf, ':');
+						PHP_JSON_BUF_APPEND_CHAR(buf, ':');
 
 						php_json_pretty_print_char(buf, options, ' ' TSRMLS_CC);
 
 						php_json_encode_zval(buf, *data, options TSRMLS_CC);
 					} else {
 						if (need_comma) {
-							php_json_buffer_append_char(buf, ',');
+							PHP_JSON_BUF_APPEND_CHAR(buf, ',');
 							php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
 						} else {
 							need_comma = 1;
@@ -369,10 +368,10 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 
 						php_json_pretty_print_indent(buf, options TSRMLS_CC);
 
-						php_json_buffer_append_char(buf, '"');
-						php_json_buffer_append_long(buf, (long) index);
-						php_json_buffer_append_char(buf, '"');
-						php_json_buffer_append_char(buf, ':');
+						PHP_JSON_BUF_APPEND_CHAR(buf, '"');
+						PHP_JSON_BUF_APPEND_LONG(buf, (long) index);
+						PHP_JSON_BUF_APPEND_CHAR(buf, '"');
+						PHP_JSON_BUF_APPEND_CHAR(buf, ':');
 
 						php_json_pretty_print_char(buf, options, ' ' TSRMLS_CC);
 
@@ -395,9 +394,9 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 	php_json_pretty_print_indent(buf, options TSRMLS_CC);
 
 	if (r == PHP_JSON_OUTPUT_ARRAY) {
-		php_json_buffer_append_char(buf, ']');
+		PHP_JSON_BUF_APPEND_CHAR(buf, ']');
 	} else {
-		php_json_buffer_append_char(buf, '}');
+		PHP_JSON_BUF_APPEND_CHAR(buf, '}');
 	}
 }
 /* }}} */
@@ -417,7 +416,7 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 
 	if (myht && myht->nApplyCount > 1) {
 		JSOND_G(error_code) = PHP_JSON_ERROR_RECURSION;
-		php_json_buffer_append_stringl(buf, "null", 4);
+		PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
 		return;
 	}
 
@@ -425,14 +424,14 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 
 	if (FAILURE == call_user_function_ex(EG(function_table), &val, &fname, &retval, 0, NULL, 1, NULL TSRMLS_CC) || !retval) {
 		zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "Failed calling %s::jsonSerialize()", ce->name);
-		php_json_buffer_append_stringl(buf, "null", sizeof("null") - 1);
+		PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
 		return;
     }
 
 	if (EG(exception)) {
 		/* Error already raised */
 		zval_ptr_dtor(&retval);
-		php_json_buffer_append_stringl(buf, "null", sizeof("null") - 1);
+		PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
 		return;
 	}
 
@@ -453,19 +452,19 @@ void php_json_encode_zval(php_json_buffer *buf, zval *val, int options TSRMLS_DC
 {
 	switch (Z_TYPE_P(val)) {
 		case IS_NULL:
-			php_json_buffer_append_stringl(buf, "null", 4);
+			PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
 			break;
 
 		case IS_BOOL:
 			if (Z_BVAL_P(val)) {
-				php_json_buffer_append_stringl(buf, "true", 4);
+				PHP_JSON_BUF_APPEND_STRING(buf, "true", 4);
 			} else {
-				php_json_buffer_append_stringl(buf, "false", 5);
+				PHP_JSON_BUF_APPEND_STRING(buf, "false", 5);
 			}
 			break;
 
 		case IS_LONG:
-			php_json_buffer_append_long(buf, Z_LVAL_P(val));
+			PHP_JSON_BUF_APPEND_LONG(buf, Z_LVAL_P(val));
 			break;
 
 		case IS_DOUBLE:
@@ -488,7 +487,7 @@ void php_json_encode_zval(php_json_buffer *buf, zval *val, int options TSRMLS_DC
 
 		default:
 			JSOND_G(error_code) = PHP_JSON_ERROR_UNSUPPORTED_TYPE;
-			php_json_buffer_append_stringl(buf, "null", 4);
+			PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
 			break;
 	}
 

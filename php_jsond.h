@@ -91,7 +91,7 @@ extern zend_module_entry jsond_module_entry;
 typedef enum {
 	PHP_JSON_ERROR_NONE = 0,
     PHP_JSON_ERROR_DEPTH,
-    PHP_JSON_ERROR_STATE_MISMATCH, /* not used */
+    PHP_JSON_ERROR_STATE_MISMATCH,
     PHP_JSON_ERROR_CTRL_CHAR,
     PHP_JSON_ERROR_SYNTAX,
     PHP_JSON_ERROR_UTF8,
