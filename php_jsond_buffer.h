@@ -21,6 +21,8 @@
 
 #include "php.h"
 
+#define PHP_JSON_NOOP ((void) 0)
+
 #ifndef PHP_JSON_BUF_TYPE_SMART
 
 /* static buffer size */
@@ -162,6 +164,9 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 #define PHP_JSON_BUF_DOUBLE_BLOCK_CLOSE(_buf, _dst) \
 	php_json_buffer_block_close(_buf, strlen(_dst))
 
+#define PHP_JSON_BUF_MARK_DECLARE(_buf) \
+	PHP_JSON_NOOP
+
 #define PHP_JSON_BUF_MARK_SET(_buf) \
 	php_json_buffer_mark_set(_buf)
 
@@ -192,7 +197,8 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 
 #define PHP_JSON_BUF_FINISH(_buf)
 
-#define PHP_JSON_BUF_ALLOC(_buf, _len)
+#define PHP_JSON_BUF_ALLOC(_buf, _len) \
+	smart_str_alloc(_buf, _len+2, 0)
 
 #define PHP_JSON_BUF_APPEND_STRING(_buf, _str, _len) \
 	smart_str_appendl(_buf, _str, _len)
@@ -206,16 +212,22 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 #define PHP_JSON_BUF_DOUBLE_BLOCK_INIT(_buf, _dst, _max_len) \
 	char _dst[_max_len]
 
-#define PHP_JSON_BUF_DOUBLE_BLOCK_CLOSE(_buf, _dst)
+#define PHP_JSON_BUF_DOUBLE_BLOCK_CLOSE(_buf, _dst) \
+	PHP_JSON_NOOP
+
+#define _PHP_JSON_BUF_MARK_NAME(_buf) _buf##__oldlen
+
+#define PHP_JSON_BUF_MARK_DECLARE(_buf) \
+	size_t _PHP_JSON_BUF_MARK_NAME(_buf)
 
 #define PHP_JSON_BUFFER_MARK_SET(_buf) \
-
+	_PHP_JSON_BUF_MARK_NAME(_buf) = _buf->len
 
 #define PHP_JSON_BUFFER_MARK_DELETE(_buf) \
-
+	PHP_JSON_NOOP
 
 #define PHP_JSON_BUF_RESET(_buf) \
-
+	buf->len = _PHP_JSON_BUF_MARK_NAME(_buf)
 
 #define PHP_JSON_BUF_RETURN(_buf_s, return_value) do { \
 		ZVAL_STRINGL(return_value, _buf_s.c, _buf_s.len, 1); \

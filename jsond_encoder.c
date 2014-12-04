@@ -136,6 +136,7 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 	int state = 0;
 	int codelen = 0;
 	char *mark = s;
+	PHP_JSON_BUF_MARK_DECLARE(buf);
 
 	if (len == 0) {
 		PHP_JSON_BUF_APPEND_STRING(buf, "\"\"", 2);
@@ -158,10 +159,10 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 	}
 
 	/* set mark */
-	php_json_buffer_mark_set(buf);
+	PHP_JSON_BUF_MARK_SET(buf);
 
 	/* pre-allocate for string length plus 2 quotes */
-	/* smart_str_alloc(buf, len+2, 0); */
+	PHP_JSON_BUF_ALLOC(buf, len);
 	PHP_JSON_BUF_APPEND_CHAR(buf, '"');
 
 	for (count = 0; count < len; count++, s++) {
@@ -268,7 +269,7 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 		}
 		PHP_JSON_BUF_APPEND_CHAR(buf, '"');
 	}
-	php_json_buffer_mark_del(buf);
+	PHP_JSON_BUF_MARK_DELETE(buf);
 }
 /* }}} */
 
