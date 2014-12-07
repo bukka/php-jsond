@@ -23,7 +23,7 @@
 
 #define PHP_JSON_NOOP ((void) 0)
 
-#ifndef PHP_JSON_BUF_TYPE_SMART
+#ifdef PHP_JSOND_BUF_TYPE_NATIVE
 
 /* static buffer size */
 #define PHP_JSON_BUFFER_STATIC_SIZE 2048
@@ -176,6 +176,8 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 #define PHP_JSON_BUF_RESET(_buf) \
 	php_json_buffer_reset(_buf)
 
+#define PHP_JSON_BUF_LENGTH PHP_JSON_BUFFER_STRLEN
+
 #define PHP_JSON_BUF_RETURN(_buf_s, return_value) do { \
 		PHP_JSON_BUF_FINISH(&_buf_s); \
 		ZVAL_STRINGL(return_value, PHP_JSON_BUFFER_STRVAL(_buf_s), (int) PHP_JSON_BUFFER_STRLEN(_buf_s), 0); \
@@ -183,6 +185,8 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 
 
 #else
+
+#include "ext/standard/php_smart_str.h"
 
 #define php_json_buffer smart_str
 
@@ -218,22 +222,24 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 #define _PHP_JSON_BUF_MARK_NAME(_buf) _buf##__oldlen
 
 #define PHP_JSON_BUF_MARK_DECLARE(_buf) \
-	size_t _PHP_JSON_BUF_MARK_NAME(_buf)
+	size_t _PHP_JSON_BUF_MARK_NAME(_buf), newlen
 
-#define PHP_JSON_BUFFER_MARK_SET(_buf) \
+#define PHP_JSON_BUF_MARK_SET(_buf) \
 	_PHP_JSON_BUF_MARK_NAME(_buf) = _buf->len
 
-#define PHP_JSON_BUFFER_MARK_DELETE(_buf) \
+#define PHP_JSON_BUF_MARK_DELETE(_buf) \
 	PHP_JSON_NOOP
 
 #define PHP_JSON_BUF_RESET(_buf) \
 	buf->len = _PHP_JSON_BUF_MARK_NAME(_buf)
 
+#define PHP_JSON_BUF_LENGTH(_buf_s) _buf_s.len
+
 #define PHP_JSON_BUF_RETURN(_buf_s, return_value) do { \
 		ZVAL_STRINGL(return_value, _buf_s.c, _buf_s.len, 1); \
-		PHP_JSON_BUF_DESTROY(&_buf); \
+		PHP_JSON_BUF_DESTROY(&_buf_s); \
 	} while(0)
 
-#endif /* PHP_JSON_BUF_TYPE_SMART */
+#endif /* PHP_JSON_BUF_TYPE_NATIVE */
 
 #endif	/* PHP_JSOND_BUFFER_H */

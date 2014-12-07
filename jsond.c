@@ -215,7 +215,7 @@ static PHP_JSOND_FUNCTION(encode)
 	PHP_JSOND_NAME(encode)(&buf, parameter, options TSRMLS_CC);
 
 	if ((JSOND_G(error_code) != PHP_JSON_ERROR_NONE && !(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR)) ||
-			PHP_JSON_BUFFER_STRLEN(buf) > LONG_MAX) {
+			PHP_JSON_BUF_LENGTH(buf) > LONG_MAX) {
 		ZVAL_FALSE(return_value);
 		PHP_JSON_BUF_DESTROY(&buf);
 	} else {

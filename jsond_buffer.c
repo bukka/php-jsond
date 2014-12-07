@@ -16,6 +16,8 @@
   +----------------------------------------------------------------------+
 */
 
+#ifdef PHP_JSOND_BUF_TYPE_NATIVE
+
 #include "php_jsond_buffer.h"
 #include "php_jsond.h"
 
@@ -89,3 +91,5 @@ void php_json_buffer_reset(php_json_buffer *buf) /* {{{ */
 	}
 }
 /* }}} */
+
+#endif /* PHP_JSON_BUF_TYPE_NATIVE */

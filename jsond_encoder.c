@@ -261,7 +261,7 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 
 	if (state != PHP_JSON_UTF8_ACCEPT) {
 		JSOND_G(error_code) = PHP_JSON_ERROR_UTF8;
-		php_json_buffer_reset(buf);
+		PHP_JSON_BUF_RESET(buf);
 		PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
 	} else {
 		if (mark < s) {
