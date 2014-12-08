@@ -103,12 +103,15 @@ static inline void php_json_pretty_print_indent(php_json_buffer *buf, int option
 static void php_json_encode_double(php_json_buffer *buf, double d TSRMLS_DC) /* {{{ */
 {
 	if (!zend_isinf(d) && !zend_isnan(d)) {
+		size_t len;
 		PHP_JSON_BUF_DOUBLE_BLOCK_INIT(buf, num, PHP_JSON_DOUBLE_MAX_LENGTH);
 		php_gcvt(d, EG(precision), '.', 'e', &num[0]);
-		PHP_JSON_BUF_DOUBLE_BLOCK_CLOSE(buf, num);
+		len = strlen(num);
 		if (strchr(num, '.') == NULL) {
-			PHP_JSON_BUF_APPEND_STRING(buf, ".0", 2);
+			memcpy(&num[len], ".0", sizeof(".0"));
+			len += 2;
 		}
+		PHP_JSON_BUF_DOUBLE_BLOCK_CLOSE(buf, num, len);
 	} else {
 		JSOND_G(error_code) = PHP_JSON_ERROR_INF_OR_NAN;
 		PHP_JSON_BUF_APPEND_CHAR(buf, '0');
