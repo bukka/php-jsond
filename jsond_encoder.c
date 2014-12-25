@@ -100,14 +100,14 @@ static inline void php_json_pretty_print_indent(php_json_buffer *buf, int option
 }
 /* }}} */
 
-static void php_json_encode_double(php_json_buffer *buf, double d TSRMLS_DC) /* {{{ */
+static inline void php_json_encode_double(php_json_buffer *buf, double d, int options TSRMLS_DC) /* {{{ */
 {
 	if (!zend_isinf(d) && !zend_isnan(d)) {
 		size_t len;
 		PHP_JSON_BUF_DOUBLE_BLOCK_INIT(buf, num, PHP_JSON_DOUBLE_MAX_LENGTH);
 		php_gcvt(d, EG(precision), '.', 'e', &num[0]);
 		len = strlen(num);
-		if (strchr(num, '.') == NULL) {
+		if ((options & PHP_JSON_PRESERVE_FRACTIONAL_PART) && strchr(num, '.') == NULL) {
 			memcpy(&num[len], ".0", sizeof(".0"));
 			len += 2;
 		}
@@ -155,7 +155,7 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 			if (type == IS_LONG) {
 				PHP_JSON_BUF_APPEND_LONG(buf, p);
 			} else if (type == IS_DOUBLE) {
-				php_json_encode_double(buf, d TSRMLS_CC);
+				php_json_encode_double(buf, d, options TSRMLS_CC);
 			}
 			return;
 		}
@@ -472,7 +472,7 @@ void php_json_encode_zval(php_json_buffer *buf, zval *val, int options TSRMLS_DC
 			break;
 
 		case IS_DOUBLE:
-			php_json_encode_double(buf, Z_DVAL_P(val) TSRMLS_CC);
+			php_json_encode_double(buf, Z_DVAL_P(val), options TSRMLS_CC);
 			break;
 
 		case IS_STRING:
