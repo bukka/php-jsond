@@ -278,7 +278,7 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 
 static void php_json_encode_array(php_json_buffer *buf, zval **val, int options TSRMLS_DC) /* {{{ */
 {
-	int i, r;
+	int i, r, need_comma = 0;
 	HashTable *myht;
 
 	if (Z_TYPE_PP(val) == IS_ARRAY) {
@@ -301,7 +301,6 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 		PHP_JSON_BUF_APPEND_CHAR(buf, '{');
 	}
 
-	php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
 	++JSOND_G(encoder_depth);
 
 	i = myht ? zend_hash_num_elements(myht) : 0;
@@ -313,7 +312,6 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 		uint key_len;
 		HashPosition pos;
 		HashTable *tmp_ht;
-		int need_comma = 0;
 
 		zend_hash_internal_pointer_reset_ex(myht, &pos);
 		for (;; zend_hash_move_forward_ex(myht, &pos)) {
@@ -330,11 +328,11 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 				if (r == PHP_JSON_OUTPUT_ARRAY) {
 					if (need_comma) {
 						PHP_JSON_BUF_APPEND_CHAR(buf, ',');
-						php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
 					} else {
 						need_comma = 1;
 					}
 
+					php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
 					php_json_pretty_print_indent(buf, options TSRMLS_CC);
 					php_json_encode_zval(buf, *data, options TSRMLS_CC);
 				} else if (r == PHP_JSON_OUTPUT_OBJECT) {
@@ -349,11 +347,11 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 
 						if (need_comma) {
 							PHP_JSON_BUF_APPEND_CHAR(buf, ',');
-							php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
 						} else {
 							need_comma = 1;
 						}
 
+						php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
 						php_json_pretty_print_indent(buf, options TSRMLS_CC);
 
 						php_json_escape_string(buf, key, key_len - 1, options & ~PHP_JSON_NUMERIC_CHECK TSRMLS_CC);
@@ -365,11 +363,11 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 					} else {
 						if (need_comma) {
 							PHP_JSON_BUF_APPEND_CHAR(buf, ',');
-							php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
 						} else {
 							need_comma = 1;
 						}
 
+						php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
 						php_json_pretty_print_indent(buf, options TSRMLS_CC);
 
 						PHP_JSON_BUF_APPEND_CHAR(buf, '"');
@@ -394,8 +392,12 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 		JSOND_G(error_code) = PHP_JSON_ERROR_DEPTH;
 	}
 	--JSOND_G(encoder_depth);
-	php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
-	php_json_pretty_print_indent(buf, options TSRMLS_CC);
+
+	/* Only keep closing bracket on same line for empty arrays/objects */
+	if (need_comma) {
+		php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
+		php_json_pretty_print_indent(buf, options TSRMLS_CC);
+	}
 
 	if (r == PHP_JSON_OUTPUT_ARRAY) {
 		PHP_JSON_BUF_APPEND_CHAR(buf, ']');
