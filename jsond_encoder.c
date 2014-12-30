@@ -41,7 +41,7 @@
 
 ZEND_DECLARE_MODULE_GLOBALS(jsond)
 
-static const char digits[] = "0123456789abcdef";
+static const char php_json_digits[] = "0123456789abcdef";
 
 static int php_json_determine_array_type(zval **val TSRMLS_DC) /* {{{ */
 {
@@ -100,6 +100,8 @@ static inline void php_json_pretty_print_indent(php_json_buffer *buf, int option
 }
 /* }}} */
 
+/* Double encoding */
+
 static inline void php_json_encode_double(php_json_buffer *buf, double d, int options TSRMLS_DC) /* {{{ */
 {
 	if (!zend_isinf(d) && !zend_isnan(d)) {
@@ -119,8 +121,9 @@ static inline void php_json_encode_double(php_json_buffer *buf, double d, int op
 }
 /* }}} */
 
+/* String encoding */
 
-static inline char *php_json_escape_string_flush(php_json_buffer *buf, char *mark, char *s, char *esc, int esc_len, int extralen)
+static inline char *php_json_escape_string_flush(php_json_buffer *buf, char *mark, char *s, char *esc, int esc_len, int extralen) /* {{{ */
 {
 	char *prechar = s - extralen;
 	if (prechar != mark) {
@@ -131,6 +134,7 @@ static inline char *php_json_escape_string_flush(php_json_buffer *buf, char *mar
 	}
 	return s + 1;
 }
+/* }}} */
 
 static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int options TSRMLS_DC) /* {{{ */
 {
@@ -242,20 +246,20 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 					mark = php_json_escape_string_flush(buf, mark, s, "\\u", 2, codepoint < ' ' ? 0 : codelen);
 					codelen = 0;
 					if (codepoint <= 0xffff) {
-						PHP_JSON_BUF_APPEND_CHAR(buf, digits[(codepoint & 0xf000) >> 12]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, digits[(codepoint & 0xf00)  >> 8]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, digits[(codepoint & 0xf0)   >> 4]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, digits[(codepoint & 0xf)]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf000) >> 12]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf00)  >> 8]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf0)   >> 4]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf)]);
 					} else {
-						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf000) >> 12]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf00)  >> 8]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf0)   >> 4]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xD7C0 + (codepoint >> 10)) & 0xf)]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xD7C0 + (codepoint >> 10)) & 0xf000) >> 12]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xD7C0 + (codepoint >> 10)) & 0xf00)  >> 8]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xD7C0 + (codepoint >> 10)) & 0xf0)   >> 4]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xD7C0 + (codepoint >> 10)) & 0xf)]);
 						PHP_JSON_BUF_APPEND_STRING(buf, "\\u", 2);
-						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf000) >> 12]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf00)  >> 8]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf0)   >> 4]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf)]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf000) >> 12]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf00)  >> 8]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf0)   >> 4]);
+						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf)]);
 					}
 				}
 				break;
@@ -275,6 +279,8 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 	PHP_JSON_BUF_MARK_DELETE(buf);
 }
 /* }}} */
+
+/* Array encoding */
 
 static void php_json_encode_array(php_json_buffer *buf, zval **val, int options TSRMLS_DC) /* {{{ */
 {
@@ -407,6 +413,7 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 }
 /* }}} */
 
+/* Serializable interface */
 
 static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val, int options TSRMLS_DC) /* {{{ */
 {
@@ -454,6 +461,8 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 }
 /* }}} */
 
+/* ZVAL encoding */
+
 void php_json_encode_zval(php_json_buffer *buf, zval *val, int options TSRMLS_DC) /* {{{ */
 {
 	switch (Z_TYPE_P(val)) {
@@ -500,4 +509,3 @@ void php_json_encode_zval(php_json_buffer *buf, zval *val, int options TSRMLS_DC
 	return;
 }
 /* }}} */
-
