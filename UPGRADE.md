@@ -6,7 +6,8 @@
 - Rejected ECMA-404 incompatible number formats
   - top level (PHP json_decode check): `07`, `0xff`, `.1`, `-.1`
   - all (JSON_Parser): `[1.]`, [1.e1]
-- New error `JSON_ERROR_UTF16` for invalid \uXXXX code (ill-formed surrogate pairs)
+- Add new option `PHP_JSON_VALID_ESCAPED_UNICODE` to check if \uXXXX code is not ill-formed surrogate pair
+  - If set, the new error `JSON_ERROR_UTF16` will be set for invalid \uXXXX code
 
 ### Encoder
 - Added new option `JSON_PRESERVE_FRACTIONAL_PART`
