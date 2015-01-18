@@ -109,7 +109,7 @@ static inline void php_json_encode_double(php_json_buffer *buf, double d, int op
 		PHP_JSON_BUF_DOUBLE_BLOCK_INIT(buf, num, PHP_JSON_DOUBLE_MAX_LENGTH);
 		php_gcvt(d, EG(precision), '.', 'e', &num[0]);
 		len = strlen(num);
-		if ((options & PHP_JSON_PRESERVE_FRACTIONAL_PART) && strchr(num, '.') == NULL) {
+		if ((options & PHP_JSON_PRESERVE_ZERO_FRACTION) && strchr(num, '.') == NULL) {
 			memcpy(&num[len], ".0", sizeof(".0"));
 			len += 2;
 		}

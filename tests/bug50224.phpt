@@ -5,22 +5,22 @@ bug #50224 (jsond_encode() does not always encode a float as a float)
 --FILE--
 <?php
 echo "* Testing JSON output\n\n";
-var_dump(jsond_encode(12.3, JSOND_PRESERVE_FRACTIONAL_PART));
-var_dump(jsond_encode(12, JSOND_PRESERVE_FRACTIONAL_PART));
-var_dump(jsond_encode(12.0, JSOND_PRESERVE_FRACTIONAL_PART));
-var_dump(jsond_encode(0.0, JSOND_PRESERVE_FRACTIONAL_PART));
-var_dump(jsond_encode(array(12, 12.0, 12.3), JSOND_PRESERVE_FRACTIONAL_PART));
-var_dump(jsond_encode((object)array('float' => 12.0, 'integer' => 12), JSOND_PRESERVE_FRACTIONAL_PART));
+var_dump(jsond_encode(12.3, JSOND_PRESERVE_ZERO_FRACTION));
+var_dump(jsond_encode(12, JSOND_PRESERVE_ZERO_FRACTION));
+var_dump(jsond_encode(12.0, JSOND_PRESERVE_ZERO_FRACTION));
+var_dump(jsond_encode(0.0, JSOND_PRESERVE_ZERO_FRACTION));
+var_dump(jsond_encode(array(12, 12.0, 12.3), JSOND_PRESERVE_ZERO_FRACTION));
+var_dump(jsond_encode((object)array('float' => 12.0, 'integer' => 12), JSOND_PRESERVE_ZERO_FRACTION));
 
 echo "\n* Testing encode/decode symmetry\n\n";
 
-var_dump(jsond_decode(jsond_encode(12.3, JSOND_PRESERVE_FRACTIONAL_PART)));
-var_dump(jsond_decode(jsond_encode(12, JSOND_PRESERVE_FRACTIONAL_PART)));
-var_dump(jsond_decode(jsond_encode(12.0, JSOND_PRESERVE_FRACTIONAL_PART)));
-var_dump(jsond_decode(jsond_encode(0.0, JSOND_PRESERVE_FRACTIONAL_PART)));
-var_dump(jsond_decode(jsond_encode(array(12, 12.0, 12.3), JSOND_PRESERVE_FRACTIONAL_PART)));
-var_dump(jsond_decode(jsond_encode((object)array('float' => 12.0, 'integer' => 12), JSOND_PRESERVE_FRACTIONAL_PART)));
-var_dump(jsond_decode(jsond_encode((object)array('float' => 12.0, 'integer' => 12), JSOND_PRESERVE_FRACTIONAL_PART), true));
+var_dump(jsond_decode(jsond_encode(12.3, JSOND_PRESERVE_ZERO_FRACTION)));
+var_dump(jsond_decode(jsond_encode(12, JSOND_PRESERVE_ZERO_FRACTION)));
+var_dump(jsond_decode(jsond_encode(12.0, JSOND_PRESERVE_ZERO_FRACTION)));
+var_dump(jsond_decode(jsond_encode(0.0, JSOND_PRESERVE_ZERO_FRACTION)));
+var_dump(jsond_decode(jsond_encode(array(12, 12.0, 12.3), JSOND_PRESERVE_ZERO_FRACTION)));
+var_dump(jsond_decode(jsond_encode((object)array('float' => 12.0, 'integer' => 12), JSOND_PRESERVE_ZERO_FRACTION)));
+var_dump(jsond_decode(jsond_encode((object)array('float' => 12.0, 'integer' => 12), JSOND_PRESERVE_ZERO_FRACTION), true));
 ?>
 --EXPECTF--
 * Testing JSON output
