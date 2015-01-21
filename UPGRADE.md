@@ -10,9 +10,8 @@
   - If set, the new error `JSON_ERROR_UTF16` will be set for invalid \uXXXX code
 
 ### Encoder
-- Added new option `JSON_PRESERVE_FRACTIONAL_PART`
-  - feature request 50224 ( keeping the float type when encoding )
-  - modified version of https://github.com/php/php-src/pull/642
+- Fixed Bug 64695
+  - JSON_NUMERIC_CHECK has issues with strings that are numbers plus the letter
 
 ## Internal API changes
 - removed JSON_parser.h header
