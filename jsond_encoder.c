@@ -102,22 +102,23 @@ static inline void php_json_pretty_print_indent(php_json_buffer *buf, int option
 
 /* Double encoding */
 
+static inline int php_json_is_valid_double(double d) /* {{{ */
+{
+	return !zend_isinf(d) && !zend_isnan(d);
+}
+/* }}} */
+
 static inline void php_json_encode_double(php_json_buffer *buf, double d, int options TSRMLS_DC) /* {{{ */
 {
-	if (!zend_isinf(d) && !zend_isnan(d)) {
-		size_t len;
-		PHP_JSON_BUF_DOUBLE_BLOCK_INIT(buf, num, PHP_JSON_DOUBLE_MAX_LENGTH);
-		php_gcvt(d, EG(precision), '.', 'e', &num[0]);
-		len = strlen(num);
-		if ((options & PHP_JSON_PRESERVE_ZERO_FRACTION) && strchr(num, '.') == NULL) {
-			memcpy(&num[len], ".0", sizeof(".0"));
-			len += 2;
-		}
-		PHP_JSON_BUF_DOUBLE_BLOCK_CLOSE(buf, num, len);
-	} else {
-		JSOND_G(error_code) = PHP_JSON_ERROR_INF_OR_NAN;
-		PHP_JSON_BUF_APPEND_CHAR(buf, '0');
+	size_t len;
+	PHP_JSON_BUF_DOUBLE_BLOCK_INIT(buf, num, PHP_JSON_DOUBLE_MAX_LENGTH);
+	php_gcvt(d, EG(precision), '.', 'e', &num[0]);
+	len = strlen(num);
+	if ((options & PHP_JSON_PRESERVE_ZERO_FRACTION) && strchr(num, '.') == NULL) {
+		memcpy(&num[len], ".0", sizeof(".0"));
+		len += 2;
 	}
+	PHP_JSON_BUF_DOUBLE_BLOCK_CLOSE(buf, num, len);
 }
 /* }}} */
 
@@ -158,10 +159,12 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 		if ((type = is_numeric_string(s, len, &p, &d, 0)) != 0) {
 			if (type == IS_LONG) {
 				PHP_JSON_BUF_APPEND_LONG(buf, p);
-			} else if (type == IS_DOUBLE) {
-				php_json_encode_double(buf, d, options TSRMLS_CC);
+				return;
 			}
-			return;
+			if (type == IS_DOUBLE && php_json_is_valid_double(d)) {
+				php_json_encode_double(buf, d, options TSRMLS_CC);
+				return;
+			}
 		}
 	}
 
@@ -483,7 +486,12 @@ void php_json_encode_zval(php_json_buffer *buf, zval *val, int options TSRMLS_DC
 			break;
 
 		case IS_DOUBLE:
-			php_json_encode_double(buf, Z_DVAL_P(val), options TSRMLS_CC);
+			if (php_json_is_valid_double(Z_DVAL_P(val))) {
+				php_json_encode_double(buf, Z_DVAL_P(val), options TSRMLS_CC);
+			} else {
+				JSOND_G(error_code) = PHP_JSON_ERROR_INF_OR_NAN;
+				PHP_JSON_BUF_APPEND_CHAR(buf, '0');
+			}
 			break;
 
 		case IS_STRING:
