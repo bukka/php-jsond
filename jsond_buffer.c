@@ -16,6 +16,10 @@
   +----------------------------------------------------------------------+
 */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #ifdef PHP_JSOND_BUF_TYPE_NATIVE
 
 #include "php_jsond_buffer.h"
