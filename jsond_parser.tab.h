@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_PHP_JSON_YY_HOME_JAKUB_PROG_PHP_EXT_JSOND_JSOND_PARSER_TAB_H_INCLUDED
-# define YY_PHP_JSON_YY_HOME_JAKUB_PROG_PHP_EXT_JSOND_JSOND_PARSER_TAB_H_INCLUDED
+#ifndef YY_PHP_JSON_YY_PARSER_INCLUDED
+# define YY_PHP_JSON_YY_PARSER_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -93,4 +93,4 @@ typedef union YYSTYPE YYSTYPE;
 
 int php_json_yyparse (php_json_parser *parser);
 
-#endif /* !YY_PHP_JSON_YY_HOME_JAKUB_PROG_PHP_EXT_JSOND_JSOND_PARSER_TAB_H_INCLUDED  */
+#endif /* !YY_PHP_JSON_YY_PARSER_INCLUDED  */

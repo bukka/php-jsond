@@ -285,19 +285,42 @@ m4_define([b4_declare_yyparse],
 # Declaration that might either go into the header (if --defines)
 # or open coded in the parser body.
 m4_define([b4_shared_declarations],
-[b4_cpp_guard_open([b4_spec_defines_file])[
+[b4_cpp_guard_open([parser])[
 ]b4_declare_yydebug[
 ]b4_percent_code_get([[requires]])[
 ]b4_token_enums_defines[
 ]b4_declare_yylstype[
 ]b4_declare_yyparse[
 ]b4_percent_code_get([[provides]])[
-]b4_cpp_guard_close([b4_spec_defines_file])[]dnl
+]b4_cpp_guard_close([parser])[]dnl
 ])
 
 ## -------------- ##
 ## Output files.  ##
 ## -------------- ##
+
+# b4_json_identification
+# -----------------
+# Customized identification for jsond parser
+m4_define([b4_jsond_identification],
+[[/* Identify Bison output.  */
+#define YYBISON 1
+
+/* Bison version.  */
+#define YYBISON_VERSION "]b4_version["
+
+/* Skeleton name.  */
+#define YYSKELETON_NAME ]["jsond_yacc.c"][]m4_ifdef([b4_pure_flag], [[
+
+/* Pure parsers.  */
+#define YYPURE ]b4_pure_flag])[]m4_ifdef([b4_push_flag], [[
+
+/* Push parsers.  */
+#define YYPUSH ]b4_push_flag])[]m4_ifdef([b4_pull_flag], [[
+
+/* Pull parsers.  */
+#define YYPULL ]b4_pull_flag])[
+]])
 
 b4_output_begin([b4_parser_file_name])
 b4_copyright([Bison implementation for Yacc-like parsers in C])[
@@ -312,7 +335,7 @@ b4_copyright([Bison implementation for Yacc-like parsers in C])[
    define necessary library symbols; they are noted "INFRINGES ON
    USER NAME SPACE" below.  */
 
-]b4_identification
+]b4_jsond_identification
 b4_percent_code_get([[top]])[]dnl
 m4_if(b4_api_prefix, [yy], [],
 [[/* Substitute the type names.  */
