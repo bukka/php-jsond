@@ -1,5 +1,5 @@
 --TEST--
-Bug #63737 JSOND_NUMERIC_CHECK has issues with strings that are numbers plus the letter e
+Bug #64695 JSOND_NUMERIC_CHECK has issues with strings that are numbers plus the letter e
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
