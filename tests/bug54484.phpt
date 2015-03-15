@@ -15,11 +15,16 @@ jsond_decode("invalid jsond");
 var_dump(jsond_last_error());
 
 
+jsond_decode("\"\001 invalid json\"");
+var_dump(jsond_last_error());
+
+
 jsond_decode("");
 var_dump(jsond_last_error());
 ?>
 --EXPECT--
 int(0)
-int(0)
 int(4)
-int(0)
+int(4)
+int(3)
+int(4)
