@@ -39,7 +39,7 @@
 #define PHP_JSON_DOUBLE_MAX_LENGTH 1080
 #endif
 
-ZEND_DECLARE_MODULE_GLOBALS(jsond)
+ZEND_EXTERN_MODULE_GLOBALS(jsond)
 
 static const char php_json_digits[] = "0123456789abcdef";
 
