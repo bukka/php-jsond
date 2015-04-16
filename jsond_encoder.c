@@ -124,7 +124,7 @@ static inline void php_json_encode_double(php_json_buffer *buf, double d, int op
 
 /* String encoding */
 
-static inline char *php_json_escape_string_flush(php_json_buffer *buf, char *mark, char *s, char *esc, int esc_len, int extralen) /* {{{ */
+static inline char *php_json_escape_string_flush_ex(php_json_buffer *buf, char *mark, char *s, char *esc, int esc_len, int extralen) /* {{{ */
 {
 	char *prechar = s - extralen;
 	if (prechar != mark) {
@@ -134,6 +134,12 @@ static inline char *php_json_escape_string_flush(php_json_buffer *buf, char *mar
 		PHP_JSON_BUF_APPEND_STRING(buf, esc, esc_len);
 	}
 	return s + 1;
+}
+/* }}} */
+
+static inline char *php_json_escape_string_flush(php_json_buffer *buf, char *mark, char *s, char *esc, int esc_len) /* {{{ */
+{
+	return php_json_escape_string_flush_ex(buf, mark, s, esc, esc_len, 0);
 }
 /* }}} */
 
@@ -184,69 +190,69 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 		switch (codepoint) {
 			case '"':
 				if (options & PHP_JSON_HEX_QUOT) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\u0022", 6, 0);
+					mark = php_json_escape_string_flush(buf, mark, s, "\\u0022", 6);
 				} else {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\\"", 2, 0);
+					mark = php_json_escape_string_flush(buf, mark, s, "\\\"", 2);
 				}
 				break;
 
 			case '\\':
-				mark = php_json_escape_string_flush(buf, mark, s, "\\\\", 2, 0);
+				mark = php_json_escape_string_flush(buf, mark, s, "\\\\", 2);
 				break;
 
 			case '/':
 				if (!(options & PHP_JSON_UNESCAPED_SLASHES)) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\/", 2, 0);
+					mark = php_json_escape_string_flush(buf, mark, s, "\\/", 2);
 				}
 				break;
 
 			case '\b':
-				mark = php_json_escape_string_flush(buf, mark, s, "\\b", 2, 0);
+				mark = php_json_escape_string_flush(buf, mark, s, "\\b", 2);
 				break;
 
 			case '\f':
-				mark = php_json_escape_string_flush(buf, mark, s, "\\f", 2, 0);
+				mark = php_json_escape_string_flush(buf, mark, s, "\\f", 2);
 				break;
 
 			case '\n':
-				mark = php_json_escape_string_flush(buf, mark, s, "\\n", 2, 0);
+				mark = php_json_escape_string_flush(buf, mark, s, "\\n", 2);
 				break;
 
 			case '\r':
-				mark = php_json_escape_string_flush(buf, mark, s, "\\r", 2, 0);
+				mark = php_json_escape_string_flush(buf, mark, s, "\\r", 2);
 				break;
 
 			case '\t':
-				mark = php_json_escape_string_flush(buf, mark, s, "\\t", 2, 0);
+				mark = php_json_escape_string_flush(buf, mark, s, "\\t", 2);
 				break;
 
 			case '<':
 				if (options & PHP_JSON_HEX_TAG) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\u003C", 6, 0);
+					mark = php_json_escape_string_flush(buf, mark, s, "\\u003C", 6);
 				}
 				break;
 
 			case '>':
 				if (options & PHP_JSON_HEX_TAG) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\u003E", 6, 0);
+					mark = php_json_escape_string_flush(buf, mark, s, "\\u003E", 6);
 				}
 				break;
 
 			case '&':
 				if (options & PHP_JSON_HEX_AMP) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\u0026", 6, 0);
+					mark = php_json_escape_string_flush(buf, mark, s, "\\u0026", 6);
 				}
 				break;
 
 			case '\'':
 				if (options & PHP_JSON_HEX_APOS) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\u0027", 6, 0);
+					mark = php_json_escape_string_flush(buf, mark, s, "\\u0027", 6);
 				}
 				break;
 
 			default:
 				if (codepoint < ' ' || (!(options & PHP_JSON_UNESCAPED_UNICODE) && codepoint > 0x7f)) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\u", 2, codepoint < ' ' ? 0 : codelen);
+					mark = php_json_escape_string_flush_ex(buf, mark, s, "\\u", 2, codepoint < ' ' ? 0 : codelen);
 					codelen = 0;
 					if (codepoint <= 0xffff) {
 						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf000) >> 12]);
