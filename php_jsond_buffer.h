@@ -63,15 +63,13 @@ static inline void php_json_buffer_append_stringl(php_json_buffer *buf, const ch
 	}
 }
 
-
 static inline void php_json_buffer_append_char(php_json_buffer *buf, char c) /* {{{ */
 {
-	char *new_ptr = buf->ptr + 1;
-	if (new_ptr > buf->end) {
+	if (buf->ptr > buf->end) {
 		php_json_buffer_flush(buf, PHP_JSON_BUFFER_EXTRA_ALLOC_SIZE);
 	}
 	*buf->ptr = c;
-	buf->ptr = new_ptr;
+	buf->ptr++;
 }
 /* }}} */
 
