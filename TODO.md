@@ -1,14 +1,21 @@
 # TODO list
 
 ## Decoding
+- use JSON_ERROR_CTRL_CHAR also in non string context (JS condition)
 - error for `{ "\u0000 key starting with zero": "value" }` (`JSON_ERROR_MANGLED_PROPERTY_NAME`)
+  - https://bugs.php.net/bug.php?id=68546
+- add options for checking UTF8 validity for surrogate pairs escapes
+  - https://bugs.php.net/bug.php?id=62010
 - extended error info containing error location
-- fix potential issues with bigint checking
-  - check for max double string length (use string if it's too big)
+- check if there are some potential issues with bigint checking
   - refactore algorithm in jsond_scanner.re
 
 ## Encoding
-- fix, improve and test native buffer
+- fix stacking of exceptions in JsonSerializable objects
+  - https://bugs.php.net/bug.php?id=68992
+- add shortcut macro for XSS attacks
+  - https://bugs.php.net/bug.php?id=65257
+- improve and test native buffer
 
 ## General
 - Replace functions and constants if PHP_JSOND_PRIMARY defined
@@ -19,7 +26,10 @@
 
 ## Testing
 - new generator
-- more sources
-  - Hoa: https://github.com/Hywan/jsond-test
-  - [Comparison JSON impls](http://gggeek.altervista.org/sw/article_20070425.html) and [its source](https://github.com/gggeek/phpxmlrpc-extras/blob/master/jsonrpc/testsuite.php)
-  - [Jan Tvrdik compat test](https://gist.github.com/JanTvrdik/10277952#file-test-php)
+
+# Links
+
+## Testing resources
+- Hoa: https://github.com/Hywan/jsond-test
+- [Comparison JSON impls](http://gggeek.altervista.org/sw/article_20070425.html) and [its source](https://github.com/gggeek/phpxmlrpc-extras/blob/master/jsonrpc/testsuite.php)
+- [Jan Tvrdik compat test](https://gist.github.com/JanTvrdik/10277952#file-test-php)
