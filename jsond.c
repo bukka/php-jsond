@@ -18,10 +18,6 @@
 
 /* $Id$ */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include "php.h"
 #include "php_ini.h"
 #include "ext/standard/info.h"
@@ -122,7 +118,7 @@ static PHP_MINIT_FUNCTION(jsond)
 	PHP_JSOND_REGISTER_LONG_CONSTANT("ERROR_RECURSION", PHP_JSON_ERROR_RECURSION, CONST_CS | CONST_PERSISTENT);
 	PHP_JSOND_REGISTER_LONG_CONSTANT("ERROR_INF_OR_NAN", PHP_JSON_ERROR_INF_OR_NAN, CONST_CS | CONST_PERSISTENT);
 	PHP_JSOND_REGISTER_LONG_CONSTANT("ERROR_UNSUPPORTED_TYPE", PHP_JSON_ERROR_UNSUPPORTED_TYPE, CONST_CS | CONST_PERSISTENT);
-	
+
 	PHP_JSOND_REGISTER_LONG_CONSTANT("OBJECT_AS_ARRAY",		PHP_JSON_OBJECT_AS_ARRAY,		CONST_CS | CONST_PERSISTENT);
 	PHP_JSOND_REGISTER_LONG_CONSTANT("BIGINT_AS_STRING",		PHP_JSON_BIGINT_AS_STRING,		CONST_CS | CONST_PERSISTENT);
 
@@ -185,9 +181,9 @@ PHP_JSOND_API void PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int o
 PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, int str_len, long options, long depth TSRMLS_DC) /* {{{ */
 {
 	php_json_parser parser;
-	
+
 	php_json_parser_init(&parser, return_value, str, str_len, options, depth TSRMLS_CC);
-	
+
 	if (php_json_yyparse(&parser)) {
 		JSOND_G(error_code) = php_json_parser_error_code(&parser);
 		RETURN_NULL();

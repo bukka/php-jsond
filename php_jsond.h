@@ -36,6 +36,10 @@ extern zend_module_entry jsond_module_entry;
 #include "TSRM.h"
 #endif
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #ifdef PHP_JSOND_PRIMARY
 #define PHP_JSOND_PREFIX json
 #define PHP_JSOND_PREFIX_STRING "jsond"
