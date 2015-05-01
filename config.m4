@@ -7,6 +7,12 @@ PHP_ARG_ENABLE(jsond,
                   [Disable new JavaScript Object Serialization support])],
   yes)
 
+AC_ARG_ENABLE(jsond-prefixing,
+  [AS_HELP_STRING([--enable-jsond-prefixing],
+                  [Enable prefixing function with jsond])],
+  [AC_DEFINE([PHP_JSOND_PREFIXING],1,
+             [whether json prefixing is enabled])])
+
 AC_ARG_ENABLE(jsond-buffer-native,
   [AS_HELP_STRING([--enable-jsond-buffer-native],
                   [Enable new Jsond native buffer])],
