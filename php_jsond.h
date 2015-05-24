@@ -48,6 +48,7 @@ extern zend_module_entry jsond_module_entry;
 #define PHP_JSOND_SERIALIZABLE_INTERFACE_STRING "JsonSerializable"
 #define PHP_JSOND_NAME(name) php_json_ ## name
 #define PHP_JSOND_IDENT(name) json_ ## name
+#define PHP_JSOND_FN(jname) ZEND_FN(json_ ## jname)
 #else
 #define PHP_JSOND_PREFIX jsond
 #define PHP_JSOND_PREFIX_STRING "jsond"
@@ -56,6 +57,7 @@ extern zend_module_entry jsond_module_entry;
 #define PHP_JSOND_SERIALIZABLE_INTERFACE_STRING "JsondSerializable"
 #define PHP_JSOND_NAME(jname) php_jsond_ ## jname
 #define PHP_JSOND_IDENT(jname) jsond_ ## jname
+#define PHP_JSOND_FN(jname) ZEND_FN(jsond_ ## jname)
 #endif
 
 #define PHP_JSOND_FUNCTION(jname) PHP_FUNCTION(PHP_JSOND_IDENT(jname))
