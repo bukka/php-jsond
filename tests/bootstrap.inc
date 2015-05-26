@@ -11,5 +11,5 @@ $jsond_last_error_msg = $jsond_prefix . '_last_error_msg';
 function jsond_constant($name) {
     global $jsond_prefix;
 
-    return constant($jsond_prefix . '_' . $name);
+    return constant(strtoupper($jsond_prefix) . '_' . $name);
 }
