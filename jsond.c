@@ -95,6 +95,17 @@ static inline zend_bool php_json_already_exists()
 }
 /* }}} */
 
+/* {{{ php_json_register_serializable_interface */
+static inline void php_json_register_serializable_interface(TSRMLS_D)
+{
+	zend_class_entry ce;
+
+	/* register JSON serializable class */
+	INIT_CLASS_ENTRY(ce, PHP_JSOND_SERIALIZABLE_INTERFACE_STRING, jsond_serializable_interface);
+	PHP_JSOND_NAME(serializable_ce) = zend_register_internal_interface(&ce TSRMLS_CC);
+}
+/* }}} */
+
 #define PHP_JSOND_REGISTER_LONG_CONSTANT(name, lval) \
 	do { \
 		zval **c; \
@@ -109,18 +120,20 @@ static inline zend_bool php_json_already_exists()
 static PHP_MINIT_FUNCTION(jsond)
 {
 	if (!php_json_already_exists()) {
-		zend_class_entry ce;
-
 		/* register jsond function */
 		if (zend_register_functions(NULL, jsond_functions, NULL, 0 TSRMLS_CC) == FAILURE) {
 			zend_error(E_CORE_WARNING,"jsond: Unable to register functions");
 			return FAILURE;
 		}
 
-		/* register JSON serializable class */
-		INIT_CLASS_ENTRY(ce, PHP_JSOND_SERIALIZABLE_INTERFACE_STRING, jsond_serializable_interface);
-		PHP_JSOND_NAME(serializable_ce) = zend_register_internal_interface(&ce TSRMLS_CC);
+#if PHP_VERSION_ID > 50399
+		php_json_register_serializable_interface(TSRMLS_C);
+#endif
 	}
+
+#if PHP_VERSION_ID < 50400
+	php_json_register_serializable_interface(TSRMLS_C);
+#endif
 
 	/* decoding options */
 	PHP_JSOND_REGISTER_LONG_CONSTANT("OBJECT_AS_ARRAY",  PHP_JSON_OBJECT_AS_ARRAY);
