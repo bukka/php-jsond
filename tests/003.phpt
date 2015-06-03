@@ -4,11 +4,10 @@ jsond_encode() & endless loop - 1
 <?php
 if (!extension_loaded("jsond"))
 	print "skip";
-if (PHP_VERSION_ID < 50400)
-	print "skip Only for 5.4+";
 ?>
 --FILE--
 <?php
+require_once "bootstrap.inc";
 
 $a = array();
 $a[] = &$a;
@@ -17,17 +16,17 @@ var_dump($a);
 
 echo "\n";
 
-var_dump(jsond_encode($a));
-var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump($jsond_encode($a));
+var_dump($jsond_last_error(), $jsond_last_error_msg());
 
 echo "\n";
 
-var_dump(jsond_encode($a, JSOND_PARTIAL_OUTPUT_ON_ERROR));
-var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump($jsond_encode($a, jsond_constant('PARTIAL_OUTPUT_ON_ERROR')));
+var_dump($jsond_last_error(), $jsond_last_error_msg());
 
 echo "Done\n";
 ?>
---EXPECTF--	
+--EXPECTF--
 array(1) {
   [0]=>
   &array(1) {

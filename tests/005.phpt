@@ -4,12 +4,13 @@ jsond_encode() & endless loop - 3
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
+require_once "bootstrap.inc";
 
 $a = array();
 $a[] = $a;
 
 var_dump($a);
-var_dump(jsond_encode($a));
+var_dump($jsond_encode($a));
 
 echo "Done\n";
 ?>
