@@ -4,15 +4,16 @@ jsond_encode() & extended encoding
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
+require_once "bootstrap.inc";
 
 $a = array('<foo>',"'bar'",'"baz"','&blong&');
 
-echo "Normal: ", jsond_encode($a), "\n";
-echo "Tags: ",   jsond_encode($a,JSOND_HEX_TAG), "\n";
-echo "Apos: ",   jsond_encode($a,JSOND_HEX_APOS), "\n";
-echo "Quot: ",   jsond_encode($a,JSOND_HEX_QUOT), "\n";
-echo "Amp: ",    jsond_encode($a,JSOND_HEX_AMP), "\n";
-echo "All: ",    jsond_encode($a,JSOND_HEX_TAG|JSOND_HEX_APOS|JSOND_HEX_QUOT|JSOND_HEX_AMP), "\n";
+echo "Normal: ", $jsond_encode($a), "\n";
+echo "Tags: ",   $jsond_encode($a, jsond_constant('HEX_TAG')), "\n";
+echo "Apos: ",   $jsond_encode($a, jsond_constant('HEX_APOS')), "\n";
+echo "Quot: ",   $jsond_encode($a, jsond_constant('HEX_QUOT')), "\n";
+echo "Amp: ",    $jsond_encode($a, jsond_constant('HEX_AMP')), "\n";
+echo "All: ",    $jsond_encode($a, jsond_constant('HEX_TAG', 'HEX_APOS', 'HEX_QUOT', 'HEX_AMP')), "\n";
 ?>
 --EXPECT--
 Normal: ["<foo>","'bar'","\"baz\"","&blong&"]
