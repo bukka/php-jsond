@@ -8,8 +8,14 @@ $jsond_decode = $jsond_prefix . '_decode';
 $jsond_last_error = $jsond_prefix . '_last_error';
 $jsond_last_error_msg = $jsond_prefix . '_last_error_msg';
 
-function jsond_constant($name) {
+function jsond_constant() {
     global $jsond_prefix;
 
-    return constant(strtoupper($jsond_prefix) . '_' . $name);
+    $constant_value = 0;
+    $constants = func_get_args();
+    foreach ($constants as $constant) {
+        $constant_value |= constant(strtoupper($jsond_prefix) . '_' . $constant);
+    }
+
+    return $constant_value;
 }
