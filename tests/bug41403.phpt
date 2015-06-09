@@ -1,9 +1,9 @@
 --TEST--
-Bug #41403 (jsond_decode cannot decode floats if localeconv decimal_point is not '.')
+Bug #41403 (json_decode cannot decode floats if localeconv decimal_point is not '.')
 --SKIPIF--
 <?php
 
-if (!extension_loaded('jsond')) die('skip'); 
+if (!extension_loaded('jsond')) die('skip');
 
 if (setlocale(LC_NUMERIC, "de_DE") === false) {
 	die("skip no de_DE locale");
@@ -13,16 +13,17 @@ if (setlocale(LC_NUMERIC, "de_DE") === false) {
 precision=14
 --FILE--
 <?php
+require_once "bootstrap.inc";
 
 setlocale(LC_NUMERIC, 'de_DE');
-var_dump(jsond_decode('[2.1]'));
-var_dump(jsond_decode('[0.15]'));
-var_dump(jsond_decode('[123.13452345]'));
-var_dump(jsond_decode('[123,13452345]'));
+var_dump($jsond_decode('[2.1]'));
+var_dump($jsond_decode('[0.15]'));
+var_dump($jsond_decode('[123.13452345]'));
+var_dump($jsond_decode('[123,13452345]'));
 
 echo "Done\n";
 ?>
---EXPECTF--	
+--EXPECTF--
 array(1) {
   [0]=>
   float(2,1)

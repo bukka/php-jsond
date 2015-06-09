@@ -7,15 +7,15 @@ Bug #47644 (valid large integers are truncated)
 ?>
 --FILE--
 <?php
+require_once "bootstrap.inc";
 
 for ($i = 10000000000000000; $i < 10000000000000006; $i++) {
-	var_dump(jsond_decode("[$i]"));
+	var_dump($jsond_decode("[$i]"));
 }
-
 
 echo "Done\n";
 ?>
---EXPECT--	
+--EXPECT--
 array(1) {
   [0]=>
   int(10000000000000000)

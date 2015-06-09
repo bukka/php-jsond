@@ -1,15 +1,16 @@
 --TEST--
-Bug #46944 (jsond_encode() doesn't handle 3 byte utf8 correctly)
+Bug #46944 (json_encode() doesn't handle 3 byte utf8 correctly)
 --SKIPIF--
 <?php if (!extension_loaded('jsond')) print 'skip'; ?>
 --FILE--
 <?php
+require_once "bootstrap.inc";
 
 for ($i = 1; $i <= 16; $i++) {
 	$first = 0xf0|($i >> 2);
 	$second = 0x8f|($i & 3) << 4;
 	$string = sprintf("aa%c%c\xbf\xbdzz", $first, $second);
-	echo jsond_encode($string) . "\n";
+	echo $jsond_encode($string) . "\n";
 }
 
 
