@@ -1,5 +1,5 @@
 --TEST--
-jsond_encode() & extended encoding
+json_encode() & extended encoding
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

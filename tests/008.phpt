@@ -1,5 +1,5 @@
 --TEST--
-jsond_decode() with large integers
+json_decode() with large integers
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
