@@ -1,26 +1,28 @@
 --TEST--
-Bug #61537 (jsond_encode() incorrectly truncates/discards information)
+Bug #61537 (json_encode() incorrectly truncates/discards information)
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
+require_once "bootstrap.inc";
+
 $invalid_utf8 = "\x9f";
 
-var_dump(jsond_encode($invalid_utf8));
-var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump($jsond_encode($invalid_utf8));
+var_dump($jsond_last_error(), $jsond_last_error_msg());
 
-var_dump(jsond_encode($invalid_utf8, JSOND_PARTIAL_OUTPUT_ON_ERROR));
-var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump($jsond_encode($invalid_utf8, jsond_constant('PARTIAL_OUTPUT_ON_ERROR')));
+var_dump($jsond_last_error(), $jsond_last_error_msg());
 
 echo "\n";
 
 $invalid_utf8 = "an invalid sequen\xce in the middle of a string";
 
-var_dump(jsond_encode($invalid_utf8));
-var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump($jsond_encode($invalid_utf8));
+var_dump($jsond_last_error(), $jsond_last_error_msg());
 
-var_dump(jsond_encode($invalid_utf8, JSOND_PARTIAL_OUTPUT_ON_ERROR));
-var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump($jsond_encode($invalid_utf8, jsond_constant('PARTIAL_OUTPUT_ON_ERROR')));
+var_dump($jsond_last_error(), $jsond_last_error_msg());
 
 ?>
 --EXPECTF--
