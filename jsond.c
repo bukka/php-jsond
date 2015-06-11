@@ -186,6 +186,17 @@ PHP_RINIT_FUNCTION(jsond)
 		PHP_JSON_REPLACE_FN(orig, decode);
 		PHP_JSON_REPLACE_FN(orig, last_error);
 		PHP_JSON_REPLACE_FN(orig, last_error_msg);
+
+#if PHP_VERSION_ID > 50399
+		zend_class_entry **the_ce;
+		if (zend_lookup_class(
+					PHP_JSOND_SERIALIZABLE_INTERFACE_STRING,
+					sizeof(PHP_JSOND_SERIALIZABLE_INTERFACE_STRING) - 1,
+					&the_ce TSRMLS_CC) == FAILURE) {
+			return FAILURE;
+		}
+		PHP_JSOND_NAME(serializable_ce) = *the_ce;
+#endif
 	}
 
 	return SUCCESS;
