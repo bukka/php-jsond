@@ -84,6 +84,16 @@ extern zend_module_entry jsond_module_entry;
 	} while (0)
 #endif
 
+
+/* This is important for the inline functions in debug mode as well
+ * which is not done zend_always_inline. Such function are not inlined in
+ * GCC 5 which results in a linking error */
+#if defined(__GNUC__) && __GNUC__ >= 3
+#define php_json_always_inline inline __attribute__((always_inline))
+#else
+#define php_json_always_inline inline
+#endif
+
 /* long limits */
 #if SIZEOF_LONG == 4
 #define PHP_JSON_INT_MAX_LENGTH 10

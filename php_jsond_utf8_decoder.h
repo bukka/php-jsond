@@ -49,7 +49,7 @@ const char php_json_utf8d[] = {
 	12,36,12,12,12,12,12,12,12,12,12,12
 };
 
-inline int php_json_utf8_decode(int* state, int* codep, unsigned int byte)
+php_json_always_inline int php_json_utf8_decode(int* state, int* codep, unsigned int byte)
 {
 	int type = php_json_utf8d[byte];
 
