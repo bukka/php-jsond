@@ -1,11 +1,13 @@
 --TEST--
-Bug #64695 JSOND_NUMERIC_CHECK has issues with strings that are numbers plus the letter e
+Bug #64695 JSON_NUMERIC_CHECK has issues with strings that are numbers plus the letter e
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
+require_once "bootstrap.inc";
+
 $t = array('test' => '123343e871700');
-var_dump(jsond_encode($t, JSOND_NUMERIC_CHECK));
+var_dump($jsond_encode($t, jsond_constant('NUMERIC_CHECK')));
 
 echo "Done\n";
 ?>

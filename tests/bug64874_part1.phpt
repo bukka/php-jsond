@@ -1,12 +1,16 @@
 --TEST--
-Whitespace part of bug #64874 ("jsond_decode handles whitespace and case-sensitivity incorrectly")
+Whitespace part of bug #64874 ("json_decode handles whitespace and case-sensitivity incorrectly")
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
-function decode($jsond) {
-    var_dump(jsond_decode($jsond));
-    var_dump(jsond_last_error() !== 0);
+require_once "bootstrap.inc";
+
+function decode($json) {
+    global $jsond_decode, $jsond_last_error;
+
+    var_dump($jsond_decode($json));
+    var_dump($jsond_last_error() !== 0);
     echo "\n";
 }
 

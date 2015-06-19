@@ -1,12 +1,16 @@
 --TEST--
-Case-sensitivity part of bug #64874 ("jsond_decode handles whitespace and case-sensitivity incorrectly")
+Case-sensitivity part of bug #64874 ("json_decode handles whitespace and case-sensitivity incorrectly")
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
+require_once "bootstrap.inc";
+
 function decode($jsond) {
-    var_dump(jsond_decode($jsond));
-    echo ((jsond_last_error() !== 0) ? 'ERROR' : 'SUCCESS') . PHP_EOL;
+    global $jsond_decode, $jsond_last_error;
+
+    var_dump($jsond_decode($jsond));
+    echo (($jsond_last_error() !== 0) ? 'ERROR' : 'SUCCESS') . PHP_EOL;
 }
 
 // Only lowercase should work
@@ -29,6 +33,7 @@ decode('[Null]');
 echo PHP_EOL;
 
 echo "Done\n";
+?>
 --EXPECT--
 bool(true)
 SUCCESS
