@@ -4,16 +4,17 @@ An error is thrown when INF or NaN are encoded
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
+require_once "bootstrap.inc";
 
 $inf = INF;
 
 var_dump($inf);
 
-var_dump(jsond_encode($inf));
-var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump($jsond_encode($inf));
+var_dump($jsond_last_error(), $jsond_last_error_msg());
 
-var_dump(jsond_encode($inf, JSOND_PARTIAL_OUTPUT_ON_ERROR));
-var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump($jsond_encode($inf, jsond_constant('PARTIAL_OUTPUT_ON_ERROR')));
+var_dump($jsond_last_error(), $jsond_last_error_msg());
 
 echo "\n";
 
@@ -21,11 +22,11 @@ $nan = NAN;
 
 var_dump($nan);
 
-var_dump(jsond_encode($nan));
-var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump($jsond_encode($nan));
+var_dump($jsond_last_error(), $jsond_last_error_msg());
 
-var_dump(jsond_encode($nan, JSOND_PARTIAL_OUTPUT_ON_ERROR));
-var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump($jsond_encode($nan, jsond_constant('PARTIAL_OUTPUT_ON_ERROR')));
+var_dump($jsond_last_error(), $jsond_last_error_msg());
 ?>
 --EXPECTF--
 float(INF)
