@@ -1,19 +1,16 @@
 --TEST--
-Test jsond_decode() function : basic functionality
+Test json_decode() function : basic functionality
 --SKIPIF--
 <?php
 if (!extension_loaded("jsond")) {
  	die('skip JSON extension not available in this build');
-}	 
+}
 ?>
 --FILE--
 <?php
-/* Prototype  : mixed jsond_decode  ( string $jsond  [, bool $assoc  ] )
- * Description: Decodes a JSON string
- * Source code: ext/jsond/php_jsond.c
- * Alias to functions: 
- */
-echo "*** Testing jsond_decode() : basic functionality ***\n";
+require_once "bootstrap.inc";
+
+echo "*** Testing json_decode() : basic functionality ***\n";
 
 // array with different values for $string
 $inputs =  array (
@@ -36,21 +33,23 @@ $inputs =  array (
 		'{"Jan":31,"Feb":29,"Mar":31,"April":30,"May":31,"June":30}',
 		'""',
 		'{}'
-);  
+);
 
-// loop through with each element of the $inputs array to test jsond_decode() function
+// loop through with each element of the $inputs array to test json_decode() function
 $count = 1;
 foreach($inputs as $input) {
-  echo "-- Iteration $count --\n";	
-  var_dump(jsond_decode($input)); 
-   var_dump(jsond_decode($input, TRUE)); 
-  $count ++;
+    global $jsond_decode;
+
+    echo "-- Iteration $count --\n";
+    var_dump($jsond_decode($input));
+    var_dump($jsond_decode($input, true));
+    $count ++;
 }
 
 ?>
 ===Done===
---EXPECTF-- 
-*** Testing jsond_decode() : basic functionality ***
+--EXPECTF--
+*** Testing json_decode() : basic functionality ***
 -- Iteration 1 --
 int(0)
 int(0)
