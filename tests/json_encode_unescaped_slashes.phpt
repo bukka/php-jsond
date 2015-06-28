@@ -1,11 +1,13 @@
 --TEST--
-jsond_decode() tests
+jsond_decode() unescaped slashes test
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
-var_dump(jsond_encode('a/b'));
-var_dump(jsond_encode('a/b', JSOND_UNESCAPED_SLASHES));
+require_once "bootstrap.inc";
+
+var_dump($jsond_encode('a/b'));
+var_dump($jsond_encode('a/b', jsond_constant('UNESCAPED_SLASHES')));
 ?>
 --EXPECT--
 string(6) ""a\/b""

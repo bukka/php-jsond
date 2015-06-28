@@ -1,18 +1,15 @@
 --TEST--
-Test jsond_encode() function : basic functionality
+Test json_encode() function : basic functionality
 --SKIPIF--
 <?php
 if (!extension_loaded("jsond")) {
  	die('skip JSON extension not available in this build');
-}	 
+}
 ?>
 --FILE--
 <?php
-/* Prototype  : string jsond_encode  ( mixed $value  )
- * Description: Returns the JSON representation of a value
- * Source code: ext/jsond/php_jsond.c
- * Alias to functions: 
- */
+require_once "bootstrap.inc";
+
 echo "*** Testing jsond_encode() : basic functionality ***\n";
 
 //get an unset variable
@@ -42,12 +39,12 @@ $inputs =  array (
   		-123,
  		 2147483647,
   		-2147483648,
-  
-  		// floats 
+
+  		// floats
 /*6*/	123.456,
   		1.23E3,
   		-1.23E3,
-  
+
  		 // boolean
 /*9*/	TRUE,
   		true,
@@ -57,18 +54,18 @@ $inputs =  array (
 		// NULL
 /*13*/	NULL,
   		null,
-  
+
   		// strings
 /*15*/	"abc",
-        'abc', 
+        'abc',
   		"Hello\t\tWorld\n",
-  
+
   		// arrays
 /*18*/	array(),
   		array(1,2,3,4,5),
  		array(1 => "Sun", 2=>"Mon", 3 => "Tue", 4 => "Wed", 5 => "Thur", 6 => "Fri", 7 => "Sat"),
   		array("Jan" => 31, "Feb" => 29, "Mar" => 31, "April" => 30, "May" => 31, "June" => 30),
-  
+
        // empty data
 /*22*/ "",
        '',
@@ -83,21 +80,21 @@ $inputs =  array (
 /*26*/ $fp,
 
 	  // object variable
-/*27*/ $obj 
-  
-);  
+/*27*/ $obj
+
+);
 
 // loop through with each element of the $inputs array to test jsond_encode() function
 $count = 1;
 foreach($inputs as $input) {
-  echo "-- Iteration $count --\n";	
-  var_dump(jsond_encode($input)); 
+  echo "-- Iteration $count --\n";
+  var_dump($jsond_encode($input));
   $count ++;
 }
 
 ?>
 ===Done===
---EXPECTF-- 
+--EXPECTF--
 *** Testing jsond_encode() : basic functionality ***
 -- Iteration 1 --
 string(1) "0"
