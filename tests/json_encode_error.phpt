@@ -10,25 +10,25 @@ if (!extension_loaded("jsond")) {
 <?php
 require_once "bootstrap.inc";
 
-echo "*** Testing jsond_encode() : error conditions ***\n";
+echo "*** Testing json_encode() : error conditions ***\n";
 
-echo "\n-- Testing jsond_encode() function with no arguments --\n";
+echo "\n-- Testing json_encode() function with no arguments --\n";
 var_dump( $jsond_encode() );
 
-echo "\n-- Testing jsond_encode() function with more than expected no. of arguments --\n";
+echo "\n-- Testing json_encode() function with more than expected no. of arguments --\n";
 $extra_arg = 10;
 var_dump( $jsond_encode("abc", 0, $extra_arg) );
 
 ?>
 ===Done===
 --EXPECTF--
-*** Testing jsond_encode() : error conditions ***
+*** Testing json_encode() : error conditions ***
 
--- Testing jsond_encode() function with no arguments --
+-- Testing json_encode() function with no arguments --
 
-Warning: jsond_encode() expects at least 1 parameter, 0 given in %s on line %d
+Warning: %s expects at least 1 parameter, 0 given in %s on line %d
 NULL
 
--- Testing jsond_encode() function with more than expected no. of arguments --
+-- Testing json_encode() function with more than expected no. of arguments --
 string(5) ""abc""
 ===Done===

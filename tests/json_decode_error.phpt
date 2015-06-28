@@ -10,7 +10,7 @@ if (!extension_loaded("jsond")) {
 <?php
 require_once "bootstrap.inc";
 
-echo "*** Testing jsond_decode() : error conditions ***\n";
+echo "*** Testing json_decode() : error conditions ***\n";
 
 echo "\n-- Testing json_decode() function with no arguments --\n";
 var_dump( $jsond_decode() );

@@ -1,5 +1,5 @@
 --TEST--
-jsond_decode() unescaped slashes test
+json_decode() unescaped slashes test
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

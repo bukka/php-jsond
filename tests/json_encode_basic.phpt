@@ -10,7 +10,7 @@ if (!extension_loaded("jsond")) {
 <?php
 require_once "bootstrap.inc";
 
-echo "*** Testing jsond_encode() : basic functionality ***\n";
+echo "*** Testing json_encode() : basic functionality ***\n";
 
 //get an unset variable
 $unset_var = 10;
@@ -95,7 +95,7 @@ foreach($inputs as $input) {
 ?>
 ===Done===
 --EXPECTF--
-*** Testing jsond_encode() : basic functionality ***
+*** Testing json_encode() : basic functionality ***
 -- Iteration 1 --
 string(1) "0"
 -- Iteration 2 --
