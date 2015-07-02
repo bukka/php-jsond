@@ -1,5 +1,5 @@
 --TEST--
-JSON (http://www.crockford.com/JSON/JSOND_checker/test/pass1.jsond)
+JSON (http://www.crockford.com/JSON/JSON_checker/test/pass1.json)
 --INI--
 precision=14
 --SKIPIF--
@@ -14,6 +14,9 @@ precision=14
  * Modified to test empty string values.
  * Modified to test a mix of integers and strings as keys.
  */
+
+require_once "bootstrap.inc";
+
 // Expect warnings about INF.
 ini_set("error_reporting", E_ALL & ~E_WARNING);
 
@@ -83,24 +86,24 @@ $test = "
 
 echo 'Testing: ' . $test . "\n";
 echo "DECODE: AS OBJECT\n";
-$obj = jsond_decode($test);
+$obj = $jsond_decode($test);
 var_dump($obj);
 echo "DECODE: AS ARRAY\n";
-$arr = jsond_decode($test, true);
+$arr = $jsond_decode($test, true);
 var_dump($arr);
 
 echo "ENCODE: FROM OBJECT\n";
-$obj_enc = jsond_encode($obj, JSOND_PARTIAL_OUTPUT_ON_ERROR);
+$obj_enc = $jsond_encode($obj, jsond_constant('PARTIAL_OUTPUT_ON_ERROR'));
 echo $obj_enc . "\n";
 echo "ENCODE: FROM ARRAY\n";
-$arr_enc = jsond_encode($arr, JSOND_PARTIAL_OUTPUT_ON_ERROR);
+$arr_enc = $jsond_encode($arr, jsond_constant('PARTIAL_OUTPUT_ON_ERROR'));
 echo $arr_enc . "\n";
 
 echo "DECODE AGAIN: AS OBJECT\n";
-$obj = jsond_decode($obj_enc);
+$obj = $jsond_decode($obj_enc);
 var_dump($obj);
 echo "DECODE AGAIN: AS ARRAY\n";
-$arr = jsond_decode($arr_enc, true);
+$arr = $jsond_decode($arr_enc, true);
 var_dump($arr);
 
 ?>
