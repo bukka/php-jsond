@@ -1,9 +1,10 @@
 --TEST--
-jsond_encode() Serialization tests
+json_encode() Serialization tests
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
+require_once "bootstrap.inc";
 
 class NonSerializingTest
 {
@@ -15,12 +16,22 @@ class NonSerializingTest
 	}
 }
 
-class SerializingTest extends NonSerializingTest implements JsondSerializable
-{
-	public function jsonSerialize()
-	{
-		return $this->data;
-	}
+if ($jsond_prefix === 'jsond') {
+    class SerializingTest extends NonSerializingTest implements JsondSerializable
+    {
+        public function jsonSerialize()
+        {
+            return $this->data;
+        }
+    }
+} else {
+    class SerializingTest extends NonSerializingTest implements JsonSerializable
+    {
+        public function jsonSerialize()
+        {
+            return $this->data;
+        }
+    }
 }
 
 class ValueSerializingTest extends SerializingTest
@@ -55,9 +66,9 @@ $odata = (object)$adata;
 
 foreach(array('NonSerializingTest','SerializingTest','ValueSerializingTest','SelfSerializingTest') as $class) {
 	echo "==$class==\n";
-	echo jsond_encode(new $class($adata)), "\n";
-	echo jsond_encode(new $class($ndata)), "\n";
-	echo jsond_encode(new $class($odata)), "\n";
+	echo $jsond_encode(new $class($adata)), "\n";
+	echo $jsond_encode(new $class($ndata)), "\n";
+	echo $jsond_encode(new $class($odata)), "\n";
 }
 ?>
 --EXPECT--
