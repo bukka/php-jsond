@@ -511,10 +511,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    90,    90,    91,    95,    95,    99,   100,   104,   105,
-     109,   110,   111,   115,   116,   120,   120,   124,   125,   129,
-     130,   134,   135,   136,   140,   141,   145,   146,   147,   148,
-     149,   150,   151,   152,   153,   154,   158
+       0,    90,    90,    97,   104,   104,   112,   113,   122,   125,
+     129,   134,   139,   146,   151,   158,   158,   166,   167,   176,
+     179,   183,   188,   193,   200,   201,   205,   206,   207,   208,
+     209,   210,   211,   212,   213,   214,   218
 };
 #endif
 
@@ -1440,13 +1440,20 @@ yyreduce:
     {
         case 2:
 
-    { (yyval.value) = (yyvsp[-1].value); INIT_PZVAL_COPY(parser->return_value, &(yyvsp[-1].value)); PHP_JSON_USE((yyvsp[0].value)); YYACCEPT; }
+    {
+				(yyval.value) = (yyvsp[-1].value);
+				INIT_PZVAL_COPY(parser->return_value, &(yyvsp[-1].value));
+				PHP_JSON_USE((yyvsp[0].value));
+				YYACCEPT;
+			}
 
     break;
 
   case 3:
 
-    { PHP_JSON_USE_2((yyval.value), (yyvsp[-1].value), (yyvsp[0].value)); }
+    {
+				PHP_JSON_USE_2((yyval.value), (yyvsp[-1].value), (yyvsp[0].value));
+			}
 
     break;
 
@@ -1458,49 +1465,70 @@ yyreduce:
 
   case 5:
 
-    { PHP_JSON_DEPTH_DEC; php_json_parser_object_to_zval(parser, &(yyval.value), (yyvsp[-1].ht)); }
+    {
+				PHP_JSON_DEPTH_DEC;
+				php_json_parser_object_to_zval(parser, &(yyval.value), (yyvsp[-1].ht));
+			}
 
     break;
 
   case 7:
 
-    { parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH; YYERROR; }
+    {
+				parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH;
+				YYERROR;
+			}
 
     break;
 
   case 8:
 
-    { php_json_parser_ht_init(&(yyval.ht), 0); }
+    {
+				php_json_parser_ht_init(&(yyval.ht), 0);
+			}
 
     break;
 
   case 10:
 
-    { php_json_parser_ht_init(&(yyval.ht), 4); php_json_parser_ht_update(parser, (yyval.ht), &(yyvsp[0].pair).key, &(yyvsp[0].pair).val); }
+    {
+				php_json_parser_ht_init(&(yyval.ht), 4);
+				php_json_parser_ht_update(parser, (yyval.ht), &(yyvsp[0].pair).key, &(yyvsp[0].pair).val);
+			}
 
     break;
 
   case 11:
 
-    { php_json_parser_ht_update(parser, (yyvsp[-2].ht), &(yyvsp[0].pair).key, &(yyvsp[0].pair).val); (yyval.ht) = (yyvsp[-2].ht); }
+    {
+				php_json_parser_ht_update(parser, (yyvsp[-2].ht), &(yyvsp[0].pair).key, &(yyvsp[0].pair).val);
+				(yyval.ht) = (yyvsp[-2].ht);
+			}
 
     break;
 
   case 12:
 
-    { PHP_JSON_USE_2((yyval.ht), (yyvsp[-1].ht), (yyvsp[0].value)); }
+    {
+				PHP_JSON_USE_2((yyval.ht), (yyvsp[-1].ht), (yyvsp[0].value));
+			}
 
     break;
 
   case 13:
 
-    { (yyval.pair).key = (yyvsp[-2].value); (yyval.pair).val = (yyvsp[0].value); }
+    {
+				(yyval.pair).key = (yyvsp[-2].value);
+				(yyval.pair).val = (yyvsp[0].value);
+			}
 
     break;
 
   case 14:
 
-    { PHP_JSON_USE_2((yyval.pair), (yyvsp[-1].value), (yyvsp[0].value)); }
+    {
+				PHP_JSON_USE_2((yyval.pair), (yyvsp[-1].value), (yyvsp[0].value));
+			}
 
     break;
 
@@ -1512,43 +1540,62 @@ yyreduce:
 
   case 16:
 
-    { PHP_JSON_DEPTH_DEC; php_json_parser_array_to_zval(&(yyval.value), (yyvsp[-1].ht)); }
+    {
+				PHP_JSON_DEPTH_DEC;
+				php_json_parser_array_to_zval(&(yyval.value), (yyvsp[-1].ht));
+			}
 
     break;
 
   case 18:
 
-    { parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH; YYERROR; }
+    {
+				parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH;
+				YYERROR;
+			}
 
     break;
 
   case 19:
 
-    { php_json_parser_ht_init(&(yyval.ht), 0); }
+    {
+				php_json_parser_ht_init(&(yyval.ht), 0);
+			}
 
     break;
 
   case 21:
 
-    { php_json_parser_ht_init(&(yyval.ht), 4); php_json_parser_ht_append((yyval.ht), &(yyvsp[0].value)); }
+    {
+				php_json_parser_ht_init(&(yyval.ht), 4);
+				php_json_parser_ht_append((yyval.ht), &(yyvsp[0].value));
+			}
 
     break;
 
   case 22:
 
-    { php_json_parser_ht_append((yyvsp[-2].ht), &(yyvsp[0].value)); (yyval.ht) = (yyvsp[-2].ht); }
+    {
+				php_json_parser_ht_append((yyvsp[-2].ht), &(yyvsp[0].value));
+				(yyval.ht) = (yyvsp[-2].ht);
+			}
 
     break;
 
   case 23:
 
-    { PHP_JSON_USE_2((yyval.ht), (yyvsp[-1].ht), (yyvsp[0].value)); }
+    {
+				PHP_JSON_USE_2((yyval.ht), (yyvsp[-1].ht), (yyvsp[0].value));
+			}
 
     break;
 
   case 36:
 
-    { PHP_JSON_USE_1((yyval.value), (yyvsp[0].value)); YYERROR; }
+    {
+				PHP_JSON_USE_1((yyval.value), (yyvsp[0].value));
+				YYERROR;
+			}
 
     break;
 

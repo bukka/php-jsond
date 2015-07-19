@@ -87,53 +87,113 @@ void php_json_parser_ht_append(HashTable *ht, zval *zvalue);
 %% /* Rules */
 
 start:
-		value PHP_JSON_T_EOI    { $$ = $1; INIT_PZVAL_COPY(parser->return_value, &$1); PHP_JSON_USE($2); YYACCEPT; }
-	|	value errlex            { PHP_JSON_USE_2($$, $1, $2); }
+		value PHP_JSON_T_EOI
+			{
+				$$ = $1;
+				INIT_PZVAL_COPY(parser->return_value, &$1);
+				PHP_JSON_USE($2);
+				YYACCEPT;
+			}
+	|	value errlex
+			{
+				PHP_JSON_USE_2($$, $1, $2);
+			}
 ;
 
 object:
-		'{' { PHP_JSON_DEPTH_INC; } members object_end { PHP_JSON_DEPTH_DEC; php_json_parser_object_to_zval(parser, &$$, $3); }
+		'{' { PHP_JSON_DEPTH_INC; } members object_end
+			{
+				PHP_JSON_DEPTH_DEC;
+				php_json_parser_object_to_zval(parser, &$$, $3);
+			}
 ;
 
 object_end:
 		'}'
-	|	']'                     { parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH; YYERROR; }
+	|	']'
+			{
+				parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH;
+				YYERROR;
+			}
 ;
 
 members:
-		/* empty */             { php_json_parser_ht_init(&$$, 0); }
+		/* empty */
+			{
+				php_json_parser_ht_init(&$$, 0);
+			}
 	|	member
 ;
 
 member:
-		pair                    { php_json_parser_ht_init(&$$, 4); php_json_parser_ht_update(parser, $$, &$1.key, &$1.val); }
-	|	member ',' pair         { php_json_parser_ht_update(parser, $1, &$3.key, &$3.val); $$ = $1; }
-	|	member errlex           { PHP_JSON_USE_2($$, $1, $2); }
+		pair
+			{
+				php_json_parser_ht_init(&$$, 4);
+				php_json_parser_ht_update(parser, $$, &$1.key, &$1.val);
+			}
+	|	member ',' pair
+			{
+				php_json_parser_ht_update(parser, $1, &$3.key, &$3.val);
+				$$ = $1;
+			}
+	|	member errlex
+			{
+				PHP_JSON_USE_2($$, $1, $2);
+			}
 ;
 
 pair:
-		key ':' value           { $$.key = $1; $$.val = $3; }
-	|	key errlex              { PHP_JSON_USE_2($$, $1, $2); }
+		key ':' value
+			{
+				$$.key = $1;
+				$$.val = $3;
+			}
+	|	key errlex
+			{
+				PHP_JSON_USE_2($$, $1, $2);
+			}
 ;
 
 array:
-		'[' { PHP_JSON_DEPTH_INC; } elements array_end { PHP_JSON_DEPTH_DEC; php_json_parser_array_to_zval(&$$, $3); }
+		'[' { PHP_JSON_DEPTH_INC; } elements array_end
+			{
+				PHP_JSON_DEPTH_DEC;
+				php_json_parser_array_to_zval(&$$, $3);
+			}
 ;
 
 array_end:
 		']'
-	|	'}'                     { parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH; YYERROR; }
+	|	'}'
+			{
+				parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH;
+				YYERROR;
+			}
 ;
 
 elements:
-		/* empty */             { php_json_parser_ht_init(&$$, 0); }
+		/* empty */
+			{
+				php_json_parser_ht_init(&$$, 0);
+			}
 	|	element
 ;
 
 element:
-		value                   { php_json_parser_ht_init(&$$, 4); php_json_parser_ht_append($$, &$1); }
-	|	element ',' value       { php_json_parser_ht_append($1, &$3); $$ = $1; }
-	|	element errlex          { PHP_JSON_USE_2($$, $1, $2); }
+		value
+			{
+				php_json_parser_ht_init(&$$, 4);
+				php_json_parser_ht_append($$, &$1);
+			}
+	|	element ',' value
+			{
+				php_json_parser_ht_append($1, &$3);
+				$$ = $1;
+			}
+	|	element errlex
+			{
+				PHP_JSON_USE_2($$, $1, $2);
+			}
 ;
 
 key:
@@ -155,7 +215,11 @@ value:
 ;
 
 errlex:
-		PHP_JSON_T_ERROR             { PHP_JSON_USE_1($$, $1); YYERROR; }
+		PHP_JSON_T_ERROR
+			{
+				PHP_JSON_USE_1($$, $1);
+				YYERROR;
+			}
 ;
 	
 %% /* Functions */
