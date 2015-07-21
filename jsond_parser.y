@@ -72,7 +72,7 @@ void php_json_yyerror(php_json_parser *parser, char const *msg);
 void php_json_parser_object_to_zval(php_json_parser *parser, zval *zv, HashTable *ht);
 void php_json_parser_array_to_zval(zval *zv, HashTable *ht);
 void php_json_parser_ht_init(HashTable **ht, uint nSize);
-void php_json_parser_ht_update(php_json_parser *parser, HashTable *ht, zval *zkey, zval *zvalue);
+int php_json_parser_ht_update(php_json_parser *parser, HashTable *ht, zval *zkey, zval *zvalue);
 void php_json_parser_ht_append(HashTable *ht, zval *zvalue);
 
 #define PHP_JSON_DEPTH_DEC --parser->depth
@@ -129,11 +129,13 @@ member:
 		pair
 			{
 				php_json_parser_ht_init(&$$, 4);
-				php_json_parser_ht_update(parser, $$, &$1.key, &$1.val);
+				if (php_json_parser_ht_update(parser, $$, &$1.key, &$1.val) == FAILURE)
+					YYERROR;
 			}
 	|	member ',' pair
 			{
-				php_json_parser_ht_update(parser, $1, &$3.key, &$3.val);
+				if (php_json_parser_ht_update(parser, $1, &$3.key, &$3.val) == FAILURE)
+					YYERROR;
 				$$ = $1;
 			}
 	|	member errlex
@@ -262,7 +264,7 @@ void php_json_parser_ht_init(HashTable **ht, uint nSize)
 	zend_hash_init(*ht, nSize, NULL, ZVAL_PTR_DTOR, 0);
 }
 
-void php_json_parser_ht_update(php_json_parser *parser, HashTable *ht, zval *zkey, zval *zvalue)
+int php_json_parser_ht_update(php_json_parser *parser, HashTable *ht, zval *zkey, zval *zvalue)
 {
 	zval *data;
 	char *key = Z_STRVAL_P(zkey);
@@ -276,11 +278,20 @@ void php_json_parser_ht_update(php_json_parser *parser, HashTable *ht, zval *zke
 		if (key_len == 1) {
 			key = "_empty_";
 			key_len = sizeof("_empty_");
+		} else if (key[0] == '\0') {
+			parser->scanner.errcode = PHP_JSON_ERROR_INVALID_PROPERTY_NAME;
+			zval_dtor(zkey);
+			zval_dtor(data);
+			efree(data);
+			zend_hash_destroy(ht);
+			FREE_HASHTABLE(ht);
+			return FAILURE;
 		}
 		zend_hash_update(ht, key, key_len, &data, sizeof(zval *), NULL);
 	}
-	
+
 	zval_dtor(zkey);
+	return SUCCESS;
 }
 
 void php_json_parser_ht_append(HashTable *ht, zval *zvalue)
