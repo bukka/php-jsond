@@ -18,6 +18,18 @@ var_dump($jsond_decode(1));
 var_dump($jsond_last_error());
 var_dump($jsond_decode(TRUE));
 var_dump($jsond_last_error());
+
+json_decode("\xED\xA0\xB4");
+var_dump(json_last_error());
+
+json_decode("\x00");
+var_dump(json_last_error());
+
+json_decode("\"\xED\xA0\xB4\"");
+var_dump(json_last_error());
+
+json_decode("\"\x00\"");
+var_dump(json_last_error());
 ?>
 --EXPECT--
 NULL
@@ -32,3 +44,7 @@ int(1)
 int(0)
 int(1)
 int(0)
+int(5)
+int(3)
+int(5)
+int(3)
