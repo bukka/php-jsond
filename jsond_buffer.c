@@ -22,6 +22,8 @@
 
 #ifdef PHP_JSOND_BUF_TYPE_NATIVE
 
+#include <stddef.h>
+
 #include "php_jsond_buffer.h"
 #include "php_jsond.h"
 
