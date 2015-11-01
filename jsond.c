@@ -66,7 +66,7 @@ ZEND_BEGIN_ARG_INFO(arginfo_jsond_last_error_msg, 0)
 ZEND_END_ARG_INFO()
 /* }}} */
 
-/* {{{ json_functions[] */
+/* {{{ jsond_functions[] */
 static zend_function_entry jsond_functions[] = {
 	PHP_JSOND_FE(encode, arginfo_jsond_encode)
 	PHP_JSOND_FE(decode, arginfo_jsond_decode)
@@ -75,6 +75,15 @@ static zend_function_entry jsond_functions[] = {
 	PHP_JSOND_FE_END
 };
 /* }}} */
+
+#if PHP_VERSION_ID < 50500
+/* {{{ jsond_54_functions[] */
+static zend_function_entry jsond_54_functions[] = {
+	PHP_JSOND_FE(last_error_msg, arginfo_jsond_last_error_msg)
+	PHP_JSOND_FE_END
+};
+/* }}} */
+#endif
 
 /* {{{ JsonSerializable methods */
 ZEND_BEGIN_ARG_INFO(jsond_serialize_arginfo, 0)
@@ -130,6 +139,12 @@ static PHP_MINIT_FUNCTION(jsond)
 		php_json_register_serializable_interface(TSRMLS_C);
 #endif
 	}
+#if PHP_VERSION_ID < 50500
+	else if (zend_register_functions(NULL, jsond_54_functions, NULL, 0 TSRMLS_CC) == FAILURE) {
+		zend_error(E_CORE_WARNING,"jsond: Unable to register functions");
+		return FAILURE;
+	}
+#endif
 
 #if PHP_VERSION_ID < 50400
 	php_json_register_serializable_interface(TSRMLS_C);
@@ -183,7 +198,9 @@ PHP_RINIT_FUNCTION(jsond)
 		PHP_JSON_REPLACE_FN(orig, encode);
 		PHP_JSON_REPLACE_FN(orig, decode);
 		PHP_JSON_REPLACE_FN(orig, last_error);
+#if PHP_VERSION_ID > 50499
 		PHP_JSON_REPLACE_FN(orig, last_error_msg);
+#endif
 
 #if PHP_VERSION_ID > 50399
 		zend_class_entry **the_ce;
