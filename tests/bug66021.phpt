@@ -10,7 +10,7 @@ class Foo {
 	private $bar = 'baz';
 }
 
-echo $jsond_encode([[], (object)[], new Foo], jsond_constant('PRETTY_PRINT')), "\n";
+echo $jsond_encode(array(array(), (object) array(), new Foo), jsond_constant('PRETTY_PRINT')), "\n";
 
 ?>
 --EXPECT--
