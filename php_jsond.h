@@ -33,6 +33,7 @@ extern zend_module_entry jsond_module_entry;
 #endif
 
 #include "php.h"
+#include "phpc/phpc.h"
 
 #ifdef ZTS
 #include "TSRM.h"
@@ -146,11 +147,7 @@ ZEND_BEGIN_MODULE_GLOBALS(jsond)
 	php_json_error_code error_code;
 ZEND_END_MODULE_GLOBALS(jsond)
 
-#ifdef ZTS
-# define JSOND_G(v) TSRMG(jsond_globals_id, zend_jsond_globals *, v)
-#else
-# define JSOND_G(v) (jsond_globals.v)
-#endif
+#define JSOND_G(v) PHPC_MODULE_GLOBALS_ACCESSOR(jsond, v)
 
 #include "php_jsond_buffer.h"
 
