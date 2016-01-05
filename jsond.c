@@ -89,7 +89,7 @@ static zend_function_entry jsond_54_functions[] = {
 /* {{{ JsonSerializable methods */
 ZEND_BEGIN_ARG_INFO(jsond_serialize_arginfo, 0)
 	/* No arguments */
-ZEND_END_ARG_INFO();
+ZEND_END_ARG_INFO()
 
 static zend_function_entry jsond_serializable_interface[] = {
 	PHP_ABSTRACT_ME(PHP_JSOND_SERIALIZABLE_INTERFACE, jsonSerialize, jsond_serialize_arginfo)
