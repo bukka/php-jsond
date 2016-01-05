@@ -101,7 +101,7 @@ static zend_function_entry jsond_serializable_interface[] = {
 static inline zend_bool php_json_already_exists()
 {
 	return !strncmp(PHP_JSOND_PREFIX_STRING, "json", 5) &&
-			zend_hash_exists(&module_registry, "json", sizeof("json"));
+			PHPC_HASH_CSTR_EXISTS(&module_registry, "json");
 }
 /* }}} */
 
