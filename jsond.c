@@ -118,10 +118,8 @@ static inline void php_json_register_serializable_interface(TSRMLS_D)
 
 #define PHP_JSOND_REGISTER_LONG_CONSTANT(name, lval) \
 	do { \
-		zval **c; \
-		if (zend_hash_find(EG(zend_constants), \
-				PHP_JSOND_CONSTANT"_"name, sizeof(PHP_JSOND_CONSTANT"_"name),  \
-				(void **) &c) != SUCCESS) { \
+		phpc_val *c; \
+		if (!PHPC_HASH_CSTR_FIND_IN_COND(EG(zend_constants), PHP_JSOND_CONSTANT"_"name, c)) { \
 			REGISTER_LONG_CONSTANT(PHP_JSOND_CONSTANT"_"name, lval, CONST_CS | CONST_PERSISTENT); \
 		} \
 	} while(0)
