@@ -222,6 +222,9 @@ PHP_RINIT_FUNCTION(jsond)
 */
 static PHP_GINIT_FUNCTION(jsond)
 {
+#if PHPC_MODULE_HAS_THREAD_CACHE
+	ZEND_TSRMLS_CACHE_UPDATE();
+#endif
 	jsond_globals->encoder_depth = 0;
 	jsond_globals->error_code = 0;
 	jsond_globals->encode_max_depth = 0;

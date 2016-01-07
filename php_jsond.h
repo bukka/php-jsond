@@ -149,6 +149,10 @@ ZEND_END_MODULE_GLOBALS(jsond)
 
 #define JSOND_G(v) PHPC_MODULE_GLOBALS_ACCESSOR(jsond, v)
 
+#if PHPC_MODULE_HAS_THREAD_CACHE
+ZEND_TSRMLS_CACHE_EXTERN();
+#endif
+
 #include "php_jsond_buffer.h"
 
 PHP_JSOND_API void PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int options TSRMLS_DC);
