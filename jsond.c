@@ -184,7 +184,7 @@ static PHP_MINIT_FUNCTION(jsond)
 /* }}} */
 
 #define PHP_JSON_REPLACE_FN(orig, name) \
-	zend_hash_find(EG(function_table), "json_"#name, sizeof("json_"#name), (void **)&orig); \
+	PHPC_HASH_CSTR_FIND_PTR(EG(function_table), "json_"#name, orig); \
 	orig->internal_function.handler = PHP_JSOND_FN(name);
 
 
