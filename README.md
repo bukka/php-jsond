@@ -108,6 +108,8 @@ JsondSerializable {
 
 If PHP is compiled without json extension (`--without-json`) and jsond is compiled with defined macro `PHP_JSOND_PRIMARY` (non-default), the API is exactly the same as the API documented in [JSON documentation](http://php.net/json). There is just one small difference that a new error constant is defined - `JSON_ERROR_UTF16` that is described above.
 
+### JSOND IDE Auto Complete
+If you use IDE like PhpStorm, you can set the file `utils/jsond_auto_complete.php` to the Include Path, then IDE will auto complete `jsond_encode` and `jsond_decode`.
 
 ## Benchmarks
 
