@@ -81,7 +81,7 @@ static zend_function_entry jsond_functions[] = {
 /* {{{ jsond_54_functions[] */
 static zend_function_entry jsond_54_functions[] = {
 	PHP_JSOND_FE(last_error_msg, arginfo_jsond_last_error_msg)
-	PHP_JSOND_FE_END
+	PHPC_FE_END
 };
 /* }}} */
 #endif
