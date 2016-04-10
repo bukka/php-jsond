@@ -202,14 +202,24 @@ PHP_RINIT_FUNCTION(jsond)
 #endif
 
 #if PHP_VERSION_ID > 50399
-		zend_class_entry **the_ce;
-		if (zend_lookup_class(
+		{
+#if PHP_VERSION_ID < 70000
+			zend_class_entry **the_ce;
+			if (zend_lookup_class(
 					PHP_JSOND_SERIALIZABLE_INTERFACE_STRING,
 					sizeof(PHP_JSOND_SERIALIZABLE_INTERFACE_STRING) - 1,
 					&the_ce TSRMLS_CC) == FAILURE) {
-			return FAILURE;
+				return FAILURE;
+			}
+			PHP_JSOND_NAME(serializable_ce) = *the_ce;
+#else
+			zend_class_entry *the_ce = zend_lookup_class(PHP_JSOND_SERIALIZABLE_INTERFACE_STRING);
+			if (!the_ce) {
+				return FAILURE;
+			}
+			PHP_JSOND_NAME(serializable_ce) = the_ce;
+#endif
 		}
-		PHP_JSOND_NAME(serializable_ce) = *the_ce;
 #endif
 	}
 
