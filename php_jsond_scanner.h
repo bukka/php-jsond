@@ -35,12 +35,15 @@ typedef struct _php_json_scanner {
 	int str_esc;                    /* number of extra characters for escaping */
 	int state;                      /* condition state */             
 	zval value;                     /* value */
-	long options;                   /* options */
+	int options;                    /* options */
 	php_json_error_code errcode;    /* error type if there is an error */
 } php_json_scanner;
 
 
-void php_json_scanner_init(php_json_scanner *scanner, char *str, int str_len, long options);
+void php_json_scanner_init(
+		php_json_scanner *scanner, char *str,
+		phpc_str_size_t str_len, int options);
+
 int php_json_scan(php_json_scanner *s);
 
 #endif	/* PHP_JSOND_SCANNER_H */

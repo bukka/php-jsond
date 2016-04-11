@@ -283,11 +283,13 @@ PHP_JSOND_API void PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int o
 }
 /* }}} */
 
-PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, int str_len, long options, long depth TSRMLS_DC) /* {{{ */
+PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(
+		zval *return_value, char *str, phpc_str_size_t str_len,
+		phpc_long_t options, phpc_long_t depth TSRMLS_DC) /* {{{ */
 {
 	php_json_parser parser;
 
-	php_json_parser_init(&parser, return_value, str, str_len, options, depth TSRMLS_CC);
+	php_json_parser_init(&parser, return_value, str, str_len, (int)options, (int)depth TSRMLS_CC);
 
 	if (php_json_yyparse(&parser)) {
 		JSOND_G(error_code) = php_json_parser_error_code(&parser);
