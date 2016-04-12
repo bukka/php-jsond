@@ -305,8 +305,8 @@ static PHP_JSOND_FUNCTION(encode)
 {
 	zval *parameter;
 	php_json_buffer buf;
-	long options = 0;
-    long depth = PHP_JSON_PARSER_DEFAULT_DEPTH;
+	phpc_long_t options = 0;
+	phpc_long_t depth = PHP_JSON_PARSER_DEFAULT_DEPTH;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z|ll", &parameter, &options, &depth) == FAILURE) {
 		return;
@@ -317,7 +317,7 @@ static PHP_JSOND_FUNCTION(encode)
 	JSOND_G(encode_max_depth) = depth;
 
 	PHP_JSON_BUF_INIT(&buf);
-	PHP_JSOND_NAME(encode)(&buf, parameter, options TSRMLS_CC);
+	PHP_JSOND_NAME(encode)(&buf, parameter, (int)options TSRMLS_CC);
 
 	if ((JSOND_G(error_code) != PHP_JSON_ERROR_NONE && !(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR)) ||
 			PHP_JSON_BUF_LENGTH(buf) > LONG_MAX) {
