@@ -284,12 +284,11 @@ PHP_JSOND_API void PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int o
 /* }}} */
 
 PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(
-		zval *return_value, char *str, phpc_str_size_t str_len,
-		phpc_long_t options, phpc_long_t depth TSRMLS_DC) /* {{{ */
+		zval *return_value, char *str, size_t str_len, int options, int depth TSRMLS_DC) /* {{{ */
 {
 	php_json_parser parser;
 
-	php_json_parser_init(&parser, return_value, str, str_len, (int)options, (int)depth TSRMLS_CC);
+	php_json_parser_init(&parser, return_value, str, str_len, options, depth TSRMLS_CC);
 
 	if (php_json_yyparse(&parser)) {
 		JSOND_G(error_code) = php_json_parser_error_code(&parser);
@@ -334,10 +333,10 @@ static PHP_JSOND_FUNCTION(encode)
 static PHP_JSOND_FUNCTION(decode)
 {
 	char *str;
-	int str_len;
+	phpc_str_size_t str_len;
 	zend_bool assoc = 0; /* return JS objects as PHP objects by default */
-	long depth = PHP_JSON_PARSER_DEFAULT_DEPTH;
-	long options = 0;
+	phpc_long_t depth = PHP_JSON_PARSER_DEFAULT_DEPTH;
+	phpc_long_t options = 0;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|bll", &str, &str_len, &assoc, &depth, &options) == FAILURE) {
 		return;
@@ -359,7 +358,7 @@ static PHP_JSOND_FUNCTION(decode)
 		options &= ~PHP_JSON_OBJECT_AS_ARRAY;
 	}
 
-	PHP_JSOND_NAME(decode_ex)(return_value, str, str_len, options, depth TSRMLS_CC);
+	PHP_JSOND_NAME(decode_ex)(return_value, str, (size_t) str_len, (int) options, (int) depth TSRMLS_CC);
 }
 /* }}} */
 

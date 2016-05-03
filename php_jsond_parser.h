@@ -34,7 +34,7 @@ typedef struct _php_json_parser {
 
 void php_json_parser_init(
 		php_json_parser *parser, zval *return_value,
-		char *str, phpc_str_size_t str_len,
+		char *str, size_t str_len,
 		int options, int max_depth TSRMLS_DC);
 
 php_json_error_code php_json_parser_error_code(php_json_parser *parser);

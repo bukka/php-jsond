@@ -228,7 +228,7 @@ errlex:
 
 void php_json_parser_init(
 		php_json_parser *parser, zval *return_value,
-		char *str, phpc_str_size_t str_len,
+		char *str, size_t str_len,
 		int options, int max_depth TSRMLS_DC)
 {
 	memset(parser, 0, sizeof(php_json_parser));

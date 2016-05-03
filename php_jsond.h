@@ -156,10 +156,10 @@ ZEND_TSRMLS_CACHE_EXTERN();
 #include "php_jsond_buffer.h"
 
 PHP_JSOND_API void PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int options TSRMLS_DC);
-PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, int str_len, long options, long depth TSRMLS_DC);
+PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, size_t str_len, int options, int depth TSRMLS_DC);
 extern PHP_JSOND_API zend_class_entry *PHP_JSOND_NAME(serializable_ce);
 
-static inline void PHP_JSOND_NAME(decode)(zval *return_value, char *str, int str_len, zend_bool assoc, long depth TSRMLS_DC)
+static inline void PHP_JSOND_NAME(decode)(zval *return_value, char *str, size_t str_len, zend_bool assoc, int depth TSRMLS_DC)
 {
 	PHP_JSOND_NAME(decode_ex)(return_value, str, str_len, assoc ? PHP_JSON_OBJECT_AS_ARRAY : 0, depth TSRMLS_CC);
 }
