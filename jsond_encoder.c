@@ -43,35 +43,22 @@ ZEND_EXTERN_MODULE_GLOBALS(jsond)
 
 static const char php_json_digits[] = "0123456789abcdef";
 
-static int php_json_determine_array_type(zval **val TSRMLS_DC) /* {{{ */
+static int php_json_determine_array_type(phpc_val *val TSRMLS_DC) /* {{{ */
 {
 	int i;
-	HashTable *myht = HASH_OF(*val);
+	HashTable *myht = PHPC_ARRVAL_P(val);
 
-	i = myht ? zend_hash_num_elements(myht) : 0;
+	i = myht ? PHPC_HASH_NUM_ELEMENTS(myht) : 0;
 	if (i > 0) {
-		char *key;
-		ulong index, idx;
-		uint key_len;
-		HashPosition pos;
+		PHPC_STR_DECLARE(key);
+		phpc_ulong_t index, idx = 0;
 
-		zend_hash_internal_pointer_reset_ex(myht, &pos);
-		idx = 0;
-		for (;; zend_hash_move_forward_ex(myht, &pos)) {
-			i = zend_hash_get_current_key_ex(myht, &key, &key_len, &index, 0, &pos);
-			if (i == HASH_KEY_NON_EXISTENT) {
-				break;
-			}
-
-			if (i == HASH_KEY_IS_STRING) {
-				return 1;
-			} else {
-				if (index != idx) {
-					return 1;
-				}
+		PHPC_HASH_FOREACH_KEY(myht, index, key) {
+			if (PHPC_STR_EXISTS(key) || index != idx) {
+				return PHP_JSON_OUTPUT_OBJECT;
 			}
 			idx++;
-		}
+		} PHPC_HASH_FOREACH_END();
 	}
 
 	return PHP_JSON_OUTPUT_ARRAY;
