@@ -130,7 +130,7 @@ static inline char *php_json_escape_string_flush(php_json_buffer *buf, char *mar
 }
 /* }}} */
 
-static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int options TSRMLS_DC) /* {{{ */
+static void php_json_escape_string(php_json_buffer *buf, char *s, phpc_str_size_t len, int options TSRMLS_DC) /* {{{ */
 {
 	size_t count;
 	int codepoint;
@@ -278,20 +278,20 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, int len, int o
 
 /* Array encoding */
 
-static void php_json_encode_array(php_json_buffer *buf, zval **val, int options TSRMLS_DC) /* {{{ */
+static void php_json_encode_array(php_json_buffer *buf, phpc_val *val, int options TSRMLS_DC) /* {{{ */
 {
 	int i, r, need_comma = 0;
 	HashTable *myht;
 
-	if (Z_TYPE_PP(val) == IS_ARRAY) {
-		myht = HASH_OF(*val);
+	if (PHPC_TYPE_P(val) == IS_ARRAY) {
+		myht = PHPC_ARRVAL_P(val);
 		r = (options & PHP_JSON_FORCE_OBJECT) ? PHP_JSON_OUTPUT_OBJECT : php_json_determine_array_type(val TSRMLS_CC);
 	} else {
-		myht = Z_OBJPROP_PP(val);
+		myht = PHPC_OBJPROP_P(val);
 		r = PHP_JSON_OUTPUT_OBJECT;
 	}
 
-	if (myht && myht->nApplyCount > 1) {
+	if (myht && PHPC_HASH_GET_APPLY_COUNT(myht) > 1) {
 		JSOND_G(error_code) = PHP_JSON_ERROR_RECURSION;
 		PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
 		return;
@@ -305,29 +305,42 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 
 	++JSOND_G(encoder_depth);
 
-	i = myht ? zend_hash_num_elements(myht) : 0;
+	i = myht ? PHPC_HASH_NUM_ELEMENTS(myht) : 0;
 
 	if (i > 0) {
-		char *key;
-		zval **data;
-		ulong index;
-		uint key_len;
-		HashPosition pos;
+		PHPC_STR_DECLARE(key);
+		phpc_val *data;
+		phpc_ulong_t index;
 		HashTable *tmp_ht;
 
-		zend_hash_internal_pointer_reset_ex(myht, &pos);
-		for (;; zend_hash_move_forward_ex(myht, &pos)) {
-			i = zend_hash_get_current_key_ex(myht, &key, &key_len, &index, 0, &pos);
-			if (i == HASH_KEY_NON_EXISTENT)
-				break;
+		PHPC_HASH_FOREACH_KEY_VAL_IND(myht, index, key, data) {
+			PHPC_PVAL_DEREF(data);
+			tmp_ht = HASH_OF(PHPC_PVAL_CAST_TO_PZVAL(data));
+			if (tmp_ht && PHPC_HASH_APPLY_PROTECTION(tmp_ht)) {
+				PHPC_HASH_INC_APPLY_COUNT(tmp_ht);
+			}
 
-			if (zend_hash_get_current_data_ex(myht, (void **) &data, &pos) == SUCCESS) {
-				tmp_ht = HASH_OF(*data);
-				if (tmp_ht) {
-					tmp_ht->nApplyCount++;
+			if (r == PHP_JSON_OUTPUT_ARRAY) {
+				if (need_comma) {
+					PHP_JSON_BUF_APPEND_CHAR(buf, ',');
+				} else {
+					need_comma = 1;
 				}
 
-				if (r == PHP_JSON_OUTPUT_ARRAY) {
+				php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
+				php_json_pretty_print_indent(buf, options TSRMLS_CC);
+				php_json_encode_zval(buf, PHPC_PVAL_CAST_TO_PZVAL(data), options TSRMLS_CC);
+			} else if (r == PHP_JSON_OUTPUT_OBJECT) {
+				/* append key */
+				if (PHPC_STR_EXISTS(key)) {
+					if (PHPC_STR_VAL(key)[0] == '\0' && PHPC_TYPE_P(val) == IS_OBJECT) {
+						/* Skip protected and private members. */
+						if (tmp_ht && PHPC_HASH_APPLY_PROTECTION(tmp_ht)) {
+							PHPC_HASH_DEC_APPLY_COUNT(tmp_ht);
+						}
+						continue;
+					}
+
 					if (need_comma) {
 						PHP_JSON_BUF_APPEND_CHAR(buf, ',');
 					} else {
@@ -336,58 +349,35 @@ static void php_json_encode_array(php_json_buffer *buf, zval **val, int options 
 
 					php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
 					php_json_pretty_print_indent(buf, options TSRMLS_CC);
-					php_json_encode_zval(buf, *data, options TSRMLS_CC);
-				} else if (r == PHP_JSON_OUTPUT_OBJECT) {
-					if (i == HASH_KEY_IS_STRING) {
-						if (key[0] == '\0' && Z_TYPE_PP(val) == IS_OBJECT) {
-							/* Skip protected and private members. */
-							if (tmp_ht) {
-								tmp_ht->nApplyCount--;
-							}
-							continue;
-						}
 
-						if (need_comma) {
-							PHP_JSON_BUF_APPEND_CHAR(buf, ',');
-						} else {
-							need_comma = 1;
-						}
-
-						php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
-						php_json_pretty_print_indent(buf, options TSRMLS_CC);
-
-						php_json_escape_string(buf, key, key_len - 1, options & ~PHP_JSON_NUMERIC_CHECK TSRMLS_CC);
-						PHP_JSON_BUF_APPEND_CHAR(buf, ':');
-
-						php_json_pretty_print_char(buf, options, ' ' TSRMLS_CC);
-
-						php_json_encode_zval(buf, *data, options TSRMLS_CC);
+					php_json_escape_string(buf, PHPC_STR_VAL(key), PHPC_STR_LEN(key),
+							options & ~PHP_JSON_NUMERIC_CHECK TSRMLS_CC);
+				} else {
+					if (need_comma) {
+						PHP_JSON_BUF_APPEND_CHAR(buf, ',');
 					} else {
-						if (need_comma) {
-							PHP_JSON_BUF_APPEND_CHAR(buf, ',');
-						} else {
-							need_comma = 1;
-						}
-
-						php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
-						php_json_pretty_print_indent(buf, options TSRMLS_CC);
-
-						PHP_JSON_BUF_APPEND_CHAR(buf, '"');
-						PHP_JSON_BUF_APPEND_LONG(buf, (long) index);
-						PHP_JSON_BUF_APPEND_CHAR(buf, '"');
-						PHP_JSON_BUF_APPEND_CHAR(buf, ':');
-
-						php_json_pretty_print_char(buf, options, ' ' TSRMLS_CC);
-
-						php_json_encode_zval(buf, *data, options TSRMLS_CC);
+						need_comma = 1;
 					}
-				}
 
-				if (tmp_ht) {
-					tmp_ht->nApplyCount--;
+					php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
+					php_json_pretty_print_indent(buf, options TSRMLS_CC);
+
+					PHP_JSON_BUF_APPEND_CHAR(buf, '"');
+					PHP_JSON_BUF_APPEND_LONG(buf, (long) index);
+					PHP_JSON_BUF_APPEND_CHAR(buf, '"');
 				}
+				PHP_JSON_BUF_APPEND_CHAR(buf, ':');
+				/* append value */
+				php_json_pretty_print_char(buf, options, ' ' TSRMLS_CC);
+				php_json_encode_zval(buf, PHPC_PVAL_CAST_TO_PZVAL(data), options TSRMLS_CC);
 			}
-		}
+
+			if (tmp_ht && PHPC_HASH_APPLY_PROTECTION(tmp_ht)) {
+				PHPC_HASH_DEC_APPLY_COUNT(tmp_ht);
+			}
+
+		} PHPC_HASH_FOREACH_END();
+
 	}
 
 	if (JSOND_G(encoder_depth) > JSOND_G(encode_max_depth)) {
@@ -498,7 +488,7 @@ void php_json_encode_zval(php_json_buffer *buf, zval *val, int options TSRMLS_DC
 			}
 			/* fallthrough -- Non-serializable object */
 		case IS_ARRAY:
-			php_json_encode_array(buf, &val, options TSRMLS_CC);
+			php_json_encode_array(buf, PHPC_PZVAL_CAST_TO_PVAL(val), options TSRMLS_CC);
 			break;
 
 		default:
