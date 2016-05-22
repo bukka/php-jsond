@@ -408,18 +408,18 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 	HashTable* myht;
 
 	if (Z_TYPE_P(val) == IS_ARRAY) {
-		myht = HASH_OF(val);
+		myht = Z_ARRVAL_P(val);
 	} else {
 		myht = Z_OBJPROP_P(val);
 	}
 
-	if (myht && myht->nApplyCount > 1) {
+	if (myht && PHPC_HASH_GET_APPLY_COUNT(myht) > 1) {
 		JSOND_G(error_code) = PHP_JSON_ERROR_RECURSION;
 		PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
 		return;
 	}
 
-	ZVAL_STRING(&fname, "jsonSerialize", 0);
+	PHPC_PZVAL_CSTR(&fname, "jsonSerialize");
 
 	if (FAILURE == call_user_function_ex(EG(function_table), &val, &fname, &retval, 0, NULL, 1, NULL TSRMLS_CC) || !retval) {
 		zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "Failed calling %s::jsonSerialize()", ce->name);
@@ -430,6 +430,7 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 	if (EG(exception)) {
 		/* Error already raised */
 		zval_ptr_dtor(&retval);
+		zval_dtor(&fname);
 		PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
 		return;
 	}
@@ -444,6 +445,7 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 	}
 
 	zval_ptr_dtor(&retval);
+	zval_dtor(&fname);
 }
 /* }}} */
 
