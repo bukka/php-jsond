@@ -457,17 +457,10 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 
 void php_json_encode_zval(php_json_buffer *buf, zval *val, int options TSRMLS_DC) /* {{{ */
 {
+again:
 	switch (Z_TYPE_P(val)) {
 		case IS_NULL:
 			PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
-			break;
-
-		case IS_BOOL:
-			if (Z_BVAL_P(val)) {
-				PHP_JSON_BUF_APPEND_STRING(buf, "true", 4);
-			} else {
-				PHP_JSON_BUF_APPEND_STRING(buf, "false", 5);
-			}
 			break;
 
 		case IS_LONG:
@@ -496,6 +489,28 @@ void php_json_encode_zval(php_json_buffer *buf, zval *val, int options TSRMLS_DC
 		case IS_ARRAY:
 			php_json_encode_array(buf, PHPC_PZVAL_CAST_TO_PVAL(val), options TSRMLS_CC);
 			break;
+
+#if PHP_VERSION_ID < 70000
+		case IS_BOOL:
+			if (Z_BVAL_P(val)) {
+				PHP_JSON_BUF_APPEND_STRING(buf, "true", 4);
+			} else {
+				PHP_JSON_BUF_APPEND_STRING(buf, "false", 5);
+			}
+			break;
+#else
+		case IS_TRUE:
+			PHP_JSON_BUF_APPEND_STRING(buf, "true", 4);
+			break;
+
+		case IS_FALSE:
+			PHP_JSON_BUF_APPEND_STRING(buf, "false", 5);
+			break;
+
+		case IS_REFERENCE:
+			val = Z_REFVAL_P(val);
+			goto again;
+#endif
 
 		default:
 			JSOND_G(error_code) = PHP_JSON_ERROR_UNSUPPORTED_TYPE;
