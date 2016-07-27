@@ -442,10 +442,10 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 	if ((PHPC_TYPE(retval) == IS_OBJECT) &&
 		(PHPC_OBJ_HANDLE(retval) == Z_OBJ_HANDLE_P(val))) {
 		/* Handle the case where jsonSerialize does: return $this; by going straight to encode array */
-		php_json_encode_array(buf, PHPC_PZVAL_CAST_TO_PVAL(retval), options TSRMLS_CC);
+		php_json_encode_array(buf, &retval, options TSRMLS_CC);
 	} else {
 		/* All other types, encode as normal */
-		php_json_encode_zval(buf, retval, options TSRMLS_CC);
+		php_json_encode_zval(buf, PHPC_VAL_CAST_TO_PZVAL(retval), options TSRMLS_CC);
 	}
 
 	zval_ptr_dtor(&retval);
