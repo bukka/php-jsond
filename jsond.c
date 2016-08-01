@@ -213,7 +213,13 @@ PHP_RINIT_FUNCTION(jsond)
 			}
 			PHP_JSOND_NAME(serializable_ce) = *the_ce;
 #else
-			zend_class_entry *the_ce = zend_lookup_class(PHP_JSOND_SERIALIZABLE_INTERFACE_STRING);
+			zend_string *class_name = zend_string_init(
+					PHP_JSOND_SERIALIZABLE_INTERFACE_STRING,
+					sizeof(PHP_JSOND_SERIALIZABLE_INTERFACE_STRING) - 1,
+					0
+			);
+			zend_class_entry *the_ce = zend_lookup_class(class_name);
+			zend_string_release(class_name);
 			if (!the_ce) {
 				return FAILURE;
 			}
