@@ -184,8 +184,6 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 
 #else
 
-#include "ext/standard/php_smart_str.h"
-
 #define php_json_buffer smart_str
 
 #define PHP_JSON_BUF_INIT(_buf) \

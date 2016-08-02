@@ -18,15 +18,19 @@
 
 /* $Id$ */
 
+#ifndef PHP_JSOND_BUF_TYPE_NATIVE
+#define PHPC_SMART_STR_INCLUDE 1
+#endif
+
 #include "php.h"
 #include "php_ini.h"
 #include "ext/standard/info.h"
 #include "ext/standard/html.h"
+#include "phpc/phpc.h"
 #include "php_jsond.h"
 #include "php_jsond_encoder.h"
 #include "php_jsond_buffer.h"
 #include "php_jsond_parser.h"
-#include "phpc/phpc.h"
 #include <zend_exceptions.h>
 
 /* double limits */
