@@ -384,18 +384,8 @@ static PHP_JSOND_FUNCTION(last_error)
 }
 /* }}} */
 
-#define PHP_JSON_ERROR_NONE_MSG "No error"
-#define PHP_JSON_ERROR_DEPTH_MSG "Maximum stack depth exceeded"
-#define PHP_JSON_ERROR_STATE_MISMATCH_MSG "State mismatch (invalid or malformed JSON)"
-#define PHP_JSON_ERROR_CTRL_CHAR_MSG "Control character error, possibly incorrectly encoded"
-#define PHP_JSON_ERROR_SYNTAX_MSG "Syntax error"
-#define PHP_JSON_ERROR_UTF8_MSG "Malformed UTF-8 characters, possibly incorrectly encoded"
-#define PHP_JSON_ERROR_RECURSION_MSG "Recursion detected"
-#define PHP_JSON_ERROR_INF_OR_NAN_MSG "Inf and NaN cannot be JSON encoded"
-#define PHP_JSON_ERROR_UNSUPPORTED_TYPE_MSG "Type is not supported"
-#define PHP_JSON_ERROR_INVALID_PROPERTY_NAME_MSG "The decoded property name is invalid"
-#define PHP_JSON_ERROR_UTF16_MSG "Single unpaired UTF-16 surrogate in unicode escape"
-#define PHP_JSON_ERROR_UNKNOWN_MSG "Unknown error"
+#define PHP_JSON_ERROR_MSG_RETURN(_msg) \
+	PHPC_CSTRL_RETURN(_msg, sizeof(_msg) - 1)
 
 /* {{{ proto string json_last_error_msg()
    Returns the error string of the last json_encode() or json_decode() call. */
@@ -407,29 +397,29 @@ static PHP_JSOND_FUNCTION(last_error_msg)
 
 	switch(JSOND_G(error_code)) {
 		case PHP_JSON_ERROR_NONE:
-			RETURN_STRINGL(PHP_JSON_ERROR_NONE_MSG, sizeof(PHP_JSON_ERROR_NONE_MSG) - 1, 1);
+			PHP_JSON_ERROR_MSG_RETURN("No error");
 		case PHP_JSON_ERROR_DEPTH:
-			RETURN_STRINGL(PHP_JSON_ERROR_DEPTH_MSG, sizeof(PHP_JSON_ERROR_DEPTH_MSG) - 1, 1);
+			PHP_JSON_ERROR_MSG_RETURN("Maximum stack depth exceeded");
 		case PHP_JSON_ERROR_STATE_MISMATCH:
-			RETURN_STRINGL(PHP_JSON_ERROR_STATE_MISMATCH_MSG, sizeof(PHP_JSON_ERROR_STATE_MISMATCH_MSG) - 1, 1);
+			PHP_JSON_ERROR_MSG_RETURN("State mismatch (invalid or malformed JSON)");
 		case PHP_JSON_ERROR_CTRL_CHAR:
-			RETURN_STRINGL(PHP_JSON_ERROR_CTRL_CHAR_MSG, sizeof(PHP_JSON_ERROR_CTRL_CHAR_MSG) - 1, 1);
+			PHP_JSON_ERROR_MSG_RETURN("Control character error, possibly incorrectly encoded");
 		case PHP_JSON_ERROR_SYNTAX:
-			RETURN_STRINGL(PHP_JSON_ERROR_SYNTAX_MSG, sizeof(PHP_JSON_ERROR_SYNTAX_MSG) - 1, 1);
+			PHP_JSON_ERROR_MSG_RETURN("Syntax error");
 		case PHP_JSON_ERROR_UTF8:
-			RETURN_STRINGL(PHP_JSON_ERROR_UTF8_MSG, sizeof(PHP_JSON_ERROR_UTF8_MSG) - 1, 1);
+			PHP_JSON_ERROR_MSG_RETURN("Malformed UTF-8 characters, possibly incorrectly encoded");
 		case PHP_JSON_ERROR_RECURSION:
-			RETURN_STRINGL(PHP_JSON_ERROR_RECURSION_MSG, sizeof(PHP_JSON_ERROR_RECURSION_MSG) - 1, 1);
+			PHP_JSON_ERROR_MSG_RETURN("Recursion detected");
 		case PHP_JSON_ERROR_INF_OR_NAN:
-			RETURN_STRINGL(PHP_JSON_ERROR_INF_OR_NAN_MSG, sizeof(PHP_JSON_ERROR_INF_OR_NAN_MSG) - 1, 1);
+			PHP_JSON_ERROR_MSG_RETURN("Inf and NaN cannot be JSON encoded");
 		case PHP_JSON_ERROR_UNSUPPORTED_TYPE:
-			RETURN_STRINGL(PHP_JSON_ERROR_UNSUPPORTED_TYPE_MSG, sizeof(PHP_JSON_ERROR_UNSUPPORTED_TYPE_MSG) - 1, 1);
+			PHP_JSON_ERROR_MSG_RETURN("Type is not supported");
 		case PHP_JSON_ERROR_INVALID_PROPERTY_NAME:
-			RETURN_STRINGL(PHP_JSON_ERROR_INVALID_PROPERTY_NAME_MSG, sizeof(PHP_JSON_ERROR_INVALID_PROPERTY_NAME_MSG) - 1, 1);
+			PHP_JSON_ERROR_MSG_RETURN("The decoded property name is invalid");
 		case PHP_JSON_ERROR_UTF16:
-			RETURN_STRINGL(PHP_JSON_ERROR_UTF16_MSG, sizeof(PHP_JSON_ERROR_UTF16_MSG) - 1, 1);
+			PHP_JSON_ERROR_MSG_RETURN("Single unpaired UTF-16 surrogate in unicode escape");
 		default:
-			RETURN_STRINGL(PHP_JSON_ERROR_UNKNOWN_MSG, sizeof(PHP_JSON_ERROR_UNKNOWN_MSG) - 1, 1);
+			PHP_JSON_ERROR_MSG_RETURN("Unknown error");
 	}
 
 }
