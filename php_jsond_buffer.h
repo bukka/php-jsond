@@ -178,42 +178,41 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 
 #define PHP_JSON_BUF_RETURN(_buf_s, return_value) do { \
 		PHP_JSON_BUF_FINISH(&_buf_s); \
-		ZVAL_STRINGL(return_value, PHP_JSON_BUFFER_STRVAL(_buf_s), (int) PHP_JSON_BUFFER_STRLEN(_buf_s), 0); \
+		PHPC_CSTRL_RETVAL(PHP_JSON_BUFFER_STRVAL(_buf_s), (int) PHP_JSON_BUFFER_STRLEN(_buf_s)); \
 	} while(0)
 
 
 #else
 
-#define php_json_buffer smart_str
+#define php_json_buffer phpc_smart_cstr
 
 #define PHP_JSON_BUF_INIT(_buf) \
-	memset(_buf, 0, sizeof(smart_str))
+	memset(_buf, 0, sizeof(phpc_smart_cstr))
 
 #define PHP_JSON_BUF_DESTROY(_buf) \
-	smart_str_free(_buf);
+	phpc_smart_cstr_free(_buf);
 
-#define PHP_JSON_BUF_FLUSH(_buf, _pre_alloc_size) \
-	php_json_buffer_flush(_buf, _pre_alloc_size)
+#define PHP_JSON_BUF_FLUSH(_buf, _pre_alloc_size)
 
 #define PHP_JSON_BUF_FINISH(_buf)
 
 #define PHP_JSON_BUF_ALLOC(_buf, _len) \
-	smart_str_alloc(_buf, _len+2, 0)
+	phpc_smart_cstr_alloc(_buf, _len+2, 0)
 
 #define PHP_JSON_BUF_APPEND_STRING(_buf, _str, _len) \
-	smart_str_appendl(_buf, _str, _len)
+	phpc_smart_cstr_appendl(_buf, _str, _len)
 
 #define PHP_JSON_BUF_APPEND_CHAR(_buf, _c) \
-	smart_str_appendc(_buf, _c)
+	phpc_smart_cstr_appendc(_buf, _c)
 
 #define PHP_JSON_BUF_APPEND_LONG(_buf, _l) \
-	smart_str_append_long(_buf, _l)
+	phpc_smart_cstr_append_long(_buf, _l)
 
 #define PHP_JSON_BUF_DOUBLE_BLOCK_INIT(_buf, _dst, _max_len) \
 	char _dst[_max_len]
 
 #define PHP_JSON_BUF_DOUBLE_BLOCK_CLOSE(_buf, _dst, _len) \
-	smart_str_appendl(_buf, _dst, _len);
+	phpc_smart_cstr_appendl(_buf, _dst, _len);
 
 #define _PHP_JSON_BUF_MARK_NAME(_buf) _buf##__oldlen
 
@@ -232,7 +231,7 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 #define PHP_JSON_BUF_LENGTH(_buf_s) _buf_s.len
 
 #define PHP_JSON_BUF_RETURN(_buf_s, return_value) do { \
-		ZVAL_STRINGL(return_value, _buf_s.c, _buf_s.len, 1); \
+		PHPC_CSTRL_RETVAL(_buf_s.c, _buf_s.len); \
 		PHP_JSON_BUF_DESTROY(&_buf_s); \
 	} while(0)
 
