@@ -76,10 +76,9 @@ union YYSTYPE
 
 	zval value;
 	struct {
-		zval key;
+		PHPC_STR_DECLARE(key);
 		zval val;
 	} pair;
-	HashTable *ht;
 
 
 };

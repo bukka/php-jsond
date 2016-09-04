@@ -17,6 +17,10 @@
   +----------------------------------------------------------------------+
 */
 
+#ifndef PHP_JSOND_BUF_TYPE_NATIVE
+#define PHPC_SMART_CSTR_INCLUDE 1
+#endif
+
 #include "php.h"
 #include "php_jsond_scanner.h"
 #include "php_jsond_scanner_defs.h"
