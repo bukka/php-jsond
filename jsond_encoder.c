@@ -50,8 +50,9 @@ static int php_json_determine_array_type(phpc_val *val TSRMLS_DC) /* {{{ */
 
 	i = myht ? PHPC_HASH_NUM_ELEMENTS(myht) : 0;
 	if (i > 0) {
-		PHPC_STR_DECLARE(key);
 		phpc_ulong_t index, idx = 0;
+		PHPC_STR_DECLARE(key);
+		PHPC_STR_LEN_UNUSED(key);
 
 		PHPC_HASH_FOREACH_KEY(myht, index, key) {
 			if (PHPC_STR_EXISTS(key) || index != idx) {
