@@ -458,7 +458,9 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 
 void php_json_encode_zval(php_json_buffer *buf, zval *val, int options TSRMLS_DC) /* {{{ */
 {
+#if PHP_VERSION_ID >= 70000
 again:
+#endif
 	switch (Z_TYPE_P(val)) {
 		case IS_NULL:
 			PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
