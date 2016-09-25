@@ -68,7 +68,7 @@ int json_yydebug = 1;
 %type <pair> pair
 
 %destructor { zval_dtor(&$$); } <value>
-%destructor { PHPC_STR_RELEASE(&$$.key); zval_dtor(&$$.val); } <pair>
+%destructor { PHPC_STR_RELEASE($$.key); zval_dtor(&$$.val); } <pair>
 
 %code {
 int php_json_yylex(union YYSTYPE *value, php_json_parser *parser);

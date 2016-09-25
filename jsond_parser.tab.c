@@ -1142,7 +1142,7 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, php_json_parser *p
 
     case 25: /* pair  */
 
-      { PHPC_STR_RELEASE(&((*yyvaluep).pair).key); zval_dtor(&((*yyvaluep).pair).val); }
+      { PHPC_STR_RELEASE(((*yyvaluep).pair).key); zval_dtor(&((*yyvaluep).pair).val); }
 
         break;
 
