@@ -95,7 +95,7 @@ start:
 		value PHP_JSON_T_EOI
 			{
 				$$ = $1;
-				INIT_PZVAL_COPY(parser->return_value, &$1);
+				PHPC_PZVAL_COPY_INIT(parser->return_value, &$1);
 				PHP_JSON_USE($2);
 				YYACCEPT;
 			}
@@ -281,6 +281,7 @@ int php_json_parser_object_update(php_json_parser *parser, zval *object, PHPC_ST
 			PHPC_STR_RELEASE(key);
 			zval_dtor(zvalue);
 			zval_dtor(object);
+			PHPC_PZVAL_FREE(data);
 			return FAILURE;
 		}
 		PHPC_ZVAL_NEW_STR(zkey, key);

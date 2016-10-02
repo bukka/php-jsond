@@ -1448,7 +1448,7 @@ yyreduce:
 
     {
 				(yyval.value) = (yyvsp[-1].value);
-				INIT_PZVAL_COPY(parser->return_value, &(yyvsp[-1].value));
+				PHPC_PZVAL_COPY_INIT(parser->return_value, &(yyvsp[-1].value));
 				PHP_JSON_USE((yyvsp[0].value));
 				YYACCEPT;
 			}
