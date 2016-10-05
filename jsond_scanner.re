@@ -176,7 +176,7 @@ std:
 			ZVAL_LONG(&s->value, strtol((char *) s->token, NULL, 10));
 			return PHP_JSON_T_INT;
 		} else if (s->options & PHP_JSON_BIGINT_AS_STRING) {
-			ZVAL_STRINGL(&s->value, (char *) s->token, s->cursor - s->token, 1);
+			PHPC_ZVAL_CSTRL(s->value, (char *) s->token, s->cursor - s->token);
 			return PHP_JSON_T_STRING;
 		} else {
 			ZVAL_DOUBLE(&s->value, zend_strtod((char *) s->token, NULL));
