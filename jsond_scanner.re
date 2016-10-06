@@ -248,16 +248,16 @@ std:
 		return PHP_JSON_T_ERROR;
 	}
 	<STR_P1>["]              {
-		char *str;
+		PHPC_STR_DECLARE(str);
 		size_t len = s->cursor - s->str_start - s->str_esc - 1;
 		if (len == 0) {
 			PHP_JSON_CONDITION_SET(JS);
 			ZVAL_EMPTY_STRING(&s->value);
 			return PHP_JSON_T_ESTRING;
 		}
-		str = emalloc(len + 1);
-		str[len] = 0;
-		ZVAL_STRINGL(&s->value, str, len, 0);
+		PHPC_STR_ALLOC(str, len);
+		PHPC_STR_VAL(str)[len] = '\0';
+		PHPC_ZVAL_STR(s->value, str);
 		if (s->str_esc) {
 			s->pstr = (php_json_ctype *) Z_STRVAL(s->value);
 			s->cursor = s->str_start;
