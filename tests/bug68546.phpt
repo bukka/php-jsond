@@ -3,7 +3,7 @@ Bug #68546 (json_decode() Fatal error: Cannot access property started with '\0')
 --SKIPIF--
 <?php
 
-if (!extension_loaded('json')) die('skip');
+if (!extension_loaded('jsond')) die('skip');
 ?>
 --FILE--
 <?php

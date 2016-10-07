@@ -1,7 +1,7 @@
 --TEST--
 Bug #62010 (json_decode produces invalid byte-sequences)
 --SKIPIF--
-<?php if (!extension_loaded("json")) print "skip"; ?>
+<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 require_once "bootstrap.inc";
