@@ -20,13 +20,12 @@ where `x` is an installed minor version number and `y` bug fixing version number
 
 #### Manual Installation
 
-First download the source
+It's important to have a git installed as it's necessary for recursive fetch of
+[phpc](https://github.com/bukka/phpc).
+
+First clone recursively the repository
 ```
-wget -O - https://github.com/bukka/php-jsond/archive/master.tar.gz | tar xzp
-```
-or if you prefer to clone the repository
-```
-git clone https://github.com/bukka/php-jsond.git
+git clone --recursive https://github.com/bukka/php-jsond.git
 ```
 
 Then go to the created directory and compile the extension. The PHP development package has to be installed (command `phpize` must be available).
