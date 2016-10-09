@@ -8,9 +8,9 @@ PHP_ARG_ENABLE(jsond,
   yes)
 
 AC_ARG_ENABLE(jsond-prefixing,
-  [AS_HELP_STRING([--enable-jsond-prefixing],
-                  [Enable prefixing function with jsond])],
-  [AC_DEFINE([PHP_JSOND_PREFIXING],1,
+  [AS_HELP_STRING([--enable-jsond-with-json-prefix],
+                  [Enable json prefixing])],
+  [AC_DEFINE([PHP_JSOND_WITH_JSON_PREFIX],1,
              [whether json prefixing is enabled])])
 
 AC_ARG_ENABLE(jsond-buffer-native,

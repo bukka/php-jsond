@@ -43,7 +43,7 @@ extern zend_module_entry jsond_module_entry;
 #include "config.h"
 #endif
 
-#ifndef PHP_JSOND_PREFIXING
+#ifdef PHP_JSOND_WITH_JSON_PREFIX
 #define PHP_JSOND_PREFIX json
 #define PHP_JSOND_PREFIX_STRING "json"
 #define PHP_JSOND_CONSTANT "JSON"
