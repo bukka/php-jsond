@@ -355,9 +355,7 @@ static PHP_JSOND_FUNCTION(decode)
 	JSOND_G(error_code) = 0;
 
 	if (!str_len) {
-#ifndef PHP_JSOND_DECODE_EMPTY_STRING
 		JSOND_G(error_code) = PHP_JSON_ERROR_SYNTAX;
-#endif
 		RETURN_NULL();
 	}
 

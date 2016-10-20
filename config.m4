@@ -19,12 +19,6 @@ AC_ARG_ENABLE(jsond-buffer-native,
   [AC_DEFINE([PHP_JSOND_BUF_TYPE_NATIVE],1,
              [whether native buffer is enabled])])
 
-AC_ARG_ENABLE(jsond-decode-empty-string,
-  [AS_HELP_STRING([--enable-jsond-decode-empty-string],
-                  [Enable decoding empty string without error])],
-  [AC_DEFINE([PHP_JSOND_DECODE_EMPTY_STRING],1,
-             [whether empty string is a valid syntax])])
-
 AC_ARG_ENABLE(jsond-filegen,
   [AS_HELP_STRING([--enable-jsond-filegen],
                   [Enable Jsond parser and scanner files generation])],
