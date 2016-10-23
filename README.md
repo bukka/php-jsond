@@ -61,10 +61,13 @@ JSOND_ERROR_SYNTAX (integer)
 JSOND_ERROR_UTF8 (integer)
 JSOND_ERROR_RECURSION (integer)
 JSOND_ERROR_INF_OR_NAN (integer)
-JSOND_ERROR_UNSUPPORTED_TYPE (integer
+JSOND_ERROR_UNSUPPORTED_TYPE (integer)
+JSOND_ERROR_INVALID_PROPERTY_NAME (integer)
 JSOND_ERROR_UTF16 (integer)
 ```
-The error codes are the same as json errors except `JSOND_ERROR_UTF16` that is new. This error is raised if escaped unicode is an invalid surrogate pair (lead surrogate is not fallowed by trail surrogate).
+The error codes are the same as 5.6 json errors except following two constants:
+ - `JSON_ERROR_INVALID_PROPERTY_NAME` - this error is raised if property name for object decoding starts with `\0` character.
+ - `JSOND_ERROR_UTF16` - this error is raised if escaped unicode is an invalid surrogate pair (lead surrogate is not fallowed by trail surrogate).
 
 ```
 JSOND_HEX_TAG (integer)
@@ -77,8 +80,15 @@ JSOND_BIGINT_AS_STRING (integer)
 JSOND_PRETTY_PRINT (integer)
 JSOND_UNESCAPED_SLASHES (integer)
 JSOND_UNESCAPED_UNICODE (integer)
+JSOND_PARTIAL_OUTPUT_ON_ERROR (integer)
+JSOND_PRESERVE_ZERO_FRACTION (integer)
 ```
-The constants are the same as json constants.
+These encoding constants are the same as json constants.
+```
+JSOND_OBJECT_AS_ARRAY (integer)
+JSOND_BIGINT_AS_STRING (integer)
+```
+These decoding constants are the same as json constants.
 
 #### Functions
 
@@ -105,32 +115,9 @@ JsondSerializable {
 
 ### Drop-in alternative for the standard JSON extension
 
-If PHP is compiled without json extension (`--without-json`) and jsond is compiled with defined macro `PHP_JSOND_PRIMARY` (non-default), the API is exactly the same as the API documented in [JSON documentation](http://php.net/json). There is just one small difference that a new error constant is defined - `JSON_ERROR_UTF16` that is described above.
-
-
-## Benchmarks
-
-The results are generated from [bench/compare_with_json.php](https://github.com/bukka/php-jsond/blob/master/bench/compare_with_json.php) compiled with GCC (-O2) on x86_64.
-
-```
-STR: {"i": 23, "array": [1, null, false, true, ["aha", "baba", 23, {"test": 23}]]}
-JSON:  time for 100000 iterations: 0.238321
-JSOND: time for 100000 iterations: 0.236436
-STR: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-JSON:  time for 100000 iterations: 0.110764
-JSOND: time for 100000 iterations: 0.134212
-STR: {"a": 23.2234232}
-JSON:  time for 100000 iterations: 0.078458
-JSOND: time for 100000 iterations: 0.055479
-STR: {"long-str": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.", }
-JSON:  time for 100000 iterations: 0.881429
-JSOND: time for 100000 iterations: 0.118529
-STR: ... json_encode($_SERVER)
-JSON:  time for 100000 iterations: 4.341252
-JSOND: time for 100000 iterations: 1.960814
-```
-
-As you can see the new parser (JSOND) is much faster for long strings.
+If jsond is compiled with `--enable-jsond-with-json-prefix`, than the json functions are replaced
+with jsond variants and the API is exactly the same as the API documented in [JSON documentation](http://php.net/json).
+There is just one small difference that a new error constant is defined - `JSON_ERROR_UTF16` that is described above.
 
 
 ## Upgrading from php-json
