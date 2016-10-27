@@ -8,6 +8,8 @@
 - Empty string is considered invalid and JSON_ERROR_SYNTAX is raised
 - Removed option `JSOND_VALID_ESCAPED_UNICODE`
   - The `JSON_ERROR_UTF16` will be always set for invalid \uXXXX code
+- Added new error `JSOND_ERROR_INVALID_PROPERTY_NAME` for invalid property names
+  - The only case when the property is invalid is if it starts with `\0` character
 
 ## 1.3
 
