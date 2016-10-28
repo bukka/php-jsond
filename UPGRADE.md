@@ -10,6 +10,7 @@
   - The `JSON_ERROR_UTF16` will be always set for invalid \uXXXX code
 - Added new error `JSOND_ERROR_INVALID_PROPERTY_NAME` for invalid property names
   - The only case when the property is invalid is if it starts with `\0` character
+- Fixed compatibility with json ext for  `JSOND_ERROR_CTRL_CHAR`
 
 ## 1.3
 
