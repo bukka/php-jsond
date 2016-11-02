@@ -8,11 +8,15 @@
 - Empty string is considered invalid and JSON_ERROR_SYNTAX is raised
 - Removed option `JSOND_VALID_ESCAPED_UNICODE`
   - The `JSON_ERROR_UTF16` will be always set for invalid \uXXXX code
+  - PHP bug #62010
 - Added new error `JSOND_ERROR_INVALID_PROPERTY_NAME` for invalid property names
   - The only case when the property is invalid is if it starts with `\0` character
+  - PHP bug #68546
 - Fixed compatibility with json ext for  `JSOND_ERROR_CTRL_CHAR`
 
 #### Encoder
+- Added depth checking for greater than 0 and lower than `INT_MAX`
+  - PHP bug #72787
 - Added JSOND_PRESERVE_ZERO_FRACTION option for better handling of float values
 - Fixed blank line inside empty array/object when JSOND_PRETTY_PRINT is set
   - PHP bug #66021
