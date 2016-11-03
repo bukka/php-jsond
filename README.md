@@ -51,7 +51,9 @@ The functionality is exactly the same as documented in [JSON documentation](http
 
 #### Constants
 
-Constants have different prefix (`JSOND`).
+Constants have different prefix (`JSOND`) than JSON constants but they are the same as the one in PHP 7.
+
+##### Error constants
 ```
 JSOND_ERROR_NONE (integer)
 JSOND_ERROR_DEPTH (integer)
@@ -65,10 +67,8 @@ JSOND_ERROR_UNSUPPORTED_TYPE (integer)
 JSOND_ERROR_INVALID_PROPERTY_NAME (integer)
 JSOND_ERROR_UTF16 (integer)
 ```
-The error codes are the same as 5.6 json errors except following two constants:
- - `JSON_ERROR_INVALID_PROPERTY_NAME` - this error is raised if property name for object decoding starts with `\0` character.
- - `JSOND_ERROR_UTF16` - this error is raised if escaped unicode is an invalid surrogate pair (lead surrogate is not fallowed by trail surrogate).
 
+##### Encoding constants
 ```
 JSOND_HEX_TAG (integer)
 JSOND_HEX_AMP (integer)
@@ -82,13 +82,14 @@ JSOND_UNESCAPED_SLASHES (integer)
 JSOND_UNESCAPED_UNICODE (integer)
 JSOND_PARTIAL_OUTPUT_ON_ERROR (integer)
 JSOND_PRESERVE_ZERO_FRACTION (integer)
+JSOND_VALID_ESCAPE_UNICODE (integer)
 ```
-These encoding constants are the same as json constants.
+
+##### Decoding constants
 ```
 JSOND_OBJECT_AS_ARRAY (integer)
 JSOND_BIGINT_AS_STRING (integer)
 ```
-These decoding constants are the same as json constants.
 
 #### Functions
 
@@ -117,12 +118,11 @@ JsondSerializable {
 
 If jsond is compiled with `--enable-jsond-with-json-prefix`, than the json functions are replaced
 with jsond variants and the API is exactly the same as the API documented in [JSON documentation](http://php.net/json).
-There is just one small difference that a new error constant is defined - `JSON_ERROR_UTF16` that is described above.
 
 
 ## Upgrading from php-json
 
-There are some small incompatibilities with the json ext. They are documented in [UPGRADE.md](https://github.com/bukka/php-jsond/blob/master/UPGRADE.md)
+All changes are listed in [UPGRADE.md](https://github.com/bukka/php-jsond/blob/master/UPGRADE.md)
 
 ## TODO list
 
