@@ -53,6 +53,11 @@ $conf = array(
 		'role' => 'test',
 		'pattern' => '*.phpt',
 	),
+	array(
+		'dir' => 'tests',
+		'role' => 'test',
+		'pattern' => '*.inc',
+	),
 );
 
 function print_files($indent_str, $role, $pattern, $rel_dir = "") {
