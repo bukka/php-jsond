@@ -34,21 +34,29 @@
    <file role="doc" name="CREDITS"/>
    <file role="doc" name="LICENSE"/>
    <file role="doc" name="README.md"/>
+   <file role="doc" name="TODO.md"/>
    <file role="doc" name="UPGRADE.md"/>
    <file role="src" name="config.m4"/>
    <file role="src" name="config.w32"/>
    <file role="src" name="Makefile.frag"/>
    <file role="src" name="php_jsond.h"/>
+   <file role="src" name="php_jsond_buffer.h"/>
+   <file role="src" name="php_jsond_encoder.h"/>
    <file role="src" name="php_jsond_parser.h"/>
    <file role="src" name="php_jsond_scanner.h"/>
    <file role="src" name="php_jsond_scanner_defs.h"/>
+   <file role="src" name="php_jsond_utf8_decoder.h"/>
    <file role="src" name="jsond_parser.tab.h"/>
    <file role="src" name="jsond.c"/>
+   <file role="src" name="jsond_buffer.c"/>
+   <file role="src" name="jsond_encoder.c"/>
    <file role="src" name="jsond_parser.tab.c"/>
    <file role="src" name="jsond_scanner.c"/>
+   <file role="src" name="jsond_yacc.c"/>
    <file role="src" name="jsond_parser.y"/>
    <file role="src" name="jsond_scanner.re"/>
    <dir name="tests">
+    <file role="test" name="bootstrap.inc"/>
     <file role="test" name="001.phpt"/>
     <file role="test" name="002.phpt"/>
     <file role="test" name="003.phpt"/>
@@ -70,16 +78,23 @@
     <file role="test" name="bug46215.phpt"/>
     <file role="test" name="bug46944.phpt"/>
     <file role="test" name="bug47644.phpt"/>
+    <file role="test" name="bug50224.phpt"/>
     <file role="test" name="bug53946.phpt"/>
     <file role="test" name="bug54058.phpt"/>
     <file role="test" name="bug54484.phpt"/>
     <file role="test" name="bug55543.phpt"/>
     <file role="test" name="bug61537.phpt"/>
     <file role="test" name="bug61978.phpt"/>
+    <file role="test" name="bug62010.phpt"/>
     <file role="test" name="bug62369.phpt"/>
     <file role="test" name="bug63737.phpt"/>
+    <file role="test" name="bug64695.phpt"/>
     <file role="test" name="bug64874_part1.phpt"/>
     <file role="test" name="bug64874_part2.phpt"/>
+    <file role="test" name="bug66021.phpt"/>
+    <file role="test" name="bug68546.phpt"/>
+    <file role="test" name="bug69187.phpt"/>
+    <file role="test" name="bug72787.phpt"/>
     <file role="test" name="fail001.phpt"/>
     <file role="test" name="inf_nan_error.phpt"/>
     <file role="test" name="json_decode_basic.phpt"/>
@@ -90,6 +105,8 @@
     <file role="test" name="json_encode_numeric.phpt"/>
     <file role="test" name="json_encode_pretty_print.phpt"/>
     <file role="test" name="json_encode_unescaped_slashes.phpt"/>
+    <file role="test" name="json_last_error_error.phpt"/>
+    <file role="test" name="json_last_error_msg_error.phpt"/>
     <file role="test" name="pass001.1.phpt"/>
     <file role="test" name="pass001.1_64bit.phpt"/>
     <file role="test" name="pass001.phpt"/>
