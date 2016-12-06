@@ -119,6 +119,9 @@ JsondSerializable {
 If jsond is compiled with `--enable-jsond-with-json-prefix`, than the json functions are replaced
 with jsond variants and the API is exactly the same as the API documented in [JSON documentation](http://php.net/json).
 
+### JSOND IDE Auto Complete
+If you use IDE like PhpStorm, you can set the file `utils/jsond_auto_complete.php` to the Include Path,
+then IDE will auto complete `jsond_encode` and `jsond_decode`.
 
 ## Upgrading from php-json
 
