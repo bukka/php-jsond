@@ -16,10 +16,10 @@
   <email>bukka@php.net</email>
   <active>yes</active>
  </lead>
- <date>2014-03-20</date>
+ <date>2016-12-??</date>
  <version>
-  <release>1.3.0</release>
-  <api>1.3.0</api>
+  <release>1.4.0RC1</release>
+  <api>1.4.0RC1</api>
  </version>
  <stability>
   <release>beta</release>
@@ -27,7 +27,20 @@
  </stability>
  <license uri="http://www.php.net/license">PHP 3.01</license>
  <notes><![CDATA[
- * New JSON parser implemented using re2c and bison
+ * Added compatibility with PHP 7
+ * Empty string is considered invalid and JSON_ERROR_SYNTAX is raised
+ * Removed option `JSOND_VALID_ESCAPED_UNICODE`
+ * Added new error `JSOND_ERROR_INVALID_PROPERTY_NAME` for invalid property names
+ * Fixed compatibility with json ext for  `JSOND_ERROR_CTRL_CHAR`
+ * Added depth checking for greater than 0 and lower than `INT_MAX`
+ * Added JSOND_PRESERVE_ZERO_FRACTION option for better handling of float values
+ * Fixed blank line inside empty array/object when JSOND_PRETTY_PRINT is set
+ * Fixed JSON_NUMERIC_CHECK issue with NaN and Inf double
+ * Used new UTF8 decoder based on automaton from Bjoern Hoehrmann
+ * Introduced new experimental buffer for encoding (option: --enable-jsond-buffer-native)
+ * Added a possibility to switch prefix to json (option: --enable-jsond-with-json-prefi)
+ * Use special template for Bison
+ * The parser and scanner is rebuilt only if enabled in configuration
  ]]></notes>
  <contents>
   <dir name="/">
@@ -130,5 +143,20 @@
  <providesextension>jsond</providesextension>
  <extsrcrelease/>
  <changelog>
+  <release>
+   <date>2014-03-20</date>
+   <version>
+	<release>1.3.0</release>
+	<api>1.3.0</api>
+   </version>
+   <stability>
+	<release>beta</release>
+	<api>beta</api>
+   </stability>
+   <license uri="http://www.php.net/license">PHP 3.01</license>
+   <notes><![CDATA[
+   * New JSON parser implemented using re2c and bison
+   ]]></notes>
+  </release>
  </changelog>
 </package>
