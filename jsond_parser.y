@@ -285,7 +285,7 @@ int php_json_parser_object_update(php_json_parser *parser, zval *object, PHPC_ST
 			return FAILURE;
 		}
 		PHPC_ZVAL_NEW_STR(zkey, key);
-		zend_std_write_property(object, &zkey, data, NULL TSRMLS_CC);
+		PHPC_OBJ_STD_WRITE_PROPERTY(object, &zkey, data);
 
 		if (PHPC_REFCOUNTED_P(data)) {
 			Z_DELREF_P(data);
