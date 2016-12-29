@@ -16,7 +16,7 @@
   <email>bukka@php.net</email>
   <active>yes</active>
  </lead>
- <date>2016-12-??</date>
+ <date>2016-12-27</date>
  <version>
   <release>1.4.0RC1</release>
   <api>1.4.0RC1</api>
@@ -68,6 +68,9 @@
    <file role="src" name="jsond_yacc.c"/>
    <file role="src" name="jsond_parser.y"/>
    <file role="src" name="jsond_scanner.re"/>
+   <dir name="phpc">
+	<file role="src" name="phpc.h"/>
+   </dir>
    <dir name="tests">
     <file role="test" name="bootstrap.inc"/>
     <file role="test" name="001.phpt"/>
@@ -128,12 +131,15 @@
     <file role="test" name="serialize.phpt"/>
     <file role="test" name="unsupported_type_error.phpt"/>
    </dir>
+   <dir name="utils">
+	<file role="doc" name="jsond_auto_complete.php" />
+   </dir>
   </dir>
  </contents>
  <dependencies>
   <required>
    <php>
-    <min>5.2.6</min>
+    <min>5.3.3</min>
    </php>
    <pearinstaller>
     <min>1.4.0a1</min>
