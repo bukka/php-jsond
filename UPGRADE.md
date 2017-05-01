@@ -1,5 +1,13 @@
 # Upgrading from the previous versions
 
+## 1.5
+
+### User visible changes
+
+#### Encoder
+- Fixed behavior of \JsonSerializable difference from json_encode when error
+  - PHP bug #72069
+
 ## 1.4
 
 ### User visible changes

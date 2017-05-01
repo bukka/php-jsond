@@ -408,6 +408,7 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 	zval fname;
 	phpc_val retval;
 	HashTable* myht;
+	int origin_error_code;
 
 	if (Z_TYPE_P(val) == IS_ARRAY) {
 		myht = Z_ARRVAL_P(val);
@@ -423,6 +424,7 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 
 	PHPC_PZVAL_CSTR(&fname, "jsonSerialize");
 
+	origin_error_code = JSOND_G(error_code);
 	if (FAILURE == call_user_function_ex(
 				EG(function_table), PHPC_PZVAL_CAST_TO_PVAL(val), &fname, &retval,
 				0, NULL, 1, NULL TSRMLS_CC)
@@ -431,6 +433,7 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 		PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
 		return;
     }
+	JSOND_G(error_code) = origin_error_code;
 
 	if (EG(exception)) {
 		/* Error already raised */
