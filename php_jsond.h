@@ -21,7 +21,7 @@
 #ifndef PHP_JSOND_H
 #define PHP_JSOND_H
 
-#define PHP_JSOND_VERSION "1.4.0"
+#define PHP_JSOND_VERSION "1.5.0-dev"
 
 extern zend_module_entry jsond_module_entry;
 #define phpext_jsond_ptr &jsond_module_entry
