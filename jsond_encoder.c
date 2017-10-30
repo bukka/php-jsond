@@ -239,7 +239,13 @@ static void php_json_escape_string(php_json_buffer *buf, char *s, phpc_str_size_
 				break;
 
 			default:
-				if (codepoint < ' ' || (!(options & PHP_JSON_UNESCAPED_UNICODE) && codepoint > 0x7f)) {
+				if (codepoint < ' ' || (
+						codepoint > 0x7f && (
+							!(options & PHP_JSON_UNESCAPED_UNICODE) ||
+							((codepoint == 0x2028 || codepoint == 0x2029) && !(options & PHP_JSON_UNESCAPED_LINE_TERMINATORS))
+						)
+					)
+				) {
 					mark = php_json_escape_string_flush_ex(buf, mark, s, "\\u", 2, codepoint < ' ' ? 0 : codelen);
 					codelen = 0;
 					if (codepoint <= 0xffff) {
