@@ -200,7 +200,7 @@ array_end:
 elements:
 		/* empty */
 			{
-				parser->methods.array_create(&$$);
+				parser->methods.array_create(parser, &$$);
 			}
 	|	element
 ;
@@ -208,12 +208,12 @@ elements:
 element:
 		value
 			{
-				parser->methods.array_create(&$$);
-				parser->methods.array_append(&$$, &$1);
+				parser->methods.array_create(parser, &$$);
+				parser->methods.array_append(parser, &$$, &$1);
 			}
 	|	element ',' value
 			{
-				parser->methods.array_append(&$1, &$3);
+				parser->methods.array_append(parser, &$1, &$3);
 				$$ = $1;
 			}
 	|	element errlex
@@ -252,11 +252,12 @@ errlex:
 
 static int php_json_parser_array_create(php_json_parser *parser, zval *array)
 {
-	return array_init(array);
+	array_init(array);
+	return SUCCESS;
 }
 
 
-static int php_json_parser_array_append(zval *array, zval *zvalue)
+static int php_json_parser_array_append(php_json_parser *parser, zval *array, zval *zvalue)
 {
 	zval *data;
 
@@ -328,7 +329,7 @@ void php_json_yyerror(php_json_parser *parser, char const *msg)
 	}
 }
 
-PHP_JSOND_API php_json_error_code PHP_JSOND_NAME(parser_error_code)(php_json_parser *parser)
+PHP_JSOND_API php_json_error_code PHP_JSOND_NAME(parser_error_code)(const php_json_parser *parser)
 {
 	return parser->scanner.errcode;
 }

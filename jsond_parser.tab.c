@@ -1583,7 +1583,7 @@ yyreduce:
   case 19:
 
     {
-				parser->methods.array_create(&(yyval.value));
+				parser->methods.array_create(parser, &(yyval.value));
 			}
 
     break;
@@ -1591,8 +1591,8 @@ yyreduce:
   case 21:
 
     {
-				parser->methods.array_create(&(yyval.value));
-				parser->methods.array_append(&(yyval.value), &(yyvsp[0].value));
+				parser->methods.array_create(parser, &(yyval.value));
+				parser->methods.array_append(parser, &(yyval.value), &(yyvsp[0].value));
 			}
 
     break;
@@ -1600,7 +1600,7 @@ yyreduce:
   case 22:
 
     {
-				parser->methods.array_append(&(yyvsp[-2].value), &(yyvsp[0].value));
+				parser->methods.array_append(parser, &(yyvsp[-2].value), &(yyvsp[0].value));
 				(yyval.value) = (yyvsp[-2].value);
 			}
 
@@ -1857,11 +1857,12 @@ yyreturn:
 
 static int php_json_parser_array_create(php_json_parser *parser, zval *array)
 {
-	return array_init(array);
+	array_init(array);
+	return SUCCESS;
 }
 
 
-static int php_json_parser_array_append(zval *array, zval *zvalue)
+static int php_json_parser_array_append(php_json_parser *parser, zval *array, zval *zvalue)
 {
 	zval *data;
 
@@ -1933,7 +1934,7 @@ void php_json_yyerror(php_json_parser *parser, char const *msg)
 	}
 }
 
-PHP_JSOND_API php_json_error_code PHP_JSOND_NAME(parser_error_code)(php_json_parser *parser)
+PHP_JSOND_API php_json_error_code PHP_JSOND_NAME(parser_error_code)(const php_json_parser *parser)
 {
 	return parser->scanner.errcode;
 }
