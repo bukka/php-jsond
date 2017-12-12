@@ -70,7 +70,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init_ex)(
 		size_t str_len,
 		int options,
 		int max_depth,
-		const php_json_parser_methods *methods);
+		const php_json_parser_methods *methods TSRMLS_DC);
 
 PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
 		php_json_parser *parser,
@@ -78,7 +78,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
 		char *str,
 		size_t str_len,
 		int options,
-		int max_depth);
+		int max_depth TSRMLS_DC);
 
 PHP_JSOND_API php_json_error_code PHP_JSOND_NAME(parser_error_code)(const php_json_parser *parser);
 

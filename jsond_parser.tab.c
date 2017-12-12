@@ -1977,7 +1977,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
 			str_len,
 			options,
 			max_depth,
-			&default_parser_methods);
+			&default_parser_methods TSRMLS_CC);
 }
 
 
