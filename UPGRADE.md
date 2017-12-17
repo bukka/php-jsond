@@ -4,8 +4,13 @@
 
 ### User visible changes
 
+#### Decoder
+- Added parser method API including `json_parser_method` for hooking JSON parser
+
 #### Encoder
-- Fixed behavior of \JsonSerializable difference from json_encode when error
+- Escaped U+2028 and U+2029 when `JSON_UNESCAPED_UNICODE` is supplied as `json_encode`
+  options and added `JSON_UNESCAPED_LINE_TERMINATORS` to restore the previous behaviour
+- Fixed behavior of `JsonSerializable` difference from `json_encode` when error
   - PHP bug #72069
 
 ## 1.4
