@@ -1962,6 +1962,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init_ex)(
 	parser->depth = 1;
 	parser->max_depth = max_depth;
 	parser->return_value = return_value;
+	memcpy(&parser->methods, parser_methods, sizeof(php_json_parser_methods));
 	TSRMLS_SET_CTX(parser->zts_ctx);
 }
 
