@@ -302,7 +302,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(
 	PHP_JSOND_NAME(parser_init)(&parser, return_value, str, str_len, options, depth TSRMLS_CC);
 
 	if (php_json_yyparse(&parser)) {
-		JSOND_G(error_code) = php_json_parser_error_code(&parser);
+		JSOND_G(error_code) = PHP_JSOND_NAME(parser_error_code)(&parser);
 		RETURN_NULL();
 	}
 }
