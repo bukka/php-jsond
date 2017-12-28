@@ -10,7 +10,6 @@
   - refactore algorithm in jsond_scanner.re
 
 ## Encoding
-- use serialize_precision for encoding of double values
 - backport json encode fail return
   - https://github.com/php/php-src/pull/2101
   - https://bugs.php.net/bug.php?id=68992

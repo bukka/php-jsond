@@ -157,7 +157,8 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 	php_json_buffer_append_long(_buf, _l)
 
 #define PHP_JSON_BUF_DOUBLE_BLOCK_INIT(_buf, _dst, _max_len) \
-	char *_dst = php_json_buffer_block_open(_buf, MIN(EG(precision) + MAX_LENGTH_OF_DOUBLE, _max_len) + 1)
+	char *_dst = php_json_buffer_block_open(\
+		_buf, MIN(PG(serialize_precision) + MAX_LENGTH_OF_DOUBLE, _max_len) + 1)
 
 #define PHP_JSON_BUF_DOUBLE_BLOCK_CLOSE(_buf, _dst, _len) \
 	php_json_buffer_block_close(_buf, _len)

@@ -12,6 +12,7 @@
   options and added `JSON_UNESCAPED_LINE_TERMINATORS` to restore the previous behaviour
 - Fixed behavior of `JsonSerializable` difference from `json_encode` when error
   - PHP bug #72069
+- Used serialize_precision instead of precision for encoding of double values
 
 ## 1.4
 
