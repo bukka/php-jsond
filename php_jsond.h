@@ -147,6 +147,7 @@ ZEND_BEGIN_MODULE_GLOBALS(jsond)
 	int encode_max_depth;
 	php_json_error_code error_code;
 ZEND_END_MODULE_GLOBALS(jsond)
+PHP_JSOND_API ZEND_EXTERN_MODULE_GLOBALS(jsond)
 
 #define JSOND_G(v) PHPC_MODULE_GLOBALS_ACCESSOR(jsond, v)
 

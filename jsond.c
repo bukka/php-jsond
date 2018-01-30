@@ -48,7 +48,7 @@ static const char digits[] = "0123456789abcdef";
 
 PHP_JSOND_API zend_class_entry *PHP_JSOND_NAME(serializable_ce);
 
-ZEND_DECLARE_MODULE_GLOBALS(jsond)
+PHP_JSOND_API ZEND_DECLARE_MODULE_GLOBALS(jsond)
 
 /* {{{ arginfo */
 ZEND_BEGIN_ARG_INFO_EX(arginfo_jsond_encode, 0, 0, 1)
