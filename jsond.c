@@ -288,13 +288,15 @@ static PHP_MINFO_FUNCTION(jsond)
 }
 /* }}} */
 
-PHP_JSOND_API void PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int options TSRMLS_DC) /* {{{ */
+PHP_JSOND_API int PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int options TSRMLS_DC) /* {{{ */
 {
 	php_json_encode_zval(buf, val, options TSRMLS_CC);
+
+	return JSOND_G(error_code) > 0 ? FAILURE : SUCCESS;
 }
 /* }}} */
 
-PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(
+PHP_JSOND_API int PHP_JSOND_NAME(decode_ex)(
 		zval *return_value, char *str, size_t str_len, int options, int depth TSRMLS_DC) /* {{{ */
 {
 	php_json_parser parser;
@@ -303,8 +305,11 @@ PHP_JSOND_API void PHP_JSOND_NAME(decode_ex)(
 
 	if (php_json_yyparse(&parser)) {
 		JSOND_G(error_code) = PHP_JSOND_NAME(parser_error_code)(&parser);
-		RETURN_NULL();
+		RETVAL_NULL();
+		return FAILURE;
 	}
+
+	return SUCCESS;
 }
 /* }}} */
 
