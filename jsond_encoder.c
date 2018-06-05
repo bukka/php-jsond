@@ -298,7 +298,7 @@ static void php_json_encode_array(php_json_buffer *buf, phpc_val *val, int optio
 		r = PHP_JSON_OUTPUT_OBJECT;
 	}
 
-	if (myht && PHPC_HASH_GET_APPLY_COUNT(myht) > 1) {
+	if (myht && PHPC_HASH_HAS_APPLY_COUNT(myht)) {
 		JSOND_G(error_code) = PHP_JSON_ERROR_RECURSION;
 		PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
 		return;
@@ -422,7 +422,7 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 		myht = Z_OBJPROP_P(val);
 	}
 
-	if (myht && PHPC_HASH_GET_APPLY_COUNT(myht) > 1) {
+	if (myht && PHPC_HASH_HAS_APPLY_COUNT(myht)) {
 		JSOND_G(error_code) = PHP_JSON_ERROR_RECURSION;
 		PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
 		return;
