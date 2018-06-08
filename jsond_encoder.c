@@ -305,7 +305,9 @@ static int php_json_encode_array(php_json_buffer *buf, phpc_val *val, int option
 
 	if (myht && PHPC_HASH_HAS_APPLY_COUNT(myht)) {
 		JSOND_G(error_code) = PHP_JSON_ERROR_RECURSION;
-		PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
+		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
+			PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
+		}
 		return FAILURE;
 	}
 
@@ -423,13 +425,14 @@ static int php_json_encode_array(php_json_buffer *buf, phpc_val *val, int option
 
 /* Serializable interface */
 
-static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val, int options TSRMLS_DC) /* {{{ */
+static int php_json_encode_serializable_object(php_json_buffer *buf, zval *val, int options TSRMLS_DC) /* {{{ */
 {
 	zend_class_entry *ce = Z_OBJCE_P(val);
 	zval fname;
 	phpc_val retval;
 	HashTable* myht;
 	int origin_error_code;
+	int return_code;
 
 	if (Z_TYPE_P(val) == IS_ARRAY) {
 		myht = Z_ARRVAL_P(val);
@@ -439,8 +442,10 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 
 	if (myht && PHPC_HASH_HAS_APPLY_COUNT(myht)) {
 		JSOND_G(error_code) = PHP_JSON_ERROR_RECURSION;
-		PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
-		return;
+		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
+			PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
+		}
+		return FAILURE;
 	}
 
 	PHPC_PZVAL_CSTR(&fname, "jsonSerialize");
@@ -451,8 +456,10 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 				0, NULL, 1, NULL TSRMLS_CC)
 			|| PHPC_VAL_ISUNDEF(retval)) {
 		zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "Failed calling %s::jsonSerialize()", ce->name);
-		PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
-		return;
+		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
+			PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
+		}
+		return FAILURE;
     }
 	JSOND_G(error_code) = origin_error_code;
 
@@ -460,21 +467,25 @@ static void php_json_encode_serializable_object(php_json_buffer *buf, zval *val,
 		/* Error already raised */
 		zval_ptr_dtor(&retval);
 		zval_dtor(&fname);
-		PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
-		return;
+		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
+			PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
+		}
+		return FAILURE;
 	}
 
 	if ((PHPC_TYPE(retval) == IS_OBJECT) &&
-		(PHPC_OBJ_HANDLE(retval) == Z_OBJ_HANDLE_P(val))) {
+			(PHPC_OBJ_HANDLE(retval) == Z_OBJ_HANDLE_P(val))) {
 		/* Handle the case where jsonSerialize does: return $this; by going straight to encode array */
-		php_json_encode_array(buf, &retval, options TSRMLS_CC);
+		return_code = php_json_encode_array(buf, &retval, options TSRMLS_CC);
 	} else {
 		/* All other types, encode as normal */
-		php_json_encode_zval(buf, PHPC_VAL_CAST_TO_PZVAL(retval), options TSRMLS_CC);
+		return_code = php_json_encode_zval(buf, PHPC_VAL_CAST_TO_PZVAL(retval), options TSRMLS_CC);
 	}
 
 	zval_ptr_dtor(&retval);
 	zval_dtor(&fname);
+
+	return return_code;
 }
 /* }}} */
 
@@ -508,8 +519,7 @@ again:
 
 		case IS_OBJECT:
 			if (instanceof_function(Z_OBJCE_P(val), PHP_JSOND_NAME(serializable_ce) TSRMLS_CC)) {
-				php_json_encode_serializable_object(buf, val, options TSRMLS_CC);
-				break;
+				return php_json_encode_serializable_object(buf, val, options TSRMLS_CC);
 			}
 			/* fallthrough -- Non-serializable object */
 		case IS_ARRAY:
@@ -539,8 +549,10 @@ again:
 
 		default:
 			JSOND_G(error_code) = PHP_JSON_ERROR_UNSUPPORTED_TYPE;
-			PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
-			break;
+			if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
+				PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
+			}
+			return FAILURE;
 	}
 
 	return SUCCESS;
