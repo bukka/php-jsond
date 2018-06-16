@@ -386,7 +386,9 @@ static int php_json_encode_array(php_json_buffer *buf, phpc_val *val, int option
 				if (php_json_encode_zval(
 							buf, PHPC_PVAL_CAST_TO_PZVAL(data), options TSRMLS_CC) == FAILURE &&
 						!(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR)) {
-					PHPC_HASH_DEC_APPLY_COUNT(tmp_ht);
+					if (tmp_ht && PHPC_HASH_APPLY_PROTECTION(tmp_ht)) {
+						PHPC_HASH_DEC_APPLY_COUNT(tmp_ht);
+					}
 					return FAILURE;
 				};
 			}
