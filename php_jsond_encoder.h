@@ -22,7 +22,20 @@
 #include "php.h"
 #include "php_jsond_buffer.h"
 
-int php_json_encode_zval(php_json_buffer *buf, zval *val, int options TSRMLS_DC);
+typedef struct _php_json_encoder php_json_encoder;
+
+struct _php_json_encoder {
+	int depth;
+	int max_depth;
+	php_json_error_code error_code;
+};
+
+static inline void php_json_encode_init(php_json_encoder *encoder)
+{
+	memset(encoder, 0, sizeof(php_json_encoder));
+}
+
+int php_json_encode_zval(php_json_buffer *buf, zval *val, int options, php_json_encoder *encoder TSRMLS_DC);
 
 #endif	/* PHP_JSOND_ENCODER_H */
 

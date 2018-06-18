@@ -290,9 +290,17 @@ static PHP_MINFO_FUNCTION(jsond)
 
 PHP_JSOND_API int PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int options TSRMLS_DC) /* {{{ */
 {
-	php_json_encode_zval(buf, val, options TSRMLS_CC);
+	php_json_encoder encoder;
+	int return_code;
 
-	return JSOND_G(error_code) > 0 ? FAILURE : SUCCESS;
+	php_json_encode_init(&encoder);
+	encoder.max_depth = JSOND_G(encode_max_depth);
+	encoder.error_code = PHP_JSON_ERROR_NONE;
+
+	return_code = php_json_encode_zval(buf, val, options, &encoder TSRMLS_CC);
+	JSOND_G(error_code) = encoder.error_code;
+
+	return return_code;
 }
 /* }}} */
 
