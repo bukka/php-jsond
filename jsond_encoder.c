@@ -298,6 +298,20 @@ static int php_json_escape_string(
 
 /* Array encoding */
 
+#define PHP_JSON_HASH_PROTECT_RECURSION(_tmp_ht) \
+	do { \
+		if (_tmp_ht && PHPC_HASH_APPLY_PROTECTION(_tmp_ht)) { \
+			PHPC_HASH_INC_APPLY_COUNT(_tmp_ht); \
+		} \
+	} while (0)
+
+#define PHP_JSON_HASH_UNPROTECT_RECURSION(_tmp_ht) \
+	do { \
+		if (_tmp_ht && PHPC_HASH_APPLY_PROTECTION(_tmp_ht)) { \
+			PHPC_HASH_DEC_APPLY_COUNT(_tmp_ht); \
+		} \
+	} while (0)
+
 static int php_json_encode_array(
 		php_json_buffer *buf, phpc_val *val, int options,
 		php_json_encoder *encoder TSRMLS_DC) /* {{{ */
@@ -321,6 +335,8 @@ static int php_json_encode_array(
 		return FAILURE;
 	}
 
+	PHP_JSON_HASH_PROTECT_RECURSION(myht);
+
 	if (r == PHP_JSON_OUTPUT_ARRAY) {
 		PHP_JSON_BUF_APPEND_CHAR(buf, '[');
 	} else {
@@ -341,10 +357,6 @@ static int php_json_encode_array(
 		PHPC_HASH_FOREACH_KEY_VAL_IND(myht, index, key, data) {
 			PHPC_PVAL_DEREF(data);
 			z_data = PHPC_PVAL_CAST_TO_PZVAL(data);
-			tmp_ht = HASH_OF(z_data);
-			if (tmp_ht && PHPC_HASH_APPLY_PROTECTION(tmp_ht)) {
-				PHPC_HASH_INC_APPLY_COUNT(tmp_ht);
-			}
 
 			if (r == PHP_JSON_OUTPUT_ARRAY) {
 				if (need_comma) {
@@ -361,9 +373,6 @@ static int php_json_encode_array(
 				if (PHPC_STR_EXISTS(key)) {
 					if (PHPC_STR_VAL(key)[0] == '\0' && PHPC_TYPE_P(val) == IS_OBJECT) {
 						/* Skip protected and private members. */
-						if (tmp_ht && PHPC_HASH_APPLY_PROTECTION(tmp_ht)) {
-							PHPC_HASH_DEC_APPLY_COUNT(tmp_ht);
-						}
 						continue;
 					}
 
@@ -397,20 +406,15 @@ static int php_json_encode_array(
 				php_json_pretty_print_char(buf, options, ' ' TSRMLS_CC);
 				if (php_json_encode_zval(buf, z_data, options, encoder TSRMLS_CC) == FAILURE &&
 						!(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR)) {
-					if (tmp_ht && PHPC_HASH_APPLY_PROTECTION(tmp_ht)) {
-						PHPC_HASH_DEC_APPLY_COUNT(tmp_ht);
-					}
+					PHP_JSON_HASH_UNPROTECT_RECURSION(myht);
 					return FAILURE;
 				};
 			}
-
-			if (tmp_ht && PHPC_HASH_APPLY_PROTECTION(tmp_ht)) {
-				PHPC_HASH_DEC_APPLY_COUNT(tmp_ht);
-			}
-
 		} PHPC_HASH_FOREACH_END();
 
 	}
+
+	PHP_JSON_HASH_UNPROTECT_RECURSION(myht);
 
 	if (encoder->depth > encoder->max_depth) {
 		encoder->error_code = PHP_JSON_ERROR_DEPTH;
@@ -462,6 +466,8 @@ static int php_json_encode_serializable_object(
 		return FAILURE;
 	}
 
+	PHP_JSON_HASH_PROTECT_RECURSION(myht);
+
 	PHPC_PZVAL_CSTR(&fname, "jsonSerialize");
 
 	if (FAILURE == call_user_function_ex(
@@ -472,6 +478,7 @@ static int php_json_encode_serializable_object(
 		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
 			PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
 		}
+		PHP_JSON_HASH_UNPROTECT_RECURSION(myht);
 		return FAILURE;
 	}
 
@@ -482,17 +489,20 @@ static int php_json_encode_serializable_object(
 		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
 			PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
 		}
+		PHP_JSON_HASH_UNPROTECT_RECURSION(myht);
 		return FAILURE;
 	}
 
 	if ((PHPC_TYPE(retval) == IS_OBJECT) &&
 			(PHPC_OBJ_HANDLE(retval) == Z_OBJ_HANDLE_P(val))) {
 		/* Handle the case where jsonSerialize does: return $this; by going straight to encode array */
+		PHP_JSON_HASH_UNPROTECT_RECURSION(myht);
 		return_code = php_json_encode_array(buf, &retval, options, encoder TSRMLS_CC);
 	} else {
 		/* All other types, encode as normal */
 		return_code = php_json_encode_zval(
 				buf, PHPC_VAL_CAST_TO_PZVAL(retval), options, encoder TSRMLS_CC);
+		PHP_JSON_HASH_UNPROTECT_RECURSION(myht);
 	}
 
 	zval_ptr_dtor(&retval);

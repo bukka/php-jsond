@@ -55,6 +55,6 @@ var_dump($jsond_encode($obj2, jsond_constant('PARTIAL_OUTPUT_ON_ERROR')));
 
 ?>
 --EXPECTF--
-string(44) "{"test":"123","me":{"test":"123","me":null}}"
+string(24) "{"test":"123","me":null}"
 ==
-string(44) "{"test":"123","me":{"test":"123","me":null}}"
+string(24) "{"test":"123","me":null}"
