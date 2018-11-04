@@ -21,7 +21,9 @@ var_dump($jsond_last_error(), $jsond_last_error_msg());
 
 echo "\n";
 
-var_dump($jsond_encode($a, jsond_constant('PARTIAL_OUTPUT_ON_ERROR')));
+
+$output = $jsond_encode($a, jsond_constant('PARTIAL_OUTPUT_ON_ERROR'));
+var_dump($output === (version_compare(PHP_VERSION, '7.0.0') >= 0 ? '[null]': '[[null]]'));
 var_dump($jsond_last_error(), $jsond_last_error_msg());
 
 echo "Done\n";
@@ -39,7 +41,7 @@ bool(false)
 int(6)
 string(%d) "Recursion detected"
 
-string(6) "[null]"
+bool(true)
 int(6)
 string(%d) "Recursion detected"
 Done
