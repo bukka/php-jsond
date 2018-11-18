@@ -27,6 +27,7 @@
 #include "ext/standard/html.h"
 #include "php_jsond.h"
 #include "php_jsond_encoder.h"
+#include "php_jsond_dtoa.h"
 #include "php_jsond_buffer.h"
 #include "php_jsond_utf8_decoder.h"
 #include <zend_exceptions.h>
@@ -103,7 +104,7 @@ static inline void php_json_encode_double(
 {
 	size_t len;
 	PHP_JSON_BUF_DOUBLE_BLOCK_INIT(buf, num, PHP_JSON_DOUBLE_MAX_LENGTH);
-	php_gcvt(d, PG(serialize_precision), '.', 'e', &num[0]);
+	php_jsond_gcvt(d, PG(serialize_precision), '.', 'e', &num[0]);
 	len = strlen(num);
 	if ((options & PHP_JSON_PRESERVE_ZERO_FRACTION) && strchr(num, '.') == NULL) {
 		memcpy(&num[len], ".0", sizeof(".0"));
