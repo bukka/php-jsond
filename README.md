@@ -116,7 +116,7 @@ JsondSerializable {
 
 ### Drop-in alternative for the standard JSON extension
 
-If jsond is compiled with `--enable-jsond-with-json-prefix`, than the json functions are replaced
+If jsond is compiled with `--enable-jsond-prefixing`, than the json functions are replaced
 with jsond variants and the API is exactly the same as the API documented in [JSON documentation](http://php.net/json).
 
 ### JSOND IDE Auto Complete
