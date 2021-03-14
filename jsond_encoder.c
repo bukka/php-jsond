@@ -475,7 +475,7 @@ static int php_json_encode_serializable_object(
 				EG(function_table), PHPC_PZVAL_CAST_TO_PVAL(val), &fname, &retval,
 				0, NULL, 1, NULL TSRMLS_CC)
 			|| PHPC_VAL_ISUNDEF(retval)) {
-		zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "Failed calling %s::jsonSerialize()", ce->name);
+		zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "Failed calling %s::jsonSerialize()", PHPC_ZSTR_VAL(ce->name));
 		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
 			PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
 		}
