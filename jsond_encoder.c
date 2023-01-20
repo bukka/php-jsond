@@ -47,20 +47,19 @@ static const char php_json_digits[] = "0123456789abcdef";
 static int php_json_determine_array_type(phpc_val *val TSRMLS_DC) /* {{{ */
 {
 	int i;
-	HashTable *myht = PHPC_ARRVAL_P(val);
+	HashTable *myht = Z_ARRVAL_P(val);
 
-	i = myht ? PHPC_HASH_NUM_ELEMENTS(myht) : 0;
+	i = myht ? zend_hash_num_elements(myht) : 0;
 	if (i > 0) {
 		phpc_ulong_t index, idx = 0;
-		PHPC_STR_DECLARE(key);
-		PHPC_STR_LEN_UNUSED(key);
+		zend_string *key;
 
-		PHPC_HASH_FOREACH_KEY(myht, index, key) {
-			if (PHPC_STR_EXISTS(key) || index != idx) {
+		ZEND_HASH_FOREACH_KEY(myht, index, key) {
+			if (key || index != idx) {
 				return PHP_JSON_OUTPUT_OBJECT;
 			}
 			idx++;
-		} PHPC_HASH_FOREACH_END();
+		} ZEND_HASH_FOREACH_END();
 	}
 
 	return PHP_JSON_OUTPUT_ARRAY;
