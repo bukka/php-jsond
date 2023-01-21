@@ -70,7 +70,7 @@ ZEND_END_ARG_INFO()
 /* jsond_functions[] */
 static zend_function_entry jsond_functions[] = {
 	PHP_FE(jsond_encode, arginfo_jsond_encode)
-	PHP_FE(jsond_encode, arginfo_jsond_decode)
+	PHP_FE(jsond_decode, arginfo_jsond_decode)
 	PHP_FE(jsond_last_error, arginfo_jsond_last_error)
 	PHP_FE(jsond_last_error_msg, arginfo_jsond_last_error_msg)
 	PHP_FE_END
@@ -195,9 +195,7 @@ PHP_RINIT_FUNCTION(jsond)
 }
 
 
-
-/* PHP_GINIT_FUNCTION
-*/
+/* PHP_GINIT_FUNCTION */
 static PHP_GINIT_FUNCTION(jsond)
 {
 #if defined(ZTS) && defined(COMPILE_DL_JSOND)
@@ -209,8 +207,7 @@ static PHP_GINIT_FUNCTION(jsond)
 }
 
 
-/* jsond_module_entry
- */
+/* jsond_module_entry */
 zend_module_entry jsond_module_entry = {
 	STANDARD_MODULE_HEADER,
 	"jsond",
