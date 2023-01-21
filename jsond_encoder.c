@@ -1,8 +1,6 @@
 /*
   +----------------------------------------------------------------------+
-  | PHP Version 5                                                        |
-  +----------------------------------------------------------------------+
-  | Copyright (c) 1997-2018 The PHP Group                                |
+  | Copyright (c) The PHP Group                                          |
   +----------------------------------------------------------------------+
   | This source file is subject to version 3.01 of the PHP license,      |
   | that is bundled with this package in the file LICENSE, and is        |
@@ -17,15 +15,12 @@
   +----------------------------------------------------------------------+
 */
 
-#ifndef PHP_JSOND_BUF_TYPE_NATIVE
-#define PHPC_SMART_CSTR_INCLUDE 1
-#endif
-
 #include "php.h"
 #include "php_ini.h"
 #include "ext/standard/info.h"
 #include "ext/standard/html.h"
 #include "php_jsond.h"
+#include "php_jsond_compat.h"
 #include "php_jsond_encoder.h"
 #include "php_jsond_dtoa.h"
 #include "php_jsond_buffer.h"
@@ -44,14 +39,14 @@ ZEND_EXTERN_MODULE_GLOBALS(jsond)
 
 static const char php_json_digits[] = "0123456789abcdef";
 
-static int php_json_determine_array_type(phpc_val *val TSRMLS_DC) /* {{{ */
+static int php_json_determine_array_type(zval *val)
 {
 	int i;
 	HashTable *myht = Z_ARRVAL_P(val);
 
 	i = myht ? zend_hash_num_elements(myht) : 0;
 	if (i > 0) {
-		phpc_ulong_t index, idx = 0;
+		zend_ulong index, idx = 0;
 		zend_string *key;
 
 		ZEND_HASH_FOREACH_KEY(myht, index, key) {
@@ -64,21 +59,19 @@ static int php_json_determine_array_type(phpc_val *val TSRMLS_DC) /* {{{ */
 
 	return PHP_JSON_OUTPUT_ARRAY;
 }
-/* }}} */
 
 /* Pretty printing support functions */
 
 static inline void php_json_pretty_print_char(
-		php_json_buffer *buf, int options, char c TSRMLS_DC) /* {{{ */
+		php_json_buffer *buf, int options, char c)
 {
 	if (options & PHP_JSON_PRETTY_PRINT) {
 		PHP_JSON_BUF_APPEND_CHAR(buf, c);
 	}
 }
-/* }}} */
 
 static inline void php_json_pretty_print_indent(
-		php_json_buffer *buf, int options, php_json_encoder *encoder TSRMLS_DC) /* {{{ */
+		php_json_buffer *buf, int options, php_json_encoder *encoder)
 {
 	int i;
 
@@ -88,18 +81,16 @@ static inline void php_json_pretty_print_indent(
 		}
 	}
 }
-/* }}} */
 
 /* Double encoding */
 
-static inline int php_json_is_valid_double(double d) /* {{{ */
+static inline int php_json_is_valid_double(double d)
 {
 	return !zend_isinf(d) && !zend_isnan(d);
 }
-/* }}} */
 
 static inline void php_json_encode_double(
-		php_json_buffer *buf, double d, int options TSRMLS_DC) /* {{{ */
+		php_json_buffer *buf, double d, int options)
 {
 	size_t len;
 	PHP_JSON_BUF_DOUBLE_BLOCK_INIT(buf, num, PHP_JSON_DOUBLE_MAX_LENGTH);
@@ -111,13 +102,12 @@ static inline void php_json_encode_double(
 	}
 	PHP_JSON_BUF_DOUBLE_BLOCK_CLOSE(buf, num, len);
 }
-/* }}} */
 
 /* String encoding */
 
 static inline char *php_json_escape_string_flush_ex(
 		php_json_buffer *buf, char *mark, char *s, char *esc,
-		int esc_len, int extralen) /* {{{ */
+		int esc_len, int extralen)
 {
 	char *prechar = s - extralen;
 	if (prechar != mark) {
@@ -128,18 +118,16 @@ static inline char *php_json_escape_string_flush_ex(
 	}
 	return s + 1;
 }
-/* }}} */
 
 static inline char *php_json_escape_string_flush(
-		php_json_buffer *buf, char *mark, char *s, char *esc, int esc_len) /* {{{ */
+		php_json_buffer *buf, char *mark, char *s, char *esc, int esc_len)
 {
 	return php_json_escape_string_flush_ex(buf, mark, s, esc, esc_len, 0);
 }
-/* }}} */
 
 static int php_json_escape_string(
-		php_json_buffer *buf, char *s, phpc_str_size_t len, int options,
-		php_json_encoder *encoder TSRMLS_DC) /* {{{ */
+		php_json_buffer *buf, char *s, size_t len, int options,
+		php_json_encoder *encoder)
 {
 	size_t count;
 	int codepoint;
@@ -164,7 +152,7 @@ static int php_json_escape_string(
 				return SUCCESS;
 			}
 			if (type == IS_DOUBLE && php_json_is_valid_double(d)) {
-				php_json_encode_double(buf, d, options TSRMLS_CC);
+				php_json_encode_double(buf, d, options);
 				return SUCCESS;
 			}
 		}
@@ -294,40 +282,39 @@ static int php_json_escape_string(
 
 	return SUCCESS;
 }
-/* }}} */
 
 /* Array encoding */
 
 #define PHP_JSON_HASH_PROTECT_RECURSION(_tmp_ht) \
 	do { \
-		if (_tmp_ht && PHPC_HASH_APPLY_PROTECTION(_tmp_ht)) { \
-			PHPC_HASH_INC_APPLY_COUNT(_tmp_ht); \
+		if (_tmp_ht && PHP_JSON_APPLY_PROTECTION(_tmp_ht)) { \
+			PHP_JSON_INC_APPLY_COUNT(_tmp_ht); \
 		} \
 	} while (0)
 
 #define PHP_JSON_HASH_UNPROTECT_RECURSION(_tmp_ht) \
 	do { \
-		if (_tmp_ht && PHPC_HASH_APPLY_PROTECTION(_tmp_ht)) { \
-			PHPC_HASH_DEC_APPLY_COUNT(_tmp_ht); \
+		if (_tmp_ht && PHP_JSON_APPLY_PROTECTION(_tmp_ht)) { \
+			PHP_JSON_DEC_APPLY_COUNT(_tmp_ht); \
 		} \
 	} while (0)
 
 static int php_json_encode_array(
-		php_json_buffer *buf, phpc_val *val, int options,
-		php_json_encoder *encoder TSRMLS_DC) /* {{{ */
+		php_json_buffer *buf, zval *val, int options,
+		php_json_encoder *encoder)
 {
 	int i, r, need_comma = 0;
 	HashTable *myht;
 
-	if (PHPC_TYPE_P(val) == IS_ARRAY) {
-		myht = PHPC_ARRVAL_P(val);
-		r = (options & PHP_JSON_FORCE_OBJECT) ? PHP_JSON_OUTPUT_OBJECT : php_json_determine_array_type(val TSRMLS_CC);
+	if (Z_TYPE_P(val) == IS_ARRAY) {
+		myht = Z_ARRVAL_P(val);
+		r = (options & PHP_JSON_FORCE_OBJECT) ? PHP_JSON_OUTPUT_OBJECT : php_json_determine_array_type(val);
 	} else {
-		myht = PHPC_OBJPROP_P(val);
+		myht = Z_OBJPROP_P(val);
 		r = PHP_JSON_OUTPUT_OBJECT;
 	}
 
-	if (myht && PHPC_HASH_HAS_APPLY_COUNT(myht)) {
+	if (myht && PHP_JSON_HAS_APPLY_COUNT(myht)) {
 		encoder->error_code = PHP_JSON_ERROR_RECURSION;
 		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
 			PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
@@ -345,18 +332,17 @@ static int php_json_encode_array(
 
 	++encoder->depth;
 
-	i = myht ? PHPC_HASH_NUM_ELEMENTS(myht) : 0;
+	i = myht ? zend_hash_num_elements(myht) : 0;
 
 	if (i > 0) {
-		PHPC_STR_DECLARE(key);
-		phpc_val *data;
+		zend_string *key;
+		zval *data;
 		zval *z_data;
-		phpc_ulong_t index;
+		zend_ulong index;
 		HashTable *tmp_ht;
 
-		PHPC_HASH_FOREACH_KEY_VAL_IND(myht, index, key, data) {
-			PHPC_PVAL_DEREF(data);
-			z_data = PHPC_PVAL_CAST_TO_PZVAL(data);
+		ZEND_HASH_FOREACH_KEY_VAL_IND(myht, index, key, z_data) {
+			ZVAL_DEREF(z_data);
 
 			if (r == PHP_JSON_OUTPUT_ARRAY) {
 				if (need_comma) {
@@ -365,13 +351,13 @@ static int php_json_encode_array(
 					need_comma = 1;
 				}
 
-				php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
-				php_json_pretty_print_indent(buf, options, encoder TSRMLS_CC);
-				php_json_encode_zval(buf, z_data, options, encoder TSRMLS_CC);
+				php_json_pretty_print_char(buf, options, '\n');
+				php_json_pretty_print_indent(buf, options, encoder);
+				php_json_encode_zval(buf, z_data, options, encoder);
 			} else if (r == PHP_JSON_OUTPUT_OBJECT) {
 				/* append key */
-				if (PHPC_STR_EXISTS(key)) {
-					if (PHPC_STR_VAL(key)[0] == '\0' && PHPC_TYPE_P(val) == IS_OBJECT) {
+				if (key) {
+					if (ZSTR_VAL(key)[0] == '\0' && Z_TYPE_P(val) == IS_OBJECT) {
 						/* Skip protected and private members. */
 						continue;
 					}
@@ -382,11 +368,11 @@ static int php_json_encode_array(
 						need_comma = 1;
 					}
 
-					php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
-					php_json_pretty_print_indent(buf, options, encoder TSRMLS_CC);
+					php_json_pretty_print_char(buf, options, '\n');
+					php_json_pretty_print_indent(buf, options, encoder);
 
-					php_json_escape_string(buf, PHPC_STR_VAL(key), PHPC_STR_LEN(key),
-							options & ~PHP_JSON_NUMERIC_CHECK, encoder TSRMLS_CC);
+					php_json_escape_string(buf, ZSTR_VAL(key), ZSTR_LEN(key),
+							options & ~PHP_JSON_NUMERIC_CHECK, encoder);
 				} else {
 					if (need_comma) {
 						PHP_JSON_BUF_APPEND_CHAR(buf, ',');
@@ -394,8 +380,8 @@ static int php_json_encode_array(
 						need_comma = 1;
 					}
 
-					php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
-					php_json_pretty_print_indent(buf, options, encoder TSRMLS_CC);
+					php_json_pretty_print_char(buf, options, '\n');
+					php_json_pretty_print_indent(buf, options, encoder);
 
 					PHP_JSON_BUF_APPEND_CHAR(buf, '"');
 					PHP_JSON_BUF_APPEND_LONG(buf, (long) index);
@@ -403,14 +389,14 @@ static int php_json_encode_array(
 				}
 				PHP_JSON_BUF_APPEND_CHAR(buf, ':');
 				/* append value */
-				php_json_pretty_print_char(buf, options, ' ' TSRMLS_CC);
-				if (php_json_encode_zval(buf, z_data, options, encoder TSRMLS_CC) == FAILURE &&
+				php_json_pretty_print_char(buf, options, ' ');
+				if (php_json_encode_zval(buf, z_data, options, encoder) == FAILURE &&
 						!(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR)) {
 					PHP_JSON_HASH_UNPROTECT_RECURSION(myht);
 					return FAILURE;
 				};
 			}
-		} PHPC_HASH_FOREACH_END();
+		} ZEND_HASH_FOREACH_END();
 
 	}
 
@@ -426,8 +412,8 @@ static int php_json_encode_array(
 
 	/* Only keep closing bracket on same line for empty arrays/objects */
 	if (need_comma) {
-		php_json_pretty_print_char(buf, options, '\n' TSRMLS_CC);
-		php_json_pretty_print_indent(buf, options, encoder TSRMLS_CC);
+		php_json_pretty_print_char(buf, options, '\n');
+		php_json_pretty_print_indent(buf, options, encoder);
 	}
 
 	if (r == PHP_JSON_OUTPUT_ARRAY) {
@@ -438,17 +424,16 @@ static int php_json_encode_array(
 
 	return SUCCESS;
 }
-/* }}} */
 
 /* Serializable interface */
 
 static int php_json_encode_serializable_object(
 		php_json_buffer *buf, zval *val, int options,
-		php_json_encoder *encoder TSRMLS_DC) /* {{{ */
+		php_json_encoder *encoder)
 {
 	zend_class_entry *ce = Z_OBJCE_P(val);
 	zval fname;
-	phpc_val retval;
+	zval retval;
 	HashTable* myht;
 	int return_code;
 
@@ -458,7 +443,7 @@ static int php_json_encode_serializable_object(
 		myht = Z_OBJPROP_P(val);
 	}
 
-	if (myht && PHPC_HASH_HAS_APPLY_COUNT(myht)) {
+	if (myht && PHP_JSON_HAS_APPLY_COUNT(myht)) {
 		encoder->error_code = PHP_JSON_ERROR_RECURSION;
 		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
 			PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
@@ -468,13 +453,11 @@ static int php_json_encode_serializable_object(
 
 	PHP_JSON_HASH_PROTECT_RECURSION(myht);
 
-	PHPC_PZVAL_CSTR(&fname, "jsonSerialize");
+	ZVAL_STRING(&fname, "jsonSerialize");
 
-	if (FAILURE == call_user_function_ex(
-				EG(function_table), PHPC_PZVAL_CAST_TO_PVAL(val), &fname, &retval,
-				0, NULL, 1, NULL TSRMLS_CC)
-			|| PHPC_VAL_ISUNDEF(retval)) {
-		zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "Failed calling %s::jsonSerialize()", PHPC_ZSTR_VAL(ce->name));
+	if (FAILURE == call_user_function(EG(function_table), val, &fname, &retval, 0, NULL)
+			|| Z_ISUNDEF(retval)) {
+		zend_throw_exception_ex(NULL, 0, "Failed calling %s::jsonSerialize()", ZSTR_VAL(ce->name));
 		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
 			PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
 		}
@@ -493,15 +476,13 @@ static int php_json_encode_serializable_object(
 		return FAILURE;
 	}
 
-	if ((PHPC_TYPE(retval) == IS_OBJECT) &&
-			(PHPC_OBJ_HANDLE(retval) == Z_OBJ_HANDLE_P(val))) {
+	if ((Z_TYPE(retval) == IS_OBJECT) && (Z_OBJ_HANDLE(retval) == Z_OBJ_HANDLE_P(val))) {
 		/* Handle the case where jsonSerialize does: return $this; by going straight to encode array */
 		PHP_JSON_HASH_UNPROTECT_RECURSION(myht);
-		return_code = php_json_encode_array(buf, &retval, options, encoder TSRMLS_CC);
+		return_code = php_json_encode_array(buf, &retval, options, encoder);
 	} else {
 		/* All other types, encode as normal */
-		return_code = php_json_encode_zval(
-				buf, PHPC_VAL_CAST_TO_PZVAL(retval), options, encoder TSRMLS_CC);
+		return_code = php_json_encode_zval(buf, &retval, options, encoder);
 		PHP_JSON_HASH_UNPROTECT_RECURSION(myht);
 	}
 
@@ -510,17 +491,12 @@ static int php_json_encode_serializable_object(
 
 	return return_code;
 }
-/* }}} */
 
 /* ZVAL encoding */
 
-int php_json_encode_zval(
-		php_json_buffer *buf, zval *val, int options,
-		php_json_encoder *encoder TSRMLS_DC) /* {{{ */
+int php_json_encode_zval(php_json_buffer *buf, zval *val, int options,php_json_encoder *encoder)
 {
-#if PHP_VERSION_ID >= 70000
 again:
-#endif
 	switch (Z_TYPE_P(val)) {
 		case IS_NULL:
 			PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
@@ -532,7 +508,7 @@ again:
 
 		case IS_DOUBLE:
 			if (php_json_is_valid_double(Z_DVAL_P(val))) {
-				php_json_encode_double(buf, Z_DVAL_P(val), options TSRMLS_CC);
+				php_json_encode_double(buf, Z_DVAL_P(val), options);
 			} else {
 				encoder->error_code = PHP_JSON_ERROR_INF_OR_NAN;
 				PHP_JSON_BUF_APPEND_CHAR(buf, '0');
@@ -541,26 +517,15 @@ again:
 
 		case IS_STRING:
 			return php_json_escape_string(
-					buf, Z_STRVAL_P(val), Z_STRLEN_P(val), options, encoder TSRMLS_CC);
+					buf, Z_STRVAL_P(val), Z_STRLEN_P(val), options, encoder);
 
 		case IS_OBJECT:
-			if (instanceof_function(Z_OBJCE_P(val), PHP_JSOND_NAME(serializable_ce) TSRMLS_CC)) {
-				return php_json_encode_serializable_object(buf, val, options, encoder TSRMLS_CC);
+			if (instanceof_function(Z_OBJCE_P(val), php_jsond_serializable_ce)) {
+				return php_json_encode_serializable_object(buf, val, options, encoder);
 			}
 			/* fallthrough -- Non-serializable object */
 		case IS_ARRAY:
-			return php_json_encode_array(
-						buf, PHPC_PZVAL_CAST_TO_PVAL(val), options, encoder TSRMLS_CC);
-
-#if PHP_VERSION_ID < 70000
-		case IS_BOOL:
-			if (Z_BVAL_P(val)) {
-				PHP_JSON_BUF_APPEND_STRING(buf, "true", 4);
-			} else {
-				PHP_JSON_BUF_APPEND_STRING(buf, "false", 5);
-			}
-			break;
-#else
+			return php_json_encode_array(buf, val, options, encoder);
 		case IS_TRUE:
 			PHP_JSON_BUF_APPEND_STRING(buf, "true", 4);
 			break;
@@ -572,7 +537,6 @@ again:
 		case IS_REFERENCE:
 			val = Z_REFVAL_P(val);
 			goto again;
-#endif
 
 		default:
 			encoder->error_code = PHP_JSON_ERROR_UNSUPPORTED_TYPE;
@@ -584,4 +548,3 @@ again:
 
 	return SUCCESS;
 }
-/* }}} */

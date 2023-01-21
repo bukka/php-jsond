@@ -1,8 +1,6 @@
 /*
   +----------------------------------------------------------------------+
-  | PHP Version 5                                                        |
-  +----------------------------------------------------------------------+
-  | Copyright (c) 1997-2018 The PHP Group                                |
+  | Copyright (c) The PHP Group                                          |
   +----------------------------------------------------------------------+
   | This source file is subject to version 3.01 of the PHP license,      |
   | that is bundled with this package in the file LICENSE, and is        |
@@ -186,35 +184,37 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 
 #else
 
-#define php_json_buffer phpc_smart_cstr
+#include "zend_smart_string.h"
+
+#define php_json_buffer smart_string
 
 #define PHP_JSON_BUF_INIT(_buf) \
-	memset(_buf, 0, sizeof(phpc_smart_cstr))
+	memset(_buf, 0, sizeof(smart_string))
 
 #define PHP_JSON_BUF_DESTROY(_buf) \
-	phpc_smart_cstr_free(_buf);
+	smart_string_free(_buf);
 
 #define PHP_JSON_BUF_FLUSH(_buf, _pre_alloc_size)
 
 #define PHP_JSON_BUF_FINISH(_buf)
 
 #define PHP_JSON_BUF_ALLOC(_buf, _len) \
-	phpc_smart_cstr_alloc(_buf, _len+2, 0)
+	smart_string_alloc(_buf, _len+2, 0)
 
 #define PHP_JSON_BUF_APPEND_STRING(_buf, _str, _len) \
-	phpc_smart_cstr_appendl(_buf, _str, _len)
+	smart_string_appendl(_buf, _str, _len)
 
 #define PHP_JSON_BUF_APPEND_CHAR(_buf, _c) \
-	phpc_smart_cstr_appendc(_buf, _c)
+	smart_string_appendc(_buf, _c)
 
 #define PHP_JSON_BUF_APPEND_LONG(_buf, _l) \
-	phpc_smart_cstr_append_long(_buf, _l)
+	smart_string_append_long(_buf, _l)
 
 #define PHP_JSON_BUF_DOUBLE_BLOCK_INIT(_buf, _dst, _max_len) \
 	char _dst[_max_len]
 
 #define PHP_JSON_BUF_DOUBLE_BLOCK_CLOSE(_buf, _dst, _len) \
-	phpc_smart_cstr_appendl(_buf, _dst, _len);
+	smart_string_appendl(_buf, _dst, _len);
 
 #define _PHP_JSON_BUF_MARK_NAME(_buf) _buf##__oldlen
 
@@ -233,7 +233,7 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 #define PHP_JSON_BUF_LENGTH(_buf_s) _buf_s.len
 
 #define PHP_JSON_BUF_RETURN(_buf_s, return_value) do { \
-		PHPC_CSTRL_RETVAL(_buf_s.c, _buf_s.len); \
+		RETVAL_STRINGL(_buf_s.c, _buf_s.len); \
 		PHP_JSON_BUF_DESTROY(&_buf_s); \
 	} while(0)
 

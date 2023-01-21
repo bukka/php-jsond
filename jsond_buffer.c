@@ -1,8 +1,6 @@
 /*
   +----------------------------------------------------------------------+
-  | PHP Version 5                                                        |
-  +----------------------------------------------------------------------+
-  | Copyright (c) 1997-2018 The PHP Group                                |
+  | Copyright (c) The PHP Group                                          |
   +----------------------------------------------------------------------+
   | This source file is subject to version 3.01 of the PHP license,      |
   | that is bundled with this package in the file LICENSE, and is        |
@@ -27,7 +25,7 @@
 #include "php_jsond_buffer.h"
 #include "php_jsond.h"
 
-void php_json_buffer_init(php_json_buffer *buf) /* {{{ */
+void php_json_buffer_init(php_json_buffer *buf)
 {
 	buf->dbuf = NULL;
 	buf->ptr = &buf->sbuf[0];
@@ -36,17 +34,15 @@ void php_json_buffer_init(php_json_buffer *buf) /* {{{ */
 	buf->mark = NULL;
 	buf->flags = 0;
 }
-/* }}} */
 
-void php_json_buffer_destroy(php_json_buffer *buf) /* {{{ */
+void php_json_buffer_destroy(php_json_buffer *buf)
 {
 	if (buf->dbuf) {
 		efree(buf->dbuf);
 	}
 }
-/* }}} */
 
-void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size) /* {{{ */
+void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size)
 {
 	ptrdiff_t static_size = buf->ptr - &buf->sbuf[0];
 	size_t size = static_size + pre_alloc_size;
@@ -64,22 +60,19 @@ void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size) /* {{{ *
 	buf->dsize += static_size;
 	buf->ptr = &buf->sbuf[0];
 }
-/* }}} */
 
-void php_json_buffer_finish(php_json_buffer *buf) /* {{{ */
+void php_json_buffer_finish(php_json_buffer *buf)
 {
 	php_json_buffer_flush(buf, 1);
 	buf->dbuf[buf->dsize] = 0;
 }
-/* }}} */
 
-void php_json_buffer_alloc(php_json_buffer *buf, size_t len) /* {{{ */
+void php_json_buffer_alloc(php_json_buffer *buf, size_t len)
 {
 
 }
-/* }}} */
 
-void php_json_buffer_reset(php_json_buffer *buf) /* {{{ */
+void php_json_buffer_reset(php_json_buffer *buf)
 {
 	if (!buf->mark) {
 		if (buf->dbuf) {
@@ -96,6 +89,5 @@ void php_json_buffer_reset(php_json_buffer *buf) /* {{{ */
 		}
 	}
 }
-/* }}} */
 
 #endif /* PHP_JSON_BUF_TYPE_NATIVE */

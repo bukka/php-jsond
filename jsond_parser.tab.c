@@ -63,9 +63,7 @@
 
 /*
   +----------------------------------------------------------------------+
-  | PHP Version 5                                                        |
-  +----------------------------------------------------------------------+
-  | Copyright (c) 1997-2018 The PHP Group                                |
+  | Copyright (c) The PHP Group                                          |
   +----------------------------------------------------------------------+
   | This source file is subject to version 3.01 of the PHP license,      |
   | that is bundled with this package in the file LICENSE, and is        |
@@ -78,10 +76,6 @@
   | Author: Jakub Zelenka <bukka@php.net>                                |
   +----------------------------------------------------------------------+
 */
-
-#ifndef PHP_JSOND_BUF_TYPE_NATIVE
-#define PHPC_SMART_CSTR_INCLUDE 1
-#endif
 
 #include "php.h"
 #include "phpc/phpc.h"
@@ -191,7 +185,7 @@ union YYSTYPE
 
 	zval value;
 	struct {
-		PHPC_STR_DECLARE(key);
+		zend_string *key;
 		zval val;
 	} pair;
 
@@ -517,10 +511,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    95,    95,   102,   109,   109,   126,   127,   136,   139,
-     143,   149,   155,   162,   167,   175,   174,   192,   193,   202,
-     205,   209,   214,   219,   226,   227,   231,   232,   233,   234,
-     235,   236,   237,   238,   239,   240,   244
+       0,    89,    89,    96,   103,   103,   120,   121,   130,   133,
+     137,   143,   149,   156,   161,   169,   168,   186,   187,   196,
+     199,   203,   208,   213,   220,   221,   225,   226,   227,   228,
+     229,   230,   231,   232,   233,   234,   238
 };
 #endif
 
@@ -1142,7 +1136,7 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, php_json_parser *p
 
     case 25: /* pair  */
 
-      { PHPC_STR_RELEASE(((*yyvaluep).pair).key); zval_dtor(&((*yyvaluep).pair).val); }
+      { zend_string_release(((*yyvaluep).pair).key); zval_dtor(&((*yyvaluep).pair).val); }
 
         break;
 
@@ -1448,7 +1442,7 @@ yyreduce:
 
     {
 				(yyval.value) = (yyvsp[-1].value);
-				PHPC_PZVAL_COPY_INIT(parser->return_value, &(yyvsp[-1].value));
+				ZVAL_COPY_VALUE(parser->return_value, &(yyvsp[-1].value));
 				PHP_JSON_USE((yyvsp[0].value));
 				YYACCEPT;
 			}
@@ -1507,7 +1501,7 @@ yyreduce:
 
     {
 				parser->methods.object_create(parser, &(yyval.value));
-				if (parser->methods.object_update(parser, &(yyval.value), PHPC_STR_PASS((yyvsp[0].pair).key), &(yyvsp[0].pair).val) == FAILURE)
+				if (parser->methods.object_update(parser, &(yyval.value), (yyvsp[0].pair).key, &(yyvsp[0].pair).val) == FAILURE)
 					YYERROR;
 			}
 
@@ -1516,7 +1510,7 @@ yyreduce:
   case 11:
 
     {
-				if (parser->methods.object_update(parser, &(yyval.value), PHPC_STR_PASS((yyvsp[0].pair).key), &(yyvsp[0].pair).val) == FAILURE)
+				if (parser->methods.object_update(parser, &(yyval.value), (yyvsp[0].pair).key, &(yyvsp[0].pair).val) == FAILURE)
 					YYERROR;
 				(yyval.value) = (yyvsp[-2].value);
 			}
@@ -1534,7 +1528,7 @@ yyreduce:
   case 13:
 
     {
-				PHPC_STR_FROM_ZVAL((yyval.pair).key, (yyvsp[-2].value));
+				(yyval.pair).key = Z_STR((yyvsp[-2].value));
 				(yyval.pair).val = (yyvsp[0].value);
 			}
 
@@ -1864,12 +1858,7 @@ static int php_json_parser_array_create(php_json_parser *parser, zval *array)
 
 static int php_json_parser_array_append(php_json_parser *parser, zval *array, zval *zvalue)
 {
-	zval *data;
-
-	PHPC_PZVAL_MAKE(data);
-	PHPC_PZVAL_SET(data, zvalue);
-
-	PHPC_HASH_NEXT_INDEX_INSERT(Z_ARRVAL_P(array), PHPC_PZVAL_CAST_TO_PVAL(data));
+	zend_hash_next_index_insert(Z_ARRVAL_P(array), zvalue);
 	return SUCCESS;
 }
 
@@ -1878,44 +1867,33 @@ static int php_json_parser_object_create(php_json_parser *parser, zval *object)
 	if (parser->scanner.options & PHP_JSON_OBJECT_AS_ARRAY) {
 		array_init(object);
 	} else {
-		TSRMLS_FETCH_FROM_CTX(parser->zts_ctx);
 		object_init(object);
 	}
 }
 
-static int php_json_parser_object_update(php_json_parser *parser, zval *object, PHPC_STR_ARG(key), zval *zvalue)
+static int php_json_parser_object_update(php_json_parser *parser, zval *object, zend_string *key, zval *zvalue)
 {
-	zval *data;
-
-	PHPC_PZVAL_MAKE(data);
-	PHPC_PZVAL_SET(data, zvalue);
 
 	/* if JSON_OBJECT_AS_ARRAY is set */
 	if (Z_TYPE_P(object) == IS_ARRAY) {
-		PHPC_SYMTABLE_UPDATE(Z_ARRVAL_P(object), key, data);
+		zend_symtable_update(Z_ARRVAL_P(object), key, zvalue);
 	} else {
 		zval zkey;
-		TSRMLS_FETCH_FROM_CTX(parser->zts_ctx);
 
-		if (PHPC_STR_LEN(key) == 0) {
-			PHPC_STR_RELEASE(key);
-			PHPC_STR_INIT(key, "_empty_", sizeof("_empty_") - 1);
-		} else if (PHPC_STR_VAL(key)[0] == '\0') {
+		if (ZSTR_LEN(key) == 0) {
+			zend_string_release(key);
+			key = zend_string_init("_empty_", sizeof("_empty_") - 1, 0);
+		} else if (ZSTR_VAL(key)[0] == '\0') {
 			parser->scanner.errcode = PHP_JSON_ERROR_INVALID_PROPERTY_NAME;
-			PHPC_STR_RELEASE(key);
+			zend_string_release(key);
 			zval_dtor(zvalue);
 			zval_dtor(object);
-			PHPC_PZVAL_FREE(data);
 			return FAILURE;
 		}
-		PHPC_ZVAL_NEW_STR(zkey, key);
-		PHPC_OBJ_STD_WRITE_PROPERTY(object, &zkey, data);
-
-		if (PHPC_REFCOUNTED_P(data)) {
-			Z_DELREF_P(data);
-		}
+		zend_std_write_property(Z_OBJ_P(object), key, zvalue, NULL);
+		Z_TRY_DELREF_P(zvalue);
 	}
-	PHPC_STR_RELEASE(key);
+	zend_string_release_ex(key, 0);
 
 	return SUCCESS;
 }
@@ -1955,7 +1933,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init_ex)(
 		php_json_parser *parser, zval *return_value,
 		char *str, size_t str_len,
 		int options, int max_depth,
-		const php_json_parser_methods *parser_methods TSRMLS_DC)
+		const php_json_parser_methods *parser_methods)
 {
 	memset(parser, 0, sizeof(php_json_parser));
 	php_json_scanner_init(&parser->scanner, str, str_len, options);
@@ -1963,13 +1941,12 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init_ex)(
 	parser->max_depth = max_depth;
 	parser->return_value = return_value;
 	memcpy(&parser->methods, parser_methods, sizeof(php_json_parser_methods));
-	TSRMLS_SET_CTX(parser->zts_ctx);
 }
 
 PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
 		php_json_parser *parser, zval *return_value,
 		char *str, size_t str_len,
-		int options, int max_depth TSRMLS_DC)
+		int options, int max_depth)
 {
 	PHP_JSOND_NAME(parser_init_ex)(
 			parser,
@@ -1978,7 +1955,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
 			str_len,
 			options,
 			max_depth,
-			&default_parser_methods TSRMLS_CC);
+			&default_parser_methods);
 }
 
 

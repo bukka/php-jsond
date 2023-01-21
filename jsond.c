@@ -1,8 +1,6 @@
 /*
   +----------------------------------------------------------------------+
-  | PHP Version 5                                                        |
-  +----------------------------------------------------------------------+
-  | Copyright (c) 1997-2018 The PHP Group                                |
+  | Copyright (c) The PHP Group                                          |
   +----------------------------------------------------------------------+
   | This source file is subject to version 3.01 of the PHP license,      |
   | that is bundled with this package in the file LICENSE, and is        |
@@ -48,7 +46,7 @@ PHP_JSOND_API zend_class_entry *php_jsond_serializable_ce;
 
 PHP_JSOND_API ZEND_DECLARE_MODULE_GLOBALS(jsond)
 
-/* {{{ arginfo */
+/* arginfo */
 ZEND_BEGIN_ARG_INFO_EX(arginfo_jsond_encode, 0, 0, 1)
 	ZEND_ARG_INFO(0, value)
 	ZEND_ARG_INFO(0, options)
@@ -67,9 +65,9 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO(arginfo_jsond_last_error_msg, 0)
 ZEND_END_ARG_INFO()
-/* }}} */
 
-/* {{{ jsond_functions[] */
+
+/* jsond_functions[] */
 static zend_function_entry jsond_functions[] = {
 	PHP_FE(jsond_encode, arginfo_jsond_encode)
 	PHP_FE(jsond_encode, arginfo_jsond_decode)
@@ -77,9 +75,9 @@ static zend_function_entry jsond_functions[] = {
 	PHP_FE(jsond_last_error_msg, arginfo_jsond_last_error_msg)
 	PHP_FE_END
 };
-/* }}} */
 
-/* {{{ JsonSerializable methods */
+
+/* JsonSerializable methods */
 ZEND_BEGIN_ARG_INFO(jsond_serialize_arginfo, 0)
 	/* No arguments */
 ZEND_END_ARG_INFO()
@@ -88,17 +86,17 @@ static zend_function_entry jsond_serializable_interface[] = {
 	PHP_ABSTRACT_ME(PHP_JSOND_SERIALIZABLE_INTERFACE, jsonSerialize, jsond_serialize_arginfo)
 	PHPC_FE_END
 };
-/* }}} */
 
-/* {{{ php_json_already_exists */
+
+/* php_json_already_exists */
 static inline zend_bool php_json_already_exists()
 {
 	return !strncmp(PHP_JSOND_PREFIX_STRING, "json", 5) &&
 			zend_hash_str_exists(&module_registry, "json", strlen("json"));
 }
-/* }}} */
 
-/* {{{ php_json_register_serializable_interface */
+
+/* php_json_register_serializable_interface */
 static inline void php_jsond_register_serializable_interface()
 {
 	zend_class_entry ce;
@@ -107,7 +105,7 @@ static inline void php_jsond_register_serializable_interface()
 	INIT_CLASS_ENTRY(ce, PHP_JSOND_SERIALIZABLE_INTERFACE_STRING, jsond_serializable_interface);
 	PHP_JSOND_NAME(serializable_ce) = zend_register_internal_interface(&ce);
 }
-/* }}} */
+
 
 #define PHP_JSOND_REGISTER_LONG_CONSTANT(name, lval) \
 	do { \
@@ -117,7 +115,7 @@ static inline void php_jsond_register_serializable_interface()
 		} \
 	} while(0)
 
-/* {{{ MINIT */
+/* MINIT */
 static PHP_MINIT_FUNCTION(jsond)
 {
 	if (!php_json_already_exists()) {
@@ -163,14 +161,13 @@ static PHP_MINIT_FUNCTION(jsond)
 
 	return SUCCESS;
 }
-/* }}} */
 
 #define PHP_JSON_REPLACE_FN(orig, name) \
 	PHPC_HASH_CSTR_FIND_PTR(EG(function_table), "json_"#name, orig); \
 	orig->internal_function.handler = PHP_JSOND_FN(name);
 
 
-/* {{{ RINIT */
+/* RINIT */
 PHP_RINIT_FUNCTION(jsond)
 {
 	zend_function *orig;
@@ -196,10 +193,10 @@ PHP_RINIT_FUNCTION(jsond)
 
 	return SUCCESS;
 }
-/* }}} */
 
 
-/* {{{ PHP_GINIT_FUNCTION
+
+/* PHP_GINIT_FUNCTION
 */
 static PHP_GINIT_FUNCTION(jsond)
 {
@@ -210,10 +207,9 @@ static PHP_GINIT_FUNCTION(jsond)
 	jsond_globals->error_code = PHP_JSON_ERROR_NONE;
 	jsond_globals->encode_max_depth = 0;
 }
-/* }}} */
 
 
-/* {{{ jsond_module_entry
+/* jsond_module_entry
  */
 zend_module_entry jsond_module_entry = {
 	STANDARD_MODULE_HEADER,
@@ -231,14 +227,12 @@ zend_module_entry jsond_module_entry = {
 	NULL,
 	STANDARD_MODULE_PROPERTIES_EX
 };
-/* }}} */
 
 #ifdef COMPILE_DL_JSOND
 ZEND_GET_MODULE(jsond)
 #endif
 
-/* {{{ PHP_MINFO_FUNCTION
- */
+/* PHP_MINFO_FUNCTION */
 static PHP_MINFO_FUNCTION(jsond)
 {
 	php_info_print_table_start();
@@ -246,9 +240,8 @@ static PHP_MINFO_FUNCTION(jsond)
 	php_info_print_table_row(2, "jsond version", PHP_JSOND_VERSION);
 	php_info_print_table_end();
 }
-/* }}} */
 
-PHP_JSOND_API int php_jsond_encode(php_json_buffer *buf, zval *val, int options) /* {{{ */
+PHP_JSOND_API int php_jsond_encode(php_json_buffer *buf, zval *val, int options)
 {
 	php_json_encoder encoder;
 	int return_code;
@@ -257,19 +250,18 @@ PHP_JSOND_API int php_jsond_encode(php_json_buffer *buf, zval *val, int options)
 	encoder.max_depth = JSOND_G(encode_max_depth);
 	encoder.error_code = PHP_JSON_ERROR_NONE;
 
-	return_code = php_json_encode_zval(buf, val, options, &encoder TSRMLS_CC);
+	return_code = php_json_encode_zval(buf, val, options, &encoder);
 	JSOND_G(error_code) = encoder.error_code;
 
 	return return_code;
 }
-/* }}} */
 
 PHP_JSOND_API int php_jsond_decode_ex(
-		zval *return_value, char *str, size_t str_len, int options, int depth TSRMLS_DC) /* {{{ */
+		zval *return_value, char *str, size_t str_len, int options, int depth)
 {
 	php_json_parser parser;
 
-	PHP_JSOND_NAME(parser_init)(&parser, return_value, str, str_len, options, depth TSRMLS_CC);
+	PHP_JSOND_NAME(parser_init)(&parser, return_value, str, str_len, options, depth);
 
 	if (php_json_yyparse(&parser)) {
 		JSOND_G(error_code) = PHP_JSOND_NAME(parser_error_code)(&parser);
@@ -279,10 +271,9 @@ PHP_JSOND_API int php_jsond_decode_ex(
 
 	return SUCCESS;
 }
-/* }}} */
 
 
-/* {{{ proto string json_encode(mixed data [, int options[, int depth]])
+/* proto string json_encode(mixed data [, int options[, int depth]])
    Returns the JSON representation of a value */
 static PHP_FUNCTION(jsond_encode)
 {
@@ -291,7 +282,7 @@ static PHP_FUNCTION(jsond_encode)
 	phpc_long_t options = 0;
 	phpc_long_t depth = PHP_JSON_PARSER_DEFAULT_DEPTH;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "z|ll", &parameter, &options, &depth) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "z|ll", &parameter, &options, &depth) == FAILURE) {
 		return;
 	}
 
@@ -300,7 +291,7 @@ static PHP_FUNCTION(jsond_encode)
 	JSOND_G(encode_max_depth) = depth;
 
 	PHP_JSON_BUF_INIT(&buf);
-	PHP_JSOND_NAME(encode)(&buf, parameter, (int)options TSRMLS_CC);
+	PHP_JSOND_NAME(encode)(&buf, parameter, (int)options);
 
 	if ((JSOND_G(error_code) != PHP_JSON_ERROR_NONE && !(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR)) ||
 			PHP_JSON_BUF_LENGTH(buf) > LONG_MAX) {
@@ -310,9 +301,8 @@ static PHP_FUNCTION(jsond_encode)
 		PHP_JSON_BUF_RETURN(buf, return_value);
 	}
 }
-/* }}} */
 
-/* {{{ proto mixed json_decode(string json [, bool assoc [, long depth]])
+/* proto mixed json_decode(string json [, bool assoc [, long depth]])
    Decodes the JSON representation into a PHP value */
 static PHP_FUNCTION(jsond_decode)
 {
@@ -322,7 +312,7 @@ static PHP_FUNCTION(jsond_decode)
 	phpc_long_t depth = PHP_JSON_PARSER_DEFAULT_DEPTH;
 	phpc_long_t options = 0;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|bll", &str, &str_len, &assoc, &depth, &options) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|bll", &str, &str_len, &assoc, &depth, &options) == FAILURE) {
 		return;
 	}
 
@@ -334,12 +324,12 @@ static PHP_FUNCTION(jsond_decode)
 	}
 
 	if (depth <= 0) {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Depth must be greater than zero");
+		php_error_docref(NULL, E_WARNING, "Depth must be greater than zero");
 		RETURN_NULL();
 	}
 
 	if (depth > INT_MAX) {
-		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Depth must be lower than %d", INT_MAX);
+		php_error_docref(NULL, E_WARNING, "Depth must be lower than %d", INT_MAX);
 		RETURN_NULL();
 	}
 
@@ -350,30 +340,28 @@ static PHP_FUNCTION(jsond_decode)
 		options &= ~PHP_JSON_OBJECT_AS_ARRAY;
 	}
 
-	PHP_JSOND_NAME(decode_ex)(return_value, str, (size_t) str_len, (int) options, (int) depth TSRMLS_CC);
+	PHP_JSOND_NAME(decode_ex)(return_value, str, (size_t) str_len, (int) options, (int) depth);
 }
-/* }}} */
 
-/* {{{ proto int json_last_error()
+/* proto int json_last_error()
    Returns the error code of the last json_encode() or json_decode() call. */
 static PHP_FUNCTION(jsond_last_error)
 {
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "") == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "") == FAILURE) {
 		return;
 	}
 
 	RETURN_LONG(JSOND_G(error_code));
 }
-/* }}} */
 
 #define PHP_JSON_ERROR_MSG_RETURN(_msg) \
 	PHPC_CSTRL_RETURN(_msg, sizeof(_msg) - 1)
 
-/* {{{ proto string json_last_error_msg()
+/* proto string json_last_error_msg()
    Returns the error string of the last json_encode() or json_decode() call. */
 static PHP_FUNCTION(jsond_last_error_msg)
 {
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "") == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "") == FAILURE) {
 		return;
 	}
 
@@ -405,7 +393,6 @@ static PHP_FUNCTION(jsond_last_error_msg)
 	}
 
 }
-/* }}} */
 
 /*
  * Local variables:

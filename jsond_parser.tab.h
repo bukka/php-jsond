@@ -76,7 +76,7 @@ union YYSTYPE
 
 	zval value;
 	struct {
-		PHPC_STR_DECLARE(key);
+		zend_string *key;
 		zval val;
 	} pair;
 

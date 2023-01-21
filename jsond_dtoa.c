@@ -1,8 +1,6 @@
 /*
   +----------------------------------------------------------------------+
-  | PHP Version 5                                                        |
-  +----------------------------------------------------------------------+
-  | Copyright (c) 1997-2018 The PHP Group                                |
+  | Copyright (c) The PHP Group                                          |
   +----------------------------------------------------------------------+
   | This source file is subject to version 3.01 of the PHP license,      |
   | that is bundled with this package in the file LICENSE, and is        |
@@ -17,13 +15,15 @@
 */
 
 #include "php.h"
+#include "php_jsond_compat.h"
 #include "php_jsond_dtoa.h"
 #include <zend_strtod.h>
 
-char *php_jsond_gcvt(double value, int ndigit, char dec_point, char exponent, char *buf) /* {{{ */
+char *php_jsond_gcvt(double value, int ndigit, char dec_point, char exponent, char *buf)
 {
 	char *digits, *dst, *src;
-	int i, decpt, sign;
+	int i, decpt;
+	php_jsond_dtoa_sign_t sign;
 	int mode = ndigit >= 0 ? 2 : 0;
 
 	if (mode == 0) {
@@ -117,4 +117,3 @@ char *php_jsond_gcvt(double value, int ndigit, char dec_point, char exponent, ch
 	zend_freedtoa(digits);
 	return (buf);
 }
-/* }}} */
