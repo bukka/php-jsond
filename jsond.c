@@ -109,7 +109,7 @@ static inline void php_jsond_register_serializable_interface()
 
 #define PHP_JSOND_REGISTER_LONG_CONSTANT(name, lval) \
 	do { \
-		if (PHPC_HASH_NOT_FOUND != zend_hash_str_find( \
+		if (PHPC_HASH_NOT_FOUND == zend_hash_str_find( \
 				EG(zend_constants), PHP_JSOND_CONSTANT"_"name, strlen(PHP_JSOND_CONSTANT"_"name))) { \
 			REGISTER_LONG_CONSTANT(PHP_JSOND_CONSTANT"_"name, lval, CONST_CS | CONST_PERSISTENT); \
 		} \
