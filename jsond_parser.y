@@ -16,7 +16,6 @@
 */
 
 #include "php.h"
-#include "phpc/phpc.h"
 #include "php_jsond.h"
 #include "php_jsond_compat.h"
 #include "php_jsond_parser.h"

@@ -78,7 +78,6 @@
 */
 
 #include "php.h"
-#include "phpc/phpc.h"
 #include "php_jsond.h"
 #include "php_jsond_compat.h"
 #include "php_jsond_parser.h"
@@ -512,10 +511,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    90,    90,    97,   104,   104,   121,   122,   131,   134,
-     138,   144,   150,   157,   162,   170,   169,   187,   188,   197,
-     200,   204,   209,   214,   221,   222,   226,   227,   228,   229,
-     230,   231,   232,   233,   234,   235,   239
+       0,    89,    89,    96,   103,   103,   120,   121,   130,   133,
+     137,   143,   149,   156,   161,   169,   168,   186,   187,   196,
+     199,   203,   208,   213,   220,   221,   225,   226,   227,   228,
+     229,   230,   231,   232,   233,   234,   238
 };
 #endif
 

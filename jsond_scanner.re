@@ -14,10 +14,6 @@
   +----------------------------------------------------------------------+
 */
 
-#ifndef PHP_JSOND_BUF_TYPE_NATIVE
-#define PHPC_SMART_CSTR_INCLUDE 1
-#endif
-
 #include "php.h"
 #include "php_jsond_scanner.h"
 #include "php_jsond_scanner_defs.h"
@@ -174,7 +170,7 @@ std:
 			ZVAL_LONG(&s->value, strtol((char *) s->token, NULL, 10));
 			return PHP_JSON_T_INT;
 		} else if (s->options & PHP_JSON_BIGINT_AS_STRING) {
-			PHPC_ZVAL_CSTRL(s->value, (char *) s->token, s->cursor - s->token);
+			ZVAL_STRINGL(&s->value, (char *) s->token, s->cursor - s->token);
 			return PHP_JSON_T_STRING;
 		} else {
 			ZVAL_DOUBLE(&s->value, zend_strtod((char *) s->token, NULL));
@@ -246,16 +242,16 @@ std:
 		return PHP_JSON_T_ERROR;
 	}
 	<STR_P1>["]              {
-		PHPC_STR_DECLARE(str);
+		zend_string *str;
 		size_t len = s->cursor - s->str_start - s->str_esc - 1;
 		if (len == 0) {
 			PHP_JSON_CONDITION_SET(JS);
 			ZVAL_EMPTY_STRING(&s->value);
 			return PHP_JSON_T_ESTRING;
 		}
-		PHPC_STR_ALLOC(str, len);
-		PHPC_STR_VAL(str)[len] = '\0';
-		PHPC_ZVAL_STR(s->value, str);
+		str = zend_string_alloc(len, 0);
+		ZSTR_VAL(str)[len] = '\0';
+		ZVAL_STR(&s->value, str);
 		if (s->str_esc) {
 			s->pstr = (php_json_ctype *) Z_STRVAL(s->value);
 			s->cursor = s->str_start;

@@ -33,7 +33,7 @@ static inline void php_json_encode_init(php_json_encoder *encoder)
 	memset(encoder, 0, sizeof(php_json_encoder));
 }
 
-int php_json_encode_zval(php_json_buffer *buf, zval *val, int options, php_json_encoder *encoder TSRMLS_DC);
+int php_json_encode_zval(php_json_buffer *buf, zval *val, int options, php_json_encoder *encoder);
 
 #endif	/* PHP_JSOND_ENCODER_H */
 

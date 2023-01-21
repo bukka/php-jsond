@@ -177,7 +177,7 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 
 #define PHP_JSON_BUF_RETURN(_buf_s, return_value) do { \
 		PHP_JSON_BUF_FINISH(&_buf_s); \
-		PHPC_CSTRL_RETVAL(PHP_JSON_BUFFER_STRVAL(_buf_s), (int) PHP_JSON_BUFFER_STRLEN(_buf_s)); \
+		RETVAL_STRINGL(PHP_JSON_BUFFER_STRVAL(_buf_s), (int) PHP_JSON_BUFFER_STRLEN(_buf_s)); \
 		PHP_JSON_BUF_DESTROY(&_buf_s); \
 	} while(0)
 

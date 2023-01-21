@@ -33,7 +33,7 @@ typedef int (*php_json_parser_func_array_end_t)(
 typedef int (*php_json_parser_func_object_create_t)(
 		php_json_parser *parser, zval *object);
 typedef int (*php_json_parser_func_object_update_t)(
-		php_json_parser *parser, zval *object, PHPC_STR_ARG(key), zval *zvalue);
+		php_json_parser *parser, zval *object, zend_string *key, zval *zvalue);
 typedef int (*php_json_parser_func_object_start_t)(
 		php_json_parser *parser);
 typedef int (*php_json_parser_func_object_end_t)(
@@ -55,9 +55,6 @@ struct _php_json_parser {
 	zval *return_value;
 	int depth;
 	int max_depth;
-#if ZTS
-	void *zts_ctx;
-#endif
 	php_json_parser_methods methods;
 };
 
@@ -68,7 +65,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init_ex)(
 		size_t str_len,
 		int options,
 		int max_depth,
-		const php_json_parser_methods *methods TSRMLS_DC);
+		const php_json_parser_methods *methods);
 
 PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
 		php_json_parser *parser,
@@ -76,7 +73,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
 		char *str,
 		size_t str_len,
 		int options,
-		int max_depth TSRMLS_DC);
+		int max_depth);
 
 PHP_JSOND_API php_json_error_code PHP_JSOND_NAME(parser_error_code)(const php_json_parser *parser);
 

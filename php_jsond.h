@@ -31,7 +31,6 @@ extern zend_module_entry jsond_module_entry;
 #endif
 
 #include "php.h"
-#include "phpc/phpc.h"
 
 #ifdef ZTS
 #include "TSRM.h"
@@ -147,21 +146,21 @@ ZEND_BEGIN_MODULE_GLOBALS(jsond)
 ZEND_END_MODULE_GLOBALS(jsond)
 PHP_JSOND_API ZEND_EXTERN_MODULE_GLOBALS(jsond)
 
-#define JSOND_G(v) PHPC_MODULE_GLOBALS_ACCESSOR(jsond, v)
+#define JSOND_G(v) ZEND_MODULE_GLOBALS_ACCESSOR(jsond, v)
 
-#if PHPC_MODULE_HAS_THREAD_CACHE
+#if defined(ZTS) && defined(COMPILE_DL_JSOND)
 ZEND_TSRMLS_CACHE_EXTERN();
 #endif
 
 #include "php_jsond_buffer.h"
 
-PHP_JSOND_API int PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int options TSRMLS_DC);
-PHP_JSOND_API int PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, size_t str_len, int options, int depth TSRMLS_DC);
+PHP_JSOND_API int PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int options);
+PHP_JSOND_API int PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, size_t str_len, int options, int depth);
 extern PHP_JSOND_API zend_class_entry *PHP_JSOND_NAME(serializable_ce);
 
-static inline int PHP_JSOND_NAME(decode)(zval *return_value, char *str, size_t str_len, zend_bool assoc, int depth TSRMLS_DC)
+static inline int PHP_JSOND_NAME(decode)(zval *return_value, char *str, size_t str_len, zend_bool assoc, int depth)
 {
-	return PHP_JSOND_NAME(decode_ex)(return_value, str, str_len, assoc ? PHP_JSON_OBJECT_AS_ARRAY : 0, depth TSRMLS_CC);
+	return PHP_JSOND_NAME(decode_ex)(return_value, str, str_len, assoc ? PHP_JSON_OBJECT_AS_ARRAY : 0, depth);
 }
 
 #endif	/* PHP_JSOND_H */

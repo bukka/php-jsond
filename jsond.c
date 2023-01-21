@@ -14,15 +14,10 @@
   +----------------------------------------------------------------------+
 */
 
-#ifndef PHP_JSOND_BUF_TYPE_NATIVE
-#define PHPC_SMART_CSTR_INCLUDE 1
-#endif
-
 #include "php.h"
 #include "php_ini.h"
 #include "ext/standard/info.h"
 #include "ext/standard/html.h"
-#include "phpc/phpc.h"
 #include "php_jsond.h"
 #include "php_jsond_encoder.h"
 #include "php_jsond_buffer.h"
@@ -84,7 +79,7 @@ ZEND_END_ARG_INFO()
 
 static zend_function_entry jsond_serializable_interface[] = {
 	PHP_ABSTRACT_ME(PHP_JSOND_SERIALIZABLE_INTERFACE, jsonSerialize, jsond_serialize_arginfo)
-	PHPC_FE_END
+	PHP_FE_END
 };
 
 
@@ -109,7 +104,7 @@ static inline void php_jsond_register_serializable_interface()
 
 #define PHP_JSOND_REGISTER_LONG_CONSTANT(name, lval) \
 	do { \
-		if (PHPC_HASH_NOT_FOUND == zend_hash_str_find( \
+		if (NULL == zend_hash_str_find( \
 				EG(zend_constants), PHP_JSOND_CONSTANT"_"name, strlen(PHP_JSOND_CONSTANT"_"name))) { \
 			REGISTER_LONG_CONSTANT(PHP_JSOND_CONSTANT"_"name, lval, CONST_CS | CONST_PERSISTENT); \
 		} \
@@ -162,9 +157,9 @@ static PHP_MINIT_FUNCTION(jsond)
 	return SUCCESS;
 }
 
-#define PHP_JSON_REPLACE_FN(orig, name) \
-	PHPC_HASH_CSTR_FIND_PTR(EG(function_table), "json_"#name, orig); \
-	orig->internal_function.handler = PHP_JSOND_FN(name);
+#define PHP_JSON_REPLACE_FN(_orig, _name) \
+	_orig = zend_hash_str_find_ptr(EG(function_table), "json_"#_name, strlen("json_"#_name)); \
+	_orig->internal_function.handler = PHP_JSOND_FN(_name);
 
 
 /* RINIT */
@@ -276,8 +271,8 @@ static PHP_FUNCTION(jsond_encode)
 {
 	zval *parameter;
 	php_json_buffer buf;
-	phpc_long_t options = 0;
-	phpc_long_t depth = PHP_JSON_PARSER_DEFAULT_DEPTH;
+	zend_long options = 0;
+	zend_long depth = PHP_JSON_PARSER_DEFAULT_DEPTH;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "z|ll", &parameter, &options, &depth) == FAILURE) {
 		return;
@@ -304,10 +299,10 @@ static PHP_FUNCTION(jsond_encode)
 static PHP_FUNCTION(jsond_decode)
 {
 	char *str;
-	phpc_str_size_t str_len;
+	size_t str_len;
 	zend_bool assoc = 0; /* return JS objects as PHP objects by default */
-	phpc_long_t depth = PHP_JSON_PARSER_DEFAULT_DEPTH;
-	phpc_long_t options = 0;
+	zend_long depth = PHP_JSON_PARSER_DEFAULT_DEPTH;
+	zend_long options = 0;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|bll", &str, &str_len, &assoc, &depth, &options) == FAILURE) {
 		return;
@@ -352,7 +347,7 @@ static PHP_FUNCTION(jsond_last_error)
 }
 
 #define PHP_JSON_ERROR_MSG_RETURN(_msg) \
-	PHPC_CSTRL_RETURN(_msg, sizeof(_msg) - 1)
+	RETURN_STRINGL(_msg, sizeof(_msg) - 1)
 
 /* proto string json_last_error_msg()
    Returns the error string of the last json_encode() or json_decode() call. */
