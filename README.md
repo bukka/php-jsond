@@ -1,6 +1,8 @@
-# PHP JSON extension with new Decoder
+# PHP JSON Development extension
 
-The php-jsond is a new JSON parser for PHP
+The php-jsond is a development extension that contains some future changes for the official
+php-json extension. It also makes some new changes available in the previous PHP versions as it can
+be installed independently through PECL. Currently it supports PHP 7.2+.
 
 
 ## Installation
@@ -9,7 +11,8 @@ The php-jsond is a new JSON parser for PHP
 
 #### PECL
 
-This extension is available on PECL. The package is not currently stable. If the config `preferre_state` is stable, then the version needs to be specified.
+This extension is available on PECL. The package is not currently stable. If the config
+`preferre_state` is stable, then the version needs to be specified.
 
 ```
 $ sudo pecl install jsond-1.x.y
@@ -20,15 +23,13 @@ where `x` is an installed minor version number and `y` bug fixing version number
 
 #### Manual Installation
 
-It's important to have a git installed as it's necessary for recursive fetch of
-[phpc](https://github.com/bukka/phpc).
-
-First clone recursively the repository
+First clone the repository
 ```
-git clone --recursive https://github.com/bukka/php-jsond.git
+git clone https://github.com/bukka/php-jsond.git
 ```
 
-Then go to the created directory and compile the extension. The PHP development package has to be installed (command `phpize` must be available).
+Then go to the created directory and compile the extension. The PHP development package has to be
+installed (command `phpize` must be available).
 ```
 cd php-jsond
 phpize
