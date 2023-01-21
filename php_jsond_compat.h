@@ -19,8 +19,8 @@
 #ifndef PHP_JSOND_COMPAT_H
 #define	PHP_JSOND_COMPAT_H
 
-/* Recursion protection */
-#if PHP_VERSION_ID < 70299
+/* Recursion protection changes */
+#if PHP_VERSION_ID < 70300
 #define PHP_JSON_HAS_APPLY_COUNT(_tht)  (ZEND_HASH_GET_APPLY_COUNT(_tht) > 0)
 #define PHP_JSON_GET_APPLY_COUNT        ZEND_HASH_GET_APPLY_COUNT
 #define PHP_JSON_INC_APPLY_COUNT        ZEND_HASH_INC_APPLY_COUNT
@@ -34,8 +34,29 @@
 #define PHP_JSON_APPLY_PROTECTION(_tht) (!(GC_FLAGS(_tht) & GC_IMMUTABLE))
 #endif
 
+/* zend_string_release_ex introduction */
+#if PHP_VERSION_ID < 70300
+#define PHP_JSOND_RELEASE_STRING zend_string_release
+#else
+#define PHP_JSOND_RELEASE_STRING(_str) zend_string_release_ex(_str, 0)
+#endif
+
+/* zend_std_write_property changes */
+#if PHP_VERSION_ID < 80000
+#define PHP_JSOND_WRITE_PROPERTY(_object, _key, _value) \
+    do { \
+        zval _zkey; \
+        ZVAL_NEW_STR(&_zkey, _key); \
+        zend_std_write_property(_object, &_zkey, _value, NULL); \
+    } while(0)
+
+#else
+#define PHP_JSOND_WRITE_PROPERTY(_object, _key, _value) \
+    zend_std_write_property(Z_OBJ_P(_object), _key, _value, NULL)
+#endif
+
 /* zend_dtoa sign type */
-#if PHP_VERSION_ID < 80099
+#if PHP_VERSION_ID < 80100
 typedef int php_jsond_dtoa_sign_t;
 #else
 typedef bool php_jsond_dtoa_sign_t;

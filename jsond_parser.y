@@ -18,6 +18,7 @@
 #include "php.h"
 #include "phpc/phpc.h"
 #include "php_jsond.h"
+#include "php_jsond_compat.h"
 #include "php_jsond_parser.h"
 
 #define YYDEBUG 0
@@ -75,7 +76,7 @@ int json_yydebug = 1;
 %type <pair> pair
 
 %destructor { zval_dtor(&$$); } <value>
-%destructor { zend_string_release($$.key); zval_dtor(&$$.val); } <pair>
+%destructor { PHP_JSOND_RELEASE_STRING($$.key); zval_dtor(&$$.val); } <pair>
 
 %code {
 int php_json_yylex(union YYSTYPE *value, php_json_parser *parser);
@@ -276,19 +277,19 @@ static int php_json_parser_object_update(php_json_parser *parser, zval *object, 
 		zval zkey;
 
 		if (ZSTR_LEN(key) == 0) {
-			zend_string_release(key);
+			PHP_JSOND_RELEASE_STRING(key);
 			key = zend_string_init("_empty_", sizeof("_empty_") - 1, 0);
 		} else if (ZSTR_VAL(key)[0] == '\0') {
 			parser->scanner.errcode = PHP_JSON_ERROR_INVALID_PROPERTY_NAME;
-			zend_string_release(key);
+			PHP_JSOND_RELEASE_STRING(key);
 			zval_dtor(zvalue);
 			zval_dtor(object);
 			return FAILURE;
 		}
-		zend_std_write_property(Z_OBJ_P(object), key, zvalue, NULL);
+		PHP_JSOND_WRITE_PROPERTY(object, key, zvalue);
 		Z_TRY_DELREF_P(zvalue);
 	}
-	zend_string_release_ex(key, 0);
+	PHP_JSOND_RELEASE_STRING(key);
 
 	return SUCCESS;
 }

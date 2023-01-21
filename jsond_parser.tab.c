@@ -80,6 +80,7 @@
 #include "php.h"
 #include "phpc/phpc.h"
 #include "php_jsond.h"
+#include "php_jsond_compat.h"
 #include "php_jsond_parser.h"
 
 #define YYDEBUG 0
@@ -511,10 +512,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    89,    89,    96,   103,   103,   120,   121,   130,   133,
-     137,   143,   149,   156,   161,   169,   168,   186,   187,   196,
-     199,   203,   208,   213,   220,   221,   225,   226,   227,   228,
-     229,   230,   231,   232,   233,   234,   238
+       0,    90,    90,    97,   104,   104,   121,   122,   131,   134,
+     138,   144,   150,   157,   162,   170,   169,   187,   188,   197,
+     200,   204,   209,   214,   221,   222,   226,   227,   228,   229,
+     230,   231,   232,   233,   234,   235,   239
 };
 #endif
 
@@ -1136,7 +1137,7 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, php_json_parser *p
 
     case 25: /* pair  */
 
-      { zend_string_release(((*yyvaluep).pair).key); zval_dtor(&((*yyvaluep).pair).val); }
+      { PHP_JSOND_RELEASE_STRING(((*yyvaluep).pair).key); zval_dtor(&((*yyvaluep).pair).val); }
 
         break;
 
@@ -1881,19 +1882,19 @@ static int php_json_parser_object_update(php_json_parser *parser, zval *object, 
 		zval zkey;
 
 		if (ZSTR_LEN(key) == 0) {
-			zend_string_release(key);
+			PHP_JSOND_RELEASE_STRING(key);
 			key = zend_string_init("_empty_", sizeof("_empty_") - 1, 0);
 		} else if (ZSTR_VAL(key)[0] == '\0') {
 			parser->scanner.errcode = PHP_JSON_ERROR_INVALID_PROPERTY_NAME;
-			zend_string_release(key);
+			PHP_JSOND_RELEASE_STRING(key);
 			zval_dtor(zvalue);
 			zval_dtor(object);
 			return FAILURE;
 		}
-		zend_std_write_property(Z_OBJ_P(object), key, zvalue, NULL);
+		PHP_JSOND_WRITE_PROPERTY(object, key, zvalue);
 		Z_TRY_DELREF_P(zvalue);
 	}
-	zend_string_release_ex(key, 0);
+	PHP_JSOND_RELEASE_STRING(key);
 
 	return SUCCESS;
 }
