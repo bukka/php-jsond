@@ -1,5 +1,7 @@
 --TEST--
 Bug #63737 (json_decode does not properly decode with options parameter)
+--INI--
+serialize_precision=14
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

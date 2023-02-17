@@ -1,5 +1,7 @@
 --TEST--
 json_decode() with large integers
+--INI--
+serialize_precision=14
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
