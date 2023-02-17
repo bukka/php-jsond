@@ -12,7 +12,7 @@ require_once "bootstrap.inc";
 $a = array();
 $a[] = &$a;
 
-var_dump($a);
+print_r($a);
 
 echo "\n";
 
@@ -23,19 +23,17 @@ echo "\n";
 
 
 $output = $jsond_encode($a, jsond_constant('PARTIAL_OUTPUT_ON_ERROR'));
-var_dump($output === (version_compare(PHP_VERSION, '7.0.0') >= 0 ? '[null]': '[[null]]'));
+var_dump($output === '[null]');
 var_dump($jsond_last_error(), $jsond_last_error_msg());
 
 echo "Done\n";
 ?>
 --EXPECTF--
-array(1) {
-  [0]=>
-  &array(1) {
-    [0]=>
-    *RECURSION*
-  }
-}
+Array
+(
+    [0] => Array
+ *RECURSION*
+)
 
 bool(false)
 int(6)
