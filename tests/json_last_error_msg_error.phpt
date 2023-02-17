@@ -7,8 +7,18 @@ json_last_error_msg() failures
 require_once "bootstrap.inc";
 
 var_dump($jsond_last_error_msg());
-var_dump($jsond_last_error_msg(TRUE));
-var_dump($jsond_last_error_msg('some', 4, 'args', 'here'));
+
+jsond_expect_argument_count_error(
+    function() use ($jsond_last_error_msg) { $jsond_last_error_msg(TRUE); },
+    'jsond_last_error_msg() expects exactly 0 arguments, 1 given',
+    "Warning: jsond_last_error_msg() expects exactly 0 parameters, 1 given in file on line 0",
+);
+
+jsond_expect_argument_count_error(
+    function() use ($jsond_last_error_msg) { $jsond_last_error_msg('some', 4, 'args', 'here'); },
+    'jsond_last_error_msg() expects exactly 0 arguments, 4 given',
+    "Warning: jsond_last_error_msg() expects exactly 0 parameters, 4 given in file on line 0",
+);
 
 ?>
 --EXPECTF--

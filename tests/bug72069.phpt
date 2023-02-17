@@ -12,7 +12,7 @@ if ($jsond_prefix === 'jsond') {
 		function jsonSerialize()
 		{
 			global $jsond_decode;
-			return ['end' => $jsond_decode(null, true)];
+			return ['end' => $jsond_decode("null", true)];
 		}
 	}
 } else {
@@ -21,12 +21,12 @@ if ($jsond_prefix === 'jsond') {
 		function jsonSerialize()
 		{
 			global $jsond_decode;
-			return ['end' => $jsond_decode(null, true)];
+			return ['end' => $jsond_decode("null", true)];
 		}
 	}
 }
 
-$result = $jsond_encode(['end' => $jsond_decode(null, true)]);
+$result = $jsond_encode(['end' => $jsond_decode("null", true)]);
 var_dump($result);
 $a = new A();
 $toJsonData = $a->jsonSerialize();

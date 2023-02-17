@@ -6,7 +6,7 @@ Bug #69187 json_last_error return BC in PHP7
 <?php
 require_once "bootstrap.inc";
 
-var_dump($jsond_decode(NULL));
+var_dump($jsond_decode("NULL"));
 var_dump($jsond_last_error());
 var_dump($jsond_decode(FALSE));
 var_dump($jsond_last_error());
