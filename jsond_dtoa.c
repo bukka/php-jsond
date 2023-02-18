@@ -74,8 +74,8 @@ char *php_jsond_gcvt(double value, int ndigit, char dec_point, char exponent, ch
 			*dst = '\0';
 		} else {
 			/* XXX - optimize */
-			for (sign = decpt, i = 0; (sign /= 10) != 0; i++)
-				continue;
+			int n;
+			for (n = decpt, i = 0; (n /= 10) != 0; i++);
 			dst[i + 1] = '\0';
 			while (decpt != 0) {
 				dst[i--] = '0' + decpt % 10;
