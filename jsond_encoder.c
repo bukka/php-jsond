@@ -353,7 +353,6 @@ static int php_json_encode_array(
 
 				php_json_pretty_print_char(buf, options, '\n');
 				php_json_pretty_print_indent(buf, options, encoder);
-				php_json_encode_zval(buf, z_data, options, encoder);
 			} else if (r == PHP_JSON_OUTPUT_OBJECT) {
 				/* append key */
 				if (key) {
@@ -390,12 +389,13 @@ static int php_json_encode_array(
 				PHP_JSON_BUF_APPEND_CHAR(buf, ':');
 				/* append value */
 				php_json_pretty_print_char(buf, options, ' ');
-				if (php_json_encode_zval(buf, z_data, options, encoder) == FAILURE &&
-						!(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR)) {
-					PHP_JSON_HASH_UNPROTECT_RECURSION(myht);
-					return FAILURE;
-				};
 			}
+
+			if (php_json_encode_zval(buf, z_data, options, encoder) == FAILURE &&
+					!(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR)) {
+				PHP_JSON_HASH_UNPROTECT_RECURSION(myht);
+				return FAILURE;
+			};
 		} ZEND_HASH_FOREACH_END();
 
 	}
@@ -461,6 +461,7 @@ static int php_json_encode_serializable_object(
 		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
 			PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
 		}
+		zval_dtor(&fname);
 		PHP_JSON_HASH_UNPROTECT_RECURSION(myht);
 		return FAILURE;
 	}
