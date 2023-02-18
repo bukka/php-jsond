@@ -49,6 +49,10 @@ static int php_json_determine_array_type(zval *val)
 		zend_ulong index, idx = 0;
 		zend_string *key;
 
+		if (HT_IS_PACKED(myht) && HT_IS_WITHOUT_HOLES(myht)) {
+			return PHP_JSON_OUTPUT_ARRAY;
+		}
+
 		ZEND_HASH_FOREACH_KEY(myht, index, key) {
 			if (key || index != idx) {
 				return PHP_JSON_OUTPUT_OBJECT;
