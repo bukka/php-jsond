@@ -233,7 +233,11 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 #define PHP_JSON_BUF_LENGTH(_buf_s) _buf_s.len
 
 #define PHP_JSON_BUF_RETURN(_buf_s, return_value) do { \
-		RETVAL_STRINGL(_buf_s.c, _buf_s.len); \
+		if (_buf_s.c) { \
+			RETVAL_STRINGL(_buf_s.c, _buf_s.len); \
+		} else { \
+			RETVAL_EMPTY_STRING(); \
+		} \
 		PHP_JSON_BUF_DESTROY(&_buf_s); \
 	} while(0)
 
