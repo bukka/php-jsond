@@ -198,7 +198,7 @@ static PHP_GINIT_FUNCTION(jsond)
 #endif
 	jsond_globals->encoder_depth = 0;
 	jsond_globals->error_code = PHP_JSON_ERROR_NONE;
-	jsond_globals->encode_max_depth = 0;
+	jsond_globals->encode_max_depth = PHP_JSON_PARSER_DEFAULT_DEPTH;
 }
 
 
