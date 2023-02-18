@@ -36,5 +36,4 @@ try {
 }
 ?>
 --EXPECT--
-Failed calling MyClass::jsonSerialize() (0) [Exception]
 Not implemented! (0) [Exception]
