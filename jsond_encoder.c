@@ -457,7 +457,9 @@ static int php_json_encode_serializable_object(
 
 	if (FAILURE == call_user_function(EG(function_table), val, &fname, &retval, 0, NULL)
 			|| Z_ISUNDEF(retval)) {
-		zend_throw_exception_ex(NULL, 0, "Failed calling %s::jsonSerialize()", ZSTR_VAL(ce->name));
+		if (!EG(exception)) {
+			zend_throw_exception_ex(NULL, 0, "Failed calling %s::jsonSerialize()", ZSTR_VAL(ce->name));
+		}
 		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
 			PHP_JSON_BUF_APPEND_STRING(buf, "null", sizeof("null") - 1);
 		}
