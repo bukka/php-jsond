@@ -9,7 +9,7 @@ require_once "bootstrap.inc";
 jsond_expect_argument_count_error(
     function() use ($jsond_decode) { $jsond_decode(); },
     'jsond_decode() expects at least 1 argument, 0 given',
-    'Warning: jsond_decode() expects at least 1 parameter, 0 given in file on line 0',
+    'Warning: jsond_decode() expects at least 1 parameter, 0 given in file on line 0'
 );
 var_dump($jsond_decode(""));
 var_dump($jsond_decode("", 1));
