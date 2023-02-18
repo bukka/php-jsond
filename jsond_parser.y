@@ -275,10 +275,7 @@ static int php_json_parser_object_update(php_json_parser *parser, zval *object, 
 	} else {
 		zval zkey;
 
-		if (ZSTR_LEN(key) == 0) {
-			PHP_JSOND_RELEASE_STRING(key);
-			key = zend_string_init("_empty_", sizeof("_empty_") - 1, 0);
-		} else if (ZSTR_VAL(key)[0] == '\0') {
+		if (ZSTR_LEN(key) > 0 && ZSTR_VAL(key)[0] == '\0') {
 			parser->scanner.errcode = PHP_JSON_ERROR_INVALID_PROPERTY_NAME;
 			PHP_JSOND_RELEASE_STRING(key);
 			zval_dtor(zvalue);

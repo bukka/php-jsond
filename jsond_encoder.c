@@ -356,7 +356,7 @@ static int php_json_encode_array(
 			} else if (r == PHP_JSON_OUTPUT_OBJECT) {
 				/* append key */
 				if (key) {
-					if (ZSTR_VAL(key)[0] == '\0' && Z_TYPE_P(val) == IS_OBJECT) {
+					if (ZSTR_VAL(key)[0] == '\0' && ZSTR_LEN(key) > 0 && Z_TYPE_P(val) == IS_OBJECT) {
 						/* Skip protected and private members. */
 						continue;
 					}
