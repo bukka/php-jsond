@@ -283,7 +283,7 @@ static PHP_FUNCTION(jsond_encode)
 	JSOND_G(encode_max_depth) = depth;
 
 	PHP_JSON_BUF_INIT(&buf);
-	PHP_JSOND_NAME(encode)(&buf, parameter, (int)options);
+	php_jsond_encode(&buf, parameter, (int)options);
 
 	if ((JSOND_G(error_code) != PHP_JSON_ERROR_NONE && !(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR)) ||
 			PHP_JSON_BUF_LENGTH(buf) > LONG_MAX) {
@@ -332,7 +332,7 @@ static PHP_FUNCTION(jsond_decode)
 		options &= ~PHP_JSON_OBJECT_AS_ARRAY;
 	}
 
-	PHP_JSOND_NAME(decode_ex)(return_value, str, (size_t) str_len, (int) options, (int) depth);
+	php_jsond_decode_ex(return_value, str, (size_t) str_len, (int) options, (int) depth);
 }
 
 /* proto int json_last_error()
