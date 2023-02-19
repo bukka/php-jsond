@@ -1,13 +1,22 @@
 # Upgrading from the previous versions
 
-## 1.5
+## 2.0
 
 ### User visible changes
+
+### General
+- Added compatibility with PHP 8.0
 
 #### Decoder
 - Added parser method API including `json_parser_method` for hooking JSON parser
 
 #### Encoder
+- Backported json_encoder context - fixes stacking of exceptions in JsonSerializable objects
+  - https://github.com/php/php-src/pull/2173
+  - https://bugs.php.net/bug.php?id=66025
+  - https://bugs.php.net/bug.php?id=73254
+- Fixed segfault with throwing JsonSerializable
+  - https://bugs.php.net/bug.php?id=73113
 - Escaped U+2028 and U+2029 when `JSON_UNESCAPED_UNICODE` is supplied as `json_encode`
   options and added `JSON_UNESCAPED_LINE_TERMINATORS` to restore the previous behaviour
 - Fixed behavior of `JsonSerializable` difference from `json_encode` when error

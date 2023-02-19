@@ -10,16 +10,6 @@
   - refactore algorithm in jsond_scanner.re
 
 ## Encoding
-- backport json encode fail return
-  - https://github.com/php/php-src/pull/2101
-  - https://bugs.php.net/bug.php?id=68992
-  - https://bugs.php.net/bug.php?id=70275
-- backport json_encoder context - fixes stacking of exceptions in JsonSerializable objects
-  - https://github.com/php/php-src/pull/2173
-  - https://bugs.php.net/bug.php?id=66025
-  - https://bugs.php.net/bug.php?id=73254
-- verify (add test) and possibly fix segfault with throwing JsonSerializable
-  - https://bugs.php.net/bug.php?id=73113
 - add shortcut macro for XSS attacks
   - https://bugs.php.net/bug.php?id=65257
 - improve and test native buffer
@@ -27,6 +17,7 @@
 
 ## Build
 - add checks for specific re2c and Bison version
+- Windows Makefile.frag support - like https://github.com/php/php-src/commit/25ee9465d1c7043f4302329c901fecd38597b634
 
 ## Testing
 - new generator
