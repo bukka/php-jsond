@@ -17,9 +17,6 @@ if (PHP_INT_SIZE != 4) die("skip this test is for 32bit platform only");
 
 require_once "bootstrap.inc";
 
-// Expect warnings about INF.
-ini_set("error_reporting", E_ALL & ~E_WARNING);
-
 $test = "
 [
     \"JSON Test Pattern pass1\",

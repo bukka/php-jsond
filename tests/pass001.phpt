@@ -8,9 +8,6 @@ serialize_precision=14
 ?>
 --FILE--
 <?php
-// Expect warnings about INF.
-ini_set("error_reporting", E_ALL & ~E_WARNING);
-
 require_once "bootstrap.inc";
 
 $test = "

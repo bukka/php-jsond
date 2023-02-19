@@ -17,9 +17,6 @@ serialize_precision=14
 
 require_once "bootstrap.inc";
 
-// Expect warnings about INF.
-ini_set("error_reporting", E_ALL & ~E_WARNING);
-
 $test = "
 [
     \"JSON Test Pattern pass1\",
