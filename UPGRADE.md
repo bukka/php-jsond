@@ -9,6 +9,7 @@
 
 #### Decoder
 - Added parser method API including `json_parser_method` for hooking JSON parser
+- Allowed JSON_OBJECT_AS_ARRAY option to actually have meaning
 
 #### Encoder
 - Backported json_encoder context - fixes stacking of exceptions in JsonSerializable objects
