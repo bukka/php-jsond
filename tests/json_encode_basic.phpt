@@ -21,6 +21,11 @@ $fp = fopen(__FILE__, "r");
 
 // get an object
 class sample  {
+    public $MyInt;
+    public $MyFloat;
+    public $MyBool;
+    public $MyNull;
+    public $MyString;
 }
 
 $obj = new sample();
