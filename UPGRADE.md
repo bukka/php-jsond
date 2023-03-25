@@ -6,6 +6,9 @@
 
 ### General
 - Added compatibility with PHP 8.0
+- Add `JSOND_INVALID_UTF8_IGNORE` and `JSOND_INVALID_UTF8_SUBSTITUTE` options for `jsond_encode`
+  and `jsond_decode` to ignore or replace invalid UTF-8 byte sequences - it addresses a feature
+  request #65082.
 
 #### Decoder
 - Added parser method API including `jsond_parser_method` for hooking JSON parser

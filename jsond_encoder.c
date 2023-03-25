@@ -110,33 +110,36 @@ static inline void php_json_encode_double(
 /* String encoding */
 
 static inline char *php_json_escape_string_flush_ex(
-		php_json_buffer *buf, char *mark, char *s, char *esc,
+		php_json_buffer *buf, char *mark, char *s, size_t pos, char *esc,
 		int esc_len, int extralen)
 {
-	char *prechar = s - extralen;
+	char *prechar = s + pos - extralen;
 	if (prechar != mark) {
 		PHP_JSON_BUF_APPEND_STRING(buf, mark, prechar - mark);
 	}
 	if (esc_len) {
 		PHP_JSON_BUF_APPEND_STRING(buf, esc, esc_len);
 	}
-	return s + 1;
+	return s + pos + 1;
 }
 
 static inline char *php_json_escape_string_flush(
-		php_json_buffer *buf, char *mark, char *s, char *esc, int esc_len)
+		php_json_buffer *buf, char *mark, char *s, size_t pos, char *esc, int esc_len)
 {
-	return php_json_escape_string_flush_ex(buf, mark, s, esc, esc_len, 0);
+	return php_json_escape_string_flush_ex(buf, mark, s, pos, esc, esc_len, 0);
 }
+
+#define PHP_JSOND_BIT_TEST(bits, bit) \
+	(((bits)[(bit) / (sizeof((bits)[0])*8)] >> ((bit) & (sizeof((bits)[0])*8-1))) & 1)
 
 static int php_json_escape_string(
 		php_json_buffer *buf, char *s, size_t len, int options,
 		php_json_encoder *encoder)
 {
-	size_t count;
-	int codepoint;
-	int state = 0;
-	int codelen = 0;
+	uint32_t state = 0;
+	uint32_t codepoint;
+	size_t count, shift;
+	size_t codelen = 0;
 	char *mark = s;
 	PHP_JSON_BUF_MARK_DECLARE(buf);
 
@@ -169,119 +172,163 @@ static int php_json_escape_string(
 	PHP_JSON_BUF_ALLOC(buf, len);
 	PHP_JSON_BUF_APPEND_CHAR(buf, '"');
 
-	for (count = 0; count < len; count++, s++) {
-		if (php_json_utf8_decode(&state, &codepoint, (unsigned char) *s)) {
-			codelen++;
+	for (count = 0; count < len; count++) {
+		static const uint32_t charmap[8] = {
+			0xffffffff, 0x500080c4, 0x10000000, 0x00000000,
+			0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff};
+
+		codepoint = (unsigned char) s[count];
+		if (!PHP_JSOND_BIT_TEST(charmap, codepoint)) {
 			continue;
 		}
-
-		switch (codepoint) {
-			case '"':
-				if (options & PHP_JSON_HEX_QUOT) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\u0022", 6);
-				} else {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\\"", 2);
-				}
-				break;
-
-			case '\\':
-				mark = php_json_escape_string_flush(buf, mark, s, "\\\\", 2);
-				break;
-
-			case '/':
-				if (!(options & PHP_JSON_UNESCAPED_SLASHES)) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\/", 2);
-				}
-				break;
-
-			case '\b':
-				mark = php_json_escape_string_flush(buf, mark, s, "\\b", 2);
-				break;
-
-			case '\f':
-				mark = php_json_escape_string_flush(buf, mark, s, "\\f", 2);
-				break;
-
-			case '\n':
-				mark = php_json_escape_string_flush(buf, mark, s, "\\n", 2);
-				break;
-
-			case '\r':
-				mark = php_json_escape_string_flush(buf, mark, s, "\\r", 2);
-				break;
-
-			case '\t':
-				mark = php_json_escape_string_flush(buf, mark, s, "\\t", 2);
-				break;
-
-			case '<':
-				if (options & PHP_JSON_HEX_TAG) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\u003C", 6);
-				}
-				break;
-
-			case '>':
-				if (options & PHP_JSON_HEX_TAG) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\u003E", 6);
-				}
-				break;
-
-			case '&':
-				if (options & PHP_JSON_HEX_AMP) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\u0026", 6);
-				}
-				break;
-
-			case '\'':
-				if (options & PHP_JSON_HEX_APOS) {
-					mark = php_json_escape_string_flush(buf, mark, s, "\\u0027", 6);
-				}
-				break;
-
-			default:
-				if (codepoint < ' ' || (
-						codepoint > 0x7f && (
-							!(options & PHP_JSON_UNESCAPED_UNICODE) ||
-							((codepoint == 0x2028 || codepoint == 0x2029) && !(options & PHP_JSON_UNESCAPED_LINE_TERMINATORS))
+		if (codepoint >= 0x80) {
+			if (codepoint < 0xf8) {
+				size_t max_codelen = codepoint < 0xe0 ? 2 : (codepoint < 0xf0 ? 3 : 4);
+				for (codelen = 0; codelen < max_codelen && count < len; codelen++, count++) {
+					unsigned char c = (unsigned char) s[count];
+					if (php_json_utf8_decode(&state, &codepoint, c)) {
+						if (state == PHP_JSON_UTF8_REJECT) {
+							break;
+						}
+						continue;
+					}
+					if (
+						!(options & PHP_JSON_UNESCAPED_UNICODE) ||
+						(
+							(codepoint == 0x2028 || codepoint == 0x2029) && 
+							!(options & PHP_JSON_UNESCAPED_LINE_TERMINATORS)
 						)
-					)
-				) {
-					mark = php_json_escape_string_flush_ex(buf, mark, s, "\\u", 2, codepoint < ' ' ? 0 : codelen);
-					codelen = 0;
-					if (codepoint <= 0xffff) {
-						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf000) >> 12]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf00)  >> 8]);
+					) {
+						mark = php_json_escape_string_flush_ex(buf, mark, s, count, "\\u", 2, codelen);
+						if (codepoint <= 0xffff) {
+							PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf000) >> 12]);
+							PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf00)  >> 8]);
+							PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf0)   >> 4]);
+							PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf)]);
+						} else {
+							PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xD7C0 + (codepoint >> 10)) & 0xf000) >> 12]);
+							PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xD7C0 + (codepoint >> 10)) & 0xf00)  >> 8]);
+							PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xD7C0 + (codepoint >> 10)) & 0xf0)   >> 4]);
+							PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xD7C0 + (codepoint >> 10)) & 0xf)]);
+							PHP_JSON_BUF_APPEND_STRING(buf, "\\u", 2);
+							PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf000) >> 12]);
+							PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf00)  >> 8]);
+							PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf0)   >> 4]);
+							PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf)]);
+						}
+					}
+					break;
+				}
+			} else {
+				/* first byte is max 11110111 */
+				codelen = 0;
+				state = 1;
+			}
+			if (state) {
+				if (options & PHP_JSON_INVALID_UTF8_IGNORE) {
+					/* ignore invalid UTF8 character */
+					shift = codelen ? 1 : 0;
+					mark = php_json_escape_string_flush_ex(buf, mark, s, count - shift, "", 0, codelen - shift);
+					state = 0;
+				} else if (options & PHP_JSON_INVALID_UTF8_SUBSTITUTE) {
+					/* Use Unicode character 'REPLACEMENT CHARACTER' (U+FFFD) */
+					shift = codelen ? 1 : 0;
+					if (options & PHP_JSON_UNESCAPED_UNICODE) {
+						mark = php_json_escape_string_flush_ex(buf, mark, s, count - shift, "\xef\xbf\xbd", 3, codelen - shift);
+					} else {
+						mark = php_json_escape_string_flush_ex(buf, mark, s, count - shift, "\\ufffd", 6, codelen - shift);
+					}
+				} else {
+					encoder->error_code = PHP_JSON_ERROR_UTF8;
+					if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
+						PHP_JSON_BUF_RESET(buf);
+						PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
+					}
+					return FAILURE;
+				}
+			}
+		} else {
+			switch (codepoint) {
+				case '"':
+					if (options & PHP_JSON_HEX_QUOT) {
+						mark = php_json_escape_string_flush(buf, mark, s, count, "\\u0022", 6);
+					} else {
+						mark = php_json_escape_string_flush(buf, mark, s, count, "\\\"", 2);
+					}
+					break;
+
+				case '\\':
+					mark = php_json_escape_string_flush(buf, mark, s, count, "\\\\", 2);
+					break;
+
+				case '/':
+					if (!(options & PHP_JSON_UNESCAPED_SLASHES)) {
+						mark = php_json_escape_string_flush(buf, mark, s, count, "\\/", 2);
+					}
+					break;
+
+				case '\b':
+					mark = php_json_escape_string_flush(buf, mark, s, count, "\\b", 2);
+					break;
+
+				case '\f':
+					mark = php_json_escape_string_flush(buf, mark, s, count, "\\f", 2);
+					break;
+
+				case '\n':
+					mark = php_json_escape_string_flush(buf, mark, s, count, "\\n", 2);
+					break;
+
+				case '\r':
+					mark = php_json_escape_string_flush(buf, mark, s, count, "\\r", 2);
+					break;
+
+				case '\t':
+					mark = php_json_escape_string_flush(buf, mark, s, count, "\\t", 2);
+					break;
+
+				case '<':
+					if (options & PHP_JSON_HEX_TAG) {
+						mark = php_json_escape_string_flush(buf, mark, s, count, "\\u003C", 6);
+					}
+					break;
+
+				case '>':
+					if (options & PHP_JSON_HEX_TAG) {
+						mark = php_json_escape_string_flush(buf, mark, s, count, "\\u003E", 6);
+					}
+					break;
+
+				case '&':
+					if (options & PHP_JSON_HEX_AMP) {
+						mark = php_json_escape_string_flush(buf, mark, s, count, "\\u0026", 6);
+					}
+					break;
+
+				case '\'':
+					if (options & PHP_JSON_HEX_APOS) {
+						mark = php_json_escape_string_flush(buf, mark, s, count, "\\u0027", 6);
+					}
+					break;
+
+				default:
+					if (codepoint < ' ') {
+						mark = php_json_escape_string_flush_ex(buf, mark, s, count, "\\u", 2, 0);
+						PHP_JSON_BUF_APPEND_CHAR(buf, '0');
+						PHP_JSON_BUF_APPEND_CHAR(buf, '0');
 						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf0)   >> 4]);
 						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[(codepoint & 0xf)]);
-					} else {
-						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xD7C0 + (codepoint >> 10)) & 0xf000) >> 12]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xD7C0 + (codepoint >> 10)) & 0xf00)  >> 8]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xD7C0 + (codepoint >> 10)) & 0xf0)   >> 4]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xD7C0 + (codepoint >> 10)) & 0xf)]);
-						PHP_JSON_BUF_APPEND_STRING(buf, "\\u", 2);
-						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf000) >> 12]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf00)  >> 8]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf0)   >> 4]);
-						PHP_JSON_BUF_APPEND_CHAR(buf, php_json_digits[((0xDC00 + (codepoint & 0x3FF)) & 0xf)]);
 					}
-				}
-				break;
+					break;
+			}
 		}
 	}
 
-	if (state != PHP_JSON_UTF8_ACCEPT) {
-		encoder->error_code = PHP_JSON_ERROR_UTF8;
-		if (options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) {
-			PHP_JSON_BUF_RESET(buf);
-			PHP_JSON_BUF_APPEND_STRING(buf, "null", 4);
-		}
-		return FAILURE;
-	} else {
-		if (mark < s) {
-			PHP_JSON_BUF_APPEND_STRING(buf, mark, s - mark);
-		}
-		PHP_JSON_BUF_APPEND_CHAR(buf, '"');
+	s += count;
+	if (mark < s) {
+		PHP_JSON_BUF_APPEND_STRING(buf, mark, s - mark);
 	}
+	PHP_JSON_BUF_APPEND_CHAR(buf, '"');
 	PHP_JSON_BUF_MARK_DELETE(buf);
 
 	return SUCCESS;

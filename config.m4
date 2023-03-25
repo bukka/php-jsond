@@ -28,7 +28,7 @@ if test "$PHP_JSOND" != "no"; then
   AC_DEFINE([HAVE_JSOND],1 ,[whether to enable jsond support])
   AC_HEADER_STDC
 
-  PHP_NEW_EXTENSION(jsond, 
+  PHP_NEW_EXTENSION(jsond,
       jsond.c \
       jsond_buffer.c \
       jsond_dtoa.c \
@@ -38,6 +38,8 @@ if test "$PHP_JSOND" != "no"; then
       $ext_shared)
 
   if test "$PHP_JSOND_FILEGEN" != "no"; then
+    PHP_PROG_RE2C()
+    PHP_PROG_BISON()
     PHP_ADD_MAKEFILE_FRAGMENT()
   fi
   PHP_INSTALL_HEADERS([ext/jsond], [php_jsond.h php_jsond_parser.h php_jsond_scanner.h])

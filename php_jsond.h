@@ -135,6 +135,10 @@ typedef enum {
 #define PHP_JSON_OBJECT_AS_ARRAY	(1<<0)
 #define PHP_JSON_BIGINT_AS_STRING	(1<<1)
 
+/* json_decode() and json_encode() common options */
+#define PHP_JSON_INVALID_UTF8_IGNORE     (1<<20)
+#define PHP_JSON_INVALID_UTF8_SUBSTITUTE (1<<21)
+
 /* default depth */
 #define PHP_JSON_PARSER_DEFAULT_DEPTH 512
 
