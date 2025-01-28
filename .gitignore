@@ -17,6 +17,7 @@ config.nice
 config.status
 config.sub
 configure
+configure~
 configure.ac
 configure.in
 include

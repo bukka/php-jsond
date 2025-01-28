@@ -14,11 +14,17 @@ function json_decode_invalid_utf8($str) {
 	global $jsond_decode;
     var_dump($jsond_decode($str));
 	var_dump($jsond_decode($str, true, 512, jsond_constant('INVALID_UTF8_IGNORE')));
-	var_dump(bin2hex($jsond_decode($str, true, 512, jsond_constant('INVALID_UTF8_SUBSTITUTE'))));
+	$json = $jsond_decode($str, true, 512, jsond_constant('INVALID_UTF8_SUBSTITUTE'));
+	if (is_array($json)) {
+		var_dump(array_map(function($item) { return bin2hex($item); }, $json));
+	} else {
+		var_dump(bin2hex($json));
+	}
 }
 json_decode_invalid_utf8("\"a\xb0b\"");
 json_decode_invalid_utf8("\"a\xd0\xf2b\"");
 json_decode_invalid_utf8("\"\x61\xf0\x80\x80\x41\"");
+json_decode_invalid_utf8("[\"\xc1\xc1\",\"a\"]");
 echo "Done\n";
 ?>
 --EXPECT--
@@ -31,4 +37,17 @@ string(16) "61efbfbdefbfbd62"
 NULL
 string(2) "aA"
 string(22) "61efbfbdefbfbdefbfbd41"
+NULL
+array(2) {
+  [0]=>
+  string(0) ""
+  [1]=>
+  string(1) "a"
+}
+array(2) {
+  [0]=>
+  string(12) "efbfbdefbfbd"
+  [1]=>
+  string(2) "61"
+}
 Done
