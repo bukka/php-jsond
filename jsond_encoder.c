@@ -421,8 +421,13 @@ static int php_json_encode_array(
 					php_json_pretty_print_char(buf, options, '\n');
 					php_json_pretty_print_indent(buf, options, encoder);
 
-					php_json_escape_string(buf, ZSTR_VAL(key), ZSTR_LEN(key),
-							options & ~PHP_JSON_NUMERIC_CHECK, encoder);
+					if (php_json_escape_string(buf, ZSTR_VAL(key), ZSTR_LEN(key),
+								options & ~PHP_JSON_NUMERIC_CHECK, encoder) == FAILURE &&
+							(options & PHP_JSON_PARTIAL_OUTPUT_ON_ERROR) &&
+							PHP_JSON_BUF_PTR(buf)) {
+						PHP_JSON_BUF_CHOP(buf, 4);
+						PHP_JSON_BUF_APPEND_STRING(buf, "\"\"", 2);
+					}
 				} else {
 					if (need_comma) {
 						PHP_JSON_BUF_APPEND_CHAR(buf, ',');

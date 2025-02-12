@@ -130,6 +130,12 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 #define PHP_JSON_BUFFER_STRVAL(_buf) (_buf).dbuf
 #define PHP_JSON_BUFFER_STRLEN(_buf) (_buf).dsize
 
+#define PHP_JSON_BUF_PTR(_buf) (_buf)->ptr
+
+#define PHP_JSON_BUF_CHOP(_buf, _n) \
+	ZEND_ASSERT((_buf)->ptr - _n > &(_buf)->sbuf[0]); \
+	(_buf)->ptr -= _n
+
 #define PHP_JSON_BUF_INIT(_buf) \
 	php_json_buffer_init(_buf)
 
@@ -187,6 +193,11 @@ static inline void php_json_buffer_mark_del(php_json_buffer *buf) /* {{{ */
 #include "zend_smart_string.h"
 
 #define php_json_buffer smart_string
+
+#define PHP_JSON_BUF_PTR(_buf) (_buf)->c
+
+#define PHP_JSON_BUF_CHOP(_buf, _n) \
+	(_buf)->len -= _n
 
 #define PHP_JSON_BUF_INIT(_buf) \
 	memset(_buf, 0, sizeof(smart_string))
