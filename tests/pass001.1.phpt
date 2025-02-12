@@ -1,7 +1,7 @@
 --TEST--
 JSON (http://www.crockford.com/JSON/JSON_checker/test/pass1.json)
 --INI--
-serialize_precision=14
+serialize_precision=-1
 --SKIPIF--
 <?php
 if (!extension_loaded('jsond')) die('skip: jsond extension not available');
