@@ -25,24 +25,24 @@
 #include "php_jsond_buffer.h"
 #include "php_jsond.h"
 
-void php_json_buffer_init(php_json_buffer *buf)
+void php_jsond_buffer_init(php_jsond_buffer *buf)
 {
 	buf->dbuf = NULL;
 	buf->ptr = &buf->sbuf[0];
-	buf->end = &buf->sbuf[PHP_JSON_BUFFER_STATIC_SIZE - 1];
+	buf->end = &buf->sbuf[PHP_JSOND_BUFFER_STATIC_SIZE - 1];
 	buf->dsize = 0;
 	buf->mark = NULL;
 	buf->flags = 0;
 }
 
-void php_json_buffer_destroy(php_json_buffer *buf)
+void php_jsond_buffer_destroy(php_jsond_buffer *buf)
 {
 	if (buf->dbuf) {
 		efree(buf->dbuf);
 	}
 }
 
-void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size)
+void php_jsond_buffer_flush(php_jsond_buffer *buf, size_t pre_alloc_size)
 {
 	ptrdiff_t static_size = buf->ptr - &buf->sbuf[0];
 	size_t size = static_size + pre_alloc_size;
@@ -53,34 +53,34 @@ void php_json_buffer_flush(php_json_buffer *buf, size_t pre_alloc_size)
 	}
 	memcpy(buf->dbuf + buf->dsize, &buf->sbuf[0], static_size);
 	/* mark dynamic buffer if mark set and is not already dynamic */
-	if (buf->mark && !(buf->flags & PHP_JSON_BUFFER_FLAG_MARK_DBUF)) {
+	if (buf->mark && !(buf->flags & PHP_JSOND_BUFFER_FLAG_MARK_DBUF)) {
 		buf->mark = &buf->dbuf[buf->dsize + (buf->mark - &buf->sbuf[0])];
-		buf->flags |= PHP_JSON_BUFFER_FLAG_MARK_DBUF;
+		buf->flags |= PHP_JSOND_BUFFER_FLAG_MARK_DBUF;
 	}
 	buf->dsize += static_size;
 	buf->ptr = &buf->sbuf[0];
 }
 
-void php_json_buffer_finish(php_json_buffer *buf)
+void php_jsond_buffer_finish(php_jsond_buffer *buf)
 {
-	php_json_buffer_flush(buf, 1);
+	php_jsond_buffer_flush(buf, 1);
 	buf->dbuf[buf->dsize] = 0;
 }
 
-void php_json_buffer_alloc(php_json_buffer *buf, size_t len)
+void php_jsond_buffer_alloc(php_jsond_buffer *buf, size_t len)
 {
 
 }
 
-void php_json_buffer_reset(php_json_buffer *buf)
+void php_jsond_buffer_reset(php_jsond_buffer *buf)
 {
 	if (!buf->mark) {
 		if (buf->dbuf) {
 			efree(buf->dbuf);
 		}
-		php_json_buffer_init(buf);
+		php_jsond_buffer_init(buf);
 	} else {
-		if (buf->flags & PHP_JSON_BUFFER_FLAG_MARK_DBUF) {
+		if (buf->flags & PHP_JSOND_BUFFER_FLAG_MARK_DBUF) {
 			buf->dsize = buf->mark - buf->dbuf;
 			buf->dbuf = erealloc(buf->dbuf, buf->dsize);
 			buf->ptr = &buf->sbuf[0];
@@ -90,4 +90,4 @@ void php_json_buffer_reset(php_json_buffer *buf)
 	}
 }
 
-#endif /* PHP_JSON_BUF_TYPE_NATIVE */
+#endif /* PHP_JSOND_BUF_TYPE_NATIVE */

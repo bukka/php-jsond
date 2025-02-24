@@ -25,10 +25,10 @@
 #ifndef PHP_JSOND_UTF8_DECODER_H
 #define	PHP_JSOND_UTF8_DECODER_H
 
-#define PHP_JSON_UTF8_ACCEPT 0
-#define PHP_JSON_UTF8_REJECT 1
+#define PHP_JSOND_UTF8_ACCEPT 0
+#define PHP_JSOND_UTF8_REJECT 1
 
-static const uint8_t php_json_utf8d[] = {
+static const uint8_t php_jsond_utf8d[] = {
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // 00..1f
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // 20..3f
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // 40..5f
@@ -45,14 +45,14 @@ static const uint8_t php_json_utf8d[] = {
   1,3,1,1,1,1,1,3,1,3,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1, // s7..s8
 };
 
-static php_json_always_inline int php_json_utf8_decode(uint32_t* state, uint32_t* codep, uint32_t byte)
+static php_jsond_always_inline int php_jsond_utf8_decode(uint32_t* state, uint32_t* codep, uint32_t byte)
 {
-	uint32_t type = php_json_utf8d[byte];
+	uint32_t type = php_jsond_utf8d[byte];
 
-	*codep = (*state != PHP_JSON_UTF8_ACCEPT) ?
+	*codep = (*state != PHP_JSOND_UTF8_ACCEPT) ?
 		(byte & 0x3fu) | (*codep << 6) : (0xff >> type) & (byte);
 
-	*state = php_json_utf8d[256 + *state*16 + type];
+	*state = php_jsond_utf8d[256 + *state*16 + type];
 	return *state;
 }
 

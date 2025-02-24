@@ -20,30 +20,30 @@
 #include "php.h"
 #include "php_jsond.h"
 
-typedef unsigned char php_json_ctype;
+typedef unsigned char php_jsond_ctype;
 
-typedef struct _php_json_scanner {
-	php_json_ctype *cursor;         /* cursor position */
-	php_json_ctype *token;          /* token position */
-	php_json_ctype *limit;          /* the last read character + 1 position */
-	php_json_ctype *marker;         /* marker position for backtracking */
-	php_json_ctype *ctxmarker;      /* marker position for context backtracking */
-	php_json_ctype *str_start;      /* start position of the string */
-	php_json_ctype *pstr;           /* string pointer for escapes conversion */
+typedef struct _php_jsond_scanner {
+	php_jsond_ctype *cursor;         /* cursor position */
+	php_jsond_ctype *token;          /* token position */
+	php_jsond_ctype *limit;          /* the last read character + 1 position */
+	php_jsond_ctype *marker;         /* marker position for backtracking */
+	php_jsond_ctype *ctxmarker;      /* marker position for context backtracking */
+	php_jsond_ctype *str_start;      /* start position of the string */
+	php_jsond_ctype *pstr;           /* string pointer for escapes conversion */
 	int str_esc;                    /* number of extra characters for escaping */
 	int state;                      /* condition state */             
 	zval value;                     /* value */
 	int options;                    /* options */
-	php_json_error_code errcode;    /* error type if there is an error */
+	php_jsond_error_code errcode;    /* error type if there is an error */
 	int utf8_invalid;               /* whether utf8 is invalid */
 	int utf8_invalid_count;         /* number of extra character for invalid utf8 */
-} php_json_scanner;
+} php_jsond_scanner;
 
 
-void php_json_scanner_init(
-		php_json_scanner *scanner, char *str, size_t str_len, int options);
+void php_jsond_scanner_init(
+		php_jsond_scanner *scanner, char *str, size_t str_len, int options);
 
-int php_json_scan(php_json_scanner *s);
+int php_jsond_scan(php_jsond_scanner *s);
 
 #endif	/* PHP_JSOND_SCANNER_H */
 

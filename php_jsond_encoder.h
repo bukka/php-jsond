@@ -20,20 +20,20 @@
 #include "php.h"
 #include "php_jsond_buffer.h"
 
-typedef struct _php_json_encoder php_json_encoder;
+typedef struct _php_jsond_encoder php_jsond_encoder;
 
-struct _php_json_encoder {
+struct _php_jsond_encoder {
 	int depth;
 	int max_depth;
-	php_json_error_code error_code;
+	php_jsond_error_code error_code;
 };
 
-static inline void php_json_encode_init(php_json_encoder *encoder)
+static inline void php_jsond_encode_init(php_jsond_encoder *encoder)
 {
-	memset(encoder, 0, sizeof(php_json_encoder));
+	memset(encoder, 0, sizeof(php_jsond_encoder));
 }
 
-int php_json_encode_zval(php_json_buffer *buf, zval *val, int options, php_json_encoder *encoder);
+int php_jsond_encode_zval(php_jsond_buffer *buf, zval *val, int options, php_jsond_encoder *encoder);
 
 #endif	/* PHP_JSOND_ENCODER_H */
 

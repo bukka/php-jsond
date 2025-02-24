@@ -3,15 +3,9 @@ dnl config.m4 for extension jsond
 
 PHP_ARG_ENABLE(jsond,
   [whether to enable jsond support],
-  [AS_HELP_STRING([--disable-jsond],
-                  [Disable new JavaScript Object Serialization support])],
+  [AS_HELP_STRING([--enalbe-jsond],
+                  [Enable new JavaScript Object Serialization support])],
   yes)
-
-AC_ARG_ENABLE(jsond-prefixing,
-  [AS_HELP_STRING([--enable-jsond-with-json-prefix],
-                  [Enable json prefixing])],
-  [AC_DEFINE([PHP_JSOND_WITH_JSON_PREFIX],1,
-             [whether json prefixing is enabled])])
 
 AC_ARG_ENABLE(jsond-buffer-native,
   [AS_HELP_STRING([--enable-jsond-buffer-native],
@@ -26,7 +20,6 @@ AC_ARG_ENABLE(jsond-filegen,
 
 if test "$PHP_JSOND" != "no"; then
   AC_DEFINE([HAVE_JSOND],1 ,[whether to enable jsond support])
-  AC_HEADER_STDC
 
   PHP_NEW_EXTENSION(jsond,
       jsond.c \

@@ -30,14 +30,14 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_PHP_JSON_YY_PARSER_INCLUDED
-# define YY_PHP_JSON_YY_PARSER_INCLUDED
+#ifndef YY_PHP_JSOND_YY_PARSER_INCLUDED
+# define YY_PHP_JSOND_YY_PARSER_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
 #endif
 #if YYDEBUG
-extern int php_json_yydebug;
+extern int php_jsond_yydebug;
 #endif
 
 /* Token type.  */
@@ -45,27 +45,17 @@ extern int php_json_yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    PHP_JSON_T_NUL = 258,
-    PHP_JSON_T_TRUE = 259,
-    PHP_JSON_T_FALSE = 260,
-    PHP_JSON_T_INT = 261,
-    PHP_JSON_T_DOUBLE = 262,
-    PHP_JSON_T_STRING = 263,
-    PHP_JSON_T_ESTRING = 264,
-    PHP_JSON_T_EOI = 265,
-    PHP_JSON_T_ERROR = 266
+    PHP_JSOND_T_NUL = 258,
+    PHP_JSOND_T_TRUE = 259,
+    PHP_JSOND_T_FALSE = 260,
+    PHP_JSOND_T_INT = 261,
+    PHP_JSOND_T_DOUBLE = 262,
+    PHP_JSOND_T_STRING = 263,
+    PHP_JSOND_T_ESTRING = 264,
+    PHP_JSOND_T_EOI = 265,
+    PHP_JSOND_T_ERROR = 266
   };
 #endif
-/* Tokens.  */
-#define PHP_JSON_T_NUL 258
-#define PHP_JSON_T_TRUE 259
-#define PHP_JSON_T_FALSE 260
-#define PHP_JSON_T_INT 261
-#define PHP_JSON_T_DOUBLE 262
-#define PHP_JSON_T_STRING 263
-#define PHP_JSON_T_ESTRING 264
-#define PHP_JSON_T_EOI 265
-#define PHP_JSON_T_ERROR 266
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -90,6 +80,6 @@ typedef union YYSTYPE YYSTYPE;
 
 
 
-int php_json_yyparse (php_json_parser *parser);
+int php_jsond_yyparse (php_jsond_parser *parser);
 
-#endif /* !YY_PHP_JSON_YY_PARSER_INCLUDED  */
+#endif /* !YY_PHP_JSOND_YY_PARSER_INCLUDED  */

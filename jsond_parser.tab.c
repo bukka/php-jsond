@@ -93,15 +93,15 @@ int json_yydebug = 1;
 #define YYFREE free
 #endif
 
-#define PHP_JSON_USE(uv) ((void) (uv))
-#define PHP_JSON_USE_1(uvr, uv1) PHP_JSON_USE(uvr); PHP_JSON_USE(uv1)
-#define PHP_JSON_USE_2(uvr, uv1, uv2) \
-	PHP_JSON_USE(uvr); PHP_JSON_USE(uv1); PHP_JSON_USE(uv2)
+#define PHP_JSOND_USE(uv) ((void) (uv))
+#define PHP_JSOND_USE_1(uvr, uv1) PHP_JSOND_USE(uvr); PHP_JSOND_USE(uv1)
+#define PHP_JSOND_USE_2(uvr, uv1, uv2) \
+	PHP_JSOND_USE(uvr); PHP_JSOND_USE(uv1); PHP_JSOND_USE(uv2)
 
-#define PHP_JSON_DEPTH_DEC --parser->depth
-#define PHP_JSON_DEPTH_INC \
+#define PHP_JSOND_DEPTH_DEC --parser->depth
+#define PHP_JSOND_DEPTH_INC \
 	if (parser->max_depth && parser->depth >= parser->max_depth) { \
-		parser->scanner.errcode = PHP_JSON_ERROR_DEPTH; \
+		parser->scanner.errcode = PHP_JSOND_ERROR_DEPTH; \
 		YYERROR; \
 	} \
 	++parser->depth
@@ -110,11 +110,11 @@ int json_yydebug = 1;
 
 
 /* Substitute the variable and function names.  */
-#define yyparse         php_json_yyparse
-#define yylex           php_json_yylex
-#define yyerror         php_json_yyerror
-#define yydebug         php_json_yydebug
-#define yynerrs         php_json_yynerrs
+#define yyparse         php_jsond_yyparse
+#define yylex           php_jsond_yylex
+#define yyerror         php_jsond_yyerror
+#define yydebug         php_jsond_yydebug
+#define yynerrs         php_jsond_yynerrs
 
 
 /* Copy the first part of user declarations.  */
@@ -139,14 +139,14 @@ int json_yydebug = 1;
 
 /* In a future release of Bison, this section will be replaced
    by #include "jsond_parser.tab.h".  */
-#ifndef YY_PHP_JSON_YY_PARSER_INCLUDED
-# define YY_PHP_JSON_YY_PARSER_INCLUDED
+#ifndef YY_PHP_JSOND_YY_PARSER_INCLUDED
+# define YY_PHP_JSOND_YY_PARSER_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
 #endif
 #if YYDEBUG
-extern int php_json_yydebug;
+extern int php_jsond_yydebug;
 #endif
 
 /* Token type.  */
@@ -154,27 +154,17 @@ extern int php_json_yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    PHP_JSON_T_NUL = 258,
-    PHP_JSON_T_TRUE = 259,
-    PHP_JSON_T_FALSE = 260,
-    PHP_JSON_T_INT = 261,
-    PHP_JSON_T_DOUBLE = 262,
-    PHP_JSON_T_STRING = 263,
-    PHP_JSON_T_ESTRING = 264,
-    PHP_JSON_T_EOI = 265,
-    PHP_JSON_T_ERROR = 266
+    PHP_JSOND_T_NUL = 258,
+    PHP_JSOND_T_TRUE = 259,
+    PHP_JSOND_T_FALSE = 260,
+    PHP_JSOND_T_INT = 261,
+    PHP_JSOND_T_DOUBLE = 262,
+    PHP_JSOND_T_STRING = 263,
+    PHP_JSOND_T_ESTRING = 264,
+    PHP_JSOND_T_EOI = 265,
+    PHP_JSOND_T_ERROR = 266
   };
 #endif
-/* Tokens.  */
-#define PHP_JSON_T_NUL 258
-#define PHP_JSON_T_TRUE 259
-#define PHP_JSON_T_FALSE 260
-#define PHP_JSON_T_INT 261
-#define PHP_JSON_T_DOUBLE 262
-#define PHP_JSON_T_STRING 263
-#define PHP_JSON_T_ESTRING 264
-#define PHP_JSON_T_EOI 265
-#define PHP_JSON_T_ERROR 266
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -199,9 +189,9 @@ typedef union YYSTYPE YYSTYPE;
 
 
 
-int php_json_yyparse (php_json_parser *parser);
+int php_jsond_yyparse (php_jsond_parser *parser);
 
-#endif /* !YY_PHP_JSON_YY_PARSER_INCLUDED  */
+#endif /* !YY_PHP_JSOND_YY_PARSER_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
@@ -209,8 +199,8 @@ int php_json_yyparse (php_json_parser *parser);
 /* Unqualified %code blocks.  */
 
 
-int php_json_yylex(union YYSTYPE *value, php_json_parser *parser);
-void php_json_yyerror(php_json_parser *parser, char const *msg);
+int php_jsond_yylex(union YYSTYPE *value, php_jsond_parser *parser);
+void php_jsond_yyerror(php_jsond_parser *parser, char const *msg);
 
 
 
@@ -523,10 +513,10 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "PHP_JSON_T_NUL", "PHP_JSON_T_TRUE",
-  "PHP_JSON_T_FALSE", "PHP_JSON_T_INT", "PHP_JSON_T_DOUBLE",
-  "PHP_JSON_T_STRING", "PHP_JSON_T_ESTRING", "PHP_JSON_T_EOI",
-  "PHP_JSON_T_ERROR", "'{'", "'}'", "']'", "','", "':'", "'['", "$accept",
+  "$end", "error", "$undefined", "PHP_JSOND_T_NUL", "PHP_JSOND_T_TRUE",
+  "PHP_JSOND_T_FALSE", "PHP_JSOND_T_INT", "PHP_JSOND_T_DOUBLE",
+  "PHP_JSOND_T_STRING", "PHP_JSOND_T_ESTRING", "PHP_JSOND_T_EOI",
+  "PHP_JSOND_T_ERROR", "'{'", "'}'", "']'", "','", "':'", "'['", "$accept",
   "start", "object", "$@1", "object_end", "members", "member", "pair",
   "array", "$@2", "array_end", "elements", "element", "key", "value",
   "errlex", YY_NULLPTR
@@ -711,7 +701,7 @@ do {                                                                      \
 `----------------------------------------*/
 
 static void
-yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, php_json_parser *parser)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, php_jsond_parser *parser)
 {
   FILE *yyo = yyoutput;
   YYUSE (yyo);
@@ -727,7 +717,7 @@ yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvalue
 `--------------------------------*/
 
 static void
-yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, php_json_parser *parser)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, php_jsond_parser *parser)
 {
   YYFPRINTF (yyoutput, "%s %s (",
              yytype < YYNTOKENS ? "token" : "nterm", yytname[yytype]);
@@ -765,7 +755,7 @@ do {                                                            \
 `------------------------------------------------*/
 
 static void
-yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule, php_json_parser *parser)
+yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule, php_jsond_parser *parser)
 {
   unsigned long int yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
@@ -1045,7 +1035,7 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
 `-----------------------------------------------*/
 
 static void
-yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, php_json_parser *parser)
+yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, php_jsond_parser *parser)
 {
   YYUSE (yyvaluep);
   YYUSE (parser);
@@ -1056,55 +1046,55 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, php_json_parser *p
   YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   switch (yytype)
     {
-          case 3: /* PHP_JSON_T_NUL  */
+          case 3: /* PHP_JSOND_T_NUL  */
 
       { zval_dtor(&((*yyvaluep).value)); }
 
         break;
 
-    case 4: /* PHP_JSON_T_TRUE  */
+    case 4: /* PHP_JSOND_T_TRUE  */
 
       { zval_dtor(&((*yyvaluep).value)); }
 
         break;
 
-    case 5: /* PHP_JSON_T_FALSE  */
+    case 5: /* PHP_JSOND_T_FALSE  */
 
       { zval_dtor(&((*yyvaluep).value)); }
 
         break;
 
-    case 6: /* PHP_JSON_T_INT  */
+    case 6: /* PHP_JSOND_T_INT  */
 
       { zval_dtor(&((*yyvaluep).value)); }
 
         break;
 
-    case 7: /* PHP_JSON_T_DOUBLE  */
+    case 7: /* PHP_JSOND_T_DOUBLE  */
 
       { zval_dtor(&((*yyvaluep).value)); }
 
         break;
 
-    case 8: /* PHP_JSON_T_STRING  */
+    case 8: /* PHP_JSOND_T_STRING  */
 
       { zval_dtor(&((*yyvaluep).value)); }
 
         break;
 
-    case 9: /* PHP_JSON_T_ESTRING  */
+    case 9: /* PHP_JSOND_T_ESTRING  */
 
       { zval_dtor(&((*yyvaluep).value)); }
 
         break;
 
-    case 10: /* PHP_JSON_T_EOI  */
+    case 10: /* PHP_JSOND_T_EOI  */
 
       { zval_dtor(&((*yyvaluep).value)); }
 
         break;
 
-    case 11: /* PHP_JSON_T_ERROR  */
+    case 11: /* PHP_JSOND_T_ERROR  */
 
       { zval_dtor(&((*yyvaluep).value)); }
 
@@ -1191,7 +1181,7 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, php_json_parser *p
 `----------*/
 
 int
-yyparse (php_json_parser *parser)
+yyparse (php_jsond_parser *parser)
 {
 /* The lookahead symbol.  */
 int yychar;
@@ -1443,7 +1433,7 @@ yyreduce:
     {
 				(yyval.value) = (yyvsp[-1].value);
 				ZVAL_COPY_VALUE(parser->return_value, &(yyvsp[-1].value));
-				PHP_JSON_USE((yyvsp[0].value));
+				PHP_JSOND_USE((yyvsp[0].value));
 				YYACCEPT;
 			}
 
@@ -1452,7 +1442,7 @@ yyreduce:
   case 3:
 
     {
-				PHP_JSON_USE_2((yyval.value), (yyvsp[-1].value), (yyvsp[0].value));
+				PHP_JSOND_USE_2((yyval.value), (yyvsp[-1].value), (yyvsp[0].value));
 			}
 
     break;
@@ -1460,7 +1450,7 @@ yyreduce:
   case 4:
 
     {
-				PHP_JSON_DEPTH_INC;
+				PHP_JSOND_DEPTH_INC;
 				if (parser->methods.object_start && FAILURE == parser->methods.object_start(parser)) {
 					YYERROR;
 				}
@@ -1471,7 +1461,7 @@ yyreduce:
   case 5:
 
     {
-				PHP_JSON_DEPTH_DEC;
+				PHP_JSOND_DEPTH_DEC;
 				(yyval.value) = (yyvsp[-1].value);
 				if (parser->methods.object_end && FAILURE == parser->methods.object_end(parser, &(yyval.value))) {
 					YYERROR;
@@ -1483,7 +1473,7 @@ yyreduce:
   case 7:
 
     {
-				parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH;
+				parser->scanner.errcode = PHP_JSOND_ERROR_STATE_MISMATCH;
 				YYERROR;
 			}
 
@@ -1520,7 +1510,7 @@ yyreduce:
   case 12:
 
     {
-				PHP_JSON_USE_2((yyval.value), (yyvsp[-1].value), (yyvsp[0].value));
+				PHP_JSOND_USE_2((yyval.value), (yyvsp[-1].value), (yyvsp[0].value));
 			}
 
     break;
@@ -1537,7 +1527,7 @@ yyreduce:
   case 14:
 
     {
-				PHP_JSON_USE_2((yyval.pair), (yyvsp[-1].value), (yyvsp[0].value));
+				PHP_JSOND_USE_2((yyval.pair), (yyvsp[-1].value), (yyvsp[0].value));
 			}
 
     break;
@@ -1545,7 +1535,7 @@ yyreduce:
   case 15:
 
     {
-				PHP_JSON_DEPTH_INC;
+				PHP_JSOND_DEPTH_INC;
 				if (parser->methods.array_start && FAILURE == parser->methods.array_start(parser)) {
 					YYERROR;
 				}
@@ -1556,7 +1546,7 @@ yyreduce:
   case 16:
 
     {
-				PHP_JSON_DEPTH_DEC;
+				PHP_JSOND_DEPTH_DEC;
 				(yyval.value) = (yyvsp[-1].value);
 				if (parser->methods.array_end && FAILURE == parser->methods.array_end(parser, &(yyval.value))) {
 					YYERROR;
@@ -1568,7 +1558,7 @@ yyreduce:
   case 18:
 
     {
-				parser->scanner.errcode = PHP_JSON_ERROR_STATE_MISMATCH;
+				parser->scanner.errcode = PHP_JSOND_ERROR_STATE_MISMATCH;
 				YYERROR;
 			}
 
@@ -1603,7 +1593,7 @@ yyreduce:
   case 23:
 
     {
-				PHP_JSON_USE_2((yyval.value), (yyvsp[-1].value), (yyvsp[0].value));
+				PHP_JSOND_USE_2((yyval.value), (yyvsp[-1].value), (yyvsp[0].value));
 			}
 
     break;
@@ -1611,7 +1601,7 @@ yyreduce:
   case 36:
 
     {
-				PHP_JSON_USE_1((yyval.value), (yyvsp[0].value));
+				PHP_JSOND_USE_1((yyval.value), (yyvsp[0].value));
 				YYERROR;
 			}
 
@@ -1849,29 +1839,29 @@ yyreturn:
 
  /* Functions */
 
-static int php_json_parser_array_create(php_json_parser *parser, zval *array)
+static int php_jsond_parser_array_create(php_jsond_parser *parser, zval *array)
 {
 	array_init(array);
 	return SUCCESS;
 }
 
 
-static int php_json_parser_array_append(php_json_parser *parser, zval *array, zval *zvalue)
+static int php_jsond_parser_array_append(php_jsond_parser *parser, zval *array, zval *zvalue)
 {
 	zend_hash_next_index_insert(Z_ARRVAL_P(array), zvalue);
 	return SUCCESS;
 }
 
-static int php_json_parser_object_create(php_json_parser *parser, zval *object)
+static int php_jsond_parser_object_create(php_jsond_parser *parser, zval *object)
 {
-	if (parser->scanner.options & PHP_JSON_OBJECT_AS_ARRAY) {
+	if (parser->scanner.options & PHP_JSOND_OBJECT_AS_ARRAY) {
 		array_init(object);
 	} else {
 		object_init(object);
 	}
 }
 
-static int php_json_parser_object_update(php_json_parser *parser, zval *object, zend_string *key, zval *zvalue)
+static int php_jsond_parser_object_update(php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue)
 {
 
 	/* if JSON_OBJECT_AS_ARRAY is set */
@@ -1881,7 +1871,7 @@ static int php_json_parser_object_update(php_json_parser *parser, zval *object, 
 		zval zkey;
 
 		if (ZSTR_LEN(key) > 0 && ZSTR_VAL(key)[0] == '\0') {
-			parser->scanner.errcode = PHP_JSON_ERROR_INVALID_PROPERTY_NAME;
+			parser->scanner.errcode = PHP_JSOND_ERROR_INVALID_PROPERTY_NAME;
 			PHP_JSOND_RELEASE_STRING(key);
 			zval_dtor(zvalue);
 			zval_dtor(object);
@@ -1895,53 +1885,53 @@ static int php_json_parser_object_update(php_json_parser *parser, zval *object, 
 	return SUCCESS;
 }
 
-int php_json_yylex(union YYSTYPE *value, php_json_parser *parser)
+int php_jsond_yylex(union YYSTYPE *value, php_jsond_parser *parser)
 {
-	int token = php_json_scan(&parser->scanner);
+	int token = php_jsond_scan(&parser->scanner);
 	value->value = parser->scanner.value;
 	return token;
 }
 
-void php_json_yyerror(php_json_parser *parser, char const *msg)
+void php_jsond_yyerror(php_jsond_parser *parser, char const *msg)
 {
 	if (!parser->scanner.errcode) {
-		parser->scanner.errcode = PHP_JSON_ERROR_SYNTAX;
+		parser->scanner.errcode = PHP_JSOND_ERROR_SYNTAX;
 	}
 }
 
-PHP_JSOND_API php_json_error_code PHP_JSOND_NAME(parser_error_code)(const php_json_parser *parser)
+PHP_JSOND_API php_jsond_error_code PHP_JSOND_NAME(parser_error_code)(const php_jsond_parser *parser)
 {
 	return parser->scanner.errcode;
 }
 
-static const php_json_parser_methods default_parser_methods =
+static const php_jsond_parser_methods default_parser_methods =
 {
-	php_json_parser_array_create,
-	php_json_parser_array_append,
+	php_jsond_parser_array_create,
+	php_jsond_parser_array_append,
 	NULL,
 	NULL,
-	php_json_parser_object_create,
-	php_json_parser_object_update,
+	php_jsond_parser_object_create,
+	php_jsond_parser_object_update,
 	NULL,
 	NULL,
 };
 
 PHP_JSOND_API void PHP_JSOND_NAME(parser_init_ex)(
-		php_json_parser *parser, zval *return_value,
+		php_jsond_parser *parser, zval *return_value,
 		char *str, size_t str_len,
 		int options, int max_depth,
-		const php_json_parser_methods *parser_methods)
+		const php_jsond_parser_methods *parser_methods)
 {
-	memset(parser, 0, sizeof(php_json_parser));
-	php_json_scanner_init(&parser->scanner, str, str_len, options);
+	memset(parser, 0, sizeof(php_jsond_parser));
+	php_jsond_scanner_init(&parser->scanner, str, str_len, options);
 	parser->depth = 1;
 	parser->max_depth = max_depth;
 	parser->return_value = return_value;
-	memcpy(&parser->methods, parser_methods, sizeof(php_json_parser_methods));
+	memcpy(&parser->methods, parser_methods, sizeof(php_jsond_parser_methods));
 }
 
 PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
-		php_json_parser *parser, zval *return_value,
+		php_jsond_parser *parser, zval *return_value,
 		char *str, size_t str_len,
 		int options, int max_depth)
 {
@@ -1956,7 +1946,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
 }
 
 
-PHP_JSOND_API int PHP_JSOND_NAME(parse)(php_json_parser *parser)
+PHP_JSOND_API int PHP_JSOND_NAME(parse)(php_jsond_parser *parser)
 {
-	return php_json_yyparse(parser);
+	return php_jsond_yyparse(parser);
 }

@@ -40,17 +40,6 @@ extern zend_module_entry jsond_module_entry;
 #include "config.h"
 #endif
 
-#ifdef PHP_JSOND_WITH_JSON_PREFIX
-#define PHP_JSOND_PREFIX json
-#define PHP_JSOND_PREFIX_STRING "json"
-#define PHP_JSOND_CONSTANT "JSON"
-#define PHP_JSOND_SERIALIZABLE_INTERFACE JsonSerializable
-#define PHP_JSOND_SERIALIZABLE_INTERFACE_STRING "JsonSerializable"
-#define PHP_JSOND_SERIALIZABLE_INTERFACE_STRING_LC "jsonserializable"
-#define PHP_JSOND_NAME(name) php_json_ ## name
-#define PHP_JSOND_IDENT(name) json_ ## name
-#define PHP_JSOND_FN(jname) ZEND_FN(json_ ## jname)
-#else
 #define PHP_JSOND_PREFIX jsond
 #define PHP_JSOND_PREFIX_STRING "jsond"
 #define PHP_JSOND_CONSTANT "JSOND"
@@ -60,7 +49,6 @@ extern zend_module_entry jsond_module_entry;
 #define PHP_JSOND_NAME(jname) php_jsond_ ## jname
 #define PHP_JSOND_IDENT(jname) jsond_ ## jname
 #define PHP_JSOND_FN(jname) ZEND_FN(jsond_ ## jname)
-#endif
 
 #define PHP_JSOND_FUNCTION(jname) PHP_FUNCTION(PHP_JSOND_IDENT(jname))
 #define PHP_JSOND_FE(jname, arginfo) PHP_FE(PHP_JSOND_IDENT(jname), arginfo)
@@ -83,70 +71,70 @@ extern zend_module_entry jsond_module_entry;
  * which is not done zend_always_inline. Such function are not inlined in
  * GCC 5 which results in a linking error */
 #if defined(__GNUC__) && __GNUC__ >= 3
-#define php_json_always_inline inline __attribute__((always_inline))
+#define php_jsond_always_inline inline __attribute__((always_inline))
 #else
-#define php_json_always_inline inline
+#define php_jsond_always_inline inline
 #endif
 
 /* long limits */
 #if SIZEOF_LONG == 4
-#define PHP_JSON_INT_MAX_LENGTH 10
-#define PHP_JSON_INT_MAX_DIGITS "2147483648"
+#define PHP_JSOND_INT_MAX_LENGTH 10
+#define PHP_JSOND_INT_MAX_DIGITS "2147483648"
 #elif SIZEOF_LONG == 8
-#define PHP_JSON_INT_MAX_LENGTH 19
-#define PHP_JSON_INT_MAX_DIGITS "9223372036854775808"
+#define PHP_JSOND_INT_MAX_LENGTH 19
+#define PHP_JSOND_INT_MAX_DIGITS "9223372036854775808"
 #else
 #error "Unknown SIZEOF_LONG"
 #endif
 
 typedef enum {
-	PHP_JSON_ERROR_NONE = 0,
-    PHP_JSON_ERROR_DEPTH,
-    PHP_JSON_ERROR_STATE_MISMATCH,
-    PHP_JSON_ERROR_CTRL_CHAR,
-    PHP_JSON_ERROR_SYNTAX,
-    PHP_JSON_ERROR_UTF8,
-    PHP_JSON_ERROR_RECURSION,
-    PHP_JSON_ERROR_INF_OR_NAN,
-    PHP_JSON_ERROR_UNSUPPORTED_TYPE,
-	PHP_JSON_ERROR_INVALID_PROPERTY_NAME,
-	PHP_JSON_ERROR_UTF16
-} php_json_error_code;
+	PHP_JSOND_ERROR_NONE = 0,
+	PHP_JSOND_ERROR_DEPTH,
+	PHP_JSOND_ERROR_STATE_MISMATCH,
+	PHP_JSOND_ERROR_CTRL_CHAR,
+	PHP_JSOND_ERROR_SYNTAX,
+	PHP_JSOND_ERROR_UTF8,
+	PHP_JSOND_ERROR_RECURSION,
+	PHP_JSOND_ERROR_INF_OR_NAN,
+	PHP_JSOND_ERROR_UNSUPPORTED_TYPE,
+	PHP_JSOND_ERROR_INVALID_PROPERTY_NAME,
+	PHP_JSOND_ERROR_UTF16
+} php_jsond_error_code;
 
 /* json_encode() options */
-#define PHP_JSON_HEX_TAG	(1<<0)
-#define PHP_JSON_HEX_AMP	(1<<1)
-#define PHP_JSON_HEX_APOS	(1<<2)
-#define PHP_JSON_HEX_QUOT	(1<<3)
-#define PHP_JSON_FORCE_OBJECT	(1<<4)
-#define PHP_JSON_NUMERIC_CHECK	(1<<5)
-#define PHP_JSON_UNESCAPED_SLASHES	(1<<6)
-#define PHP_JSON_PRETTY_PRINT	(1<<7)
-#define PHP_JSON_UNESCAPED_UNICODE	(1<<8)
-#define PHP_JSON_PARTIAL_OUTPUT_ON_ERROR (1<<9)
-#define PHP_JSON_PRESERVE_ZERO_FRACTION (1<<10)
-#define PHP_JSON_UNESCAPED_LINE_TERMINATORS (1<<11)
+#define PHP_JSOND_HEX_TAG	(1<<0)
+#define PHP_JSOND_HEX_AMP	(1<<1)
+#define PHP_JSOND_HEX_APOS	(1<<2)
+#define PHP_JSOND_HEX_QUOT	(1<<3)
+#define PHP_JSOND_FORCE_OBJECT	(1<<4)
+#define PHP_JSOND_NUMERIC_CHECK	(1<<5)
+#define PHP_JSOND_UNESCAPED_SLASHES	(1<<6)
+#define PHP_JSOND_PRETTY_PRINT	(1<<7)
+#define PHP_JSOND_UNESCAPED_UNICODE	(1<<8)
+#define PHP_JSOND_PARTIAL_OUTPUT_ON_ERROR (1<<9)
+#define PHP_JSOND_PRESERVE_ZERO_FRACTION (1<<10)
+#define PHP_JSOND_UNESCAPED_LINE_TERMINATORS (1<<11)
 
 /* Internal flags */
-#define PHP_JSON_OUTPUT_ARRAY	0
-#define PHP_JSON_OUTPUT_OBJECT	1
+#define PHP_JSOND_OUTPUT_ARRAY	0
+#define PHP_JSOND_OUTPUT_OBJECT	1
 
 /* json_decode() options */
-#define PHP_JSON_OBJECT_AS_ARRAY	(1<<0)
-#define PHP_JSON_BIGINT_AS_STRING	(1<<1)
+#define PHP_JSOND_OBJECT_AS_ARRAY	(1<<0)
+#define PHP_JSOND_BIGINT_AS_STRING	(1<<1)
 
 /* json_decode() and json_encode() common options */
-#define PHP_JSON_INVALID_UTF8_IGNORE     (1<<20)
-#define PHP_JSON_INVALID_UTF8_SUBSTITUTE (1<<21)
+#define PHP_JSOND_INVALID_UTF8_IGNORE     (1<<20)
+#define PHP_JSOND_INVALID_UTF8_SUBSTITUTE (1<<21)
 
 /* default depth */
-#define PHP_JSON_PARSER_DEFAULT_DEPTH 512
+#define PHP_JSOND_PARSER_DEFAULT_DEPTH 512
 
 
 ZEND_BEGIN_MODULE_GLOBALS(jsond)
 	int encoder_depth;
 	int encode_max_depth;
-	php_json_error_code error_code;
+	php_jsond_error_code error_code;
 ZEND_END_MODULE_GLOBALS(jsond)
 PHP_JSOND_API ZEND_EXTERN_MODULE_GLOBALS(jsond)
 
@@ -158,13 +146,13 @@ ZEND_TSRMLS_CACHE_EXTERN();
 
 #include "php_jsond_buffer.h"
 
-PHP_JSOND_API int PHP_JSOND_NAME(encode)(php_json_buffer *buf, zval *val, int options);
+PHP_JSOND_API int PHP_JSOND_NAME(encode)(php_jsond_buffer *buf, zval *val, int options);
 PHP_JSOND_API int PHP_JSOND_NAME(decode_ex)(zval *return_value, char *str, size_t str_len, int options, int depth);
 extern PHP_JSOND_API zend_class_entry *PHP_JSOND_NAME(serializable_ce);
 
 static inline int PHP_JSOND_NAME(decode)(zval *return_value, char *str, size_t str_len, zend_bool assoc, int depth)
 {
-	return PHP_JSOND_NAME(decode_ex)(return_value, str, str_len, assoc ? PHP_JSON_OBJECT_AS_ARRAY : 0, depth);
+	return PHP_JSOND_NAME(decode_ex)(return_value, str, str_len, assoc ? PHP_JSOND_OBJECT_AS_ARRAY : 0, depth);
 }
 
 #endif	/* PHP_JSOND_H */
