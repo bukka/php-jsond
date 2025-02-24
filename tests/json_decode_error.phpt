@@ -14,7 +14,7 @@ echo "*** Testing json_decode() : error conditions ***\n";
 
 echo "\n-- Testing json_decode() function with no arguments --\n";
 jsond_expect_argument_count_error(
-    function() use ($jsond_decode) { $jsond_decode(); },
+    function() { jsond_decode(); },
     'jsond_decode() expects at least 1 argument, 0 given',
     'Warning: jsond_decode() expects at least 1 parameter, 0 given in file on line 0'
 );
@@ -22,9 +22,9 @@ jsond_expect_argument_count_error(
 echo "\n-- Testing json_decode() function with more than expected no. of arguments --\n";
 
 jsond_expect_argument_count_error(
-    function() use ($jsond_decode) {
+    function() {
         $extra_arg = 10;
-        $jsond_decode('"abc"', TRUE, 512, 0, $extra_arg);
+        jsond_decode('"abc"', TRUE, 512, 0, $extra_arg);
     },
     'jsond_decode() expects at most 4 arguments, 5 given',
     'Warning: jsond_decode() expects at most 4 parameters, 5 given in file on line 0'

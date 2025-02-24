@@ -6,9 +6,9 @@ Bug #62010 (json_decode produces invalid byte-sequences)
 <?php
 require_once "bootstrap.inc";
 
-var_dump($jsond_decode('"\ud834"'));
-var_dump($jsond_last_error() === jsond_constant('ERROR_UTF16'));
-var_dump($jsond_last_error_msg());
+var_dump(jsond_decode('"\ud834"'));
+var_dump(jsond_last_error() === JSOND_ERROR_UTF16);
+var_dump(jsond_last_error_msg());
 ?>
 --EXPECTF--
 NULL

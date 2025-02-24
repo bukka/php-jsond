@@ -6,30 +6,30 @@ Bug #69187 json_last_error return BC in PHP7
 <?php
 require_once "bootstrap.inc";
 
-var_dump($jsond_decode("NULL"));
-var_dump($jsond_last_error());
-var_dump($jsond_decode(FALSE));
-var_dump($jsond_last_error());
-var_dump($jsond_decode(""));
-var_dump($jsond_last_error());
-var_dump($jsond_decode(0));
-var_dump($jsond_last_error());
-var_dump($jsond_decode(1));
-var_dump($jsond_last_error());
-var_dump($jsond_decode(TRUE));
-var_dump($jsond_last_error());
+var_dump(jsond_decode("NULL"));
+var_dump(jsond_last_error());
+var_dump(jsond_decode(FALSE));
+var_dump(jsond_last_error());
+var_dump(jsond_decode(""));
+var_dump(jsond_last_error());
+var_dump(jsond_decode(0));
+var_dump(jsond_last_error());
+var_dump(jsond_decode(1));
+var_dump(jsond_last_error());
+var_dump(jsond_decode(TRUE));
+var_dump(jsond_last_error());
 
-$jsond_decode("\xED\xA0\xB4");
-var_dump($jsond_last_error());
+jsond_decode("\xED\xA0\xB4");
+var_dump(jsond_last_error());
 
-$jsond_decode("\x00");
-var_dump($jsond_last_error());
+jsond_decode("\x00");
+var_dump(jsond_last_error());
 
-$jsond_decode("\"\xED\xA0\xB4\"");
-var_dump($jsond_last_error());
+jsond_decode("\"\xED\xA0\xB4\"");
+var_dump(jsond_last_error());
 
-$jsond_decode("\"\x00\"");
-var_dump($jsond_last_error());
+jsond_decode("\"\x00\"");
+var_dump(jsond_last_error());
 ?>
 --EXPECT--
 NULL

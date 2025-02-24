@@ -8,21 +8,13 @@ if (!extension_loaded('jsond')) die('skip');
 <?php
 require_once "bootstrap.inc";
 
-if ($jsond_prefix === 'jsond') {
-    class JsonSerializableObject implements \JsondSerializable {
-        public function jsonSerialize() {
-            return jsond_encode([1], jsond_constant('PRETTY_PRINT'));
-        }
-    }
-} else {
-    class JsonSerializableObject implements \JsonSerializable {
-        public function jsonSerialize() {
-            return json_encode([1], jsond_constant('PRETTY_PRINT'));
-        }
+class JsonSerializableObject implements \JsondSerializable {
+    public function jsonSerialize() {
+        return jsond_encode([1], JSOND_PRETTY_PRINT);
     }
 }
 
-echo $jsond_encode([new JsonSerializableObject]), "\n";
+echo jsond_encode([new JsonSerializableObject]), "\n";
 ?>
 --EXPECT--
 ["[\n    1\n]"]

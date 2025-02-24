@@ -35,13 +35,11 @@ $tests = array('"A JSON payload should be an object or array, not a string."',
 
 foreach ($tests as $test)
 {
-    global $jsond_decode;
-
     echo 'Testing: ' . $test . "\n";
     echo "AS OBJECT\n";
-    var_dump($jsond_decode($test));
+    var_dump(jsond_decode($test));
     echo "AS ARRAY\n";
-    var_dump($jsond_decode($test, true));
+    var_dump(jsond_decode($test, true));
 }
 
 ?>

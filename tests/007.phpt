@@ -6,16 +6,16 @@ json_last_error() tests
 <?php
 require_once "bootstrap.inc";
 
-var_dump($jsond_decode("[1]"));
-var_dump($jsond_last_error(), $jsond_last_error_msg());
-var_dump($jsond_decode("[[1]]", false, 2));
-var_dump($jsond_last_error(), $jsond_last_error_msg());
-var_dump($jsond_decode("[1}"));
-var_dump($jsond_last_error(), $jsond_last_error_msg());
-var_dump($jsond_decode('["' . chr(0) . 'abcd"]'));
-var_dump($jsond_last_error(), $jsond_last_error_msg());
-var_dump($jsond_decode("[1"));
-var_dump($jsond_last_error(), $jsond_last_error_msg());
+var_dump(jsond_decode("[1]"));
+var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump(jsond_decode("[[1]]", false, 2));
+var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump(jsond_decode("[1}"));
+var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump(jsond_decode('["' . chr(0) . 'abcd"]'));
+var_dump(jsond_last_error(), jsond_last_error_msg());
+var_dump(jsond_decode("[1"));
+var_dump(jsond_last_error(), jsond_last_error_msg());
 
 echo "Done\n";
 ?>

@@ -8,26 +8,26 @@ require_once "bootstrap.inc";
 
 $bad_utf8 = quoted_printable_decode('=B0');
 
-$jsond_encode($bad_utf8);
-var_dump($jsond_last_error(), $jsond_last_error_msg());
+jsond_encode($bad_utf8);
+var_dump(jsond_last_error(), jsond_last_error_msg());
 
 $a = new stdclass;
 $a->foo = quoted_printable_decode('=B0');
-$jsond_encode($a);
-var_dump($jsond_last_error(), $jsond_last_error_msg());
+jsond_encode($a);
+var_dump(jsond_last_error(), jsond_last_error_msg());
 
 $b = new stdclass;
 $b->foo = $bad_utf8;
 $b->bar = 1;
-$jsond_encode($b);
-var_dump($jsond_last_error(), $jsond_last_error_msg());
+jsond_encode($b);
+var_dump(jsond_last_error(), jsond_last_error_msg());
 
 $c = array(
     'foo' => $bad_utf8,
     'bar' => 1
 );
-$jsond_encode($c);
-var_dump($jsond_last_error(), $jsond_last_error_msg());
+jsond_encode($c);
+var_dump(jsond_last_error(), jsond_last_error_msg());
 
 ?>
 --EXPECTF--

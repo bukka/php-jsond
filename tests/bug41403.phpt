@@ -18,17 +18,17 @@ serialize_precision=14
 <?php
 require_once "bootstrap.inc";
 
-function decode_and_print($jsond_decode, $value) {
+function decode_and_print($value) {
     setlocale(LC_NUMERIC, 'de_DE');
-    $result = $jsond_decode($value);
+    $result = jsond_decode($value);
     setlocale(LC_NUMERIC, 'en_US');
     var_dump($result);
 }
 
-decode_and_print($jsond_decode, '[2.1]');
-decode_and_print($jsond_decode, '[0.15]');
-decode_and_print($jsond_decode, '[123.13452345]');
-decode_and_print($jsond_decode, '[123,13452345]');
+decode_and_print('[2.1]');
+decode_and_print('[0.15]');
+decode_and_print('[123.13452345]');
+decode_and_print('[123,13452345]');
 
 echo "Done\n";
 ?>

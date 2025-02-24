@@ -9,7 +9,7 @@ require_once "bootstrap.inc";
 $a = new stdClass;
 $a->{"1"} = "5";
 
-var_dump($jsond_encode($a, jsond_constant('NUMERIC_CHECK')));
+var_dump(jsond_encode($a, JSOND_NUMERIC_CHECK));
 ?>
 --EXPECT--
 string(7) "{"1":5}"

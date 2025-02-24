@@ -15,43 +15,27 @@ class JsonTest1 {
     }
 }
 
-if ($jsond_prefix === 'jsond') {
-    class JsonTest2 implements JsondSerializable {
-        public $test;
-        public function __construct() {
-            $this->test = '123';
-        }
-        public function jsonSerialize() {
-            return array(
-                'test' => $this->test,
-                'me'   => $this
-            );
-        }
+class JsonTest2 implements JsondSerializable {
+    public $test;
+    public function __construct() {
+        $this->test = '123';
     }
-} else {
-    class JsonTest2 implements JsonSerializable {
-        public $test;
-        public function __construct() {
-            $this->test = '123';
-        }
-        public function jsonSerialize() {
-            return array(
-                'test' => $this->test,
-                'me'   => $this
-            );
-        }
-
+    public function jsonSerialize() {
+        return array(
+            'test' => $this->test,
+            'me'   => $this
+        );
     }
 }
 
 
 $obj1 = new JsonTest1();
-var_dump($jsond_encode($obj1, jsond_constant('PARTIAL_OUTPUT_ON_ERROR')));
+var_dump(jsond_encode($obj1, JSOND_PARTIAL_OUTPUT_ON_ERROR));
 
 echo "==\n";
 
 $obj2 = new JsonTest2();
-var_dump($jsond_encode($obj2, jsond_constant('PARTIAL_OUTPUT_ON_ERROR')));
+var_dump(jsond_encode($obj2, JSOND_PARTIAL_OUTPUT_ON_ERROR));
 
 ?>
 --EXPECTF--

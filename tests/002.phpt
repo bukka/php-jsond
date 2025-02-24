@@ -6,20 +6,20 @@ json_encode() tests
 <?php
 require_once "bootstrap.inc";
 
-var_dump($jsond_encode(""));
-var_dump($jsond_encode(NULL));
-var_dump($jsond_encode(TRUE));
+var_dump(jsond_encode(""));
+var_dump(jsond_encode(NULL));
+var_dump(jsond_encode(TRUE));
 
-var_dump($jsond_encode(array(""=>"")));
-var_dump($jsond_encode(array(array(1))));
-var_dump($jsond_encode(array()));
+var_dump(jsond_encode(array(""=>"")));
+var_dump(jsond_encode(array(array(1))));
+var_dump(jsond_encode(array()));
 
-var_dump($jsond_encode(array(""=>""), jsond_constant('FORCE_OBJECT')));
-var_dump($jsond_encode(array(array(1)), jsond_constant('FORCE_OBJECT')));
-var_dump($jsond_encode(array(), jsond_constant('FORCE_OBJECT')));
+var_dump(jsond_encode(array(""=>""), JSOND_FORCE_OBJECT));
+var_dump(jsond_encode(array(array(1)), JSOND_FORCE_OBJECT));
+var_dump(jsond_encode(array(), JSOND_FORCE_OBJECT));
 
-var_dump($jsond_encode(1));
-var_dump($jsond_encode("руссиш"));
+var_dump(jsond_encode(1));
+var_dump(jsond_encode("руссиш"));
 
 
 echo "Done\n";

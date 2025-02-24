@@ -7,7 +7,7 @@ Bug #64695 JSON_NUMERIC_CHECK has issues with strings that are numbers plus the 
 require_once "bootstrap.inc";
 
 $t = array('test' => '123343e871700');
-var_dump($jsond_encode($t, jsond_constant('NUMERIC_CHECK')));
+var_dump(jsond_encode($t, JSOND_NUMERIC_CHECK));
 
 echo "Done\n";
 ?>

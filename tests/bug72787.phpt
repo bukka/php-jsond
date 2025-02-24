@@ -7,7 +7,7 @@ Bug #72787 (json_decode reads out of bounds)
 <?php
 require_once "bootstrap.inc";
 
-var_dump($jsond_decode('[]', false, 0x100000000));
+var_dump(jsond_decode('[]', false, 0x100000000));
 
 ?>
 --EXPECTF--

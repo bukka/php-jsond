@@ -9,26 +9,26 @@ serialize_precision=-1
 require_once "bootstrap.inc";
 
 echo "* Testing JSON output\n\n";
-var_dump($jsond_encode(12.3, jsond_constant('PRESERVE_ZERO_FRACTION')));
-var_dump($jsond_encode(12, jsond_constant('PRESERVE_ZERO_FRACTION')));
-var_dump($jsond_encode(12.0, jsond_constant('PRESERVE_ZERO_FRACTION')));
-var_dump($jsond_encode(0.0, jsond_constant('PRESERVE_ZERO_FRACTION')));
-var_dump($jsond_encode(array(12, 12.0, 12.3), jsond_constant('PRESERVE_ZERO_FRACTION')));
-var_dump($jsond_encode((object)array('float' => 12.0, 'integer' => 12),
-    jsond_constant('PRESERVE_ZERO_FRACTION')));
+var_dump(jsond_encode(12.3, JSOND_PRESERVE_ZERO_FRACTION));
+var_dump(jsond_encode(12, JSOND_PRESERVE_ZERO_FRACTION));
+var_dump(jsond_encode(12.0, JSOND_PRESERVE_ZERO_FRACTION));
+var_dump(jsond_encode(0.0, JSOND_PRESERVE_ZERO_FRACTION));
+var_dump(jsond_encode(array(12, 12.0, 12.3), JSOND_PRESERVE_ZERO_FRACTION));
+var_dump(jsond_encode((object)array('float' => 12.0, 'integer' => 12),
+    JSOND_PRESERVE_ZERO_FRACTION));
 
 echo "\n* Testing encode/decode symmetry\n\n";
 
-var_dump($jsond_decode($jsond_encode(12.3, jsond_constant('PRESERVE_ZERO_FRACTION'))));
-var_dump($jsond_decode($jsond_encode(12, jsond_constant('PRESERVE_ZERO_FRACTION'))));
-var_dump($jsond_decode($jsond_encode(12.0, jsond_constant('PRESERVE_ZERO_FRACTION'))));
-var_dump($jsond_decode($jsond_encode(0.0, jsond_constant('PRESERVE_ZERO_FRACTION'))));
-var_dump($jsond_decode($jsond_encode(array(12, 12.0, 12.3),
-    jsond_constant('PRESERVE_ZERO_FRACTION'))));
-var_dump($jsond_decode($jsond_encode((object)array('float' => 12.0, 'integer' => 12),
-    jsond_constant('PRESERVE_ZERO_FRACTION'))));
-var_dump($jsond_decode($jsond_encode((object)array('float' => 12.0, 'integer' => 12),
-    jsond_constant('PRESERVE_ZERO_FRACTION')), true));
+var_dump(jsond_decode(jsond_encode(12.3, JSOND_PRESERVE_ZERO_FRACTION)));
+var_dump(jsond_decode(jsond_encode(12, JSOND_PRESERVE_ZERO_FRACTION)));
+var_dump(jsond_decode(jsond_encode(12.0, JSOND_PRESERVE_ZERO_FRACTION)));
+var_dump(jsond_decode(jsond_encode(0.0, JSOND_PRESERVE_ZERO_FRACTION)));
+var_dump(jsond_decode(jsond_encode(array(12, 12.0, 12.3),
+    JSOND_PRESERVE_ZERO_FRACTION)));
+var_dump(jsond_decode(jsond_encode((object)array('float' => 12.0, 'integer' => 12),
+    JSOND_PRESERVE_ZERO_FRACTION)));
+var_dump(jsond_decode(jsond_encode((object)array('float' => 12.0, 'integer' => 12),
+    JSOND_PRESERVE_ZERO_FRACTION), true));
 ?>
 --EXPECTF--
 * Testing JSON output

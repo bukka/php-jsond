@@ -17,7 +17,7 @@ require_once "bootstrap.inc";
 setlocale(LC_ALL, "de_DE", "de", "german", "ge", "de_DE.ISO8859-1", "ISO8859-1");
 
 $foo = array(100.10,"bar");
-var_dump($jsond_encode($foo));
+var_dump(jsond_encode($foo));
 
 class bar {
     public $a;
@@ -26,7 +26,7 @@ class bar {
 $bar1 = new bar;
 $bar1->a = 100.10;
 $bar1->b = "foo";
-var_dump($jsond_encode($bar1));
+var_dump(jsond_encode($bar1));
 ?>
 --EXPECT--
 string(13) "[100.1,"bar"]"

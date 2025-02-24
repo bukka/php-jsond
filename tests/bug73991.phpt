@@ -6,10 +6,10 @@ require_once "bootstrap.inc";
 
 $json = '{"foo":"bar"}';
 
-var_dump($jsond_decode($json, false));
-var_dump($jsond_decode($json, true));
-var_dump($jsond_decode($json, null, 512, 0));
-var_dump($jsond_decode($json, null, 512, jsond_constant('OBJECT_AS_ARRAY')));
+var_dump(jsond_decode($json, false));
+var_dump(jsond_decode($json, true));
+var_dump(jsond_decode($json, null, 512, 0));
+var_dump(jsond_decode($json, null, 512, JSOND_OBJECT_AS_ARRAY));
 ?>
 --EXPECTF--
 object(stdClass)#%d (1) {

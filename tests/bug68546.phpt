@@ -9,11 +9,11 @@ if (!extension_loaded('jsond')) die('skip');
 <?php
 require_once "bootstrap.inc";
 
-var_dump($jsond_decode('{"key": {"\u0000": "aa"}}'));
-var_dump($jsond_last_error() === jsond_constant('ERROR_INVALID_PROPERTY_NAME'));
-var_dump($jsond_decode('[{"key1": 0, "\u0000": 1}]'));
-var_dump($jsond_last_error() === jsond_constant('ERROR_INVALID_PROPERTY_NAME'));
-var_dump($jsond_last_error_msg());
+var_dump(jsond_decode('{"key": {"\u0000": "aa"}}'));
+var_dump(jsond_last_error() === JSOND_ERROR_INVALID_PROPERTY_NAME);
+var_dump(jsond_decode('[{"key1": 0, "\u0000": 1}]'));
+var_dump(jsond_last_error() === JSOND_ERROR_INVALID_PROPERTY_NAME);
+var_dump(jsond_last_error_msg());
 
 echo "Done\n";
 ?>

@@ -7,12 +7,10 @@ json_encode() with JSON_PRETTY_PRINT
 require_once "bootstrap.inc";
 
 function encode_decode($jsond) {
-    global $jsond_encode, $jsond_decode;
-
-	$struct = $jsond_decode($jsond);
-	$pretty = $jsond_encode($struct, jsond_constant('PRETTY_PRINT'));
+	$struct = jsond_decode($jsond);
+	$pretty = jsond_encode($struct, JSOND_PRETTY_PRINT);
 	echo "$pretty\n";
-	$pretty = $jsond_decode($pretty);
+	$pretty = jsond_decode($pretty);
 	printf("Match: %d\n", $pretty == $struct);
 }
 

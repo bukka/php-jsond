@@ -15,7 +15,7 @@ class foo {
 }
 
 $a = new foo;
-$x = $jsond_encode($a);
+$x = jsond_encode($a);
 
 print_r($a);
 

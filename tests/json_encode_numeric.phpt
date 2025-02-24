@@ -13,12 +13,12 @@ if (!extension_loaded("jsond")) {
 require_once "bootstrap.inc";
 
 var_dump(
-	$jsond_encode("1", jsond_constant('NUMERIC_CHECK')),
-	$jsond_encode("9.4324", jsond_constant('NUMERIC_CHECK')),
-	$jsond_encode(array("122321", "3232595.33423"), jsond_constant('NUMERIC_CHECK')),
-	$jsond_encode("1"),
-	$jsond_encode("9.4324"),
-	$jsond_encode(array("122321", "3232595.33423"))
+	jsond_encode("1", JSOND_NUMERIC_CHECK),
+	jsond_encode("9.4324", JSOND_NUMERIC_CHECK),
+	jsond_encode(array("122321", "3232595.33423"), JSOND_NUMERIC_CHECK),
+	jsond_encode("1"),
+	jsond_encode("9.4324"),
+	jsond_encode(array("122321", "3232595.33423"))
 );
 ?>
 --EXPECT--

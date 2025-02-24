@@ -8,8 +8,8 @@ serialize_precision=14
 <?php
 require_once "bootstrap.inc";
 
-$a = $jsond_encode(123456789.12345);
-var_dump($jsond_decode($a));
+$a = jsond_encode(123456789.12345);
+var_dump(jsond_decode($a));
 
 echo "Done\n";
 ?>

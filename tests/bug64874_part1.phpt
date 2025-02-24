@@ -7,10 +7,8 @@ Whitespace part of bug #64874 ("json_decode handles whitespace and case-sensitiv
 require_once "bootstrap.inc";
 
 function decode($json) {
-    global $jsond_decode, $jsond_last_error;
-
-    var_dump($jsond_decode($json));
-    var_dump($jsond_last_error() !== 0);
+    var_dump(jsond_decode($json));
+    var_dump(jsond_last_error() !== 0);
     echo "\n";
 }
 

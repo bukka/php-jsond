@@ -6,7 +6,7 @@ Bug #45791 (json_decode() does not handle number 0e0)
 <?php
 require_once "bootstrap.inc";
 
-var_dump($jsond_decode('{"zero": 0e0}'));
+var_dump(jsond_decode('{"zero": 0e0}'));
 
 ?>
 --EXPECT--

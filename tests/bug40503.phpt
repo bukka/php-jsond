@@ -13,9 +13,9 @@ function show_eq($x,$y) {
 }
 
 $value = 0x7FFFFFFF; #2147483647;
-show_eq("$value", $jsond_encode($value));
+show_eq("$value", jsond_encode($value));
 $value++;
-show_eq("$value", $jsond_encode($value));
+show_eq("$value", jsond_encode($value));
 
 ?>
 --EXPECT--

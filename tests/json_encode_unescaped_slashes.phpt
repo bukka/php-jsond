@@ -6,8 +6,8 @@ json_decode() unescaped slashes test
 <?php
 require_once "bootstrap.inc";
 
-var_dump($jsond_encode('a/b'));
-var_dump($jsond_encode('a/b', jsond_constant('UNESCAPED_SLASHES')));
+var_dump(jsond_encode('a/b'));
+var_dump(jsond_encode('a/b', JSOND_UNESCAPED_SLASHES));
 ?>
 --EXPECT--
 string(6) ""a\/b""

@@ -6,9 +6,9 @@ Bug #41504 (json_decode() converts empty array keys to "_empty_")
 <?php
 require_once "bootstrap.inc";
 
-var_dump($jsond_decode('{"":"value"}', true));
-var_dump($jsond_decode('{"":"value", "key":"value"}', true));
-var_dump($jsond_decode('{"key":"value", "":"value"}', true));
+var_dump(jsond_decode('{"":"value"}', true));
+var_dump(jsond_decode('{"":"value", "key":"value"}', true));
+var_dump(jsond_decode('{"key":"value", "":"value"}', true));
 
 echo "Done\n";
 ?>

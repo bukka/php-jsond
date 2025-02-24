@@ -7,10 +7,8 @@ Case-sensitivity part of bug #64874 ("json_decode handles whitespace and case-se
 require_once "bootstrap.inc";
 
 function decode($jsond) {
-    global $jsond_decode, $jsond_last_error;
-
-    var_dump($jsond_decode($jsond));
-    echo (($jsond_last_error() !== 0) ? 'ERROR' : 'SUCCESS') . PHP_EOL;
+    var_dump(jsond_decode($jsond));
+    echo ((jsond_last_error() !== 0) ? 'ERROR' : 'SUCCESS') . PHP_EOL;
 }
 
 // Only lowercase should work

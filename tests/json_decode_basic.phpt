@@ -38,11 +38,9 @@ $inputs =  array (
 // loop through with each element of the $inputs array to test json_decode() function
 $count = 1;
 foreach($inputs as $input) {
-    global $jsond_decode;
-
     echo "-- Iteration $count --\n";
-    var_dump($jsond_decode($input));
-    var_dump($jsond_decode($input, true));
+    var_dump(jsond_decode($input));
+    var_dump(jsond_decode($input, true));
     $count ++;
 }
 

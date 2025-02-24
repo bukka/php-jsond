@@ -8,12 +8,12 @@ if (!extension_loaded('jsond')) die('skip');
 <?php
 require_once "bootstrap.inc";
 
-echo $jsond_encode([$jsond_encode([1], jsond_constant('PRETTY_PRINT'))]), "\n";
+echo jsond_encode([jsond_encode([1], JSOND_PRETTY_PRINT)]), "\n";
 
 $fp = fopen('php://temp', 'r');
 $data = ['a' => $fp];
-echo $jsond_encode($data), "\n";
-echo $jsond_encode([$jsond_encode([1], jsond_constant('PRETTY_PRINT'))]), "\n";
+echo jsond_encode($data), "\n";
+echo jsond_encode([jsond_encode([1], JSOND_PRETTY_PRINT)]), "\n";
 
 ?>
 --EXPECT--

@@ -9,11 +9,9 @@ serialize_precision=14
 require_once "bootstrap.inc";
 
 function decode($json) {
-    global $jsond_decode;
-
-    $x = $jsond_decode($json);
+    $x = jsond_decode($json);
     var_dump($x);
-    $x = $jsond_decode($json, false, 512, jsond_constant('BIGINT_AS_STRING'));
+    $x = jsond_decode($json, false, 512, JSOND_BIGINT_AS_STRING);
     var_dump($x);
 }
 

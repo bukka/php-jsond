@@ -11,13 +11,13 @@ for ($i=0; $i<550; $i++) {
     $array = array($array);
 }
 
-$jsond_encode($array, 0, 551);
-if ($jsond_last_error() === jsond_constant('ERROR_NONE')) {
+jsond_encode($array, 0, 551);
+if (jsond_last_error() === JSOND_ERROR_NONE) {
     echo 'OK'.PHP_EOL;
 }
 
-$jsond_encode($array, 0, 540);
-if ($jsond_last_error() === jsond_constant('ERROR_DEPTH')) {
+jsond_encode($array, 0, 540);
+if (jsond_last_error() === JSOND_ERROR_DEPTH) {
     echo 'ERROR'.PHP_EOL;
 }
 ?>

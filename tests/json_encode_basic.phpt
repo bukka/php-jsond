@@ -93,7 +93,7 @@ $inputs =  array (
 $count = 1;
 foreach($inputs as $input) {
   echo "-- Iteration $count --\n";
-  var_dump($jsond_encode($input));
+  var_dump(jsond_encode($input));
   $count ++;
 }
 

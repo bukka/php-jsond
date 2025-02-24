@@ -11,12 +11,11 @@ if (!extension_loaded("jsond")) {
 require_once "bootstrap.inc";
 
 function json_encode_invalid_utf8($str) {
-	global $jsond_encode;
-	var_dump($jsond_encode($str));
-	var_dump($jsond_encode($str,  jsond_constant('INVALID_UTF8_IGNORE')));
-	var_dump($jsond_encode($str,  jsond_constant('INVALID_UTF8_SUBSTITUTE')));
-	var_dump($jsond_encode($str,  jsond_constant('UNESCAPED_UNICODE')));
-	var_dump(bin2hex($jsond_encode($str,  jsond_constant('UNESCAPED_UNICODE') |  jsond_constant('INVALID_UTF8_SUBSTITUTE'))));
+	var_dump(jsond_encode($str));
+	var_dump(jsond_encode($str,  JSOND_INVALID_UTF8_IGNORE));
+	var_dump(jsond_encode($str,  JSOND_INVALID_UTF8_SUBSTITUTE));
+	var_dump(jsond_encode($str,  JSOND_UNESCAPED_UNICODE));
+	var_dump(bin2hex(jsond_encode($str,  JSOND_UNESCAPED_UNICODE |  JSOND_INVALID_UTF8_SUBSTITUTE)));
 }
 
 json_encode_invalid_utf8("\x61\xb0\x62");

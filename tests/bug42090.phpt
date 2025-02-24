@@ -7,13 +7,13 @@ Bug #42090 (json_decode causes segmentation fault)
 require_once "bootstrap.inc";
 
 var_dump(
-	$jsond_decode('""'),
-	$jsond_decode('"..".'),
-	$jsond_decode('"'),
-	$jsond_decode('""""'),
-	$jsond_encode('"'),
-	$jsond_decode($jsond_encode('"')),
-	$jsond_decode($jsond_encode('""'))
+	jsond_decode('""'),
+	jsond_decode('"..".'),
+	jsond_decode('"'),
+	jsond_decode('""""'),
+	jsond_encode('"'),
+	jsond_decode(jsond_encode('"')),
+	jsond_decode(jsond_encode('""'))
 );
 ?>
 --EXPECT--

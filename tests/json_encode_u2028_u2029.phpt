@@ -6,20 +6,20 @@ json_encode() tests for U+2028, U+2029
 <?php
 require_once "bootstrap.inc";
 
-var_dump($jsond_encode(array("a\xC3\xA1b")));
-var_dump($jsond_encode(array("a\xC3\xA1b"), jsond_constant('UNESCAPED_UNICODE')));
-var_dump($jsond_encode("a\xE2\x80\xA7b"));
-var_dump($jsond_encode("a\xE2\x80\xA7b", jsond_constant('UNESCAPED_UNICODE')));
-var_dump($jsond_encode("a\xE2\x80\xA8b"));
-var_dump($jsond_encode("a\xE2\x80\xA8b", jsond_constant('UNESCAPED_UNICODE')));
-var_dump($jsond_encode("a\xE2\x80\xA8b", jsond_constant('UNESCAPED_LINE_TERMINATORS')));
-var_dump($jsond_encode("a\xE2\x80\xA8b", jsond_constant('UNESCAPED_UNICODE') | jsond_constant('UNESCAPED_LINE_TERMINATORS')));
-var_dump($jsond_encode("a\xE2\x80\xA9b"));
-var_dump($jsond_encode("a\xE2\x80\xA9b", jsond_constant('UNESCAPED_UNICODE')));
-var_dump($jsond_encode("a\xE2\x80\xA9b", jsond_constant('UNESCAPED_LINE_TERMINATORS')));
-var_dump($jsond_encode("a\xE2\x80\xA9b", jsond_constant('UNESCAPED_UNICODE') | jsond_constant('UNESCAPED_LINE_TERMINATORS')));
-var_dump($jsond_encode("a\xE2\x80\xAAb"));
-var_dump($jsond_encode("a\xE2\x80\xAAb", jsond_constant('UNESCAPED_UNICODE')));
+var_dump(jsond_encode(array("a\xC3\xA1b")));
+var_dump(jsond_encode(array("a\xC3\xA1b"), JSOND_UNESCAPED_UNICODE));
+var_dump(jsond_encode("a\xE2\x80\xA7b"));
+var_dump(jsond_encode("a\xE2\x80\xA7b", JSOND_UNESCAPED_UNICODE));
+var_dump(jsond_encode("a\xE2\x80\xA8b"));
+var_dump(jsond_encode("a\xE2\x80\xA8b", JSOND_UNESCAPED_UNICODE));
+var_dump(jsond_encode("a\xE2\x80\xA8b", JSOND_UNESCAPED_LINE_TERMINATORS));
+var_dump(jsond_encode("a\xE2\x80\xA8b", JSOND_UNESCAPED_UNICODE | JSOND_UNESCAPED_LINE_TERMINATORS));
+var_dump(jsond_encode("a\xE2\x80\xA9b"));
+var_dump(jsond_encode("a\xE2\x80\xA9b", JSOND_UNESCAPED_UNICODE));
+var_dump(jsond_encode("a\xE2\x80\xA9b", JSOND_UNESCAPED_LINE_TERMINATORS));
+var_dump(jsond_encode("a\xE2\x80\xA9b", JSOND_UNESCAPED_UNICODE | JSOND_UNESCAPED_LINE_TERMINATORS));
+var_dump(jsond_encode("a\xE2\x80\xAAb"));
+var_dump(jsond_encode("a\xE2\x80\xAAb", JSOND_UNESCAPED_UNICODE));
 ?>
 --EXPECT--
 string(12) "["a\u00e1b"]"
