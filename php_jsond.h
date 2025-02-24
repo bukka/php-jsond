@@ -126,6 +126,7 @@ typedef enum {
 /* json_decode() and json_encode() common options */
 #define PHP_JSOND_INVALID_UTF8_IGNORE     (1<<20)
 #define PHP_JSOND_INVALID_UTF8_SUBSTITUTE (1<<21)
+#define PHP_JSOND_THROW_ON_ERROR          (1<<22)
 
 /* default depth */
 #define PHP_JSOND_PARSER_DEFAULT_DEPTH 512

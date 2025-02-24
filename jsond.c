@@ -34,6 +34,7 @@ static PHP_FUNCTION(jsond_last_error_msg);
 static const char digits[] = "0123456789abcdef";
 
 PHP_JSOND_API zend_class_entry *php_jsond_serializable_ce;
+PHP_JSOND_API zend_class_entry *php_jsond_exception_ce;
 
 PHP_JSOND_API ZEND_DECLARE_MODULE_GLOBALS(jsond)
 
@@ -100,13 +101,21 @@ static inline void php_jsond_register_serializable_interface()
 /* MINIT */
 static PHP_MINIT_FUNCTION(jsond)
 {
+	zend_class_entry ce;
+
 	/* register jsond function */
 	if (zend_register_functions(NULL, jsond_functions, NULL, 0) == FAILURE) {
 		zend_error(E_CORE_WARNING,"jsond: Unable to register functions");
 		return FAILURE;
 	}
 
-	php_jsond_register_serializable_interface();
+	/* register JSON serializable class */
+	INIT_CLASS_ENTRY(ce, PHP_JSOND_SERIALIZABLE_INTERFACE_STRING, jsond_serializable_interface);
+	PHP_JSOND_NAME(serializable_ce) = zend_register_internal_interface(&ce);
+
+	/* register JSON exception class */
+	INIT_CLASS_ENTRY(ce, "JsondException", NULL);
+	PHP_JSOND_NAME(exception_ce) = zend_register_internal_class_ex(&ce, zend_ce_exception);
 
 	/* decoding options */
 	PHP_JSOND_REGISTER_LONG_CONSTANT("OBJECT_AS_ARRAY",  PHP_JSOND_OBJECT_AS_ARRAY);
@@ -129,6 +138,7 @@ static PHP_MINIT_FUNCTION(jsond)
 	/* common options */
 	PHP_JSOND_REGISTER_LONG_CONSTANT("INVALID_UTF8_IGNORE", PHP_JSOND_INVALID_UTF8_IGNORE);
 	PHP_JSOND_REGISTER_LONG_CONSTANT("INVALID_UTF8_SUBSTITUTE", PHP_JSOND_INVALID_UTF8_SUBSTITUTE);
+	PHP_JSOND_REGISTER_LONG_CONSTANT("THROW_ON_ERROR", PHP_JSOND_THROW_ON_ERROR);
 
 	/* error constants */
 	PHP_JSOND_REGISTER_LONG_CONSTANT("ERROR_NONE", PHP_JSOND_ERROR_NONE);
@@ -220,6 +230,36 @@ static PHP_MINFO_FUNCTION(jsond)
 	php_info_print_table_end();
 }
 
+static const char *php_jsond_get_error_msg(php_jsond_error_code error_code) /* {{{ */
+{
+	switch(error_code) {
+		case PHP_JSOND_ERROR_NONE:
+			return "No error";
+		case PHP_JSOND_ERROR_DEPTH:
+			return "Maximum stack depth exceeded";
+		case PHP_JSOND_ERROR_STATE_MISMATCH:
+			return "State mismatch (invalid or malformed JSON)";
+		case PHP_JSOND_ERROR_CTRL_CHAR:
+			return "Control character error, possibly incorrectly encoded";
+		case PHP_JSOND_ERROR_SYNTAX:
+			return "Syntax error";
+		case PHP_JSOND_ERROR_UTF8:
+			return "Malformed UTF-8 characters, possibly incorrectly encoded";
+		case PHP_JSOND_ERROR_RECURSION:
+			return "Recursion detected";
+		case PHP_JSOND_ERROR_INF_OR_NAN:
+			return "Inf and NaN cannot be JSON encoded";
+		case PHP_JSOND_ERROR_UNSUPPORTED_TYPE:
+			return "Type is not supported";
+		case PHP_JSOND_ERROR_INVALID_PROPERTY_NAME:
+			return "The decoded property name is invalid";
+		case PHP_JSOND_ERROR_UTF16:
+			return "Single unpaired UTF-16 surrogate in unicode escape";
+		default:
+			return "Unknown error";
+	}
+}
+
 PHP_JSOND_API int php_jsond_encode(php_jsond_buffer *buf, zval *val, int options)
 {
 	php_jsond_encoder encoder;
@@ -243,7 +283,13 @@ PHP_JSOND_API int php_jsond_decode_ex(
 	PHP_JSOND_NAME(parser_init)(&parser, return_value, str, str_len, options, depth);
 
 	if (php_jsond_yyparse(&parser)) {
-		JSOND_G(error_code) = PHP_JSOND_NAME(parser_error_code)(&parser);
+		php_jsond_error_code error_code = php_jsond_parser_error_code(&parser);
+		if (!(options & PHP_JSOND_THROW_ON_ERROR)) {
+			JSOND_G(error_code) = error_code;
+		} else {
+			zend_throw_exception(php_jsond_exception_ce,
+					php_jsond_get_error_msg(error_code), error_code);
+		}
 		RETVAL_NULL();
 		return FAILURE;
 	}
@@ -260,6 +306,7 @@ static PHP_FUNCTION(jsond_encode)
 	php_jsond_buffer buf;
 	zend_long options = 0;
 	zend_long depth = PHP_JSOND_PARSER_DEFAULT_DEPTH;
+	php_jsond_error_code prev_code = JSOND_G(error_code);
 
 	ZEND_PARSE_PARAMETERS_START(1, 3)
 		Z_PARAM_ZVAL(parameter)
@@ -268,20 +315,31 @@ static PHP_FUNCTION(jsond_encode)
 		Z_PARAM_LONG(depth)
 	ZEND_PARSE_PARAMETERS_END();
 
-	JSOND_G(error_code) = PHP_JSOND_ERROR_NONE;
-
+	if (!(options & PHP_JSOND_THROW_ON_ERROR)) {
+		JSOND_G(error_code) = PHP_JSOND_ERROR_NONE;
+	}
 	JSOND_G(encode_max_depth) = depth;
 
 	PHP_JSOND_BUF_INIT(&buf);
 	php_jsond_encode(&buf, parameter, (int)options);
 
-	if ((JSOND_G(error_code) != PHP_JSOND_ERROR_NONE && !(options & PHP_JSOND_PARTIAL_OUTPUT_ON_ERROR)) ||
-			PHP_JSOND_BUF_LENGTH(buf) > LONG_MAX) {
-		ZVAL_FALSE(return_value);
-		PHP_JSOND_BUF_DESTROY(&buf);
+	if (!(options & PHP_JSOND_THROW_ON_ERROR) || (options & PHP_JSOND_PARTIAL_OUTPUT_ON_ERROR)) {
+		if ((JSOND_G(error_code) != PHP_JSOND_ERROR_NONE && !(options & PHP_JSOND_PARTIAL_OUTPUT_ON_ERROR)) ||
+				PHP_JSOND_BUF_LENGTH(buf) > LONG_MAX) {
+			PHP_JSOND_BUF_DESTROY(&buf);
+			RETURN_FALSE;
+		}
 	} else {
-		PHP_JSOND_BUF_RETURN(buf, return_value);
+		if (JSOND_G(error_code) != PHP_JSOND_ERROR_NONE) {
+			PHP_JSOND_BUF_DESTROY(&buf);
+			zend_throw_exception(php_jsond_exception_ce,
+				php_jsond_get_error_msg(JSOND_G(error_code)), JSOND_G(error_code));
+			JSOND_G(error_code) = prev_code;
+			RETURN_FALSE;
+		}
 	}
+
+	PHP_JSOND_BUF_RETURN(buf, return_value);
 }
 
 /* proto mixed json_decode(string json [, bool assoc [, long depth]])
@@ -303,10 +361,17 @@ static PHP_FUNCTION(jsond_decode)
 		Z_PARAM_LONG(options)
 	ZEND_PARSE_PARAMETERS_END();
 
-	JSOND_G(error_code) = 0;
+	if (!(options & PHP_JSOND_THROW_ON_ERROR)) {
+		JSOND_G(error_code) = PHP_JSOND_ERROR_NONE;
+	}
 
 	if (!str_len) {
-		JSOND_G(error_code) = PHP_JSOND_ERROR_SYNTAX;
+		if (!(options & PHP_JSOND_THROW_ON_ERROR)) {
+			JSOND_G(error_code) = PHP_JSOND_ERROR_SYNTAX;
+		} else {
+			zend_throw_exception(php_jsond_exception_ce,
+					php_jsond_get_error_msg(PHP_JSOND_ERROR_SYNTAX), PHP_JSOND_ERROR_SYNTAX);
+		}
 		RETURN_NULL();
 	}
 
@@ -354,33 +419,7 @@ static PHP_FUNCTION(jsond_last_error_msg)
 		return;
 	}
 
-	switch(JSOND_G(error_code)) {
-		case PHP_JSOND_ERROR_NONE:
-			PHP_JSOND_ERROR_MSG_RETURN("No error");
-		case PHP_JSOND_ERROR_DEPTH:
-			PHP_JSOND_ERROR_MSG_RETURN("Maximum stack depth exceeded");
-		case PHP_JSOND_ERROR_STATE_MISMATCH:
-			PHP_JSOND_ERROR_MSG_RETURN("State mismatch (invalid or malformed JSON)");
-		case PHP_JSOND_ERROR_CTRL_CHAR:
-			PHP_JSOND_ERROR_MSG_RETURN("Control character error, possibly incorrectly encoded");
-		case PHP_JSOND_ERROR_SYNTAX:
-			PHP_JSOND_ERROR_MSG_RETURN("Syntax error");
-		case PHP_JSOND_ERROR_UTF8:
-			PHP_JSOND_ERROR_MSG_RETURN("Malformed UTF-8 characters, possibly incorrectly encoded");
-		case PHP_JSOND_ERROR_RECURSION:
-			PHP_JSOND_ERROR_MSG_RETURN("Recursion detected");
-		case PHP_JSOND_ERROR_INF_OR_NAN:
-			PHP_JSOND_ERROR_MSG_RETURN("Inf and NaN cannot be JSON encoded");
-		case PHP_JSOND_ERROR_UNSUPPORTED_TYPE:
-			PHP_JSOND_ERROR_MSG_RETURN("Type is not supported");
-		case PHP_JSOND_ERROR_INVALID_PROPERTY_NAME:
-			PHP_JSOND_ERROR_MSG_RETURN("The decoded property name is invalid");
-		case PHP_JSOND_ERROR_UTF16:
-			PHP_JSOND_ERROR_MSG_RETURN("Single unpaired UTF-16 surrogate in unicode escape");
-		default:
-			PHP_JSOND_ERROR_MSG_RETURN("Unknown error");
-	}
-
+	RETURN_STRING(php_jsond_get_error_msg(JSOND_G(error_code)));
 }
 
 /*
