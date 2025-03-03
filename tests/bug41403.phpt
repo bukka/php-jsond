@@ -13,7 +13,7 @@ if (setlocale(LC_NUMERIC, "en_US") === false) {
 }
 ?>
 --INI--
-serialize_precision=14
+serialize_precision=-1
 --FILE--
 <?php
 require_once "bootstrap.inc";
