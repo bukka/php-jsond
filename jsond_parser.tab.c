@@ -1899,7 +1899,7 @@ void php_jsond_yyerror(php_jsond_parser *parser, char const *msg)
 	}
 }
 
-PHP_JSOND_API php_jsond_error_code PHP_JSOND_NAME(parser_error_code)(const php_jsond_parser *parser)
+PHP_JSOND_API php_jsond_error_code php_jsond_parser_error_code(const php_jsond_parser *parser)
 {
 	return parser->scanner.errcode;
 }
@@ -1916,7 +1916,7 @@ static const php_jsond_parser_methods default_parser_methods =
 	NULL,
 };
 
-PHP_JSOND_API void PHP_JSOND_NAME(parser_init_ex)(
+PHP_JSOND_API void php_jsond_parser_init_ex(
 		php_jsond_parser *parser, zval *return_value,
 		char *str, size_t str_len,
 		int options, int max_depth,
@@ -1930,12 +1930,12 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init_ex)(
 	memcpy(&parser->methods, parser_methods, sizeof(php_jsond_parser_methods));
 }
 
-PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
+PHP_JSOND_API void php_jsond_parser_init(
 		php_jsond_parser *parser, zval *return_value,
 		char *str, size_t str_len,
 		int options, int max_depth)
 {
-	PHP_JSOND_NAME(parser_init_ex)(
+	php_jsond_parser_init_ex(
 			parser,
 			return_value,
 			str,
@@ -1946,7 +1946,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
 }
 
 
-PHP_JSOND_API int PHP_JSOND_NAME(parse)(php_jsond_parser *parser)
+PHP_JSOND_API int php_jsond_parse(php_jsond_parser *parser)
 {
 	return php_jsond_yyparse(parser);
 }

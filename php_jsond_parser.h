@@ -58,7 +58,7 @@ struct _php_jsond_parser {
 	php_jsond_parser_methods methods;
 };
 
-PHP_JSOND_API void PHP_JSOND_NAME(parser_init_ex)(
+PHP_JSOND_API void php_jsond_parser_init_ex(
 		php_jsond_parser *parser,
 		zval *return_value,
 		char *str,
@@ -67,7 +67,7 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init_ex)(
 		int max_depth,
 		const php_jsond_parser_methods *methods);
 
-PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
+PHP_JSOND_API void php_jsond_parser_init(
 		php_jsond_parser *parser,
 		zval *return_value,
 		char *str,
@@ -75,9 +75,9 @@ PHP_JSOND_API void PHP_JSOND_NAME(parser_init)(
 		int options,
 		int max_depth);
 
-PHP_JSOND_API php_jsond_error_code PHP_JSOND_NAME(parser_error_code)(const php_jsond_parser *parser);
+PHP_JSOND_API php_jsond_error_code php_jsond_parser_error_code(const php_jsond_parser *parser);
 
-PHP_JSOND_API int PHP_JSOND_NAME(parse)(php_jsond_parser *parser);
+PHP_JSOND_API int php_jsond_parse(php_jsond_parser *parser);
 
 int php_jsond_yyparse(php_jsond_parser *parser);
 

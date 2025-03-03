@@ -86,7 +86,7 @@ static inline void php_jsond_register_serializable_interface()
 
 	/* register JSON serializable class */
 	INIT_CLASS_ENTRY(ce, PHP_JSOND_SERIALIZABLE_INTERFACE_STRING, jsond_serializable_interface);
-	PHP_JSOND_NAME(serializable_ce) = zend_register_internal_interface(&ce);
+	php_jsond_serializable_ce = zend_register_internal_interface(&ce);
 }
 
 
@@ -111,11 +111,11 @@ static PHP_MINIT_FUNCTION(jsond)
 
 	/* register JSON serializable class */
 	INIT_CLASS_ENTRY(ce, PHP_JSOND_SERIALIZABLE_INTERFACE_STRING, jsond_serializable_interface);
-	PHP_JSOND_NAME(serializable_ce) = zend_register_internal_interface(&ce);
+	php_jsond_serializable_ce = zend_register_internal_interface(&ce);
 
 	/* register JSON exception class */
 	INIT_CLASS_ENTRY(ce, "JsondException", NULL);
-	PHP_JSOND_NAME(exception_ce) = zend_register_internal_class_ex(&ce, zend_ce_exception);
+	php_jsond_exception_ce = zend_register_internal_class_ex(&ce, zend_ce_exception);
 
 	/* decoding options */
 	PHP_JSOND_REGISTER_LONG_CONSTANT("OBJECT_AS_ARRAY",  PHP_JSOND_OBJECT_AS_ARRAY);
@@ -181,7 +181,7 @@ PHP_RINIT_FUNCTION(jsond)
 	if (!the_ce) {
 		return FAILURE;
 	}
-	PHP_JSOND_NAME(serializable_ce) = the_ce;
+	php_jsond_serializable_ce = the_ce;
 
 	return SUCCESS;
 }
@@ -280,7 +280,7 @@ PHP_JSOND_API int php_jsond_decode_ex(
 {
 	php_jsond_parser parser;
 
-	PHP_JSOND_NAME(parser_init)(&parser, return_value, str, str_len, options, depth);
+	php_jsond_parser_init(&parser, return_value, str, str_len, options, depth);
 
 	if (php_jsond_yyparse(&parser)) {
 		php_jsond_error_code error_code = php_jsond_parser_error_code(&parser);
