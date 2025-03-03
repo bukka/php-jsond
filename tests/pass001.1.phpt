@@ -5,7 +5,6 @@ serialize_precision=-1
 --SKIPIF--
 <?php
 if (!extension_loaded('jsond')) die('skip: jsond extension not available');
-if (PHP_INT_SIZE != 4) die("skip this test is for 32bit platform only");
 ?>
 --FILE--
 <?php
