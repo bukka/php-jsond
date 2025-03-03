@@ -260,19 +260,23 @@ static const char *php_jsond_get_error_msg(php_jsond_error_code error_code) /* {
 	}
 }
 
-PHP_JSOND_API int php_jsond_encode(php_jsond_buffer *buf, zval *val, int options)
+PHP_JSOND_API zend_result php_jsond_encode_ex(php_jsond_buffer *buf, zval *val, int options, zend_long depth)
 {
 	php_jsond_encoder encoder;
-	int return_code;
+	zend_result return_code;
 
 	php_jsond_encode_init(&encoder);
-	encoder.max_depth = JSOND_G(encode_max_depth);
-	encoder.error_code = PHP_JSOND_ERROR_NONE;
+	encoder.max_depth = depth;
 
 	return_code = php_jsond_encode_zval(buf, val, options, &encoder);
 	JSOND_G(error_code) = encoder.error_code;
 
 	return return_code;
+}
+
+PHP_JSOND_API int php_jsond_encode(php_jsond_buffer *buf, zval *val, int options)
+{
+	return php_jsond_encode_ex(buf, val, options, JSOND_G(encode_max_depth));
 }
 
 PHP_JSOND_API int php_jsond_decode_ex(
@@ -303,6 +307,7 @@ PHP_JSOND_API int php_jsond_decode_ex(
 static PHP_FUNCTION(jsond_encode)
 {
 	zval *parameter;
+	php_jsond_encoder encoder;
 	php_jsond_buffer buf;
 	zend_long options = 0;
 	zend_long depth = PHP_JSOND_PARSER_DEFAULT_DEPTH;
@@ -315,27 +320,23 @@ static PHP_FUNCTION(jsond_encode)
 		Z_PARAM_LONG(depth)
 	ZEND_PARSE_PARAMETERS_END();
 
-	if (!(options & PHP_JSOND_THROW_ON_ERROR)) {
-		JSOND_G(error_code) = PHP_JSOND_ERROR_NONE;
-	}
-	JSOND_G(encode_max_depth) = depth;
-
 	PHP_JSOND_BUF_INIT(&buf);
-	php_jsond_encode(&buf, parameter, (int)options);
+	php_jsond_encode_init(&encoder);
+	encoder.max_depth = (int)depth;
+	php_jsond_encode_zval(&buf, parameter, (int)options, &encoder);
 
 	if (!(options & PHP_JSOND_THROW_ON_ERROR) || (options & PHP_JSOND_PARTIAL_OUTPUT_ON_ERROR)) {
-		if ((JSOND_G(error_code) != PHP_JSOND_ERROR_NONE && !(options & PHP_JSOND_PARTIAL_OUTPUT_ON_ERROR)) ||
-				PHP_JSOND_BUF_LENGTH(buf) > LONG_MAX) {
+		JSOND_G(error_code) = encoder.error_code;
+		if (encoder.error_code != PHP_JSOND_ERROR_NONE && !(options & PHP_JSOND_PARTIAL_OUTPUT_ON_ERROR)) {
 			PHP_JSOND_BUF_DESTROY(&buf);
 			RETURN_FALSE;
 		}
 	} else {
-		if (JSOND_G(error_code) != PHP_JSOND_ERROR_NONE) {
+		if (encoder.error_code != PHP_JSOND_ERROR_NONE) {
 			PHP_JSOND_BUF_DESTROY(&buf);
 			zend_throw_exception(php_jsond_exception_ce,
-				php_jsond_get_error_msg(JSOND_G(error_code)), JSOND_G(error_code));
-			JSOND_G(error_code) = prev_code;
-			RETURN_FALSE;
+					php_jsond_get_error_msg(encoder.error_code), encoder.error_code);
+			RETURN_THROWS();
 		}
 	}
 
