@@ -1,5 +1,5 @@
 --TEST--
-bug #50224 (json_encode() does not always encode a float as a float)
+bug #50224 (jsond_encode() does not always encode a float as a float)
 --INI--
 serialize_precision=-1
 --SKIPIF--

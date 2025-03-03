@@ -1,5 +1,5 @@
 --TEST--
-Bug #72069 (Behavior \JsonSerializable different from json_encode)
+Bug #72069 (Behavior \JsondSer_ializable different from jsond_encode)
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

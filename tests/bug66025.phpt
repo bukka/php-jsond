@@ -1,5 +1,5 @@
 --TEST--
-Bug #66025 (Indent wrong when json_encode() called from jsonSerialize function)
+Bug #66025 (Indent wrong when jsond_encode() called from jsonSerialize function)
 --SKIPIF--
 <?php
 if (!extension_loaded('jsond')) die('skip');
@@ -8,13 +8,13 @@ if (!extension_loaded('jsond')) die('skip');
 <?php
 require_once "bootstrap.inc";
 
-class JsonSerializableObject implements \JsondSerializable {
+class JsondSer_ializableObject implements \JsondSerializable {
     public function jsonSerialize() {
         return jsond_encode([1], JSOND_PRETTY_PRINT);
     }
 }
 
-echo jsond_encode([new JsonSerializableObject]), "\n";
+echo jsond_encode([new JsondSer_ializableObject]), "\n";
 ?>
 --EXPECT--
 ["[\n    1\n]"]

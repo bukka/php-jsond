@@ -1,5 +1,5 @@
 --TEST--
-Bug #43941 (json_encode() invalid UTF-8)
+Bug #43941 (jsond_encode() invalid UTF-8)
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

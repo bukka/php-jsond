@@ -1,5 +1,5 @@
 --TEST--
-Bug #68992 (json_encode stacks exceptions thrown by JsonSerializable classes)
+Bug #68992 (jsond_encode stacks exceptions thrown by JsondSer_ializable classes)
 --SKIPIF--
 <?php
 if (!extension_loaded('jsond')) die('skip');

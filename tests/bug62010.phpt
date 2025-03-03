@@ -1,5 +1,5 @@
 --TEST--
-Bug #62010 (json_decode produces invalid byte-sequences)
+Bug #62010 (jsond_decode produces invalid byte-sequences)
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

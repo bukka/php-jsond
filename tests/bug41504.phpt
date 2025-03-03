@@ -1,5 +1,5 @@
 --TEST--
-Bug #41504 (json_decode() converts empty array keys to "_empty_")
+Bug #41504 (jsond_decode() converts empty array keys to "_empty_")
 --SKIPIF--
 <?php if (!extension_loaded('jsond')) print 'skip'; ?>
 --FILE--

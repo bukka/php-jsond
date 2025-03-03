@@ -1,5 +1,5 @@
 --TEST--
-Test json_decode() function : basic functionality
+Test jsond_decode() function : basic functionality
 --SKIPIF--
 <?php
 if (!extension_loaded("jsond")) {
@@ -10,7 +10,7 @@ if (!extension_loaded("jsond")) {
 <?php
 require_once "bootstrap.inc";
 
-echo "*** Testing json_decode() : basic functionality ***\n";
+echo "*** Testing jsond_decode() : basic functionality ***\n";
 
 // array with different values for $string
 $inputs =  array (
@@ -35,7 +35,7 @@ $inputs =  array (
 		'{}'
 );
 
-// loop through with each element of the $inputs array to test json_decode() function
+// loop through with each element of the $inputs array to test jsond_decode() function
 $count = 1;
 foreach($inputs as $input) {
     echo "-- Iteration $count --\n";
@@ -47,7 +47,7 @@ foreach($inputs as $input) {
 ?>
 ===Done===
 --EXPECTF--
-*** Testing json_decode() : basic functionality ***
+*** Testing jsond_decode() : basic functionality ***
 -- Iteration 1 --
 int(0)
 int(0)

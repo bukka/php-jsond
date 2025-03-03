@@ -1,5 +1,5 @@
 --TEST--
-Bug #63737 (json_decode does not properly decode with options parameter)
+Bug #63737 (jsond_decode does not properly decode with options parameter)
 --INI--
 serialize_precision=14
 --SKIPIF--

@@ -1,5 +1,5 @@
 --TEST--
-json_encode() Serialization tests
+jsond_encode() Serialization tests
 --INI--
 serialize_precision=-1
 --SKIPIF--

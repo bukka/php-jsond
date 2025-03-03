@@ -1,5 +1,5 @@
 --TEST--
-json_decode() tests
+jsond_decode() tests
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

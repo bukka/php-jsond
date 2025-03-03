@@ -1,5 +1,5 @@
 --TEST--
-json_decode() with large integers
+jsond_decode() with large integers
 --INI--
 serialize_precision=14
 --SKIPIF--

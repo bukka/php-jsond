@@ -1,5 +1,5 @@
 --TEST--
-json_encode() & endless loop - 3
+jsond_encode() & endless loop - 3
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

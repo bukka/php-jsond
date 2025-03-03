@@ -1,5 +1,5 @@
 --TEST--
-json_decode() invalid UTF8
+jsond_decode() invalid UTF8
 --SKIPIF--
 <?php
 if (!extension_loaded("jsond")) {

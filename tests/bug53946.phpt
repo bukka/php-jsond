@@ -1,5 +1,5 @@
 --TEST--
-bug #53946 (json_encode() with JSOND_UNESCAPED_UNICODE)
+bug #53946 (jsond_encode() with JSOND_UNESCAPED_UNICODE)
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

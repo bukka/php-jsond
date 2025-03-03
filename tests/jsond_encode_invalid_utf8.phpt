@@ -1,5 +1,5 @@
 --TEST--
-json_encode() invalid UTF8
+jsond_encode() invalid UTF8
 --SKIPIF--
 <?php
 if (!extension_loaded("jsond")) {
@@ -10,7 +10,7 @@ if (!extension_loaded("jsond")) {
 <?php
 require_once "bootstrap.inc";
 
-function json_encode_invalid_utf8($str) {
+function jsond_encode_invalid_utf8($str) {
 	var_dump(jsond_encode($str));
 	var_dump(jsond_encode($str,  JSOND_INVALID_UTF8_IGNORE));
 	var_dump(jsond_encode($str,  JSOND_INVALID_UTF8_SUBSTITUTE));
@@ -18,8 +18,8 @@ function json_encode_invalid_utf8($str) {
 	var_dump(bin2hex(jsond_encode($str,  JSOND_UNESCAPED_UNICODE |  JSOND_INVALID_UTF8_SUBSTITUTE)));
 }
 
-json_encode_invalid_utf8("\x61\xb0\x62");
-json_encode_invalid_utf8("\x61\xf0\x9d\x85\x41");
+jsond_encode_invalid_utf8("\x61\xb0\x62");
+jsond_encode_invalid_utf8("\x61\xf0\x9d\x85\x41");
 echo "Done\n";
 ?>
 --EXPECT--

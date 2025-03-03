@@ -1,5 +1,5 @@
 --TEST--
-Bug #41567 (json_encode() double conversion is inconsistent with PHP)
+Bug #41567 (jsond_encode() double conversion is inconsistent with PHP)
 --INI--
 serialize_precision=-1
 --SKIPIF--

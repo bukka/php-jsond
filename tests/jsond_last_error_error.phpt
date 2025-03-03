@@ -1,5 +1,5 @@
 --TEST--
-json_last_error() failures
+jsond_last_error() failures
 --SKIPIF--
 <?php !extension_loaded('jsond') && die('skip json extension not available') ?>
 --FILE--

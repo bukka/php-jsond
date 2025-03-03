@@ -1,5 +1,5 @@
 --TEST--
-Bug #71835 (json_encode sometimes incorrectly detects recursion with JsonSerializable)
+Bug #71835 (jsond_encode sometimes incorrectly detects recursion with JsondSer_ializable)
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

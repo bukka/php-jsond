@@ -1,5 +1,5 @@
 --TEST--
-Bug #61978 (Object recursion not detected for classes that implement JsonSerializable)
+Bug #61978 (Object recursion not detected for classes that implement JsondSer_ializable)
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

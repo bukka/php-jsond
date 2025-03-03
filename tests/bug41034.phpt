@@ -1,5 +1,5 @@
 --TEST--
-Bug #41034 (json_encode() ignores null byte started keys in arrays)
+Bug #41034 (jsond_encode() ignores null byte started keys in arrays)
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

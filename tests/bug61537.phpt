@@ -1,5 +1,5 @@
 --TEST--
-Bug #61537 (json_encode() incorrectly truncates/discards information)
+Bug #61537 (jsond_encode() incorrectly truncates/discards information)
 --SKIPIF--
 <?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--

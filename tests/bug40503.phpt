@@ -1,5 +1,5 @@
 --TEST--
-Bug #40503 (json_encode() value corruption on 32bit systems with overflown values)
+Bug #40503 (jsond_encode() value corruption on 32bit systems with overflown values)
 --INI--
 serialize_precision=-1
 --SKIPIF--

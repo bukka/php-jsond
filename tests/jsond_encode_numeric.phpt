@@ -1,5 +1,5 @@
 --TEST--
-Test json_encode() function with numeric flag
+Test jsond_encode() function with numeric flag
 --INI--
 serialize_precision=-1
 --SKIPIF--

@@ -1,5 +1,5 @@
 --TEST--
-Bug #41403 (json_decode cannot decode floats if localeconv decimal_point is not '.')
+Bug #41403 (jsond_decode cannot decode floats if localeconv decimal_point is not '.')
 --SKIPIF--
 <?php
 

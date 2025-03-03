@@ -1,5 +1,5 @@
 --TEST--
-Bug #68546 (json_decode() Fatal error: Cannot access property started with '\0')
+Bug #68546 (jsond_decode() Fatal error: Cannot access property started with '\0')
 --SKIPIF--
 <?php
 
