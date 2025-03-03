@@ -30,6 +30,16 @@ jsond_expect_argument_count_error(
     'Warning: jsond_decode() expects at most 4 parameters, 5 given in file on line 0'
 );
 
+echo "\n-- Testing jsond_decode() function with depth below 0 --\n";
+
+jsond_expect_argument_count_error(
+    function() {
+        jsond_decode('"abc"', TRUE, -1, 0);
+    },
+    'jsond_decode(): Depth must be greater than zero',
+    'Warning: jsond_decode(): Depth must be greater than zero in file on line 0'
+);
+
 ?>
 ===Done===
 --EXPECTF--
@@ -43,5 +53,10 @@ NULL
 -- Testing jsond_decode() function with more than expected no. of arguments --
 
 Warning: %s expects at most 4 parameters, 5 given in %s on line %d
+NULL
+
+-- Testing jsond_decode() function with depth below 0 --
+
+Warning: jsond_decode(): Depth must be greater than zero in %s on line %d
 NULL
 ===Done===
