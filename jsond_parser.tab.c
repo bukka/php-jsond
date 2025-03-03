@@ -108,7 +108,8 @@ int json_yydebug = 1;
 
 
 
-
+/* Substitute the type names.  */
+#define YYSTYPE         PHP_JSOND_YYSTYPE
 /* Substitute the variable and function names.  */
 #define yyparse         php_jsond_yyparse
 #define yylex           php_jsond_yylex
@@ -142,17 +143,25 @@ int json_yydebug = 1;
 #ifndef YY_PHP_JSOND_YY_PARSER_INCLUDED
 # define YY_PHP_JSOND_YY_PARSER_INCLUDED
 /* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
+#ifndef PHP_JSOND_YYDEBUG
+# if defined YYDEBUG
 #if YYDEBUG
+#   define PHP_JSOND_YYDEBUG 1
+#  else
+#   define PHP_JSOND_YYDEBUG 0
+#  endif
+# else /* ! defined YYDEBUG */
+#  define PHP_JSOND_YYDEBUG 0
+# endif /* ! defined YYDEBUG */
+#endif  /* ! defined PHP_JSOND_YYDEBUG */
+#if PHP_JSOND_YYDEBUG
 extern int php_jsond_yydebug;
 #endif
 
 /* Token type.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
+#ifndef PHP_JSOND_YYTOKENTYPE
+# define PHP_JSOND_YYTOKENTYPE
+  enum php_jsond_yytokentype
   {
     PHP_JSOND_T_NUL = 258,
     PHP_JSOND_T_TRUE = 259,
@@ -167,9 +176,9 @@ extern int php_jsond_yydebug;
 #endif
 
 /* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+#if ! defined PHP_JSOND_YYSTYPE && ! defined PHP_JSOND_YYSTYPE_IS_DECLARED
 
-union YYSTYPE
+union PHP_JSOND_YYSTYPE
 {
 
 
@@ -182,9 +191,9 @@ union YYSTYPE
 
 };
 
-typedef union YYSTYPE YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
+typedef union PHP_JSOND_YYSTYPE PHP_JSOND_YYSTYPE;
+# define PHP_JSOND_YYSTYPE_IS_TRIVIAL 1
+# define PHP_JSOND_YYSTYPE_IS_DECLARED 1
 #endif
 
 
@@ -384,7 +393,7 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-         || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+         || (defined PHP_JSOND_YYSTYPE_IS_TRIVIAL && PHP_JSOND_YYSTYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
@@ -497,7 +506,7 @@ static const yytype_uint8 yytranslate[] =
        5,     6,     7,     8,     9,    10,    11
 };
 
-#if YYDEBUG
+#if PHP_JSOND_YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
@@ -508,7 +517,7 @@ static const yytype_uint8 yyrline[] =
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || 0
+#if PHP_JSOND_YYDEBUG || YYERROR_VERBOSE || 0
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
@@ -665,7 +674,7 @@ while (0)
 
 
 /* Enable debugging if requested.  */
-#if YYDEBUG
+#if PHP_JSOND_YYDEBUG
 
 # ifndef YYFPRINTF
 #  include <stdio.h> /* INFRINGES ON USER NAME SPACE */
@@ -783,12 +792,12 @@ do {                                    \
 /* Nonzero means print parse trace.  It is left uninitialized so that
    multiple parsers can coexist.  */
 int yydebug;
-#else /* !YYDEBUG */
+#else /* !PHP_JSOND_YYDEBUG */
 # define YYDPRINTF(Args)
 # define YY_SYMBOL_PRINT(Title, Type, Value, Location)
 # define YY_STACK_PRINT(Bottom, Top)
 # define YY_REDUCE_PRINT(Rule)
-#endif /* !YYDEBUG */
+#endif /* !PHP_JSOND_YYDEBUG */
 
 
 /* YYINITDEPTH -- initial size of the parser's stacks.  */

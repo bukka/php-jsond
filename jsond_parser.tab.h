@@ -33,17 +33,25 @@
 #ifndef YY_PHP_JSOND_YY_PARSER_INCLUDED
 # define YY_PHP_JSOND_YY_PARSER_INCLUDED
 /* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
+#ifndef PHP_JSOND_YYDEBUG
+# if defined YYDEBUG
 #if YYDEBUG
+#   define PHP_JSOND_YYDEBUG 1
+#  else
+#   define PHP_JSOND_YYDEBUG 0
+#  endif
+# else /* ! defined YYDEBUG */
+#  define PHP_JSOND_YYDEBUG 0
+# endif /* ! defined YYDEBUG */
+#endif  /* ! defined PHP_JSOND_YYDEBUG */
+#if PHP_JSOND_YYDEBUG
 extern int php_jsond_yydebug;
 #endif
 
 /* Token type.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
+#ifndef PHP_JSOND_YYTOKENTYPE
+# define PHP_JSOND_YYTOKENTYPE
+  enum php_jsond_yytokentype
   {
     PHP_JSOND_T_NUL = 258,
     PHP_JSOND_T_TRUE = 259,
@@ -58,9 +66,9 @@ extern int php_jsond_yydebug;
 #endif
 
 /* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+#if ! defined PHP_JSOND_YYSTYPE && ! defined PHP_JSOND_YYSTYPE_IS_DECLARED
 
-union YYSTYPE
+union PHP_JSOND_YYSTYPE
 {
 
 
@@ -73,9 +81,9 @@ union YYSTYPE
 
 };
 
-typedef union YYSTYPE YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
+typedef union PHP_JSOND_YYSTYPE PHP_JSOND_YYSTYPE;
+# define PHP_JSOND_YYSTYPE_IS_TRIVIAL 1
+# define PHP_JSOND_YYSTYPE_IS_DECLARED 1
 #endif
 
 
