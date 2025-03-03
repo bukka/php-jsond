@@ -3,7 +3,7 @@ Test jsond_encode() function : basic functionality
 --SKIPIF--
 <?php
 if (!extension_loaded("jsond")) {
- 	die('skip JSON extension not available in this build');
+ 	die('skip jsond extension not available');
 }
 ?>
 --FILE--

@@ -1,5 +1,9 @@
 --TEST--
 Bug #73991 (Allow JSON_OBJECT_AS_ARRAY to have an effect)
+--SKIPIF--
+<?php
+if (!extension_loaded('jsond')) die('skip');
+?>
 --FILE--
 <?php
 require_once "bootstrap.inc";
