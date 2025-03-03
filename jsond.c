@@ -422,12 +422,3 @@ static PHP_FUNCTION(jsond_last_error_msg)
 
 	RETURN_STRING(php_jsond_get_error_msg(JSOND_G(error_code)));
 }
-
-/*
- * Local variables:
- * tab-width: 4
- * c-basic-offset: 4
- * End:
- * vim600: noet sw=4 ts=4 fdm=marker
- * vim<600: noet sw=4 ts=4
- */

@@ -14,8 +14,6 @@
   +----------------------------------------------------------------------+
 */
 
-/* $Id$ */
-
 #ifndef PHP_JSOND_H
 #define PHP_JSOND_H
 
@@ -157,13 +155,3 @@ static inline int php_jsond_decode(zval *return_value, char *str, size_t str_len
 }
 
 #endif	/* PHP_JSOND_H */
-
-
-/*
- * Local variables:
- * tab-width: 4
- * c-basic-offset: 4
- * End:
- * vim600: noet sw=4 ts=4 fdm=marker
- * vim<600: noet sw=4 ts=4
- */

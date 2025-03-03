@@ -1,4 +1,3 @@
-dnl $Id$
 dnl config.m4 for extension jsond
 
 PHP_ARG_ENABLE(jsond,
