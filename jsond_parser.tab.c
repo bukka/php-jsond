@@ -93,11 +93,6 @@ int json_yydebug = 1;
 #define YYFREE free
 #endif
 
-#define PHP_JSOND_USE(uv) ((void) (uv))
-#define PHP_JSOND_USE_1(uvr, uv1) PHP_JSOND_USE(uvr); PHP_JSOND_USE(uv1)
-#define PHP_JSOND_USE_2(uvr, uv1, uv2) \
-	PHP_JSOND_USE(uvr); PHP_JSOND_USE(uv1); PHP_JSOND_USE(uv2)
-
 #define PHP_JSOND_DEPTH_DEC --parser->depth
 #define PHP_JSOND_DEPTH_INC \
 	if (parser->max_depth && parser->depth >= parser->max_depth) { \
@@ -452,18 +447,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  18
+#define YYFINAL  16
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   34
+#define YYLAST   25
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  18
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  16
+#define YYNNTS  15
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  36
+#define YYNRULES  30
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  45
+#define YYNSTATES  39
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -510,10 +505,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    89,    89,    96,   103,   103,   120,   121,   130,   133,
-     137,   143,   149,   156,   161,   169,   168,   186,   187,   196,
-     199,   203,   208,   213,   220,   221,   225,   226,   227,   228,
-     229,   230,   231,   232,   233,   234,   238
+       0,    84,    84,    93,    93,   110,   111,   120,   123,   127,
+     133,   142,   151,   150,   168,   169,   178,   181,   185,   190,
+     198,   199,   203,   204,   205,   206,   207,   208,   209,   210,
+     211
 };
 #endif
 
@@ -527,8 +522,7 @@ static const char *const yytname[] =
   "PHP_JSOND_T_STRING", "PHP_JSOND_T_ESTRING", "PHP_JSOND_T_EOI",
   "PHP_JSOND_T_ERROR", "'{'", "'}'", "']'", "','", "':'", "'['", "$accept",
   "start", "object", "$@1", "object_end", "members", "member", "pair",
-  "array", "$@2", "array_end", "elements", "element", "key", "value",
-  "errlex", YY_NULLPTR
+  "array", "$@2", "array_end", "elements", "element", "key", "value", YY_NULLPTR
 };
 #endif
 
@@ -542,10 +536,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -18
+#define YYPACT_NINF -17
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-18)))
+  (!!((Yystate) == (-17)))
 
 #define YYTABLE_NINF -1
 
@@ -556,11 +550,10 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -2,   -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,   -18,
-     -18,    11,   -18,   -18,     9,   -18,    21,    -2,   -18,   -18,
-     -18,   -18,   -18,    18,     1,   -18,    -3,    20,     6,   -18,
-     -18,   -18,   -18,    21,   -18,    -2,   -18,   -18,   -18,   -18,
-      -2,   -18,   -18,   -18,   -18
+      -2,   -17,   -17,   -17,   -17,   -17,   -17,   -17,   -17,   -17,
+      11,   -17,   -17,     9,     0,    -2,   -17,   -17,   -17,   -17,
+      -1,     6,   -17,     7,     4,    10,   -17,   -17,   -17,   -17,
+       0,    -2,   -17,   -17,   -17,    -2,   -17,   -17,   -17
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -568,25 +561,24 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    32,    33,    34,    30,    31,    28,    29,    36,     4,
-      15,     0,    26,    27,     0,    35,     8,    19,     1,     2,
-       3,    24,    25,     0,     9,    10,     0,     0,    20,    21,
-       6,     7,     5,     0,    12,     0,    14,    18,    17,    16,
-       0,    23,    11,    13,    22
+       0,    28,    29,    30,    26,    27,    24,    25,     3,    12,
+       0,    22,    23,     0,     7,    16,     1,     2,    20,    21,
+       0,     8,     9,     0,     0,    17,    18,     5,     6,     4,
+       0,     0,    15,    14,    13,     0,    10,    11,    19
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -18,   -18,   -18,   -18,   -18,   -18,   -18,   -11,   -18,   -18,
-     -18,   -18,   -18,   -18,   -17,     0
+     -17,   -17,   -17,   -17,   -17,   -17,   -17,   -16,   -17,   -17,
+     -17,   -17,   -17,   -17,   -15
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    11,    12,    16,    32,    23,    24,    25,    13,    17,
-      39,    27,    28,    26,    14,    15
+      -1,    10,    11,    14,    29,    20,    21,    22,    12,    15,
+      34,    24,    25,    23,    13
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -594,47 +586,44 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      29,     1,     2,     3,     4,     5,     6,     7,     8,     8,
-       9,    18,     8,    35,    20,    10,    33,     8,    43,    19,
-       8,    40,    42,    44,    34,     0,    36,     0,    41,    21,
-      22,    30,    31,    37,    38
+      26,     1,     2,     3,     4,     5,     6,     7,    18,    19,
+       8,    16,    27,    28,    36,     9,    37,    32,    33,    17,
+      38,    30,     0,    31,     0,    35
 };
 
 static const yytype_int8 yycheck[] =
 {
-      17,     3,     4,     5,     6,     7,     8,     9,    11,    11,
-      12,     0,    11,    16,    14,    17,    15,    11,    35,    10,
-      11,    15,    33,    40,    24,    -1,    26,    -1,    28,     8,
-       9,    13,    14,    13,    14
+      15,     3,     4,     5,     6,     7,     8,     9,     8,     9,
+      12,     0,    13,    14,    30,    17,    31,    13,    14,    10,
+      35,    15,    -1,    16,    -1,    15
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,     4,     5,     6,     7,     8,     9,    11,    12,
-      17,    19,    20,    26,    32,    33,    21,    27,     0,    10,
-      33,     8,     9,    23,    24,    25,    31,    29,    30,    32,
-      13,    14,    22,    15,    33,    16,    33,    13,    14,    28,
-      15,    33,    25,    32,    32
+       0,     3,     4,     5,     6,     7,     8,     9,    12,    17,
+      19,    20,    26,    32,    21,    27,     0,    10,     8,     9,
+      23,    24,    25,    31,    29,    30,    32,    13,    14,    22,
+      15,    16,    13,    14,    28,    15,    25,    32,    32
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    18,    19,    19,    21,    20,    22,    22,    23,    23,
-      24,    24,    24,    25,    25,    27,    26,    28,    28,    29,
-      29,    30,    30,    30,    31,    31,    32,    32,    32,    32,
-      32,    32,    32,    32,    32,    32,    33
+       0,    18,    19,    21,    20,    22,    22,    23,    23,    24,
+      24,    25,    27,    26,    28,    28,    29,    29,    30,    30,
+      31,    31,    32,    32,    32,    32,    32,    32,    32,    32,
+      32
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     2,     0,     4,     1,     1,     0,     1,
-       1,     3,     2,     3,     2,     0,     4,     1,     1,     0,
-       1,     1,     3,     2,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1
+       0,     2,     2,     0,     4,     1,     1,     0,     1,     1,
+       3,     3,     0,     4,     1,     1,     0,     1,     1,     3,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1
 };
 
 
@@ -1097,18 +1086,6 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, php_jsond_parser *
 
         break;
 
-    case 10: /* PHP_JSOND_T_EOI  */
-
-      { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
-
-        break;
-
-    case 11: /* PHP_JSOND_T_ERROR  */
-
-      { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
-
-        break;
-
     case 19: /* start  */
 
       { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
@@ -1164,12 +1141,6 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, php_jsond_parser *
         break;
 
     case 32: /* value  */
-
-      { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
-
-        break;
-
-    case 33: /* errlex  */
 
       { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
 
@@ -1442,21 +1413,12 @@ yyreduce:
     {
 				(yyval.value) = (yyvsp[-1].value);
 				ZVAL_COPY_VALUE(parser->return_value, &(yyvsp[-1].value));
-				PHP_JSOND_USE((yyvsp[0].value));
 				YYACCEPT;
 			}
 
     break;
 
   case 3:
-
-    {
-				PHP_JSOND_USE_2((yyval.value), (yyvsp[-1].value), (yyvsp[0].value));
-			}
-
-    break;
-
-  case 4:
 
     {
 				PHP_JSOND_DEPTH_INC;
@@ -1467,7 +1429,7 @@ yyreduce:
 
     break;
 
-  case 5:
+  case 4:
 
     {
 				PHP_JSOND_DEPTH_DEC;
@@ -1479,7 +1441,7 @@ yyreduce:
 
     break;
 
-  case 7:
+  case 6:
 
     {
 				parser->scanner.errcode = PHP_JSOND_ERROR_STATE_MISMATCH;
@@ -1488,7 +1450,7 @@ yyreduce:
 
     break;
 
-  case 8:
+  case 7:
 
     {
 				parser->methods.object_create(parser, &(yyval.value));
@@ -1496,7 +1458,7 @@ yyreduce:
 
     break;
 
-  case 10:
+  case 9:
 
     {
 				parser->methods.object_create(parser, &(yyval.value));
@@ -1506,7 +1468,7 @@ yyreduce:
 
     break;
 
-  case 11:
+  case 10:
 
     {
 				if (parser->methods.object_update(parser, &(yyval.value), (yyvsp[0].pair).key, &(yyvsp[0].pair).val) == FAILURE)
@@ -1516,15 +1478,7 @@ yyreduce:
 
     break;
 
-  case 12:
-
-    {
-				PHP_JSOND_USE_2((yyval.value), (yyvsp[-1].value), (yyvsp[0].value));
-			}
-
-    break;
-
-  case 13:
+  case 11:
 
     {
 				(yyval.pair).key = Z_STR((yyvsp[-2].value));
@@ -1533,15 +1487,7 @@ yyreduce:
 
     break;
 
-  case 14:
-
-    {
-				PHP_JSOND_USE_2((yyval.pair), (yyvsp[-1].value), (yyvsp[0].value));
-			}
-
-    break;
-
-  case 15:
+  case 12:
 
     {
 				PHP_JSOND_DEPTH_INC;
@@ -1552,7 +1498,7 @@ yyreduce:
 
     break;
 
-  case 16:
+  case 13:
 
     {
 				PHP_JSOND_DEPTH_DEC;
@@ -1564,7 +1510,7 @@ yyreduce:
 
     break;
 
-  case 18:
+  case 15:
 
     {
 				parser->scanner.errcode = PHP_JSOND_ERROR_STATE_MISMATCH;
@@ -1573,7 +1519,7 @@ yyreduce:
 
     break;
 
-  case 19:
+  case 16:
 
     {
 				parser->methods.array_create(parser, &(yyval.value));
@@ -1581,7 +1527,7 @@ yyreduce:
 
     break;
 
-  case 21:
+  case 18:
 
     {
 				parser->methods.array_create(parser, &(yyval.value));
@@ -1590,28 +1536,11 @@ yyreduce:
 
     break;
 
-  case 22:
+  case 19:
 
     {
 				parser->methods.array_append(parser, &(yyvsp[-2].value), &(yyvsp[0].value));
 				(yyval.value) = (yyvsp[-2].value);
-			}
-
-    break;
-
-  case 23:
-
-    {
-				PHP_JSOND_USE_2((yyval.value), (yyvsp[-1].value), (yyvsp[0].value));
-			}
-
-    break;
-
-  case 36:
-
-    {
-				PHP_JSOND_USE_1((yyval.value), (yyvsp[0].value));
-				YYERROR;
 			}
 
     break;
