@@ -22,6 +22,7 @@
 #include "php_jsond_encoder.h"
 #include "php_jsond_buffer.h"
 #include "php_jsond_parser.h"
+#include "jsond_arginfo.h"
 #include <zend_exceptions.h>
 
 /* PHP init and user functions */
@@ -37,27 +38,6 @@ PHP_JSOND_API zend_class_entry *php_jsond_serializable_ce;
 PHP_JSOND_API zend_class_entry *php_jsond_exception_ce;
 
 PHP_JSOND_API ZEND_DECLARE_MODULE_GLOBALS(jsond)
-
-/* arginfo */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_jsond_encode, 0, 0, 1)
-	ZEND_ARG_INFO(0, value)
-	ZEND_ARG_INFO(0, options)
-	ZEND_ARG_INFO(0, depth)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_jsond_decode, 0, 0, 1)
-	ZEND_ARG_INFO(0, json)
-	ZEND_ARG_INFO(0, assoc)
-	ZEND_ARG_INFO(0, depth)
-	ZEND_ARG_INFO(0, options)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO(arginfo_jsond_last_error, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO(arginfo_jsond_last_error_msg, 0)
-ZEND_END_ARG_INFO()
-
 
 /* jsond_functions[] */
 static zend_function_entry jsond_functions[] = {
