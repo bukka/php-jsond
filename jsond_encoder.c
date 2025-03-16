@@ -583,7 +583,16 @@ again:
 				return php_jsond_encode_serializable_object(buf, val, options, encoder);
 			}
 			/* fallthrough -- Non-serializable object */
-		case IS_ARRAY:
+		case IS_ARRAY: {
+			/* Avoid modifications (and potential freeing) of the array through a reference when a
+			 * jsonSerialize() method is invoked. */
+			zval zv;
+			zend_result res;
+			ZVAL_COPY(&zv, val);
+			res = php_jsond_encode_array(buf, &zv, options, encoder);
+			zval_ptr_dtor_nogc(&zv);
+			return res;
+		}
 			return php_jsond_encode_array(buf, val, options, encoder);
 		case IS_TRUE:
 			PHP_JSOND_BUF_APPEND_STRING(buf, "true", 4);

@@ -27,6 +27,8 @@
   options and added `JSOND_UNESCAPED_LINE_TERMINATORS` to restore the previous behaviour
 - Fixed behavior of `JsondSerializable` difference from `jsond_encode` when error
   - PHP bug #72069
+- Fixed use afer free with json serializer
+  - PHP bug #77843
 - Used `serialize_precision` instead of precision for encoding of double values
 
 ## 1.4
