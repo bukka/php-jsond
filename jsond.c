@@ -48,14 +48,10 @@ static zend_function_entry jsond_functions[] = {
 	PHP_FE_END
 };
 
-
-/* JsonSerializable methods */
-ZEND_BEGIN_ARG_INFO(jsond_serialize_arginfo, 0)
-	/* No arguments */
-ZEND_END_ARG_INFO()
-
+/* jsond_serializable_interface[] */
 static zend_function_entry jsond_serializable_interface[] = {
-	PHP_ABSTRACT_ME(PHP_JSOND_SERIALIZABLE_INTERFACE, jsonSerialize, jsond_serialize_arginfo)
+	PHP_ABSTRACT_ME(PHP_JSOND_SERIALIZABLE_INTERFACE, jsonSerialize,
+			arginfo_class_JsondSerializable_jsonSerialize)
 	PHP_FE_END
 };
 

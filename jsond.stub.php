@@ -9,3 +9,8 @@ function jsond_decode(string $json, ?bool $assoc = null, int $depth = 512, int $
 function jsond_last_error(): int {}
 
 function jsond_last_error_msg(): string {}
+
+interface JsondSerializable
+{
+    public function jsonSerialize(): mixed;
+}

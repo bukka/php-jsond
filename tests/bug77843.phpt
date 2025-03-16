@@ -9,7 +9,7 @@ if (!extension_loaded('jsond')) die('skip');
 
 class X implements JsondSerializable {
     public $prop = "value";
-    public function jsonSerialize() {
+    public function jsonSerialize(): mixed {
         global $arr;
         unset($arr[0]);
         var_dump($this);

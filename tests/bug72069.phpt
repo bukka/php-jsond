@@ -8,7 +8,7 @@ require_once "bootstrap.inc";
 
 class A implements \JsondSerializable
 {
-	function jsonSerialize()
+	function jsonSerialize(): mixed
 	{
 		return ['end' => jsond_decode("null", true)];
 	}

@@ -20,7 +20,7 @@ class JsonTest2 implements JsondSerializable {
     public function __construct() {
         $this->test = '123';
     }
-    public function jsonSerialize() {
+    public function jsonSerialize(): mixed {
         return array(
             'test' => $this->test,
             'me'   => $this

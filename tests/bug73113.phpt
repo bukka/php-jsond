@@ -7,7 +7,7 @@ Bug #73113 (Segfault with throwing JsondSer_ializable) - also test that the cust
 require_once "bootstrap.inc";
 
 class JsondSer_ializableObject implements \JsondSerializable {
-    public function jsonSerialize() {
+    public function jsonSerialize(): mixed {
         throw new \Exception('This error is expected');
     }
 }

@@ -9,7 +9,7 @@ if (!extension_loaded('jsond')) die('skip');
 require_once "bootstrap.inc";
 
 class JsondSer_ializableObject implements \JsondSerializable {
-    public function jsonSerialize() {
+    public function jsonSerialize(): mixed {
         return jsond_encode([1], JSOND_PRETTY_PRINT);
     }
 }

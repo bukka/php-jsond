@@ -9,7 +9,7 @@ if (!extension_loaded('jsond')) die('skip');
 require_once "bootstrap.inc";
 
 class MyClass implements JsondSerializable {
-    public function jsonSerialize() {
+    public function jsonSerialize(): mixed {
         throw new Exception('Not implemented!');
     }
 }
