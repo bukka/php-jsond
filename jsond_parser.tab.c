@@ -50,7 +50,7 @@
 #define YYSKELETON_NAME "jsond_yacc.c"
 
 /* Pure parsers.  */
-#define YYPURE 1
+#define YYPURE 2
 
 /* Push parsers.  */
 #define YYPUSH 0
