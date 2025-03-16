@@ -1,5 +1,3 @@
-dnl config.m4 for extension jsond
-
 PHP_ARG_ENABLE(jsond,
   [whether to enable jsond support],
   [AS_HELP_STRING([--enalbe-jsond],
