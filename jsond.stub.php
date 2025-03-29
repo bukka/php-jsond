@@ -1,7 +1,7 @@
 <?php
 
 /** @return string|false */
-function jsond_encode(mixed $value, int $options = 0, int $depth = 512) {}
+function jsond_encode(mixed $value, int $options = 0, int $depth = 512): string|false {}
 
 /** @return mixed */
 function jsond_decode(string $json, ?bool $assoc = null, int $depth = 512, int $options = 0) {}
