@@ -1,3 +1,4 @@
+%require "3.0"
 %code top {
 /*
   +----------------------------------------------------------------------+
@@ -116,7 +117,7 @@ object_end:
 ;
 
 members:
-		/* empty */
+		%empty
 			{
 				parser->methods.object_create(parser, &$$);
 			}
@@ -174,7 +175,7 @@ array_end:
 ;
 
 elements:
-		/* empty */
+		%empty
 			{
 				parser->methods.array_create(parser, &$$);
 			}
