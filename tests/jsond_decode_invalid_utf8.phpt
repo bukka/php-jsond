@@ -24,7 +24,6 @@ jsond_decode_invalid_utf8("\"a\xb0b\"");
 jsond_decode_invalid_utf8("\"a\xd0\xf2b\"");
 jsond_decode_invalid_utf8("\"\x61\xf0\x80\x80\x41\"");
 jsond_decode_invalid_utf8("[\"\xc1\xc1\",\"a\"]");
-echo "Done\n";
 ?>
 --EXPECT--
 NULL
@@ -49,4 +48,3 @@ array(2) {
   [1]=>
   string(2) "61"
 }
-Done

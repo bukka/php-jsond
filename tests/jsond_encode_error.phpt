@@ -24,7 +24,6 @@ $extra_arg = 10;
 var_dump(jsond_encode("abc", 0, $extra_arg));
 
 ?>
-===Done===
 --EXPECTF--
 *** Testing jsond_encode() : error conditions ***
 
@@ -35,4 +34,3 @@ NULL
 
 -- Testing jsond_encode() function with more than expected no. of arguments --
 string(5) ""abc""
-===Done===

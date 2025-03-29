@@ -29,7 +29,6 @@ var_dump(jsond_decode('{ "": { "": "" }'));
 var_dump(jsond_decode('{ "": "": "" } }'));
 
 ?>
-===DONE===
 --EXPECTF--
 Warning: %s() expects at least 1 parameter, 0 given in %s on line %d
 NULL
@@ -73,4 +72,3 @@ object(stdClass)#%d (1) {
 }
 NULL
 NULL
-===DONE===

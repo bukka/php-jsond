@@ -41,7 +41,6 @@ jsond_expect_argument_count_error(
 );
 
 ?>
-===Done===
 --EXPECTF--
 *** Testing %s : error conditions ***
 
@@ -59,4 +58,3 @@ NULL
 
 Warning: jsond_decode(): Depth must be greater than zero in %s on line %d
 NULL
-===Done===

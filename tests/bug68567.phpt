@@ -9,7 +9,5 @@ require_once "bootstrap.inc";
 var_dump(jsond_encode(array("\x80" => 1), JSOND_PARTIAL_OUTPUT_ON_ERROR));
 
 ?>
-===DONE===
 --EXPECTF--
 string(6) "{"":1}"
-===DONE===

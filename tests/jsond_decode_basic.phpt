@@ -45,7 +45,6 @@ foreach($inputs as $input) {
 }
 
 ?>
-===Done===
 --EXPECTF--
 *** Testing jsond_decode() : basic functionality ***
 -- Iteration 1 --
@@ -181,4 +180,3 @@ object(stdClass)#%d (0) {
 }
 array(0) {
 }
-===Done===

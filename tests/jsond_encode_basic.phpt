@@ -98,7 +98,6 @@ foreach($inputs as $input) {
 }
 
 ?>
-===Done===
 --EXPECTF--
 *** Testing jsond_encode() : basic functionality ***
 -- Iteration 1 --
@@ -155,4 +154,3 @@ string(4) "null"
 bool(false)
 -- Iteration 27 --
 string(82) "{"MyInt":99,"MyFloat":123.45,"MyBool":true,"MyNull":null,"MyString":"Hello World"}"
-===Done===

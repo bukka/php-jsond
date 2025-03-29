@@ -20,7 +20,6 @@ function jsond_encode_invalid_utf8($str) {
 
 jsond_encode_invalid_utf8("\x61\xb0\x62");
 jsond_encode_invalid_utf8("\x61\xf0\x9d\x85\x41");
-echo "Done\n";
 ?>
 --EXPECT--
 bool(false)
@@ -33,4 +32,3 @@ string(4) ""aA""
 string(10) ""a\ufffdA""
 bool(false)
 string(14) "2261efbfbd4122"
-Done
