@@ -42,10 +42,9 @@ int json_yydebug = 1;
 
 }
 
-%define api.pure full
 %define api.prefix {php_jsond_yy}
-%lex-param  { php_jsond_parser *parser  }
-%parse-param { php_jsond_parser *parser }
+%define api.pure full
+%param { php_jsond_parser *parser }
 
 %union {
 	zval value;
