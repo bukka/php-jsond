@@ -379,9 +379,7 @@ static PHP_FUNCTION(jsond_decode)
    Returns the error code of the last json_encode() or json_decode() call. */
 static PHP_FUNCTION(jsond_last_error)
 {
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "") == FAILURE) {
-		RETURN_THROWS();
-	}
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_LONG(JSOND_G(error_code));
 }
@@ -393,9 +391,7 @@ static PHP_FUNCTION(jsond_last_error)
    Returns the error string of the last json_encode() or json_decode() call. */
 static PHP_FUNCTION(jsond_last_error_msg)
 {
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "") == FAILURE) {
-		RETURN_THROWS();
-	}
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_STRING(php_jsond_get_error_msg(JSOND_G(error_code)));
 }
