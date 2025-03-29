@@ -2,10 +2,13 @@
 
 ## Decoding
 - Integrate jso schema validation
-- use JSON_ERROR_CTRL_CHAR also in non string context (JS condition)
+- Check whether using ZVAL_EMPTY_ARRAY adds some improvements in perf (mainly how it behaves when no array is empy)
+  - https://github.com/php/php-src/commit/447f07cd28494caf6c9f08640bc6d355f93ed2f2
+- Look into simd parser
 - extended error info containing error location
 - check if there are some potential issues with bigint checking
   - refactore algorithm in jsond_scanner.re
+- use JSON_ERROR_CTRL_CHAR also in non string context (JS condition)
 
 ## Encoding
 - integrated getting serialization object data for newer versions
