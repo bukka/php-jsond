@@ -233,6 +233,7 @@ static int php_jsond_parser_object_create(php_jsond_parser *parser, zval *object
 	} else {
 		object_init(object);
 	}
+	return SUCCESS;
 }
 
 static int php_jsond_parser_object_update(php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue)
