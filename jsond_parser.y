@@ -292,7 +292,7 @@ static const php_jsond_parser_methods default_parser_methods =
 
 PHP_JSOND_API void php_jsond_parser_init_ex(
 		php_jsond_parser *parser, zval *return_value,
-		char *str, size_t str_len,
+		const char *str, size_t str_len,
 		int options, int max_depth,
 		const php_jsond_parser_methods *parser_methods)
 {
@@ -306,7 +306,7 @@ PHP_JSOND_API void php_jsond_parser_init_ex(
 
 PHP_JSOND_API void php_jsond_parser_init(
 		php_jsond_parser *parser, zval *return_value,
-		char *str, size_t str_len,
+		const char *str, size_t str_len,
 		int options, int max_depth)
 {
 	php_jsond_parser_init_ex(

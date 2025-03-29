@@ -41,7 +41,7 @@ typedef struct _php_jsond_scanner {
 
 
 void php_jsond_scanner_init(
-		php_jsond_scanner *scanner, char *str, size_t str_len, int options);
+		php_jsond_scanner *scanner, const char *str, size_t str_len, int options);
 
 int php_jsond_scan(php_jsond_scanner *s);
 

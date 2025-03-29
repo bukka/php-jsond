@@ -61,7 +61,7 @@ struct _php_jsond_parser {
 PHP_JSOND_API void php_jsond_parser_init_ex(
 		php_jsond_parser *parser,
 		zval *return_value,
-		char *str,
+		const char *str,
 		size_t str_len,
 		int options,
 		int max_depth,
@@ -70,7 +70,7 @@ PHP_JSOND_API void php_jsond_parser_init_ex(
 PHP_JSOND_API void php_jsond_parser_init(
 		php_jsond_parser *parser,
 		zval *return_value,
-		char *str,
+		const char *str,
 		size_t str_len,
 		int options,
 		int max_depth);

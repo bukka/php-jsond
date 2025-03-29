@@ -225,7 +225,7 @@ PHP_JSOND_API int php_jsond_encode(php_jsond_buffer *buf, zval *val, int options
 }
 
 PHP_JSOND_API int php_jsond_decode_ex(
-		zval *return_value, char *str, size_t str_len, int options, int depth)
+		zval *return_value, const char *str, size_t str_len, int options, int depth)
 {
 	php_jsond_parser parser;
 

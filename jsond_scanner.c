@@ -89,7 +89,7 @@ static int php_jsond_ucs2_to_int(php_jsond_scanner *s, int size)
 	return php_jsond_ucs2_to_int_ex(s, size, 1);
 }
 
-void php_jsond_scanner_init(php_jsond_scanner *s, char *str, size_t str_len, int options)
+void php_jsond_scanner_init(php_jsond_scanner *s, const char *str, size_t str_len, int options)
 {
 	s->cursor = (php_jsond_ctype *) str;
 	s->limit = (php_jsond_ctype *) str + str_len;
