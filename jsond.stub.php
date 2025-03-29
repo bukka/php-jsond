@@ -1,5 +1,7 @@
 <?php
 
+/** @generate-function-entries */
+
 /** @return string|false */
 function jsond_encode(mixed $value, int $options = 0, int $depth = 512): string|false {}
 

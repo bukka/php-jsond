@@ -27,10 +27,6 @@
 
 /* PHP init and user functions */
 static PHP_MINFO_FUNCTION(jsond);
-static PHP_FUNCTION(jsond_encode);
-static PHP_FUNCTION(jsond_decode);
-static PHP_FUNCTION(jsond_last_error);
-static PHP_FUNCTION(jsond_last_error_msg);
 
 static const char digits[] = "0123456789abcdef";
 
@@ -38,15 +34,6 @@ PHP_JSOND_API zend_class_entry *php_jsond_serializable_ce;
 PHP_JSOND_API zend_class_entry *php_jsond_exception_ce;
 
 PHP_JSOND_API ZEND_DECLARE_MODULE_GLOBALS(jsond)
-
-/* jsond_functions[] */
-static zend_function_entry jsond_functions[] = {
-	PHP_FE(jsond_encode, arginfo_jsond_encode)
-	PHP_FE(jsond_decode, arginfo_jsond_decode)
-	PHP_FE(jsond_last_error, arginfo_jsond_last_error)
-	PHP_FE(jsond_last_error_msg, arginfo_jsond_last_error_msg)
-	PHP_FE_END
-};
 
 /* jsond_serializable_interface[] */
 static zend_function_entry jsond_serializable_interface[] = {
@@ -80,7 +67,7 @@ static PHP_MINIT_FUNCTION(jsond)
 	zend_class_entry ce;
 
 	/* register jsond function */
-	if (zend_register_functions(NULL, jsond_functions, NULL, 0) == FAILURE) {
+	if (zend_register_functions(NULL, ext_functions, NULL, 0) == FAILURE) {
 		zend_error(E_CORE_WARNING,"jsond: Unable to register functions");
 		return FAILURE;
 	}
@@ -280,7 +267,7 @@ PHP_JSOND_API int php_jsond_decode_ex(
 
 /* proto string jsond_encode(mixed data [, int options[, int depth]])
    Returns the JSON representation of a value */
-static PHP_FUNCTION(jsond_encode)
+PHP_FUNCTION(jsond_encode)
 {
 	zval *parameter;
 	php_jsond_encoder encoder;
@@ -321,7 +308,7 @@ static PHP_FUNCTION(jsond_encode)
 
 /* proto mixed jsond_decode(string json [, bool assoc [, int depth]])
    Decodes the JSON representation into a PHP value */
-static PHP_FUNCTION(jsond_decode)
+PHP_FUNCTION(jsond_decode)
 {
 	char *str;
 	size_t str_len;
@@ -377,7 +364,7 @@ static PHP_FUNCTION(jsond_decode)
 
 /* proto int jsond_last_error()
    Returns the error code of the last json_encode() or json_decode() call. */
-static PHP_FUNCTION(jsond_last_error)
+PHP_FUNCTION(jsond_last_error)
 {
 	ZEND_PARSE_PARAMETERS_NONE();
 
@@ -389,7 +376,7 @@ static PHP_FUNCTION(jsond_last_error)
 
 /* proto string jsond_last_error_msg()
    Returns the error string of the last json_encode() or json_decode() call. */
-static PHP_FUNCTION(jsond_last_error_msg)
+PHP_FUNCTION(jsond_last_error_msg)
 {
 	ZEND_PARSE_PARAMETERS_NONE();
 
