@@ -1112,7 +1112,7 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, php_jsond_parser *
 
     case 25: /* pair  */
 
-      { PHP_JSOND_RELEASE_STRING(((*yyvaluep).pair).key); zval_ptr_dtor_nogc(&((*yyvaluep).pair).val); }
+      { zend_string_release_ex(((*yyvaluep).pair).key, 0); zval_ptr_dtor_nogc(&((*yyvaluep).pair).val); }
 
         break;
 
@@ -1797,6 +1797,7 @@ static int php_jsond_parser_object_create(php_jsond_parser *parser, zval *object
 	} else {
 		object_init(object);
 	}
+	return SUCCESS;
 }
 
 static int php_jsond_parser_object_update(php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue)
@@ -1810,7 +1811,7 @@ static int php_jsond_parser_object_update(php_jsond_parser *parser, zval *object
 
 		if (ZSTR_LEN(key) > 0 && ZSTR_VAL(key)[0] == '\0') {
 			parser->scanner.errcode = PHP_JSOND_ERROR_INVALID_PROPERTY_NAME;
-			PHP_JSOND_RELEASE_STRING(key);
+			zend_string_release_ex(key, 0);
 			zval_ptr_dtor_nogc(zvalue);
 			zval_ptr_dtor_nogc(object);
 			return FAILURE;
@@ -1818,7 +1819,7 @@ static int php_jsond_parser_object_update(php_jsond_parser *parser, zval *object
 		PHP_JSOND_WRITE_PROPERTY(object, key, zvalue);
 		Z_TRY_DELREF_P(zvalue);
 	}
-	PHP_JSOND_RELEASE_STRING(key);
+	zend_string_release_ex(key, 0);
 
 	return SUCCESS;
 }

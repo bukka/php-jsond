@@ -19,13 +19,6 @@
 #ifndef PHP_JSOND_COMPAT_H
 #define	PHP_JSOND_COMPAT_H
 
-/* zend_string_release_ex introduction */
-#if PHP_VERSION_ID < 70300
-#define PHP_JSOND_RELEASE_STRING zend_string_release
-#else
-#define PHP_JSOND_RELEASE_STRING(_str) zend_string_release_ex(_str, 0)
-#endif
-
 /* zend_std_write_property changes */
 #if PHP_VERSION_ID < 80000
 #define PHP_JSOND_WRITE_PROPERTY(_object, _key, _value) \
