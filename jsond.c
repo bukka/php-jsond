@@ -101,36 +101,13 @@ static PHP_MINIT_FUNCTION(jsond)
 	return SUCCESS;
 }
 
-#define PHP_JSOND_REPLACE_FN(_orig, _name) \
-	_orig = zend_hash_str_find_ptr(EG(function_table), "json_"#_name, strlen("json_"#_name)); \
-	_orig->internal_function.handler = PHP_JSOND_FN(_name);
-
-
 /* RINIT */
 PHP_RINIT_FUNCTION(jsond)
 {
-	zend_function *orig;
-
-	PHP_JSOND_REPLACE_FN(orig, encode);
-	PHP_JSOND_REPLACE_FN(orig, decode);
-	PHP_JSOND_REPLACE_FN(orig, last_error);
-	PHP_JSOND_REPLACE_FN(orig, last_error_msg);
-
-	zend_string *class_name = zend_string_init(
-			PHP_JSOND_SERIALIZABLE_INTERFACE_STRING,
-			sizeof(PHP_JSOND_SERIALIZABLE_INTERFACE_STRING) - 1,
-			0
-	);
-	zend_class_entry *the_ce = zend_lookup_class(class_name);
-	zend_string_release(class_name);
-	if (!the_ce) {
-		return FAILURE;
-	}
-	php_jsond_serializable_ce = the_ce;
+	JSOND_G(error_code) = 0;
 
 	return SUCCESS;
 }
-
 
 /* PHP_GINIT_FUNCTION */
 static PHP_GINIT_FUNCTION(jsond)
