@@ -345,21 +345,22 @@ static PHP_FUNCTION(jsond_decode)
 	if (!str_len) {
 		if (!(options & PHP_JSOND_THROW_ON_ERROR)) {
 			JSOND_G(error_code) = PHP_JSOND_ERROR_SYNTAX;
+			RETURN_NULL();
 		} else {
 			zend_throw_exception(php_jsond_exception_ce,
 					php_jsond_get_error_msg(PHP_JSOND_ERROR_SYNTAX), PHP_JSOND_ERROR_SYNTAX);
+			RETURN_THROWS();
 		}
-		RETURN_NULL();
 	}
 
 	if (depth <= 0) {
 		zend_value_error("Depth must be greater than zero");
-		return;
+		RETURN_THROWS();
 	}
 
 	if (depth > INT_MAX) {
 		zend_value_error("Depth must be lower than %d", INT_MAX);
-		return;
+		RETURN_THROWS();
 	}
 
 	/* For BC reasons, the bool $assoc overrides the long $options bit for PHP_JSOND_OBJECT_AS_ARRAY */
@@ -379,7 +380,7 @@ static PHP_FUNCTION(jsond_decode)
 static PHP_FUNCTION(jsond_last_error)
 {
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "") == FAILURE) {
-		return;
+		RETURN_THROWS();
 	}
 
 	RETURN_LONG(JSOND_G(error_code));
@@ -393,7 +394,7 @@ static PHP_FUNCTION(jsond_last_error)
 static PHP_FUNCTION(jsond_last_error_msg)
 {
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "") == FAILURE) {
-		return;
+		RETURN_THROWS();
 	}
 
 	RETURN_STRING(php_jsond_get_error_msg(JSOND_G(error_code)));
