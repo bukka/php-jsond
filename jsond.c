@@ -35,24 +35,6 @@ PHP_JSOND_API zend_class_entry *php_jsond_exception_ce;
 
 PHP_JSOND_API ZEND_DECLARE_MODULE_GLOBALS(jsond)
 
-/* jsond_serializable_interface[] */
-static zend_function_entry jsond_serializable_interface[] = {
-	PHP_ABSTRACT_ME(PHP_JSOND_SERIALIZABLE_INTERFACE, jsonSerialize,
-			arginfo_class_JsondSerializable_jsonSerialize)
-	PHP_FE_END
-};
-
-/* php_jsond_register_serializable_interface */
-static inline void php_jsond_register_serializable_interface()
-{
-	zend_class_entry ce;
-
-	/* register JSON serializable class */
-	INIT_CLASS_ENTRY(ce, PHP_JSOND_SERIALIZABLE_INTERFACE_STRING, jsond_serializable_interface);
-	php_jsond_serializable_ce = zend_register_internal_interface(&ce);
-}
-
-
 #define PHP_JSOND_REGISTER_LONG_CONSTANT(name, lval) \
 	do { \
 		if (NULL == zend_hash_str_find( \
@@ -73,7 +55,7 @@ static PHP_MINIT_FUNCTION(jsond)
 	}
 
 	/* register JSON serializable class */
-	INIT_CLASS_ENTRY(ce, PHP_JSOND_SERIALIZABLE_INTERFACE_STRING, jsond_serializable_interface);
+	INIT_CLASS_ENTRY(ce, PHP_JSOND_SERIALIZABLE_INTERFACE_STRING, class_JsondSerializable_methods);
 	php_jsond_serializable_ce = zend_register_internal_interface(&ce);
 
 	/* register JSON exception class */
