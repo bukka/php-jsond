@@ -3,7 +3,7 @@ Test jsond_encode() function : basic functionality
 --SKIPIF--
 <?php
 if (!extension_loaded("jsond")) {
- 	die('skip jsond extension not available');
+     die('skip jsond extension not available');
 }
 ?>
 --FILE--
@@ -38,38 +38,38 @@ $obj->MyString = "Hello World";
 // array with different values for $string
 $inputs =  array (
 
-		// integers
-/*1*/	0,
-  		123,
-  		-123,
- 		 2147483647,
-  		-2147483648,
+        // integers
+/*1*/    0,
+          123,
+          -123,
+          2147483647,
+          -2147483648,
 
-  		// floats
-/*6*/	123.456,
-  		1.23E3,
-  		-1.23E3,
+          // floats
+/*6*/    123.456,
+          1.23E3,
+          -1.23E3,
 
- 		 // boolean
-/*9*/	TRUE,
-  		true,
-  		FALSE,
-  		false,
+          // boolean
+/*9*/    TRUE,
+          true,
+          FALSE,
+          false,
 
-		// NULL
-/*13*/	NULL,
-  		null,
+        // NULL
+/*13*/    NULL,
+          null,
 
-  		// strings
-/*15*/	"abc",
+          // strings
+/*15*/    "abc",
         'abc',
-  		"Hello\t\tWorld\n",
+          "Hello\t\tWorld\n",
 
-  		// arrays
-/*18*/	array(),
-  		array(1,2,3,4,5),
- 		array(1 => "Sun", 2=>"Mon", 3 => "Tue", 4 => "Wed", 5 => "Thur", 6 => "Fri", 7 => "Sat"),
-  		array("Jan" => 31, "Feb" => 29, "Mar" => 31, "April" => 30, "May" => 31, "June" => 30),
+          // arrays
+/*18*/    array(),
+          array(1,2,3,4,5),
+         array(1 => "Sun", 2=>"Mon", 3 => "Tue", 4 => "Wed", 5 => "Thur", 6 => "Fri", 7 => "Sat"),
+          array("Jan" => 31, "Feb" => 29, "Mar" => 31, "April" => 30, "May" => 31, "June" => 30),
 
        // empty data
 /*22*/ "",
@@ -84,7 +84,7 @@ $inputs =  array (
        // resource variable
 /*26*/ $fp,
 
-	  // object variable
+      // object variable
 /*27*/ $obj
 
 );

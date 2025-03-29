@@ -3,7 +3,7 @@ jsond_decode() invalid UTF8
 --SKIPIF--
 <?php
 if (!extension_loaded("jsond")) {
-	die('skip JSON extension not available in this build');
+    die('skip JSON extension not available in this build');
 }
 ?>
 --FILE--
@@ -12,13 +12,13 @@ require_once "bootstrap.inc";
 
 function jsond_decode_invalid_utf8($str) {
     var_dump(jsond_decode($str));
-	var_dump(jsond_decode($str, true, 512, JSOND_INVALID_UTF8_IGNORE));
-	$json = jsond_decode($str, true, 512, JSOND_INVALID_UTF8_SUBSTITUTE);
-	if (is_array($json)) {
-		var_dump(array_map(function($item) { return bin2hex($item); }, $json));
-	} else {
-		var_dump(bin2hex($json));
-	}
+    var_dump(jsond_decode($str, true, 512, JSOND_INVALID_UTF8_IGNORE));
+    $json = jsond_decode($str, true, 512, JSOND_INVALID_UTF8_SUBSTITUTE);
+    if (is_array($json)) {
+        var_dump(array_map(function($item) { return bin2hex($item); }, $json));
+    } else {
+        var_dump(bin2hex($json));
+    }
 }
 jsond_decode_invalid_utf8("\"a\xb0b\"");
 jsond_decode_invalid_utf8("\"a\xd0\xf2b\"");

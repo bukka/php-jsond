@@ -7,11 +7,11 @@ jsond_encode() with JSON_PRETTY_PRINT
 require_once "bootstrap.inc";
 
 function encode_decode($jsond) {
-	$struct = jsond_decode($jsond);
-	$pretty = jsond_encode($struct, JSOND_PRETTY_PRINT);
-	echo "$pretty\n";
-	$pretty = jsond_decode($pretty);
-	printf("Match: %d\n", $pretty == $struct);
+    $struct = jsond_decode($jsond);
+    $pretty = jsond_encode($struct, JSOND_PRETTY_PRINT);
+    echo "$pretty\n";
+    $pretty = jsond_decode($pretty);
+    printf("Match: %d\n", $pretty == $struct);
 }
 
 encode_decode('[1,2,3,[1,2,3]]');

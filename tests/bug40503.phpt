@@ -9,7 +9,7 @@ serialize_precision=-1
 require_once "bootstrap.inc";
 
 function show_eq($x,$y) {
-	echo "$x ". ($x==$y ? "==" : "!=") ." $y\n";
+    echo "$x ". ($x==$y ? "==" : "!=") ." $y\n";
 }
 
 $value = 0x7FFFFFFF; #2147483647;

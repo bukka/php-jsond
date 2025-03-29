@@ -3,7 +3,7 @@ Test jsond_decode() function : basic functionality
 --SKIPIF--
 <?php
 if (!extension_loaded("jsond")) {
- 	die('skip JSON extension not available in this build');
+     die('skip JSON extension not available in this build');
 }
 ?>
 --FILE--
@@ -14,25 +14,25 @@ echo "*** Testing jsond_decode() : basic functionality ***\n";
 
 // array with different values for $string
 $inputs =  array (
-		'0',
-		'123',
-		'-123',
-		'2147483647',
-		'-2147483648',
-		'123.456',
-		'1230',
-		'-1230',
-		'true',
-		'false',
-		'null',
-		'"abc"',
-		'"Hello World\r\n"',
-		'[]',
-		'[1,2,3,4,5]',
-		'{"myInt":99,"myFloat":123.45,"myNull":null,"myBool":true,"myString":"Hello World"}',
-		'{"Jan":31,"Feb":29,"Mar":31,"April":30,"May":31,"June":30}',
-		'""',
-		'{}'
+        '0',
+        '123',
+        '-123',
+        '2147483647',
+        '-2147483648',
+        '123.456',
+        '1230',
+        '-1230',
+        'true',
+        'false',
+        'null',
+        '"abc"',
+        '"Hello World\r\n"',
+        '[]',
+        '[1,2,3,4,5]',
+        '{"myInt":99,"myFloat":123.45,"myNull":null,"myBool":true,"myString":"Hello World"}',
+        '{"Jan":31,"Feb":29,"Mar":31,"April":30,"May":31,"June":30}',
+        '""',
+        '{}'
 );
 
 // loop through with each element of the $inputs array to test jsond_decode() function

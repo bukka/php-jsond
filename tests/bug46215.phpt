@@ -3,7 +3,7 @@ Bug #46215 (jsond_encode mutates its parameter and has some class-specific state
 --SKIPIF--
 <?php
 if (!extension_loaded("jsond")) {
- 	die('skip JSON extension not available in this build');
+     die('skip JSON extension not available in this build');
 }
 ?>
 --FILE--

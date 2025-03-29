@@ -10,46 +10,46 @@ require_once "bootstrap.inc";
 
 class NonSerializingTest
 {
-	public $data;
+    public $data;
 
-	public function __construct($data)
-	{
-		$this->data = $data;
-	}
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
 }
 
 class SerializingTest extends NonSerializingTest implements JsondSerializable
 {
-	public function jsonSerialize(): mixed
-	{
-		return $this->data;
-	}
+    public function jsonSerialize(): mixed
+    {
+        return $this->data;
+    }
 }
 
 class ValueSerializingTest extends SerializingTest
 {
-	public function jsonSerialize(): mixed
-	{
-		return array_values(is_array($this->data) ? $this->data : get_object_vars($this->data));
-	}
+    public function jsonSerialize(): mixed
+    {
+        return array_values(is_array($this->data) ? $this->data : get_object_vars($this->data));
+    }
 }
 
 class SelfSerializingTest extends SerializingTest
 {
-	public function jsonSerialize(): mixed
-	{
-		return $this;
-	}
+    public function jsonSerialize(): mixed
+    {
+        return $this;
+    }
 }
 
 $adata = array(
-	'str'	=> 'foo',
-	'int'	=> 1,
-	'float'	=> 2.3,
-	'bool'	=> false,
-	'nil'	=> null,
-	'arr'	=> array(1,2,3),
-	'obj'	=> new StdClass,
+    'str'    => 'foo',
+    'int'    => 1,
+    'float'    => 2.3,
+    'bool'    => false,
+    'nil'    => null,
+    'arr'    => array(1,2,3),
+    'obj'    => new StdClass,
 );
 
 $ndata = array_values($adata);
@@ -57,10 +57,10 @@ $ndata = array_values($adata);
 $odata = (object)$adata;
 
 foreach(array('NonSerializingTest','SerializingTest','ValueSerializingTest','SelfSerializingTest') as $class) {
-	echo "==$class==\n";
-	echo jsond_encode(new $class($adata)), "\n";
-	echo jsond_encode(new $class($ndata)), "\n";
-	echo jsond_encode(new $class($odata)), "\n";
+    echo "==$class==\n";
+    echo jsond_encode(new $class($adata)), "\n";
+    echo jsond_encode(new $class($ndata)), "\n";
+    echo jsond_encode(new $class($odata)), "\n";
 }
 ?>
 --EXPECT--

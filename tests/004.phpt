@@ -3,7 +3,7 @@ jsond_encode() & endless loop - 2
 --SKIPIF--
 <?php
 if (!extension_loaded("jsond"))
-	print "skip";
+    print "skip";
 ?>
 --FILE--
 <?php

@@ -14,9 +14,9 @@ class JsondSer_ializableObject implements \JsondSerializable {
 
 $obj = new JsondSer_ializableObject();
 try {
-	echo jsond_encode($obj);
+    echo jsond_encode($obj);
 } catch (\Exception $e) {
-	echo $e->getMessage();
+    echo $e->getMessage();
 }
 ?>
 --EXPECTF--

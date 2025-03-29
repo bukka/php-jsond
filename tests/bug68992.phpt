@@ -23,8 +23,8 @@ try {
     jsond_encode($classes);
 } catch(Exception $e) {
     do {
-	    printf("%s (%d) [%s]\n", $e->getMessage(), $e->getCode(), get_class($e));
-	} while ($e = $e->getPrevious());
+        printf("%s (%d) [%s]\n", $e->getMessage(), $e->getCode(), get_class($e));
+    } while ($e = $e->getPrevious());
 }
 ?>
 --EXPECT--

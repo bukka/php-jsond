@@ -3,15 +3,15 @@ Test jsond_decode() function : JSOND_THROW_ON_ERROR flag
 --SKIPIF--
 <?php
 if (!extension_loaded("jsond")) {
- 	die('skip jsond extension not available');
+     die('skip jsond extension not available');
 }
 ?>
 --FILE--
 <?php
 try {
-	var_dump(jsond_decode("{", false, 512, JSOND_THROW_ON_ERROR));
+    var_dump(jsond_decode("{", false, 512, JSOND_THROW_ON_ERROR));
 } catch (JsondException $e) {
-	var_dump($e);
+    var_dump($e);
 }
 ?>
 --EXPECTF--

@@ -7,14 +7,14 @@ Bug #71835 (jsond_encode sometimes incorrectly detects recursion with JsondSer_i
 require_once "bootstrap.inc";
 
 class SomeClass implements JsondSerializable {
-	public function jsonSerialize(): mixed {
-		return [get_object_vars($this)];
-	}
+    public function jsonSerialize(): mixed {
+        return [get_object_vars($this)];
+    }
 }
 class SomeClass2 implements JsondSerializable {
-	public function jsonSerialize(): mixed {
-		return [(array)$this];
-	}
+    public function jsonSerialize(): mixed {
+        return [(array)$this];
+    }
 }
 
 $class = new SomeClass;
