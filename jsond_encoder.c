@@ -499,7 +499,7 @@ static int php_jsond_encode_serializable_object(
 		myht = Z_OBJPROP_P(val);
 	}
 
-	if (myht && PHP_JSOND_HAS_APPLY_COUNT(myht)) {
+	if (myht && GC_IS_RECURSIVE(myht)) {
 		encoder->error_code = PHP_JSOND_ERROR_RECURSION;
 		if (options & PHP_JSOND_PARTIAL_OUTPUT_ON_ERROR) {
 			PHP_JSOND_BUF_APPEND_STRING(buf, "null", 4);
