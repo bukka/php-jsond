@@ -247,8 +247,7 @@ PHP_JSOND_API int php_jsond_decode_ex(
 }
 
 
-/* proto string jsond_encode(mixed data [, int options[, int depth]])
-   Returns the JSON representation of a value */
+/* Returns the JSON representation of a value */
 PHP_FUNCTION(jsond_encode)
 {
 	zval *parameter;
@@ -288,8 +287,7 @@ PHP_FUNCTION(jsond_encode)
 	PHP_JSOND_BUF_RETURN(buf, return_value);
 }
 
-/* proto mixed jsond_decode(string json [, bool assoc [, int depth]])
-   Decodes the JSON representation into a PHP value */
+/* Decodes the JSON representation into a PHP value */
 PHP_FUNCTION(jsond_decode)
 {
 	char *str;
@@ -344,8 +342,7 @@ PHP_FUNCTION(jsond_decode)
 	php_jsond_decode_ex(return_value, str, (size_t) str_len, (int) options, (int) depth);
 }
 
-/* proto int jsond_last_error()
-   Returns the error code of the last json_encode() or json_decode() call. */
+/* Returns the error code of the last json_encode() or json_decode() call. */
 PHP_FUNCTION(jsond_last_error)
 {
 	ZEND_PARSE_PARAMETERS_NONE();
@@ -356,8 +353,7 @@ PHP_FUNCTION(jsond_last_error)
 #define PHP_JSOND_ERROR_MSG_RETURN(_msg) \
 	RETURN_STRINGL(_msg, sizeof(_msg) - 1)
 
-/* proto string jsond_last_error_msg()
-   Returns the error string of the last json_encode() or json_decode() call. */
+/* Returns the error string of the last json_encode() or json_decode() call. */
 PHP_FUNCTION(jsond_last_error_msg)
 {
 	ZEND_PARSE_PARAMETERS_NONE();
