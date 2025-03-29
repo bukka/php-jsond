@@ -34,7 +34,7 @@ echo "\n-- Testing jsond_decode() function with depth below 0 --\n";
 
 
 try {
-    var_dump(json_decode('"abc"', true, -1));
+    var_dump(jsond_decode('"abc"', true, -1));
 } catch (\ValueError $e) {
     echo $e->getMessage() . \PHP_EOL;
 }
@@ -54,4 +54,4 @@ Warning: %s expects at most 4 parameters, 5 given in %s on line %d
 NULL
 
 -- Testing jsond_decode() function with depth below 0 --
-Depth must be greater than zero
+jsond_decode(): Argument #3 ($depth) must be greater than zero

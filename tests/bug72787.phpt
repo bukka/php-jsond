@@ -15,4 +15,4 @@ try {
 
 ?>
 --EXPECTF--
-Depth must be lower than %d
+jsond_decode(): Argument #3 ($depth) must be less than %d
