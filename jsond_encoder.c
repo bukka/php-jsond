@@ -338,15 +338,15 @@ static int php_jsond_escape_string(
 
 #define PHP_JSOND_HASH_PROTECT_RECURSION(_tmp_ht) \
 	do { \
-		if (_tmp_ht && PHP_JSOND_APPLY_PROTECTION(_tmp_ht)) { \
-			PHP_JSOND_INC_APPLY_COUNT(_tmp_ht); \
+		if (_tmp_ht) { \
+			GC_TRY_PROTECT_RECURSION(_tmp_ht); \
 		} \
 	} while (0)
 
 #define PHP_JSOND_HASH_UNPROTECT_RECURSION(_tmp_ht) \
 	do { \
-		if (_tmp_ht && PHP_JSOND_APPLY_PROTECTION(_tmp_ht)) { \
-			PHP_JSOND_DEC_APPLY_COUNT(_tmp_ht); \
+		if (_tmp_ht) { \
+			GC_TRY_UNPROTECT_RECURSION(_tmp_ht); \
 		} \
 	} while (0)
 
@@ -365,7 +365,7 @@ static int php_jsond_encode_array(
 		r = PHP_JSOND_OUTPUT_OBJECT;
 	}
 
-	if (myht && PHP_JSOND_HAS_APPLY_COUNT(myht)) {
+	if (myht && GC_IS_RECURSIVE(myht)) {
 		encoder->error_code = PHP_JSOND_ERROR_RECURSION;
 		if (options & PHP_JSOND_PARTIAL_OUTPUT_ON_ERROR) {
 			PHP_JSOND_BUF_APPEND_STRING(buf, "null", 4);
