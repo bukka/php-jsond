@@ -65,7 +65,6 @@ int json_yydebug = 1;
 %type <value> members member elements element
 
 %destructor { zval_ptr_dtor_nogc(&$$); } <value>
-%destructor { zend_string_release_ex($$.key, 0); zval_ptr_dtor_nogc(&$$.val); } <pair>
 
 %code {
 int php_jsond_yylex(union YYSTYPE *value, php_jsond_parser *parser);
