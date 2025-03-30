@@ -16,6 +16,8 @@
   - Optimized object encoding without rebulding properties HashTable - https://github.com/php/php-src/commit/f9f8c1c79cac1b03279190e0c5513a51881615f9
   - Fix for the above - https://github.com/php/php-src/commit/92aeda524b0b99ab0c861bcba62e5a471ba805e6
   - Fix of the changes above - https://github.com/php/php-src/commit/6057cd2367003146285236f9c731405a8de990a3
+- Look into generated string (buf) reduction in size
+  - Reduce memory allocated by json_encode - https://github.com/php/php-src/commit/4df3dd767912ea129c7874f4b991767d31a44479
 - Look into the SIMD changes
 - compare utf8 validation with json and optimize it - check the simd one
   - Optimization for ASCII data - https://github.com/php/php-src/commit/46d5551fc345140711bec41c04d93197152d21d0

@@ -80,6 +80,7 @@ start:
 			{
 				$$ = $1;
 				ZVAL_COPY_VALUE(parser->return_value, &$1);
+				(void) php_jsond_yynerrs;
 				YYACCEPT;
 			}
 ;
