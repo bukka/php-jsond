@@ -26,6 +26,7 @@
 #include "php_jsond_buffer.h"
 #include "php_jsond_utf8_decoder.h"
 #include <zend_exceptions.h>
+#include "zend_enum.h"
 
 /* double limits */
 #include <float.h>
@@ -537,6 +538,18 @@ static int php_jsond_encode_serializable_object(
 	return return_code;
 }
 
+static int php_jsond_encode_serializable_enum(php_jsond_buffer *buf, zval *val, int options, php_jsond_encoder *encoder)
+{
+	zend_class_entry *ce = Z_OBJCE_P(val);
+	if (ce->enum_backing_type == IS_UNDEF) {
+		encoder->error_code = PHP_JSOND_ERROR_NON_BACKED_ENUM;
+		PHP_JSOND_BUF_APPEND_CHAR(buf, '0');
+		return FAILURE;
+	}
+	zval *value_zv = zend_enum_fetch_case_value(Z_OBJ_P(val));
+	return php_jsond_encode_zval(buf, value_zv, options, encoder);
+}
+
 /* ZVAL encoding */
 
 int php_jsond_encode_zval(php_jsond_buffer *buf, zval *val, int options,php_jsond_encoder *encoder)
@@ -567,6 +580,9 @@ again:
 		case IS_OBJECT:
 			if (instanceof_function(Z_OBJCE_P(val), php_jsond_serializable_ce)) {
 				return php_jsond_encode_serializable_object(buf, val, options, encoder);
+			}
+			if (Z_OBJCE_P(val)->ce_flags & ZEND_ACC_ENUM) {
+				return php_jsond_encode_serializable_enum(buf, val, options, encoder);
 			}
 			/* fallthrough -- Non-serializable object */
 		case IS_ARRAY: {

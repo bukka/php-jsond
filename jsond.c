@@ -93,6 +93,7 @@ static PHP_MINIT_FUNCTION(jsond)
 	PHP_JSOND_REGISTER_LONG_CONSTANT("ERROR_UNSUPPORTED_TYPE", PHP_JSOND_ERROR_UNSUPPORTED_TYPE);
 	PHP_JSOND_REGISTER_LONG_CONSTANT("ERROR_INVALID_PROPERTY_NAME", PHP_JSOND_ERROR_INVALID_PROPERTY_NAME);
 	PHP_JSOND_REGISTER_LONG_CONSTANT("ERROR_UTF16", PHP_JSOND_ERROR_UTF16);
+	PHP_JSOND_REGISTER_LONG_CONSTANT("ERROR_NON_BACKED_ENUM", PHP_JSOND_ERROR_NON_BACKED_ENUM);
 
 	return SUCCESS;
 }
@@ -173,6 +174,8 @@ static const char *php_jsond_get_error_msg(php_jsond_error_code error_code) /* {
 			return "The decoded property name is invalid";
 		case PHP_JSOND_ERROR_UTF16:
 			return "Single unpaired UTF-16 surrogate in unicode escape";
+		case PHP_JSOND_ERROR_NON_BACKED_ENUM:
+			return "Non-backed enums have no default serialization";
 		default:
 			return "Unknown error";
 	}
