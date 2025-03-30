@@ -195,12 +195,12 @@ PHP_JSOND_API zend_result php_jsond_encode_ex(php_jsond_buffer *buf, zval *val, 
 	return return_code;
 }
 
-PHP_JSOND_API int php_jsond_encode(php_jsond_buffer *buf, zval *val, int options)
+PHP_JSOND_API zend_result php_jsond_encode(php_jsond_buffer *buf, zval *val, int options)
 {
 	return php_jsond_encode_ex(buf, val, options, JSOND_G(encode_max_depth));
 }
 
-PHP_JSOND_API int php_jsond_decode_ex(
+PHP_JSOND_API zend_result php_jsond_decode_ex(
 		zval *return_value, const char *str, size_t str_len, int options, int depth)
 {
 	php_jsond_parser parser;

@@ -75,7 +75,7 @@ static inline void php_jsond_pretty_print_indent(
 
 /* Double encoding */
 
-static inline int php_jsond_is_valid_double(double d)
+static inline bool php_jsond_is_valid_double(double d)
 {
 	return !zend_isinf(d) && !zend_isnan(d);
 }
@@ -119,7 +119,7 @@ static inline char *php_jsond_escape_string_flush(
 #define PHP_JSOND_BIT_TEST(bits, bit) \
 	(((bits)[(bit) / (sizeof((bits)[0])*8)] >> ((bit) & (sizeof((bits)[0])*8-1))) & 1)
 
-static int php_jsond_escape_string(
+static zend_result php_jsond_escape_string(
 		php_jsond_buffer *buf, char *s, size_t len, int options,
 		php_jsond_encoder *encoder)
 {
@@ -337,7 +337,7 @@ static int php_jsond_escape_string(
 		} \
 	} while (0)
 
-static int php_jsond_encode_array(
+static zend_result php_jsond_encode_array(
 		php_jsond_buffer *buf, zval *val, int options,
 		php_jsond_encoder *encoder)
 {
@@ -470,7 +470,7 @@ static int php_jsond_encode_array(
 
 /* Serializable interface */
 
-static int php_jsond_encode_serializable_object(
+static zend_result php_jsond_encode_serializable_object(
 		php_jsond_buffer *buf, zval *val, int options,
 		php_jsond_encoder *encoder)
 {
@@ -478,7 +478,7 @@ static int php_jsond_encode_serializable_object(
 	zval fname;
 	zval retval;
 	HashTable* myht;
-	int return_code;
+	zend_result return_code;
 
 	if (Z_TYPE_P(val) == IS_ARRAY) {
 		myht = Z_ARRVAL_P(val);
@@ -538,7 +538,7 @@ static int php_jsond_encode_serializable_object(
 	return return_code;
 }
 
-static int php_jsond_encode_serializable_enum(php_jsond_buffer *buf, zval *val, int options, php_jsond_encoder *encoder)
+static zend_result php_jsond_encode_serializable_enum(php_jsond_buffer *buf, zval *val, int options, php_jsond_encoder *encoder)
 {
 	zend_class_entry *ce = Z_OBJCE_P(val);
 	if (ce->enum_backing_type == IS_UNDEF) {
@@ -552,7 +552,7 @@ static int php_jsond_encode_serializable_enum(php_jsond_buffer *buf, zval *val, 
 
 /* ZVAL encoding */
 
-int php_jsond_encode_zval(php_jsond_buffer *buf, zval *val, int options,php_jsond_encoder *encoder)
+zend_result php_jsond_encode_zval(php_jsond_buffer *buf, zval *val, int options,php_jsond_encoder *encoder)
 {
 again:
 	switch (Z_TYPE_P(val)) {
