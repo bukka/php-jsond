@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 661d4535bf69825fdf0215872c354eb1e6fc69eb */
+ * Stub hash: b454eb5a722edb08b87834ed903285945a25b7dc */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_jsond_encode, 0, 1, MAY_BE_STRING|MAY_BE_FALSE)
 	ZEND_ARG_TYPE_INFO(0, value, IS_MIXED, 0)
@@ -7,7 +7,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_jsond_encode, 0, 1, MAY_BE_STRIN
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, depth, IS_LONG, 0, "512")
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_jsond_decode, 0, 0, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_jsond_decode, 0, 1, IS_MIXED, 0)
 	ZEND_ARG_TYPE_INFO(0, json, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, associative, _IS_BOOL, 1, "null")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, depth, IS_LONG, 0, "512")
@@ -23,10 +23,12 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_JsondSerializable_jsonSerialize, 0, 0, IS_MIXED, 0)
 ZEND_END_ARG_INFO()
 
+
 ZEND_FUNCTION(jsond_encode);
 ZEND_FUNCTION(jsond_decode);
 ZEND_FUNCTION(jsond_last_error);
 ZEND_FUNCTION(jsond_last_error_msg);
+
 
 static const zend_function_entry ext_functions[] = {
 	ZEND_FE(jsond_encode, arginfo_jsond_encode)
@@ -36,7 +38,33 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE_END
 };
 
+
 static const zend_function_entry class_JsondSerializable_methods[] = {
-	ZEND_RAW_FENTRY("jsonSerialize", NULL, arginfo_class_JsondSerializable_jsonSerialize, ZEND_ACC_PUBLIC|ZEND_ACC_ABSTRACT, NULL, NULL)
+	ZEND_ABSTRACT_ME_WITH_FLAGS(JsondSerializable, jsonSerialize, arginfo_class_JsondSerializable_jsonSerialize, ZEND_ACC_PUBLIC|ZEND_ACC_ABSTRACT)
 	ZEND_FE_END
 };
+
+
+static const zend_function_entry class_JsondException_methods[] = {
+	ZEND_FE_END
+};
+
+static zend_class_entry *register_class_JsondSerializable(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_CLASS_ENTRY(ce, "JsondSerializable", class_JsondSerializable_methods);
+	class_entry = zend_register_internal_interface(&ce);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_JsondException(zend_class_entry *class_entry_Exception)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_CLASS_ENTRY(ce, "JsondException", class_JsondException_methods);
+	class_entry = zend_register_internal_class_ex(&ce, class_entry_Exception);
+
+	return class_entry;
+}

@@ -46,8 +46,6 @@ PHP_JSOND_API ZEND_DECLARE_MODULE_GLOBALS(jsond)
 /* MINIT */
 static PHP_MINIT_FUNCTION(jsond)
 {
-	zend_class_entry ce;
-
 	/* register jsond function */
 	if (zend_register_functions(NULL, ext_functions, NULL, 0) == FAILURE) {
 		zend_error(E_CORE_WARNING,"jsond: Unable to register functions");
@@ -55,12 +53,10 @@ static PHP_MINIT_FUNCTION(jsond)
 	}
 
 	/* register JSON serializable class */
-	INIT_CLASS_ENTRY(ce, PHP_JSOND_SERIALIZABLE_INTERFACE_STRING, class_JsondSerializable_methods);
-	php_jsond_serializable_ce = zend_register_internal_interface(&ce);
+	php_jsond_serializable_ce = register_class_JsondSerializable();
 
 	/* register JSON exception class */
-	INIT_CLASS_ENTRY(ce, "JsondException", NULL);
-	php_jsond_exception_ce = zend_register_internal_class_ex(&ce, zend_ce_exception);
+	php_jsond_exception_ce = register_class_JsondException(zend_ce_exception);
 
 	/* decoding options */
 	PHP_JSOND_REGISTER_LONG_CONSTANT("OBJECT_AS_ARRAY",  PHP_JSOND_OBJECT_AS_ARRAY);
