@@ -41,24 +41,10 @@ static const char php_jsond_digits[] = "0123456789abcdef";
 
 static int php_jsond_determine_array_type(zval *val)
 {
-	int i;
-	HashTable *myht = Z_ARRVAL_P(val);
+	zend_array *myht = Z_ARRVAL_P(val);
 
-	i = myht ? zend_hash_num_elements(myht) : 0;
-	if (i > 0) {
-		zend_ulong index, idx = 0;
-		zend_string *key;
-
-		if (HT_IS_PACKED(myht) && HT_IS_WITHOUT_HOLES(myht)) {
-			return PHP_JSOND_OUTPUT_ARRAY;
-		}
-
-		ZEND_HASH_FOREACH_KEY(myht, index, key) {
-			if (key || index != idx) {
-				return PHP_JSOND_OUTPUT_OBJECT;
-			}
-			idx++;
-		} ZEND_HASH_FOREACH_END();
+	if (myht) {
+		return zend_array_is_list(myht) ? PHP_JSOND_OUTPUT_ARRAY : PHP_JSOND_OUTPUT_OBJECT;
 	}
 
 	return PHP_JSOND_OUTPUT_ARRAY;
