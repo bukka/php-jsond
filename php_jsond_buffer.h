@@ -77,7 +77,7 @@ static inline void php_jsond_buffer_append_long(php_jsond_buffer *buf, long l) /
 {
 	char str[PHP_JSOND_INT_BUFFER_SIZE];
 	char *p = &str[PHP_JSOND_INT_BUFFER_SIZE];
-	zend_bool negative;
+	bool negative;
 
 	if (l < 0) {
 		negative = 1;

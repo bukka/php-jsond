@@ -149,7 +149,7 @@ PHP_JSOND_API int php_jsond_encode(php_jsond_buffer *buf, zval *val, int options
 PHP_JSOND_API int php_jsond_decode_ex(zval *return_value, const char *str, size_t str_len, int options, int depth);
 extern PHP_JSOND_API zend_class_entry *php_jsond_serializable_ce;
 
-static inline int php_jsond_decode(zval *return_value, char *str, size_t str_len, zend_bool assoc, int depth)
+static inline int php_jsond_decode(zval *return_value, char *str, size_t str_len, bool assoc, int depth)
 {
 	return php_jsond_decode_ex(return_value, str, str_len, assoc ? PHP_JSOND_OBJECT_AS_ARRAY : 0, depth);
 }
