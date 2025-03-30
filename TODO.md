@@ -13,7 +13,10 @@
 ## Encoding
 - integrated getting serialization object data for newer versions
   - Support get_properties_for - https://github.com/php/php-src/commit/7ec8087f8097955bfc6b97d1a916c6ffc39908f4
-- compare utf8 validation with json and optimize it
+  - Optimized object encoding without rebulding properties HashTable - https://github.com/php/php-src/commit/f9f8c1c79cac1b03279190e0c5513a51881615f9
+  - Fix for the above - https://github.com/php/php-src/commit/92aeda524b0b99ab0c861bcba62e5a471ba805e6
+- Look into the SIMD changes
+- compare utf8 validation with json and optimize it - check the simd one
   - Optimization for ASCII data - https://github.com/php/php-src/commit/46d5551fc345140711bec41c04d93197152d21d0
 - improve and test native buffer
   - PHPC_CSTRL_RETVAL in PHP_JSON_BUF_RETURN is not ideal as it copies the whole buffer
