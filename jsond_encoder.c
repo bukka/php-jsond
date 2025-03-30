@@ -584,7 +584,7 @@ again:
 			if (Z_OBJCE_P(val)->ce_flags & ZEND_ACC_ENUM) {
 				return php_jsond_encode_serializable_enum(buf, val, options, encoder);
 			}
-			/* fallthrough -- Non-serializable object */
+			ZEND_FALLTHROUGH;
 		case IS_ARRAY: {
 			/* Avoid modifications (and potential freeing) of the array through a reference when a
 			 * jsonSerialize() method is invoked. */
