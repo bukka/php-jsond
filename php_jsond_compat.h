@@ -14,30 +14,11 @@
   +----------------------------------------------------------------------+
 */
 
-/* The compatibility changes to support at least PHP 7.2 */
+/* The compatibility changes to support at least PHP 8.1 */
 
 #ifndef PHP_JSOND_COMPAT_H
 #define	PHP_JSOND_COMPAT_H
 
-/* zend_std_write_property changes */
-#if PHP_VERSION_ID < 80000
-#define PHP_JSOND_WRITE_PROPERTY(_object, _key, _value) \
-    do { \
-        zval _zkey; \
-        ZVAL_NEW_STR(&_zkey, _key); \
-        zend_std_write_property(_object, &_zkey, _value, NULL); \
-    } while(0)
-
-#else
-#define PHP_JSOND_WRITE_PROPERTY(_object, _key, _value) \
-    zend_std_write_property(Z_OBJ_P(_object), _key, _value, NULL)
-#endif
-
-/* zend_dtoa sign type */
-#if PHP_VERSION_ID < 80100
-typedef int php_jsond_dtoa_sign_t;
-#else
-typedef bool php_jsond_dtoa_sign_t;
-#endif
+/* currently nothing */
 
 #endif	/* PHP_JSOND_COMPAT_H */

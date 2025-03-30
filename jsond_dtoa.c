@@ -23,7 +23,7 @@ char *php_jsond_gcvt(double value, int ndigit, char dec_point, char exponent, ch
 {
 	char *digits, *dst, *src;
 	int i, decpt;
-	php_jsond_dtoa_sign_t sign;
+	bool sign;
 	int mode = ndigit >= 0 ? 2 : 0;
 
 	if (mode == 0) {

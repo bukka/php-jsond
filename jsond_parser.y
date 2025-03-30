@@ -239,7 +239,7 @@ static int php_jsond_parser_object_update(php_jsond_parser *parser, zval *object
 			zval_ptr_dtor_nogc(object);
 			return FAILURE;
 		}
-		PHP_JSOND_WRITE_PROPERTY(object, key, zvalue);
+		zend_std_write_property(Z_OBJ_P(object), key, zvalue, NULL);
 		Z_TRY_DELREF_P(zvalue);
 	}
 	zend_string_release_ex(key, 0);
