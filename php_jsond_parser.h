@@ -81,5 +81,7 @@ PHP_JSOND_API int php_jsond_parse(php_jsond_parser *parser);
 
 int php_jsond_yyparse(php_jsond_parser *parser);
 
+const php_jsond_parser_methods* php_jsond_get_validate_methods(void);
+
 #endif	/* PHP_JSOND_PARSER_H */
 

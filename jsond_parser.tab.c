@@ -1803,10 +1803,46 @@ static int php_jsond_parser_object_update(php_jsond_parser *parser, zval *object
 	return SUCCESS;
 }
 
+static int php_jsond_parser_array_create_validate(php_jsond_parser *parser, zval *array)
+{
+	ZVAL_NULL(array);
+	return SUCCESS;
+}
+
+static int php_jsond_parser_array_append_validate(php_jsond_parser *parser, zval *array, zval *zvalue)
+{
+	return SUCCESS;
+}
+
+static int php_jsond_parser_object_create_validate(php_jsond_parser *parser, zval *object)
+{
+	ZVAL_NULL(object);
+	return SUCCESS;
+}
+
+static int php_jsond_parser_object_update_validate(php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue)
+{
+	return SUCCESS;
+}
+
+
 int php_jsond_yylex(union YYSTYPE *value, php_jsond_parser *parser)
 {
 	int token = php_jsond_scan(&parser->scanner);
 	value->value = parser->scanner.value;
+
+	bool validate = parser->methods.array_create == php_jsond_parser_array_create_validate
+		&& parser->methods.array_append == php_jsond_parser_array_append_validate
+		&& parser->methods.object_create == php_jsond_parser_object_create_validate
+		&& parser->methods.object_update == php_jsond_parser_object_update_validate;
+
+	if (validate) {
+		zval_ptr_dtor_str(&(parser->scanner.value));
+		ZVAL_UNDEF(&value->value);
+	} else {
+		value->value = parser->scanner.value;
+	}
+
 	return token;
 }
 
@@ -1830,6 +1866,18 @@ static const php_jsond_parser_methods default_parser_methods =
 	NULL,
 	php_jsond_parser_object_create,
 	php_jsond_parser_object_update,
+	NULL,
+	NULL,
+};
+
+static const php_jsond_parser_methods validate_parser_methods =
+{
+	php_jsond_parser_array_create_validate,
+	php_jsond_parser_array_append_validate,
+	NULL,
+	NULL,
+	php_jsond_parser_object_create_validate,
+	php_jsond_parser_object_update_validate,
 	NULL,
 	NULL,
 };
@@ -1867,4 +1915,10 @@ PHP_JSOND_API void php_jsond_parser_init(
 PHP_JSOND_API int php_jsond_parse(php_jsond_parser *parser)
 {
 	return php_jsond_yyparse(parser);
+}
+
+
+const php_jsond_parser_methods* php_jsond_get_validate_methods(void)
+{
+	return &validate_parser_methods;
 }

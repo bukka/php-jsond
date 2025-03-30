@@ -118,12 +118,14 @@ typedef enum {
 #define PHP_JSOND_OUTPUT_ARRAY	0
 #define PHP_JSOND_OUTPUT_OBJECT	1
 
-/* json_decode() options */
+/* jsond_decode() options */
 #define PHP_JSOND_OBJECT_AS_ARRAY	(1<<0)
 #define PHP_JSOND_BIGINT_AS_STRING	(1<<1)
 
-/* json_decode() and json_encode() common options */
+/* jsond_validate(), jsond_decode() and jsond_encode() common options */
 #define PHP_JSOND_INVALID_UTF8_IGNORE     (1<<20)
+
+/* jsond_decode() and jsond_encode() common options */
 #define PHP_JSOND_INVALID_UTF8_SUBSTITUTE (1<<21)
 #define PHP_JSOND_THROW_ON_ERROR          (1<<22)
 
@@ -148,6 +150,8 @@ ZEND_TSRMLS_CACHE_EXTERN();
 
 PHP_JSOND_API zend_result php_jsond_encode(php_jsond_buffer *buf, zval *val, int options);
 PHP_JSOND_API zend_result php_jsond_decode_ex(zval *return_value, const char *str, size_t str_len, int options, int depth);
+PHP_JSOND_API bool php_jsond_validate_ex(const char *str, size_t str_len, zend_long options, zend_long depth);
+
 extern PHP_JSOND_API zend_class_entry *php_jsond_serializable_ce;
 
 static inline zend_result php_jsond_decode(zval *return_value, char *str, size_t str_len, bool assoc, int depth)
