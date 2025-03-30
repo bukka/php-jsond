@@ -73,10 +73,6 @@ union PHP_JSOND_YYSTYPE
 
 
 	zval value;
-	struct {
-		zend_string *key;
-		zval val;
-	} pair;
 
 
 };

@@ -178,10 +178,6 @@ union PHP_JSOND_YYSTYPE
 
 
 	zval value;
-	struct {
-		zend_string *key;
-		zval val;
-	} pair;
 
 
 };
@@ -449,16 +445,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  16
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   25
+#define YYLAST   26
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  18
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  15
+#define YYNNTS  14
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  30
+#define YYNRULES  29
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  39
+#define YYNSTATES  40
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -476,8 +472,8 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    15,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,    16,     2,
+       2,     2,     2,     2,    16,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,    15,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -505,10 +501,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    84,    84,    93,    93,   110,   111,   119,   123,   127,
-     133,   142,   151,   150,   168,   169,   177,   181,   185,   190,
-     198,   199,   203,   204,   205,   206,   207,   208,   209,   210,
-     211
+       0,    79,    79,    88,    88,   105,   106,   114,   118,   122,
+     128,   138,   137,   155,   156,   164,   168,   172,   177,   185,
+     186,   190,   191,   192,   193,   194,   195,   196,   197,   198
 };
 #endif
 
@@ -520,9 +515,9 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "PHP_JSOND_T_NUL", "PHP_JSOND_T_TRUE",
   "PHP_JSOND_T_FALSE", "PHP_JSOND_T_INT", "PHP_JSOND_T_DOUBLE",
   "PHP_JSOND_T_STRING", "PHP_JSOND_T_ESTRING", "PHP_JSOND_T_EOI",
-  "PHP_JSOND_T_ERROR", "'{'", "'}'", "']'", "','", "':'", "'['", "$accept",
-  "start", "object", "$@1", "object_end", "members", "member", "pair",
-  "array", "$@2", "array_end", "elements", "element", "key", "value", YY_NULLPTR
+  "PHP_JSOND_T_ERROR", "'{'", "'}'", "']'", "':'", "','", "'['", "$accept",
+  "start", "object", "$@1", "object_end", "members", "member", "array",
+  "$@2", "array_end", "elements", "element", "key", "value", YY_NULLPTR
 };
 #endif
 
@@ -532,14 +527,14 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   123,   125,    93,    44,    58,    91
+     265,   266,   123,   125,    93,    58,    44,    91
 };
 # endif
 
-#define YYPACT_NINF -17
+#define YYPACT_NINF -16
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-17)))
+  (!!((Yystate) == (-16)))
 
 #define YYTABLE_NINF -1
 
@@ -550,10 +545,10 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -2,   -17,   -17,   -17,   -17,   -17,   -17,   -17,   -17,   -17,
-      11,   -17,   -17,     9,     0,    -2,   -17,   -17,   -17,   -17,
-      -1,     6,   -17,     7,     4,    10,   -17,   -17,   -17,   -17,
-       0,    -2,   -17,   -17,   -17,    -2,   -17,   -17,   -17
+      -1,   -16,   -16,   -16,   -16,   -16,   -16,   -16,   -16,   -16,
+      12,   -16,   -16,    -9,     1,    -1,   -16,   -16,   -16,   -16,
+       0,     5,     7,     4,     8,   -16,   -16,   -16,   -16,     1,
+      -1,   -16,   -16,   -16,    -1,    10,   -16,   -16,    -1,   -16
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -561,24 +556,24 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    28,    29,    30,    26,    27,    24,    25,     3,    12,
-       0,    22,    23,     0,     7,    16,     1,     2,    20,    21,
-       0,     8,     9,     0,     0,    17,    18,     5,     6,     4,
-       0,     0,    15,    14,    13,     0,    10,    11,    19
+       0,    27,    28,    29,    25,    26,    23,    24,     3,    11,
+       0,    21,    22,     0,     7,    15,     1,     2,    19,    20,
+       0,     8,     0,     0,    16,    17,     5,     6,     4,     0,
+       0,    14,    13,    12,     0,     0,     9,    18,     0,    10
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -17,   -17,   -17,   -17,   -17,   -17,   -17,   -16,   -17,   -17,
-     -17,   -17,   -17,   -17,   -15
+     -16,   -16,   -16,   -16,   -16,   -16,   -16,   -16,   -16,   -16,
+     -16,   -16,    -3,   -15
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    10,    11,    14,    29,    20,    21,    22,    12,    15,
-      34,    24,    25,    23,    13
+      -1,    10,    11,    14,    28,    20,    21,    12,    15,    33,
+      23,    24,    22,    13
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -586,16 +581,16 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      26,     1,     2,     3,     4,     5,     6,     7,    18,    19,
-       8,    16,    27,    28,    36,     9,    37,    32,    33,    17,
-      38,    30,     0,    31,     0,    35
+      25,    17,     1,     2,     3,     4,     5,     6,     7,    18,
+      19,     8,    16,    26,    27,    36,     9,    31,    32,    37,
+       0,    29,    30,    39,    34,    38,    35
 };
 
 static const yytype_int8 yycheck[] =
 {
-      15,     3,     4,     5,     6,     7,     8,     9,     8,     9,
-      12,     0,    13,    14,    30,    17,    31,    13,    14,    10,
-      35,    15,    -1,    16,    -1,    15
+      15,    10,     3,     4,     5,     6,     7,     8,     9,     8,
+       9,    12,     0,    13,    14,    30,    17,    13,    14,    34,
+      -1,    16,    15,    38,    16,    15,    29
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -603,27 +598,25 @@ static const yytype_int8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     3,     4,     5,     6,     7,     8,     9,    12,    17,
-      19,    20,    26,    32,    21,    27,     0,    10,     8,     9,
-      23,    24,    25,    31,    29,    30,    32,    13,    14,    22,
-      15,    16,    13,    14,    28,    15,    25,    32,    32
+      19,    20,    25,    31,    21,    26,     0,    10,     8,     9,
+      23,    24,    30,    28,    29,    31,    13,    14,    22,    16,
+      15,    13,    14,    27,    16,    30,    31,    31,    15,    31
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
        0,    18,    19,    21,    20,    22,    22,    23,    23,    24,
-      24,    25,    27,    26,    28,    28,    29,    29,    30,    30,
-      31,    31,    32,    32,    32,    32,    32,    32,    32,    32,
-      32
+      24,    26,    25,    27,    27,    28,    28,    29,    29,    30,
+      30,    31,    31,    31,    31,    31,    31,    31,    31,    31
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     0,     4,     1,     1,     0,     1,     1,
-       3,     3,     0,     4,     1,     1,     0,     1,     1,     3,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1
+       0,     2,     2,     0,     4,     1,     1,     0,     1,     3,
+       5,     0,     4,     1,     1,     0,     1,     1,     3,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1
 };
 
 
@@ -1110,37 +1103,31 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, php_jsond_parser *
 
         break;
 
-    case 25: /* pair  */
-
-      { zend_string_release_ex(((*yyvaluep).pair).key, 0); zval_ptr_dtor_nogc(&((*yyvaluep).pair).val); }
-
-        break;
-
-    case 26: /* array  */
+    case 25: /* array  */
 
       { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
 
         break;
 
-    case 29: /* elements  */
+    case 28: /* elements  */
 
       { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
 
         break;
 
-    case 30: /* element  */
+    case 29: /* element  */
 
       { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
 
         break;
 
-    case 31: /* key  */
+    case 30: /* key  */
 
       { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
 
         break;
 
-    case 32: /* value  */
+    case 31: /* value  */
 
       { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
 
@@ -1462,7 +1449,7 @@ yyreduce:
 
     {
 				parser->methods.object_create(parser, &(yyval.value));
-				if (parser->methods.object_update(parser, &(yyval.value), (yyvsp[0].pair).key, &(yyvsp[0].pair).val) == FAILURE)
+				if (parser->methods.object_update(parser, &(yyval.value), Z_STR((yyvsp[-2].value)), &(yyvsp[0].value)) == FAILURE)
 					YYERROR;
 			}
 
@@ -1471,23 +1458,14 @@ yyreduce:
   case 10:
 
     {
-				if (parser->methods.object_update(parser, &(yyval.value), (yyvsp[0].pair).key, &(yyvsp[0].pair).val) == FAILURE)
+				if (parser->methods.object_update(parser, &(yyval.value), Z_STR((yyvsp[-2].value)), &(yyvsp[0].value)) == FAILURE)
 					YYERROR;
-				(yyval.value) = (yyvsp[-2].value);
+				(yyval.value) = (yyvsp[-4].value);
 			}
 
     break;
 
   case 11:
-
-    {
-				(yyval.pair).key = Z_STR((yyvsp[-2].value));
-				(yyval.pair).val = (yyvsp[0].value);
-			}
-
-    break;
-
-  case 12:
 
     {
 				PHP_JSOND_DEPTH_INC;
@@ -1498,7 +1476,7 @@ yyreduce:
 
     break;
 
-  case 13:
+  case 12:
 
     {
 				PHP_JSOND_DEPTH_DEC;
@@ -1510,7 +1488,7 @@ yyreduce:
 
     break;
 
-  case 15:
+  case 14:
 
     {
 				parser->scanner.errcode = PHP_JSOND_ERROR_STATE_MISMATCH;
@@ -1519,7 +1497,7 @@ yyreduce:
 
     break;
 
-  case 16:
+  case 15:
 
     {
 				parser->methods.array_create(parser, &(yyval.value));
@@ -1527,7 +1505,7 @@ yyreduce:
 
     break;
 
-  case 18:
+  case 17:
 
     {
 				parser->methods.array_create(parser, &(yyval.value));
@@ -1536,7 +1514,7 @@ yyreduce:
 
     break;
 
-  case 19:
+  case 18:
 
     {
 				parser->methods.array_append(parser, &(yyvsp[-2].value), &(yyvsp[0].value));

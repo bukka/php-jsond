@@ -48,10 +48,6 @@ int json_yydebug = 1;
 
 %union {
 	zval value;
-	struct {
-		zend_string *key;
-		zval val;
-	} pair;
 }
 
 
@@ -67,7 +63,6 @@ int json_yydebug = 1;
 
 %type <value> start object key value array
 %type <value> members member elements element
-%type <pair> pair
 
 %destructor { zval_ptr_dtor_nogc(&$$); } <value>
 %destructor { zend_string_release_ex($$.key, 0); zval_ptr_dtor_nogc(&$$.val); } <pair>
@@ -124,25 +119,17 @@ members:
 ;
 
 member:
-		pair
-			{
-				parser->methods.object_create(parser, &$$);
-				if (parser->methods.object_update(parser, &$$, $1.key, &$1.val) == FAILURE)
-					YYERROR;
-			}
-	|	member ',' pair
-			{
-				if (parser->methods.object_update(parser, &$$, $3.key, &$3.val) == FAILURE)
-					YYERROR;
-				$$ = $1;
-			}
-;
-
-pair:
 		key ':' value
 			{
-				$$.key = Z_STR($1);
-				$$.val = $3;
+				parser->methods.object_create(parser, &$$);
+				if (parser->methods.object_update(parser, &$$, Z_STR($1), &$3) == FAILURE)
+					YYERROR;
+			}
+	|	member ',' key ':' value
+			{
+				if (parser->methods.object_update(parser, &$$, Z_STR($3), &$5) == FAILURE)
+					YYERROR;
+				$$ = $1;
 			}
 ;
 
