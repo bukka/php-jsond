@@ -348,7 +348,7 @@ static zend_result php_jsond_encode_array(
 		php_jsond_buffer *buf, zval *val, int options,
 		php_jsond_encoder *encoder)
 {
-	int i, r, need_comma = 0;
+	int r, need_comma = 0;
 	HashTable *myht;
 
 	if (Z_TYPE_P(val) == IS_ARRAY) {
@@ -377,7 +377,7 @@ static zend_result php_jsond_encode_array(
 
 	++encoder->depth;
 
-	i = myht ? zend_hash_num_elements(myht) : 0;
+	uint32_t i = myht ? zend_hash_num_elements(myht) : 0;
 
 	if (i > 0) {
 		zend_string *key;

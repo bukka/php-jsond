@@ -51,16 +51,16 @@
 #define PHP_JSOND_SCANNER_COPY_UTF_SP() php_jsond_scanner_copy_string(s, 11)
 
 
-static void php_jsond_scanner_copy_string(php_jsond_scanner *s, int esc_size)
+static void php_jsond_scanner_copy_string(php_jsond_scanner *s, size_t esc_size)
 {
-	size_t len = s->cursor - s->str_start - esc_size - 1;
+	size_t len = (size_t)(s->cursor - s->str_start - esc_size - 1);
 	if (len) {
 		memcpy(s->pstr, s->str_start, len);
 		s->pstr += len;
 	}
 }
 
-static int php_jsond_hex_to_int(char code)
+static int php_jsond_hex_to_int(php_jsond_ctype code)
 {
 	if (code >= '0' && code <= '9') {
 		return code - '0';
@@ -317,7 +317,7 @@ yy13:
 			ZVAL_LONG(&s->value, strtol((char *) s->token, NULL, 10));
 			return PHP_JSOND_T_INT;
 		} else if (s->options & PHP_JSOND_BIGINT_AS_STRING) {
-			ZVAL_STRINGL(&s->value, (char *) s->token, s->cursor - s->token);
+			ZVAL_STRINGL(&s->value, (char *) s->token, (size_t)(s->cursor - s->token));
 			return PHP_JSOND_T_STRING;
 		} else {
 			ZVAL_DOUBLE(&s->value, zend_strtod((char *) s->token, NULL));
@@ -557,7 +557,7 @@ yy54:
 		++YYCURSOR;
 		{
 		zend_string *str;
-		size_t len = s->cursor - s->str_start - s->str_esc - 1 + s->utf8_invalid_count;
+		size_t len = (size_t)(s->cursor - s->str_start - s->str_esc - 1 + s->utf8_invalid_count);
 		if (len == 0) {
 			PHP_JSOND_CONDITION_SET(JS);
 			ZVAL_EMPTY_STRING(&s->value);
@@ -993,7 +993,7 @@ yy98:
 		if (yych == 'u') goto yy109;
 yy99:
 		{
-		char esc;
+		php_jsond_ctype esc;
 		PHP_JSOND_SCANNER_COPY_ESC();
 		switch (*s->cursor) {
 			case 'b':
@@ -1032,9 +1032,9 @@ yy101:
 		if (s->utf8_invalid) {
 			PHP_JSOND_SCANNER_COPY_ESC();
 			if (s->options & PHP_JSOND_INVALID_UTF8_SUBSTITUTE) {
-				*(s->pstr++) = (char) (0xe0 | (0xfffd >> 12));
-				*(s->pstr++) = (char) (0x80 | ((0xfffd >> 6) & 0x3f));
-				*(s->pstr++) = (char) (0x80 | (0xfffd & 0x3f));
+				*(s->pstr++) = (php_jsond_ctype) (0xe0 | (0xfffd >> 12));
+				*(s->pstr++) = (php_jsond_ctype) (0x80 | ((0xfffd >> 6) & 0x3f));
+				*(s->pstr++) = (php_jsond_ctype) (0x80 | (0xfffd & 0x3f));
 			}
 			s->str_start = s->cursor;
 		}
@@ -1260,7 +1260,7 @@ yy124:
 		{
 		int utf16 = php_jsond_ucs2_to_int(s, 2);
 		PHP_JSOND_SCANNER_COPY_UTF();
-		*(s->pstr++) = (char) utf16;
+		*(s->pstr++) = (php_jsond_ctype) utf16;
 		s->str_start = s->cursor;
 		PHP_JSOND_CONDITION_GOTO_STR_P2();
 	}
@@ -1269,8 +1269,8 @@ yy125:
 		{
 		int utf16 = php_jsond_ucs2_to_int(s, 3);
 		PHP_JSOND_SCANNER_COPY_UTF();
-		*(s->pstr++) = (char) (0xc0 | (utf16 >> 6));
-		*(s->pstr++) = (char) (0x80 | (utf16 & 0x3f));
+		*(s->pstr++) = (php_jsond_ctype) (0xc0 | (utf16 >> 6));
+		*(s->pstr++) = (php_jsond_ctype) (0x80 | (utf16 & 0x3f));
 		s->str_start = s->cursor;
 		PHP_JSOND_CONDITION_GOTO_STR_P2();
 	}
@@ -1279,9 +1279,9 @@ yy126:
 		{
 		int utf16 = php_jsond_ucs2_to_int(s, 4);
 		PHP_JSOND_SCANNER_COPY_UTF();
-		*(s->pstr++) = (char) (0xe0 | (utf16 >> 12));
-		*(s->pstr++) = (char) (0x80 | ((utf16 >> 6) & 0x3f));
-		*(s->pstr++) = (char) (0x80 | (utf16 & 0x3f));
+		*(s->pstr++) = (php_jsond_ctype) (0xe0 | (utf16 >> 12));
+		*(s->pstr++) = (php_jsond_ctype) (0x80 | ((utf16 >> 6) & 0x3f));
+		*(s->pstr++) = (php_jsond_ctype) (0x80 | (utf16 & 0x3f));
 		s->str_start = s->cursor;
 		PHP_JSOND_CONDITION_GOTO_STR_P2();
 	}
@@ -1327,10 +1327,10 @@ yy131:
 		utf16_lo = php_jsond_ucs2_to_int_ex(s, 4, 7);
 		utf32 = ((utf16_lo & 0x3FF) << 10) + (utf16_hi & 0x3FF) + 0x10000;
 		PHP_JSOND_SCANNER_COPY_UTF_SP();
-		*(s->pstr++) = (char) (0xf0 | (utf32 >> 18));
-		*(s->pstr++) = (char) (0x80 | ((utf32 >> 12) & 0x3f));
-		*(s->pstr++) = (char) (0x80 | ((utf32 >> 6) & 0x3f));
-		*(s->pstr++) = (char) (0x80 | (utf32 & 0x3f));
+		*(s->pstr++) = (php_jsond_ctype) (0xf0 | (utf32 >> 18));
+		*(s->pstr++) = (php_jsond_ctype) (0x80 | ((utf32 >> 12) & 0x3f));
+		*(s->pstr++) = (php_jsond_ctype) (0x80 | ((utf32 >> 6) & 0x3f));
+		*(s->pstr++) = (php_jsond_ctype) (0x80 | (utf32 & 0x3f));
 		s->str_start = s->cursor;
 		PHP_JSOND_CONDITION_GOTO_STR_P2();
 	}
@@ -1353,7 +1353,7 @@ yy134:
 		if (yych == 'u') goto yy136;
 yy135:
 		{
-		char esc;
+		php_jsond_ctype esc;
 		PHP_JSOND_SCANNER_COPY_ESC();
 		switch (*s->cursor) {
 			case 'b':
@@ -1553,7 +1553,7 @@ yy149:
 		{
 		int utf16 = php_jsond_ucs2_to_int(s, 2);
 		PHP_JSOND_SCANNER_COPY_UTF();
-		*(s->pstr++) = (char) utf16;
+		*(s->pstr++) = (php_jsond_ctype) utf16;
 		s->str_start = s->cursor;
 		PHP_JSOND_CONDITION_GOTO_STR_P2();
 	}
@@ -1562,8 +1562,8 @@ yy150:
 		{
 		int utf16 = php_jsond_ucs2_to_int(s, 3);
 		PHP_JSOND_SCANNER_COPY_UTF();
-		*(s->pstr++) = (char) (0xc0 | (utf16 >> 6));
-		*(s->pstr++) = (char) (0x80 | (utf16 & 0x3f));
+		*(s->pstr++) = (php_jsond_ctype) (0xc0 | (utf16 >> 6));
+		*(s->pstr++) = (php_jsond_ctype) (0x80 | (utf16 & 0x3f));
 		s->str_start = s->cursor;
 		PHP_JSOND_CONDITION_GOTO_STR_P2();
 	}
@@ -1572,9 +1572,9 @@ yy151:
 		{
 		int utf16 = php_jsond_ucs2_to_int(s, 4);
 		PHP_JSOND_SCANNER_COPY_UTF();
-		*(s->pstr++) = (char) (0xe0 | (utf16 >> 12));
-		*(s->pstr++) = (char) (0x80 | ((utf16 >> 6) & 0x3f));
-		*(s->pstr++) = (char) (0x80 | (utf16 & 0x3f));
+		*(s->pstr++) = (php_jsond_ctype) (0xe0 | (utf16 >> 12));
+		*(s->pstr++) = (php_jsond_ctype) (0x80 | ((utf16 >> 6) & 0x3f));
+		*(s->pstr++) = (php_jsond_ctype) (0x80 | (utf16 & 0x3f));
 		s->str_start = s->cursor;
 		PHP_JSOND_CONDITION_GOTO_STR_P2();
 	}
@@ -1620,10 +1620,10 @@ yy156:
 		utf16_lo = php_jsond_ucs2_to_int_ex(s, 4, 7);
 		utf32 = ((utf16_lo & 0x3FF) << 10) + (utf16_hi & 0x3FF) + 0x10000;
 		PHP_JSOND_SCANNER_COPY_UTF_SP();
-		*(s->pstr++) = (char) (0xf0 | (utf32 >> 18));
-		*(s->pstr++) = (char) (0x80 | ((utf32 >> 12) & 0x3f));
-		*(s->pstr++) = (char) (0x80 | ((utf32 >> 6) & 0x3f));
-		*(s->pstr++) = (char) (0x80 | (utf32 & 0x3f));
+		*(s->pstr++) = (php_jsond_ctype) (0xf0 | (utf32 >> 18));
+		*(s->pstr++) = (php_jsond_ctype) (0x80 | ((utf32 >> 12) & 0x3f));
+		*(s->pstr++) = (php_jsond_ctype) (0x80 | ((utf32 >> 6) & 0x3f));
+		*(s->pstr++) = (php_jsond_ctype) (0x80 | (utf32 & 0x3f));
 		s->str_start = s->cursor;
 		PHP_JSOND_CONDITION_GOTO_STR_P2();
 	}
