@@ -1,9 +1,9 @@
 --TEST--
 bug #50224 (jsond_encode() does not always encode a float as a float)
+--EXTENSIONS--
+jsond
 --INI--
 serialize_precision=-1
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 require_once "bootstrap.inc";

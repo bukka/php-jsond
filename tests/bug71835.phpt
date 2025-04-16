@@ -1,7 +1,7 @@
 --TEST--
 Bug #71835 (jsond_encode sometimes incorrectly detects recursion with JsondSer_ializable)
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

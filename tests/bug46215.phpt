@@ -1,11 +1,7 @@
 --TEST--
 Bug #46215 (jsond_encode mutates its parameter and has some class-specific state)
---SKIPIF--
-<?php
-if (!extension_loaded("jsond")) {
-     die('skip JSON extension not available in this build');
-}
-?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

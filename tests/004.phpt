@@ -1,10 +1,7 @@
 --TEST--
 jsond_encode() & endless loop - 2
---SKIPIF--
-<?php
-if (!extension_loaded("jsond"))
-    print "skip";
-?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

@@ -1,9 +1,9 @@
 --TEST--
 jsond_encode() Serialization tests
+--EXTENSIONS--
+jsond
 --INI--
 serialize_precision=-1
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 require_once "bootstrap.inc";

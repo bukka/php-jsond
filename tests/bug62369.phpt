@@ -1,7 +1,7 @@
 --TEST--
 FR #62369 (Segfault on jsond_encode(deeply_nested_array)
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

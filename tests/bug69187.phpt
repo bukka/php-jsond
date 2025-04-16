@@ -1,7 +1,7 @@
 --TEST--
 Bug #69187 jsond_last_error return BC in PHP7
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

@@ -1,5 +1,7 @@
 --TEST--
-jsond_validate() - compare against json_decode() for different types of inputs 
+jsond_validate() - compare against json_decode() for different types of inputs
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 

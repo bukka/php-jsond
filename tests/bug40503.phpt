@@ -1,9 +1,9 @@
 --TEST--
 Bug #40503 (jsond_encode() value corruption on 32bit systems with overflown values)
+--EXTENSIONS--
+jsond
 --INI--
 serialize_precision=-1
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 require_once "bootstrap.inc";

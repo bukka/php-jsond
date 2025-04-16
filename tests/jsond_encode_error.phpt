@@ -1,11 +1,7 @@
 --TEST--
 Test jsond_encode() function : error conditions
---SKIPIF--
-<?php
-if (!extension_loaded("jsond")) {
-     die('skip JSON extension not available in this build');
-}
-?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

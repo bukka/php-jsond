@@ -1,5 +1,7 @@
 --TEST--
 GH-15168 (stack overflow in jsond_encode())
+--EXTENSIONS--
+jsond
 --SKIPIF--
 <?php
 if (ini_get('zend.max_allowed_stack_size') === false) {

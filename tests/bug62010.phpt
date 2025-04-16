@@ -1,7 +1,7 @@
 --TEST--
 Bug #62010 (jsond_decode produces invalid byte-sequences)
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

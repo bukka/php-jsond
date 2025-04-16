@@ -1,7 +1,7 @@
 --TEST--
 jsond_encode() with non-packed array that should be encoded as an array rather than object
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 $a = array(1, 2, 3, 'foo' => 'bar');

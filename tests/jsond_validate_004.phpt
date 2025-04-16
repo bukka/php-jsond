@@ -1,5 +1,7 @@
 --TEST--
 jsond_validate() - Invalid UTF-8's
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 

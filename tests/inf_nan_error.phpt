@@ -1,7 +1,7 @@
 --TEST--
 An error is thrown when INF or NaN are encoded
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

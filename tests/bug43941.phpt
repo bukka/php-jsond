@@ -1,7 +1,7 @@
 --TEST--
 Bug #43941 (jsond_encode() invalid UTF-8)
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

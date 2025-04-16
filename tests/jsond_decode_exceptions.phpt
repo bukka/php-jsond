@@ -1,11 +1,7 @@
 --TEST--
 Test jsond_decode() function : JSOND_THROW_ON_ERROR flag
---SKIPIF--
-<?php
-if (!extension_loaded("jsond")) {
-     die('skip jsond extension not available');
-}
-?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 try {

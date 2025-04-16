@@ -1,13 +1,9 @@
 --TEST--
 Test jsond_encode() function with numeric flag
+--EXTENSIONS--
+jsond
 --INI--
 serialize_precision=-1
---SKIPIF--
-<?php
-if (!extension_loaded("jsond")) {
-    die('skip JSON extension not available in this build');
-}
-?>
 --FILE--
 <?php
 require_once "bootstrap.inc";

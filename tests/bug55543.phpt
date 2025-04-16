@@ -1,7 +1,7 @@
 --TEST--
 Bug #55543 (jsond_encode() with JSOND_NUMERIC_CHECK & numeric string properties)
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

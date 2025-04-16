@@ -1,9 +1,9 @@
 --TEST--
 jsond_decode() with large integers
+--EXTENSIONS--
+jsond
 --INI--
 serialize_precision=14
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
 --FILE--
 <?php
 require_once "bootstrap.inc";

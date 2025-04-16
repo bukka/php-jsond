@@ -1,11 +1,7 @@
 --TEST--
 Test jsond_encode() function : basic functionality with UTF8 string input
---SKIPIF--
-<?php
-if (!extension_loaded("jsond")) {
-     die('skip JSON extension not available in this build');
-}
-?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

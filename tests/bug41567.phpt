@@ -1,9 +1,9 @@
 --TEST--
 Bug #41567 (jsond_encode() double conversion is inconsistent with PHP)
+--EXTENSIONS--
+jsond
 --INI--
 serialize_precision=-1
---SKIPIF--
-<?php if (!extension_loaded('jsond')) print 'skip'; ?>
 --FILE--
 <?php
 require_once "bootstrap.inc";

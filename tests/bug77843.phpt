@@ -1,9 +1,7 @@
 --TEST--
 Bug #77843: Use after free with json serializer
---SKIPIF--
-<?php
-if (!extension_loaded('jsond')) die('skip');
-?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 

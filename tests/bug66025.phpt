@@ -1,9 +1,7 @@
 --TEST--
 Bug #66025 (Indent wrong when jsond_encode() called from jsonSerialize function)
---SKIPIF--
-<?php
-if (!extension_loaded('jsond')) die('skip');
-?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

@@ -1,7 +1,7 @@
 --TEST--
 Bug #61537 (jsond_encode() incorrectly truncates/discards information)
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

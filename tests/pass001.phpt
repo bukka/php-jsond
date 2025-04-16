@@ -1,11 +1,9 @@
 --TEST--
 JSON (http://www.crockford.com/JSON/JSON_checker/test/pass1.json)
+--EXTENSIONS--
+jsond
 --INI--
 serialize_precision=-1
---SKIPIF--
-<?php
-  if (!extension_loaded('jsond')) die('skip: jsond extension not available');
-?>
 --FILE--
 <?php
 require_once "bootstrap.inc";

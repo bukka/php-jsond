@@ -1,7 +1,7 @@
 --TEST--
 jsond_last_error() failures
---SKIPIF--
-<?php !extension_loaded('jsond') && die('skip json extension not available') ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

@@ -1,7 +1,7 @@
 --TEST--
 Whitespace part of bug #64874 ("jsond_decode handles whitespace and case-sensitivity incorrectly")
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

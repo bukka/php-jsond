@@ -1,7 +1,7 @@
 --TEST--
 Bug #42090 (jsond_decode causes segmentation fault)
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

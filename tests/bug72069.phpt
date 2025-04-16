@@ -1,7 +1,7 @@
 --TEST--
 Bug #72069 (Behavior \JsondSer_ializable different from jsond_encode)
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

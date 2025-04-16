@@ -1,5 +1,7 @@
 --TEST--
 jsond_validate() - Error handling
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 

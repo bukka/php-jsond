@@ -1,7 +1,7 @@
 --TEST--
 jsond_encode() tests for U+2028, U+2029
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";

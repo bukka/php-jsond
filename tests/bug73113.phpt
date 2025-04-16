@@ -1,7 +1,7 @@
 --TEST--
 Bug #73113 (Segfault with throwing JsondSer_ializable) - also test that the custom exception is not wrapped
---SKIPIF--
-<?php if (!extension_loaded("jsond")) print "skip"; ?>
+--EXTENSIONS--
+jsond
 --FILE--
 <?php
 require_once "bootstrap.inc";
