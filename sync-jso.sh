@@ -7,6 +7,7 @@ else
 fi
 
 jso_branch="${1:-master}"
+jso_action="${2:-all}"
 jso_src_dir="$jsond_base_dir/jso-$jso_branch"
 jso_dest_dir="$jsond_base_dir/jso"
 jso_archive="$jso_branch.zip"
@@ -58,51 +59,31 @@ jso_collect_files() {
 }
 
 jso_update_config_m4() {
-  # remove old PHP_NEW_EXTENSION and PHP_INSTALL_HEADERS blocks
-  sed -i.bak '/PHP_NEW_EXTENSION(jsond,/,/^\s*\$ext_shared)/d' "$jsond_base_dir/config.m4"
-  sed -i.bak '/PHP_INSTALL_HEADERS(\[ext\/jsond\], \[/,/])/d' "$jsond_base_dir/config.m4"
+  # Remove old PHP_JSO_SOURCES block
+  sed -i.bak '/^  PHP_JSO_SOURCES=m4_normalize(\[/,/^  ])$/d' "$jsond_base_dir/config.m4"
 
-  # create formatted extension block
-  ext_block=$(mktemp)
+  # Create updated source block
+  src_block=$(mktemp)
   {
-    echo "  PHP_NEW_EXTENSION(jsond,"
-    printf '      %s \\\n' "${core_files[@]}"
-    if ((${#jso_c_files[@]} > 0)); then
-      # all but last jso_c_files
-      for ((i = 0; i < ${#jso_c_files[@]} - 1; i++)); do
-        printf '      jso/%s \\\n' "${jso_c_files[i]/}"
-      done
-      # last jso_c_file ends with comma
-      printf '      jso/%s,\n' "${jso_c_files[-1]/}"
-    fi
-    echo "      \$ext_shared)"
-  } > "$ext_block"
-
-  # create formatted headers block
-  headers_block=$(mktemp)
-  {
-    echo "  PHP_INSTALL_HEADERS([ext/jsond], [\\"
-    echo "    php_jsond.h \\"
-    echo "    php_jsond_parser.h \\"
-    echo "    php_jsond_scanner.h \\"
-    printf '    jso/%s \\\n' "${jso_h_files[@]/}"
+    echo "  PHP_JSO_SOURCES=m4_normalize(["
+    for f in "${jso_c_files[@]}"; do
+      echo "    jso/${f}"
+    done
     echo "  ])"
-  } > "$headers_block"
+  } > "$src_block"
 
-  # insert both blocks after AC_DEFINE(HAVE_JSOND...)
-   awk -v ext_block="$ext_block" -v headers_block="$headers_block" '
+  # Insert updated block after AC_DEFINE([HAVE_JSOND]...)
+  awk -v src_block="$src_block" '
     /AC_DEFINE\(\[HAVE_JSOND\]/ {
       print
-      while ((getline line < ext_block) > 0) print line
-      close(ext_block)
-      while ((getline line < headers_block) > 0) print line
-      close(headers_block)
+      while ((getline line < src_block) > 0) print line
+      close(src_block)
       next
     }
     { print }
   ' "$jsond_base_dir/config.m4" > "$jsond_base_dir/config.m4.tmp" && mv "$jsond_base_dir/config.m4.tmp" "$jsond_base_dir/config.m4"
 
-  rm -f "$ext_block" "$headers_block" "$jsond_base_dir/config.m4.bak"
+  rm -f "$src_block" "$jsond_base_dir/config.m4.bak"
 }
 
 jso_update_config_w32() {
@@ -133,12 +114,29 @@ jso_update_config_w32() {
 }
 
 
-jso_update_configs() {
+jso_update() {
   jso_collect_files
   jso_update_config_m4
   jso_update_config_w32
 }
 
-jso_install
-jso_update_configs
-jso_cleanup
+case "$jso_action" in
+  install)
+    jso_install
+    ;;
+  update)
+    jso_update
+    ;;
+  cleanup)
+    jso_cleanup
+    ;;
+  all)
+    jso_install
+    jso_update
+    jso_cleanup
+    ;;
+  *)
+    echo "Usage: $0 [branch] [install|update|cleanup|all]"
+    exit 1
+    ;;
+esac
