@@ -17,7 +17,7 @@ AC_ARG_ENABLE(jsond-filegen,
 
 if test "$PHP_JSOND" != "no"; then
   AC_DEFINE([HAVE_JSOND],1 ,[whether to enable jsond support])
-  PHP_JSO_SOURCES=m4_normalize([
+  PHP_JSO_SOURCES=m4_normalize(["
     jso/io/jso_io.c
     jso/io/jso_io_file.c
     jso/io/jso_io_memory.c
@@ -69,7 +69,7 @@ if test "$PHP_JSOND" != "no"; then
     jso/schema/jso_schema_value_init.c
     jso/schema/jso_schema_value_parser.c
     jso/schema/jso_schema_version.c
-  ])
+  "])
   PHP_JSO_CFLAGS="-I@ext_srcdir@/jso -I@ext_srcdir@/jso/io -I@ext_srcdir@/jso/parser -I@ext_srcdir@/jso/pointer -I@ext_srcdir@/jso/schema"
 
   PHP_NEW_EXTENSION([jsond], m4_normalize([
@@ -88,12 +88,13 @@ if test "$PHP_JSOND" != "no"; then
     php_jsond.h
     php_jsond_parser.h
     php_jsond_scanner.h
-  ])
+  ]))
 
   if test "$PHP_JSOND_FILEGEN" != "no"; then
     PHP_PROG_RE2C()
     PHP_PROG_BISON()
     PHP_ADD_MAKEFILE_FRAGMENT()
   fi
+  AC_CHECK_SIZEOF(long)
   PHP_SUBST(JSOND_SHARED_LIBADD)
 fi

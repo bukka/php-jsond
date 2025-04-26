@@ -49,8 +49,8 @@ jso_cleanup() {
 jso_collect_files() {
   cd "$jso_src_dir"
 
-  mapfile -t jso_c_files < <(find src -type f -name 'jso_*.c' | sed 's|^src/||' | sort)
-  mapfile -t jso_h_files < <(find src -type f -name 'jso_*.h' | sed 's|^src/||' | sort)
+  mapfile -t jso_c_files < <(find src -type f -name 'jso*.c' | sed 's|^src/||' | sort)
+  mapfile -t jso_h_files < <(find src -type f -name 'jso*.h' | sed 's|^src/||' | sort)
 
   for f in "${jso_c_files[@]}" "${jso_h_files[@]}"; do
     mkdir -p "$jso_dest_dir/$(dirname "$f")"
@@ -60,16 +60,16 @@ jso_collect_files() {
 
 jso_update_config_m4() {
   # Remove old PHP_JSO_SOURCES block
-  sed -i.bak '/^  PHP_JSO_SOURCES=m4_normalize(\[/,/^  ])$/d' "$jsond_base_dir/config.m4"
+  sed -i.bak '/^  PHP_JSO_SOURCES=m4_normalize(\["/,/^  "])$/d' "$jsond_base_dir/config.m4"
 
   # Create updated source block
   src_block=$(mktemp)
   {
-    echo "  PHP_JSO_SOURCES=m4_normalize(["
+    echo '  PHP_JSO_SOURCES=m4_normalize(["'
     for f in "${jso_c_files[@]}"; do
       echo "    jso/${f}"
     done
-    echo "  ])"
+    echo '  "])'
   } > "$src_block"
 
   # Insert updated block after AC_DEFINE([HAVE_JSOND]...)
