@@ -79,6 +79,7 @@ if test "$PHP_JSOND" != "no"; then
       jsond_encoder.c
       jsond_parser.tab.c
       jsond_scanner.c
+      jso_virt.c
       $PHP_JSO_SOURCES
     ]),
     [$ext_shared],,

@@ -31,6 +31,8 @@
 #ifndef JSO_VIRT_H
 #define JSO_VIRT_H
 
+#include "php.h"
+
 #include "jso_types.h"
 #include "jso_string.h"
 #include "jso_array.h"
@@ -42,22 +44,22 @@
 /**
  * @brief value type
  */
-#define jso_virt_value jso_value
+#define jso_virt_value zval
 
 /**
  * @brief string type
  */
-#define jso_virt_string jso_string
+#define jso_virt_string zend_string
 
 /**
  * @brief array type
  */
-#define jso_virt_array jso_array
+#define jso_virt_array zend_array
 
 /**
  * @brief object type
  */
-#define jso_virt_object jso_object
+#define jso_virt_object zend_object
 
 /* value */
 
@@ -67,10 +69,7 @@
  * @param val virtual value
  * @return value type of @ref jso_value_type
  */
-static inline jso_value_type jso_virt_value_type(jso_virt_value *val)
-{
-	return JSO_TYPE_P(val);
-}
+jso_value_type jso_virt_value_type(jso_virt_value *val);
 
 /**
  * Get integer value of the supplied virtual value.
@@ -80,7 +79,7 @@ static inline jso_value_type jso_virt_value_type(jso_virt_value *val)
  */
 static inline jso_int jso_virt_value_int(jso_virt_value *val)
 {
-	return JSO_IVAL_P(val);
+	return Z_LVAL_P(val);
 }
 
 /**
@@ -91,7 +90,7 @@ static inline jso_int jso_virt_value_int(jso_virt_value *val)
  */
 static inline jso_double jso_virt_value_double(jso_virt_value *val)
 {
-	return JSO_DVAL_P(val);
+	return Z_DVAL_P(val);
 }
 
 /**
@@ -102,7 +101,7 @@ static inline jso_double jso_virt_value_double(jso_virt_value *val)
  */
 static inline jso_virt_string *jso_virt_value_string(jso_virt_value *val)
 {
-	return JSO_STR_P(val);
+	return Z_STR_P(val);
 }
 
 /**
@@ -113,7 +112,7 @@ static inline jso_virt_string *jso_virt_value_string(jso_virt_value *val)
  */
 static inline jso_virt_array *jso_virt_value_array(jso_virt_value *val)
 {
-	return JSO_ARRVAL_P(val);
+	return Z_ARR_P(val);
 }
 
 /**
@@ -124,7 +123,7 @@ static inline jso_virt_array *jso_virt_value_array(jso_virt_value *val)
  */
 static inline jso_virt_object *jso_virt_value_object(jso_virt_value *val)
 {
-	return JSO_OBJVAL_P(val);
+	return Z_OBJ_P(val);
 }
 
 /**
@@ -134,10 +133,7 @@ static inline jso_virt_object *jso_virt_value_object(jso_virt_value *val)
  * @param val JSO value
  * @return true if the values are equal, otherwise false
  */
-static inline bool jso_virt_value_equals(jso_virt_value *vval, jso_value *val)
-{
-	return jso_value_equals(vval, val);
-}
+bool jso_virt_value_equals(jso_virt_value *vval, jso_value *val);
 
 /* string */
 
@@ -149,7 +145,7 @@ static inline bool jso_virt_value_equals(jso_virt_value *vval, jso_value *val)
  */
 static inline const char *jso_virt_string_val(jso_virt_string *str)
 {
-	return JSO_STRING_CSTR_VAL(str);
+	return ZSTR_VAL(str);
 }
 
 /**
@@ -160,13 +156,13 @@ static inline const char *jso_virt_string_val(jso_virt_string *str)
  */
 static inline size_t jso_virt_string_len(jso_virt_string *str)
 {
-	return JSO_STRING_LEN(str);
+	return ZSTR_LEN(str);
 }
 
 /* array */
 
-#define JSO_VIRT_ARRAY_FOREACH JSO_ARRAY_FOREACH
-#define JSO_VIRT_ARRAY_FOREACH_END JSO_ARRAY_FOREACH_END
+#define JSO_VIRT_ARRAY_FOREACH ZEND_HASH_REVERSE_FOREACH_VAL
+#define JSO_VIRT_ARRAY_FOREACH_END ZEND_HASH_FOREACH_END()
 
 /**
  * Get length of the array.
@@ -176,7 +172,7 @@ static inline size_t jso_virt_string_len(jso_virt_string *str)
  */
 static inline size_t jso_virt_array_len(jso_virt_array *arr)
 {
-	return JSO_ARRAY_LEN(arr);
+	return zend_hash_num_elements(arr);
 }
 
 /**
@@ -185,10 +181,7 @@ static inline size_t jso_virt_array_len(jso_virt_array *arr)
  * @param arr virtual array
  * @return true if the array is unique, otherwise false
  */
-static inline bool jso_virt_array_is_unique(jso_virt_array *arr)
-{
-	return jso_array_is_unique(arr);
-}
+bool jso_virt_array_is_unique(jso_virt_array *arr);
 
 /* object */
 
@@ -204,7 +197,7 @@ static inline bool jso_virt_array_is_unique(jso_virt_array *arr)
  */
 static inline bool jso_virt_object_has_str_key(jso_virt_object *obj, jso_string *key)
 {
-	return jso_object_has(obj, key);
+	return zend_hash_str_find(obj->properties, JSO_STRING_VAL(key), JSO_STRING_LEN(key)) != NULL;
 }
 
 /**
@@ -215,7 +208,7 @@ static inline bool jso_virt_object_has_str_key(jso_virt_object *obj, jso_string 
  */
 static inline size_t jso_virt_object_count(jso_virt_object *obj)
 {
-	return JSO_OBJECT_COUNT(obj);
+	return zend_hash_num_elements(obj->properties);
 }
 
 #endif /* JSO_VIRT_H */
