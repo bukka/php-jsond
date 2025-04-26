@@ -32,6 +32,9 @@ if test "$PHP_JSOND" != "no"; then
     PHP_PROG_BISON()
     PHP_ADD_MAKEFILE_FRAGMENT()
   fi
-  PHP_INSTALL_HEADERS([ext/jsond], [php_jsond.h php_jsond_parser.h php_jsond_scanner.h])
+  PHP_INSTALL_HEADERS([ext/jsond], [
+    php_jsond.h \
+    php_jsond_parser.h \
+    php_jsond_scanner.h])
   PHP_SUBST(JSOND_SHARED_LIBADD)
 fi
