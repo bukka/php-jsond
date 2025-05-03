@@ -161,7 +161,7 @@ static inline size_t jso_virt_string_len(jso_virt_string *str)
 
 /* array */
 
-#define JSO_VIRT_ARRAY_FOREACH ZEND_HASH_REVERSE_FOREACH_VAL
+#define JSO_VIRT_ARRAY_FOREACH ZEND_HASH_FOREACH_VAL
 #define JSO_VIRT_ARRAY_FOREACH_END ZEND_HASH_FOREACH_END()
 
 /**
@@ -185,8 +185,8 @@ bool jso_virt_array_is_unique(jso_virt_array *arr);
 
 /* object */
 
-#define JSO_VIRT_OBJECT_FOREACH JSO_OBJECT_FOREACH
-#define JSO_VIRT_OBJECT_FOREACH_END JSO_OBJECT_FOREACH_END
+#define JSO_VIRT_OBJECT_FOREACH ZEND_HASH_FOREACH_STR_KEY_VAL
+#define JSO_VIRT_OBJECT_FOREACH_END ZEND_HASH_FOREACH_END()
 
 /**
  * Check if the key is in object.

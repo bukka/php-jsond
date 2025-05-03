@@ -101,7 +101,7 @@ bool jso_virt_value_equals(jso_virt_value *vval, jso_value *val)
 		case JSO_TYPE_NULL:
 			return true;
 		case JSO_TYPE_BOOL:
-            return (Z_TYPE_P(vval) == IS_TRUE && JSO_IVAL_P(val)) || 
+            return (Z_TYPE_P(vval) == IS_TRUE && JSO_IVAL_P(val)) ||
                     (Z_TYPE_P(vval) == IS_FALSE && !JSO_IVAL_P(val));
 		case JSO_TYPE_INT:
 			return jso_virt_value_int(vval) == JSO_IVAL_P(val);
