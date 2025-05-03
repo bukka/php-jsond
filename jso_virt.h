@@ -185,7 +185,8 @@ bool jso_virt_array_is_unique(jso_virt_array *arr);
 
 /* object */
 
-#define JSO_VIRT_OBJECT_FOREACH ZEND_HASH_FOREACH_STR_KEY_VAL
+#define JSO_VIRT_OBJECT_FOREACH(_obj, _key, _val) \
+	ZEND_HASH_FOREACH_STR_KEY_VAL(_obj->properties, _key, _val)
 #define JSO_VIRT_OBJECT_FOREACH_END ZEND_HASH_FOREACH_END()
 
 /**
