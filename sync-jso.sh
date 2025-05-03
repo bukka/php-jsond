@@ -56,6 +56,8 @@ jso_collect_files() {
     mkdir -p "$jso_dest_dir/$(dirname "$f")"
     cp "src/$f" "$jso_dest_dir/$f"
   done
+
+  rm $jso_dest_dir/jso_virt.h
 }
 
 jso_update_config_m4() {

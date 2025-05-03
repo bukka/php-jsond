@@ -76,7 +76,7 @@ jso_schema_validation_result jso_schema_validation_string_value_str(
 
 jso_schema_validation_result jso_schema_validation_string_value(jso_schema *schema,
 		jso_schema_validation_stack *stack, jso_schema_validation_position *pos,
-		jso_value *instance)
+		jso_virt_value *instance)
 {
 	if (jso_virt_value_type(instance) != JSO_TYPE_STRING) {
 		return jso_schema_validation_value_type_error(

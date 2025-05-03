@@ -116,7 +116,7 @@ static jso_rc jso_io_buffer_alloc_rotate(jso_io *io, size_t size)
 
 	if (JSO_IO_SIZE(io) - buffered < size
 			&& jso_io_buffer_alloc_extend(io, size + buffered) == JSO_FAILURE) {
-		JSO_IO_ERRNO(io) = -1;
+		JSO_IO_ERROR_CODE(io) = -1;
 		return JSO_FAILURE;
 	}
 	memmove(JSO_IO_BUFFER(io), JSO_IO_CURSOR(io), buffered * sizeof(jso_ctype));

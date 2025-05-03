@@ -1269,7 +1269,8 @@ typedef struct _jso_schema_validation_stream {
 
 #define JSO_STREAM_VALIDATION_STREAM_STACK_P(_stream) (&_stream->stack)
 
-JSO_API jso_schema_validation_result jso_schema_validate(jso_schema *schema, jso_value *instance);
+JSO_API jso_schema_validation_result jso_schema_validate(
+		jso_schema *schema, jso_virt_value *instance);
 
 JSO_API jso_rc jso_schema_validation_stream_init(
 		jso_schema *schema, jso_schema_validation_stream *stream, size_t positions_capacity);
@@ -1279,22 +1280,23 @@ JSO_API void jso_schema_validation_stream_clear(jso_schema_validation_stream *st
 JSO_API jso_rc jso_schema_validation_stream_object_start(jso_schema_validation_stream *stream);
 
 JSO_API jso_rc jso_schema_validation_stream_object_key(
-		jso_schema_validation_stream *stream, jso_string *str);
+		jso_schema_validation_stream *stream, jso_virt_string *str);
 
 JSO_API jso_rc jso_schema_validation_stream_object_update(jso_schema_validation_stream *stream,
-		jso_object *instance_object, jso_string *instance_key, jso_value *instance_item);
+		jso_virt_object *instance_object, jso_virt_string *instance_key,
+		jso_virt_value *instance_item);
 
 JSO_API jso_rc jso_schema_validation_stream_object_end(jso_schema_validation_stream *stream);
 
 JSO_API jso_rc jso_schema_validation_stream_array_start(jso_schema_validation_stream *stream);
 
-JSO_API jso_rc jso_schema_validation_stream_array_append(
-		jso_schema_validation_stream *stream, jso_array *instance_array, jso_value *instance_item);
+JSO_API jso_rc jso_schema_validation_stream_array_append(jso_schema_validation_stream *stream,
+		jso_virt_array *instance_array, jso_virt_value *instance_item);
 
 JSO_API jso_rc jso_schema_validation_stream_array_end(jso_schema_validation_stream *stream);
 
 JSO_API jso_rc jso_schema_validation_stream_value(
-		jso_schema_validation_stream *stream, jso_value *value);
+		jso_schema_validation_stream *stream, jso_virt_value *value);
 
 JSO_API jso_schema_validation_result jso_schema_validation_stream_final_result(
 		jso_schema_validation_stream *stream);

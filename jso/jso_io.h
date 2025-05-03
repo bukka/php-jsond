@@ -115,7 +115,7 @@ struct _jso_io {
 	/** size of the buffer */
 	size_t size;
 	/** the last error number */
-	int errno;
+	int error_code;
 	/** io handle */
 	union {
 		/** pointer (e.g. FILE *) */
@@ -208,7 +208,7 @@ struct _jso_io {
  * @param io IO handle
  * @return Saved error code.
  */
-#define JSO_IO_ERRNO(io) ((io)->errno)
+#define JSO_IO_ERROR_CODE(io) ((io)->error_code)
 
 /**
  * Handle accessors for pointer.

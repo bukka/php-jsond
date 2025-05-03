@@ -179,7 +179,7 @@ JSO_API jso_rc jso_schema_validation_stream_array_start(jso_schema_validation_st
 }
 
 JSO_API jso_rc jso_schema_validation_stream_array_append(jso_schema_validation_stream *stream,
-		jso_array *instance_array, jso_virt_value *instance_item)
+		jso_virt_array *instance_array, jso_virt_value *instance_item)
 {
 	jso_schema_validation_stack_layer_iterator iterator;
 	jso_schema_validation_position *pos;
@@ -217,14 +217,14 @@ JSO_API jso_rc jso_schema_validation_stream_array_end(jso_schema_validation_stre
 }
 
 JSO_API jso_rc jso_schema_validation_stream_value(
-		jso_schema_validation_stream *stream, jso_value *instance)
+		jso_schema_validation_stream *stream, jso_virt_value *instance)
 {
 	jso_schema_validation_stack_layer_iterator iterator;
 	jso_schema_validation_position *pos;
 	jso_schema_validation_stack *stack = JSO_STREAM_VALIDATION_STREAM_STACK_P(stream);
 	jso_schema *schema = stack->root_schema;
 
-	jso_value_type instance_type = JSO_TYPE_P(instance);
+	jso_value_type instance_type = jso_virt_value_type(instance);
 	// Array has already added composition during array start so skip it.
 	if (instance_type != JSO_TYPE_ARRAY) {
 		// Iterate through positions to check composition for all types except array and object

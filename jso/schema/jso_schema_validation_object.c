@@ -218,11 +218,11 @@ jso_schema_validation_result jso_schema_validation_object_value(jso_schema *sche
 	jso_schema_value_object *objval = JSO_SCHEMA_VALUE_DATA_OBJ_P(pos->current_value);
 
 	if (JSO_SCHEMA_KW_IS_SET(objval->dependencies)) {
-		jso_virt_string *key;
-		jso_virt_value *val;
+		jso_string *key;
+		jso_value *val;
 		jso_object *dependencies = JSO_SCHEMA_KEYWORD_DATA_OBJ_SCHEMA_OBJ(objval->dependencies);
 		jso_virt_object *instance_obj = jso_virt_value_object(instance);
-		JSO_VIRT_OBJECT_FOREACH(dependencies, key, val)
+		JSO_OBJECT_FOREACH(dependencies, key, val)
 		{
 			if (JSO_TYPE_P(val) == JSO_TYPE_ARRAY) {
 				jso_value *item;

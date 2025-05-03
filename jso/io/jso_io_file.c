@@ -82,8 +82,8 @@ static jso_rc jso_io_file_flush(jso_io *io)
 
 static int jso_io_file_error(jso_io *io)
 {
-	JSO_IO_ERRNO(io) = ferror(JSO_IO_FILE_HANDLE_GET(io));
-	return JSO_IO_ERRNO(io);
+	JSO_IO_ERROR_CODE(io) = ferror(JSO_IO_FILE_HANDLE_GET(io));
+	return JSO_IO_ERROR_CODE(io);
 }
 
 static jso_rc jso_io_file_free(jso_io *io)

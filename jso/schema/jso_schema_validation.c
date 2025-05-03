@@ -47,7 +47,7 @@ jso_rc jso_schema_validate_instance(jso_schema_validation_stream *stream, jso_vi
 		if (jso_schema_validation_stream_array_end(stream) == JSO_FAILURE) {
 			return JSO_FAILURE;
 		}
-	} else if (JSO_TYPE_P(instance) == JSO_TYPE_OBJECT) {
+	} else if (jso_virt_value_type(instance) == JSO_TYPE_OBJECT) {
 		jso_virt_string *key;
 		if (jso_schema_validation_stream_object_start(stream) == JSO_FAILURE) {
 			return JSO_FAILURE;
