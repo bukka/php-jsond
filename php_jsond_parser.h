@@ -19,6 +19,7 @@
 
 #include "php.h"
 #include "php_jsond_scanner.h"
+#include "jso_schema.h"
 
 typedef struct _php_jsond_parser php_jsond_parser;
 
@@ -29,7 +30,7 @@ typedef int (*php_jsond_parser_func_array_append_t)(
 typedef int (*php_jsond_parser_func_array_start_t)(
 		php_jsond_parser *parser);
 typedef int (*php_jsond_parser_func_array_end_t)(
-		php_jsond_parser *parser, zval *object);
+		php_jsond_parser *parser, zval *array);
 typedef int (*php_jsond_parser_func_object_create_t)(
 		php_jsond_parser *parser, zval *object);
 typedef int (*php_jsond_parser_func_object_update_t)(
@@ -38,6 +39,8 @@ typedef int (*php_jsond_parser_func_object_start_t)(
 		php_jsond_parser *parser);
 typedef int (*php_jsond_parser_func_object_end_t)(
 		php_jsond_parser *parser, zval *object);
+typedef int (*php_jsond_parser_func_scalar_value_t)(
+		php_jsond_parser *parser, zval *value);
 
 typedef struct _php_jsond_parser_methods {
 	php_jsond_parser_func_array_create_t array_create;
@@ -48,6 +51,7 @@ typedef struct _php_jsond_parser_methods {
 	php_jsond_parser_func_object_update_t object_update;
 	php_jsond_parser_func_object_start_t object_start;
 	php_jsond_parser_func_object_end_t object_end;
+	php_jsond_parser_func_scalar_value_t scalar_value;
 } php_jsond_parser_methods;
 
 struct _php_jsond_parser {
@@ -55,6 +59,8 @@ struct _php_jsond_parser {
 	zval *return_value;
 	int depth;
 	int max_depth;
+	jso_schema *schema;
+	jso_schema_validation_stream *schema_stream;
 	php_jsond_parser_methods methods;
 };
 
@@ -65,6 +71,7 @@ PHP_JSOND_API void php_jsond_parser_init_ex(
 		size_t str_len,
 		int options,
 		int max_depth,
+		jso_schema *schema,
 		const php_jsond_parser_methods *methods);
 
 PHP_JSOND_API void php_jsond_parser_init(
@@ -81,7 +88,7 @@ PHP_JSOND_API int php_jsond_parse(php_jsond_parser *parser);
 
 int php_jsond_yyparse(php_jsond_parser *parser);
 
-const php_jsond_parser_methods* php_jsond_get_validate_methods(void);
+const php_jsond_parser_methods* php_jsond_get_decode_methods(jso_schema *schema);
+const php_jsond_parser_methods* php_jsond_get_validate_methods(jso_schema *schema);
 
 #endif	/* PHP_JSOND_PARSER_H */
-

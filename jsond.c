@@ -207,7 +207,7 @@ PHP_JSOND_API zend_result php_jsond_decode_ex(
 
 	php_jsond_parser_init(&parser, return_value, str, str_len, options, depth);
 
-	if (php_jsond_yyparse(&parser)) {
+	if (php_jsond_parse(&parser)) {
 		php_jsond_error_code error_code = php_jsond_parser_error_code(&parser);
 		if (!(options & PHP_JSOND_THROW_ON_ERROR)) {
 			JSOND_G(error_code) = error_code;
@@ -226,10 +226,10 @@ PHP_JSOND_API bool php_jsond_validate_ex(const char *str, size_t str_len, zend_l
 {
 	php_jsond_parser parser;
 	zval tmp;
-	const php_jsond_parser_methods* parser_validate_methods = php_jsond_get_validate_methods();
-	php_jsond_parser_init_ex(&parser, &tmp, str, str_len, (int)options, (int)depth, parser_validate_methods);
+	const php_jsond_parser_methods* parser_validate_methods = php_jsond_get_validate_methods(NULL);
+	php_jsond_parser_init_ex(&parser, &tmp, str, str_len, (int)options, (int)depth, NULL, parser_validate_methods);
 
-	if (php_jsond_yyparse(&parser)) {
+	if (php_jsond_parse(&parser)) {
 		php_jsond_error_code error_code = php_jsond_parser_error_code(&parser);
 		JSOND_G(error_code) = error_code;
 		return false;

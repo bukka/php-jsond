@@ -20,6 +20,7 @@
 #include "php_jsond.h"
 #include "php_jsond_compat.h"
 #include "php_jsond_parser.h"
+#include "jso_schema.h"
 
 #define YYDEBUG 0
 
@@ -247,6 +248,8 @@ static int php_jsond_parser_object_update(php_jsond_parser *parser, zval *object
 	return SUCCESS;
 }
 
+/* VALIDATE BASIC */
+
 static int php_jsond_parser_array_create_validate(php_jsond_parser *parser, zval *array)
 {
 	ZVAL_NULL(array);
@@ -266,6 +269,58 @@ static int php_jsond_parser_object_create_validate(php_jsond_parser *parser, zva
 
 static int php_jsond_parser_object_update_validate(php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue)
 {
+	return SUCCESS;
+}
+
+/* VALIDATE SCHEMA */
+
+static int php_jsond_parser_array_create_validate_schema(php_jsond_parser *parser, zval *array)
+{
+	ZVAL_NULL(array);
+	return SUCCESS;
+}
+
+static int php_jsond_parser_array_append_validate_schema(php_jsond_parser *parser, zval *array, zval *zvalue)
+{
+	return SUCCESS;
+}
+
+static int php_jsond_parser_array_start_validate_schema(php_jsond_parser *parser)
+{
+	return SUCCESS;
+}
+
+static int php_jsond_parser_array_end_validate_schema(php_jsond_parser *parser, zval *array)
+{
+	ZVAL_NULL(array);
+	return SUCCESS;
+}
+
+static int php_jsond_parser_object_create_validate_schema(php_jsond_parser *parser, zval *object)
+{
+	ZVAL_NULL(object);
+	return SUCCESS;
+}
+
+static int php_jsond_parser_object_update_validate_schema(php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue)
+{
+	return SUCCESS;
+}
+
+static int php_jsond_parser_object_start_validate_schema(php_jsond_parser *parser)
+{
+	return SUCCESS;
+}
+
+static int php_jsond_parser_object_end_validate_schema(php_jsond_parser *parser, zval *object)
+{
+	ZVAL_NULL(object);
+	return SUCCESS;
+}
+
+static int php_jsond_parser_scalar_value_validate_schema(php_jsond_parser *parser, zval *value)
+{
+	ZVAL_NULL(value);
 	return SUCCESS;
 }
 
@@ -302,7 +357,7 @@ PHP_JSOND_API php_jsond_error_code php_jsond_parser_error_code(const php_jsond_p
 	return parser->scanner.errcode;
 }
 
-static const php_jsond_parser_methods default_parser_methods =
+static const php_jsond_parser_methods decode_parser_methods =
 {
 	php_jsond_parser_array_create,
 	php_jsond_parser_array_append,
@@ -310,6 +365,21 @@ static const php_jsond_parser_methods default_parser_methods =
 	NULL,
 	php_jsond_parser_object_create,
 	php_jsond_parser_object_update,
+	NULL,
+	NULL,
+	NULL,
+};
+
+
+static const php_jsond_parser_methods decode_schema_parser_methods =
+{
+	php_jsond_parser_array_create,
+	php_jsond_parser_array_append,
+	NULL,
+	NULL,
+	php_jsond_parser_object_create,
+	php_jsond_parser_object_update,
+	NULL,
 	NULL,
 	NULL,
 };
@@ -324,12 +394,26 @@ static const php_jsond_parser_methods validate_parser_methods =
 	php_jsond_parser_object_update_validate,
 	NULL,
 	NULL,
+	NULL,
+};
+
+static const php_jsond_parser_methods validate_schema_parser_methods =
+{
+	php_jsond_parser_array_create_validate_schema,
+	php_jsond_parser_array_append_validate_schema,
+	php_jsond_parser_array_start_validate_schema,
+	php_jsond_parser_array_end_validate_schema,
+	php_jsond_parser_object_create_validate_schema,
+	php_jsond_parser_object_update_validate_schema,
+	php_jsond_parser_object_start_validate_schema,
+	php_jsond_parser_object_end_validate_schema,
+	php_jsond_parser_scalar_value_validate_schema,
 };
 
 PHP_JSOND_API void php_jsond_parser_init_ex(
 		php_jsond_parser *parser, zval *return_value,
 		const char *str, size_t str_len,
-		int options, int max_depth,
+		int options, int max_depth, jso_schema *schema,
 		const php_jsond_parser_methods *parser_methods)
 {
 	memset(parser, 0, sizeof(php_jsond_parser));
@@ -337,6 +421,7 @@ PHP_JSOND_API void php_jsond_parser_init_ex(
 	parser->depth = 1;
 	parser->max_depth = max_depth;
 	parser->return_value = return_value;
+	parser->schema = schema;
 	memcpy(&parser->methods, parser_methods, sizeof(php_jsond_parser_methods));
 }
 
@@ -352,17 +437,32 @@ PHP_JSOND_API void php_jsond_parser_init(
 			str_len,
 			options,
 			max_depth,
-			&default_parser_methods);
+			NULL,
+			&decode_parser_methods);
 }
 
 
 PHP_JSOND_API int php_jsond_parse(php_jsond_parser *parser)
 {
+	jso_schema_validation_stream stream;
+
+	if (parser->schema != NULL) {
+		parser->schema_stream = &stream;
+		if (jso_schema_validation_stream_init(parser->schema, parser->schema_stream, 32) == JSO_FAILURE) {
+			return -1;
+		}
+	}
+
 	return php_jsond_yyparse(parser);
 }
 
 
-const php_jsond_parser_methods* php_jsond_get_validate_methods(void)
+const php_jsond_parser_methods* php_jsond_get_decode_methods(jso_schema *schema)
 {
-	return &validate_parser_methods;
+	return schema == NULL ? &decode_parser_methods : &decode_schema_parser_methods;
+}
+
+const php_jsond_parser_methods* php_jsond_get_validate_methods(jso_schema *schema)
+{
+	return schema == NULL ? &validate_parser_methods : &validate_schema_parser_methods;
 }
