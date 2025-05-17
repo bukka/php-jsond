@@ -54,12 +54,12 @@
 /**
  * @brief array type
  */
-#define jso_virt_array zend_array
+#define jso_virt_array zval
 
 /**
  * @brief object type
  */
-#define jso_virt_object zend_object
+#define jso_virt_object zval
 
 /* value */
 
@@ -112,7 +112,7 @@ static inline jso_virt_string *jso_virt_value_string(jso_virt_value *val)
  */
 static inline jso_virt_array *jso_virt_value_array(jso_virt_value *val)
 {
-	return Z_ARR_P(val);
+	return val;
 }
 
 /**
@@ -123,7 +123,7 @@ static inline jso_virt_array *jso_virt_value_array(jso_virt_value *val)
  */
 static inline jso_virt_object *jso_virt_value_object(jso_virt_value *val)
 {
-	return Z_OBJ_P(val);
+	return val;
 }
 
 /**
@@ -161,7 +161,7 @@ static inline size_t jso_virt_string_len(jso_virt_string *str)
 
 /* array */
 
-#define JSO_VIRT_ARRAY_FOREACH ZEND_HASH_FOREACH_VAL
+#define JSO_VIRT_ARRAY_FOREACH(_arr, _val) ZEND_HASH_FOREACH_VAL(Z_ARR_P(_arr), _val)
 #define JSO_VIRT_ARRAY_FOREACH_END ZEND_HASH_FOREACH_END()
 
 /**
@@ -172,7 +172,7 @@ static inline size_t jso_virt_string_len(jso_virt_string *str)
  */
 static inline size_t jso_virt_array_len(jso_virt_array *arr)
 {
-	return zend_hash_num_elements(arr);
+	return zend_hash_num_elements(Z_ARR_P(arr));
 }
 
 /**
@@ -185,8 +185,11 @@ bool jso_virt_array_is_unique(jso_virt_array *arr);
 
 /* object */
 
+#define PHP_JSOND_OBJ_PROPS(_obj) \
+	(Z_TYPE_P(_obj) == IS_ARRAY ? Z_ARR_P(_obj) : Z_OBJ_P(_obj)->properties)
+
 #define JSO_VIRT_OBJECT_FOREACH(_obj, _key, _val) \
-	ZEND_HASH_FOREACH_STR_KEY_VAL(_obj->properties, _key, _val)
+	ZEND_HASH_FOREACH_STR_KEY_VAL(PHP_JSOND_OBJ_PROPS(_obj), _key, _val)
 #define JSO_VIRT_OBJECT_FOREACH_END ZEND_HASH_FOREACH_END()
 
 /**
@@ -198,7 +201,7 @@ bool jso_virt_array_is_unique(jso_virt_array *arr);
  */
 static inline bool jso_virt_object_has_str_key(jso_virt_object *obj, jso_string *key)
 {
-	return zend_hash_str_find(obj->properties, JSO_STRING_VAL(key), JSO_STRING_LEN(key)) != NULL;
+	return zend_hash_str_find(PHP_JSOND_OBJ_PROPS(obj), JSO_STRING_VAL(key), JSO_STRING_LEN(key)) != NULL;
 }
 
 /**
@@ -209,7 +212,7 @@ static inline bool jso_virt_object_has_str_key(jso_virt_object *obj, jso_string 
  */
 static inline size_t jso_virt_object_count(jso_virt_object *obj)
 {
-	return zend_hash_num_elements(obj->properties);
+	return zend_hash_num_elements(PHP_JSOND_OBJ_PROPS(obj));
 }
 
 #endif /* JSO_VIRT_H */

@@ -23,23 +23,25 @@
 
 typedef struct _php_jsond_parser php_jsond_parser;
 
-typedef int (*php_jsond_parser_func_array_create_t)(
+typedef zend_result (*php_jsond_parser_func_array_create_t)(
 		php_jsond_parser *parser, zval *array);
-typedef int (*php_jsond_parser_func_array_append_t)(
+typedef zend_result (*php_jsond_parser_func_array_append_t)(
 		php_jsond_parser *parser, zval *array, zval *zvalue);
-typedef int (*php_jsond_parser_func_array_start_t)(
+typedef zend_result (*php_jsond_parser_func_array_start_t)(
 		php_jsond_parser *parser);
-typedef int (*php_jsond_parser_func_array_end_t)(
+typedef zend_result (*php_jsond_parser_func_array_end_t)(
 		php_jsond_parser *parser, zval *array);
-typedef int (*php_jsond_parser_func_object_create_t)(
+typedef zend_result (*php_jsond_parser_func_object_create_t)(
 		php_jsond_parser *parser, zval *object);
-typedef int (*php_jsond_parser_func_object_update_t)(
+typedef zend_result (*php_jsond_parser_func_object_key_t)(
+		php_jsond_parser *parser, zend_string *key);
+typedef zend_result (*php_jsond_parser_func_object_update_t)(
 		php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue);
-typedef int (*php_jsond_parser_func_object_start_t)(
+typedef zend_result (*php_jsond_parser_func_object_start_t)(
 		php_jsond_parser *parser);
-typedef int (*php_jsond_parser_func_object_end_t)(
+typedef zend_result (*php_jsond_parser_func_object_end_t)(
 		php_jsond_parser *parser, zval *object);
-typedef int (*php_jsond_parser_func_scalar_value_t)(
+typedef zend_result (*php_jsond_parser_func_scalar_value_t)(
 		php_jsond_parser *parser, zval *value);
 
 typedef struct _php_jsond_parser_methods {
@@ -48,6 +50,7 @@ typedef struct _php_jsond_parser_methods {
 	php_jsond_parser_func_array_start_t array_start;
 	php_jsond_parser_func_array_end_t array_end;
 	php_jsond_parser_func_object_create_t object_create;
+	php_jsond_parser_func_object_key_t object_key;
 	php_jsond_parser_func_object_update_t object_update;
 	php_jsond_parser_func_object_start_t object_start;
 	php_jsond_parser_func_object_end_t object_end;

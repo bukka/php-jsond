@@ -58,7 +58,7 @@ static bool jso_virt_array_equals(jso_virt_array *varr, jso_array *arr)
     jso_value *val;
     jso_virt_value *vval;
     JSO_ARRAY_FOREACH(arr, val) {
-        if ((vval = zend_hash_index_find(varr, idx++)) == NULL) {
+        if ((vval = zend_hash_index_find(Z_ARR_P(varr), idx++)) == NULL) {
             return false;
         }
         if (!jso_virt_value_equals(vval, val)) {
@@ -77,8 +77,9 @@ static bool jso_virt_object_equals(jso_virt_object *vobj, jso_object *obj)
     jso_string *key;
     jso_value *val;
     jso_virt_value *vval;
+    HashTable *ht = PHP_JSOND_OBJ_PROPS(vobj);
     JSO_OBJECT_FOREACH(obj, key, val) {
-        if ((vval = zend_hash_str_find(vobj->properties, (const char *)JSO_STRING_VAL(key), JSO_STRING_LEN(key))) == NULL) {
+        if ((vval = zend_hash_str_find(ht, (const char *)JSO_STRING_VAL(key), JSO_STRING_LEN(key))) == NULL) {
             return false;
         }
         if (!jso_virt_value_equals(vval, val)) {

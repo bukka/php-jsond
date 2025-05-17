@@ -101,6 +101,7 @@ int json_yydebug = 1;
 		YYERROR; \
 	} \
 	++parser->depth
+#define PHP_JSOND_CONV_JSO_RC(_call_rc) _call_rc == JSO_SUCCESS ? SUCCESS : FAILURE 
 
 
 
@@ -444,18 +445,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  16
+#define YYFINAL  17
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   26
+#define YYLAST   25
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  18
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  14
+#define YYNNTS  17
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  29
+#define YYNRULES  32
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  40
+#define YYNSTATES  43
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -502,9 +503,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    79,    79,    89,    89,   106,   107,   115,   119,   123,
-     129,   139,   138,   156,   157,   165,   169,   173,   178,   186,
-     187,   191,   192,   193,   194,   195,   196,   197,   198,   199
+       0,    80,    80,    90,    90,   107,   108,   116,   120,   125,
+     124,   137,   136,   152,   151,   169,   170,   178,   182,   186,
+     191,   199,   200,   204,   205,   206,   215,   216,   217,   218,
+     219,   220,   221
 };
 #endif
 
@@ -517,8 +519,9 @@ static const char *const yytname[] =
   "PHP_JSOND_T_FALSE", "PHP_JSOND_T_INT", "PHP_JSOND_T_DOUBLE",
   "PHP_JSOND_T_STRING", "PHP_JSOND_T_ESTRING", "PHP_JSOND_T_EOI",
   "PHP_JSOND_T_ERROR", "'{'", "'}'", "']'", "':'", "','", "'['", "$accept",
-  "start", "object", "$@1", "object_end", "members", "member", "array",
-  "$@2", "array_end", "elements", "element", "key", "value", YY_NULLPTR
+  "start", "object", "$@1", "object_end", "members", "member", "$@2",
+  "$@3", "array", "$@4", "array_end", "elements", "element", "key",
+  "value", "scalar_value", YY_NULLPTR
 };
 #endif
 
@@ -532,10 +535,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -16
+#define YYPACT_NINF -17
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-16)))
+  (!!((Yystate) == (-17)))
 
 #define YYTABLE_NINF -1
 
@@ -546,10 +549,11 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -1,   -16,   -16,   -16,   -16,   -16,   -16,   -16,   -16,   -16,
-      12,   -16,   -16,    -9,     1,    -1,   -16,   -16,   -16,   -16,
-       0,     5,     7,     4,     8,   -16,   -16,   -16,   -16,     1,
-      -1,   -16,   -16,   -16,    -1,    10,   -16,   -16,    -1,   -16
+      -2,   -17,   -17,   -17,   -17,   -17,   -17,   -17,   -17,   -17,
+      11,   -17,   -17,     4,   -17,     0,    -2,   -17,   -17,   -17,
+     -17,    -1,     2,   -17,     3,     6,   -17,   -17,   -17,   -17,
+       0,     5,   -17,   -17,   -17,    -2,   -17,    -2,   -17,     8,
+     -17,    -2,   -17
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -557,24 +561,25 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    27,    28,    29,    25,    26,    23,    24,     3,    11,
-       0,    21,    22,     0,     7,    15,     1,     2,    19,    20,
-       0,     8,     0,     0,    16,    17,     5,     6,     4,     0,
-       0,    14,    13,    12,     0,     0,     9,    18,     0,    10
+       0,    30,    31,    32,    28,    29,    26,    27,     3,    13,
+       0,    23,    24,     0,    25,     7,    17,     1,     2,    21,
+      22,     0,     8,     9,     0,    18,    19,     5,     6,     4,
+       0,     0,    16,    15,    14,     0,    11,     0,    20,     0,
+      10,     0,    12
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -16,   -16,   -16,   -16,   -16,   -16,   -16,   -16,   -16,   -16,
-     -16,   -16,    -3,   -15
+     -17,   -17,   -17,   -17,   -17,   -17,   -17,   -17,   -17,   -17,
+     -17,   -17,   -17,   -17,    -6,   -16,   -17
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    10,    11,    14,    28,    20,    21,    12,    15,    33,
-      23,    24,    22,    13
+      -1,    10,    11,    15,    29,    21,    22,    31,    39,    12,
+      16,    34,    24,    25,    23,    13,    14
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -582,16 +587,16 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      25,    17,     1,     2,     3,     4,     5,     6,     7,    18,
-      19,     8,    16,    26,    27,    36,     9,    31,    32,    37,
-       0,    29,    30,    39,    34,    38,    35
+      26,     1,     2,     3,     4,     5,     6,     7,    19,    20,
+       8,    17,    27,    28,    18,     9,    32,    33,    30,    38,
+      37,    40,    35,    41,    36,    42
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-      15,    10,     3,     4,     5,     6,     7,     8,     9,     8,
-       9,    12,     0,    13,    14,    30,    17,    13,    14,    34,
-      -1,    16,    15,    38,    16,    15,    29
+      16,     3,     4,     5,     6,     7,     8,     9,     8,     9,
+      12,     0,    13,    14,    10,    17,    13,    14,    16,    35,
+      15,    37,    16,    15,    30,    41
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -599,25 +604,28 @@ static const yytype_int8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     3,     4,     5,     6,     7,     8,     9,    12,    17,
-      19,    20,    25,    31,    21,    26,     0,    10,     8,     9,
-      23,    24,    30,    28,    29,    31,    13,    14,    22,    16,
-      15,    13,    14,    27,    16,    30,    31,    31,    15,    31
+      19,    20,    27,    33,    34,    21,    28,     0,    10,     8,
+       9,    23,    24,    32,    30,    31,    33,    13,    14,    22,
+      16,    25,    13,    14,    29,    16,    32,    15,    33,    26,
+      33,    15,    33
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    18,    19,    21,    20,    22,    22,    23,    23,    24,
-      24,    26,    25,    27,    27,    28,    28,    29,    29,    30,
-      30,    31,    31,    31,    31,    31,    31,    31,    31,    31
+       0,    18,    19,    21,    20,    22,    22,    23,    23,    25,
+      24,    26,    24,    28,    27,    29,    29,    30,    30,    31,
+      31,    32,    32,    33,    33,    33,    34,    34,    34,    34,
+      34,    34,    34
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     0,     4,     1,     1,     0,     1,     3,
-       5,     0,     4,     1,     1,     0,     1,     1,     3,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1
+       0,     2,     2,     0,     4,     1,     1,     0,     1,     0,
+       4,     0,     6,     0,     4,     1,     1,     0,     1,     1,
+       3,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1
 };
 
 
@@ -1104,31 +1112,37 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, php_jsond_parser *
 
         break;
 
-    case 25: /* array  */
+    case 27: /* array  */
 
       { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
 
         break;
 
-    case 28: /* elements  */
+    case 30: /* elements  */
 
       { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
 
         break;
 
-    case 29: /* element  */
+    case 31: /* element  */
 
       { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
 
         break;
 
-    case 30: /* key  */
+    case 32: /* key  */
 
       { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
 
         break;
 
-    case 31: /* value  */
+    case 33: /* value  */
+
+      { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
+
+        break;
+
+    case 34: /* scalar_value  */
 
       { zval_ptr_dtor_nogc(&((*yyvaluep).value)); }
 
@@ -1450,9 +1464,9 @@ yyreduce:
   case 9:
 
     {
-				parser->methods.object_create(parser, &(yyval.value));
-				if (parser->methods.object_update(parser, &(yyval.value), Z_STR((yyvsp[-2].value)), &(yyvsp[0].value)) == FAILURE)
+				if (parser->methods.object_key && FAILURE == parser->methods.object_key(parser, Z_STR((yyvsp[0].value)))) {
 					YYERROR;
+				}
 			}
 
     break;
@@ -1460,14 +1474,34 @@ yyreduce:
   case 10:
 
     {
-				if (parser->methods.object_update(parser, &(yyval.value), Z_STR((yyvsp[-2].value)), &(yyvsp[0].value)) == FAILURE)
+				parser->methods.object_create(parser, &(yyval.value));
+				if (parser->methods.object_update(parser, &(yyval.value), Z_STR((yyvsp[-3].value)), &(yyvsp[0].value)) == FAILURE)
 					YYERROR;
-				(yyval.value) = (yyvsp[-4].value);
 			}
 
     break;
 
   case 11:
+
+    {
+				if (parser->methods.object_key && FAILURE == parser->methods.object_key(parser, Z_STR((yyvsp[0].value)))) {
+					YYERROR;
+				}
+			}
+
+    break;
+
+  case 12:
+
+    {
+				if (parser->methods.object_update(parser, &(yyval.value), Z_STR((yyvsp[-3].value)), &(yyvsp[0].value)) == FAILURE)
+					YYERROR;
+				(yyval.value) = (yyvsp[-5].value);
+			}
+
+    break;
+
+  case 13:
 
     {
 				PHP_JSOND_DEPTH_INC;
@@ -1478,7 +1512,7 @@ yyreduce:
 
     break;
 
-  case 12:
+  case 14:
 
     {
 				PHP_JSOND_DEPTH_DEC;
@@ -1490,7 +1524,7 @@ yyreduce:
 
     break;
 
-  case 14:
+  case 16:
 
     {
 				parser->scanner.errcode = PHP_JSOND_ERROR_STATE_MISMATCH;
@@ -1499,7 +1533,7 @@ yyreduce:
 
     break;
 
-  case 15:
+  case 17:
 
     {
 				parser->methods.array_create(parser, &(yyval.value));
@@ -1507,7 +1541,7 @@ yyreduce:
 
     break;
 
-  case 17:
+  case 19:
 
     {
 				parser->methods.array_create(parser, &(yyval.value));
@@ -1516,11 +1550,22 @@ yyreduce:
 
     break;
 
-  case 18:
+  case 20:
 
     {
 				parser->methods.array_append(parser, &(yyvsp[-2].value), &(yyvsp[0].value));
 				(yyval.value) = (yyvsp[-2].value);
+			}
+
+    break;
+
+  case 25:
+
+    {
+				if (parser->methods.scalar_value && FAILURE == parser->methods.scalar_value(parser, &(yyvsp[0].value))) {
+					YYERROR;
+				}
+				(yyval.value) = (yyvsp[0].value);
 			}
 
     break;
@@ -1757,20 +1802,22 @@ yyreturn:
 
  /* Functions */
 
-static int php_jsond_parser_array_create(php_jsond_parser *parser, zval *array)
+/* DECODE BASIC */
+
+static zend_result php_jsond_parser_decode_array_create(php_jsond_parser *parser, zval *array)
 {
 	array_init(array);
 	return SUCCESS;
 }
 
 
-static int php_jsond_parser_array_append(php_jsond_parser *parser, zval *array, zval *zvalue)
+static zend_result php_jsond_parser_decode_array_append(php_jsond_parser *parser, zval *array, zval *zvalue)
 {
 	zend_hash_next_index_insert(Z_ARRVAL_P(array), zvalue);
 	return SUCCESS;
 }
 
-static int php_jsond_parser_object_create(php_jsond_parser *parser, zval *object)
+static zend_result php_jsond_parser_decode_object_create(php_jsond_parser *parser, zval *object)
 {
 	if (parser->scanner.options & PHP_JSOND_OBJECT_AS_ARRAY) {
 		array_init(object);
@@ -1780,8 +1827,78 @@ static int php_jsond_parser_object_create(php_jsond_parser *parser, zval *object
 	return SUCCESS;
 }
 
-static int php_jsond_parser_object_update(php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue)
+static zend_result php_jsond_parser_decode_object_update(php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue)
 {
+	/* if JSON_OBJECT_AS_ARRAY is set */
+	if (Z_TYPE_P(object) == IS_ARRAY) {
+		zend_symtable_update(Z_ARRVAL_P(object), key, zvalue);
+	} else {
+		zval zkey;
+
+		if (ZSTR_LEN(key) > 0 && ZSTR_VAL(key)[0] == '\0') {
+			parser->scanner.errcode = PHP_JSOND_ERROR_INVALID_PROPERTY_NAME;
+			zend_string_release_ex(key, 0);
+			zval_ptr_dtor_nogc(zvalue);
+			zval_ptr_dtor_nogc(object);
+			return FAILURE;
+		}
+		zend_std_write_property(Z_OBJ_P(object), key, zvalue, NULL);
+		Z_TRY_DELREF_P(zvalue);
+	}
+	zend_string_release_ex(key, 0);
+
+	return SUCCESS;
+}
+
+/* DECODE SCHEMA */
+
+static zend_result php_jsond_parser_decode_schema_array_create(php_jsond_parser *parser, zval *array)
+{
+	array_init(array);
+	return SUCCESS;
+}
+
+
+static zend_result php_jsond_parser_decode_schema_array_append(php_jsond_parser *parser, zval *array, zval *zvalue)
+{
+	if (jso_schema_validation_stream_array_append(parser->schema_stream, array, zvalue) == JSO_FAILURE) {
+		return FAILURE;
+	}
+
+	zend_hash_next_index_insert(Z_ARRVAL_P(array), zvalue);
+	return SUCCESS;
+}
+
+static zend_result php_jsond_parser_decode_schema_array_start(php_jsond_parser *parser)
+{
+	return PHP_JSOND_CONV_JSO_RC(jso_schema_validation_stream_array_start(parser->schema_stream));
+}
+
+static zend_result php_jsond_parser_decode_schema_array_end(php_jsond_parser *parser, zval *array)
+{
+	return PHP_JSOND_CONV_JSO_RC(jso_schema_validation_stream_array_end(parser->schema_stream));
+}
+
+static zend_result php_jsond_parser_decode_schema_object_create(php_jsond_parser *parser, zval *object)
+{
+	if (parser->scanner.options & PHP_JSOND_OBJECT_AS_ARRAY) {
+		array_init(object);
+	} else {
+		object_init(object);
+	}
+	return SUCCESS;
+}
+
+static zend_result php_jsond_parser_decode_schema_object_key(php_jsond_parser *parser, zend_string *key)
+{
+	return PHP_JSOND_CONV_JSO_RC(jso_schema_validation_stream_object_key(parser->schema_stream, key));
+}
+
+static zend_result php_jsond_parser_decode_schema_object_update(php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue)
+{
+	if (jso_schema_validation_stream_object_update(parser->schema_stream, object, key, zvalue) == JSO_FAILURE) {
+		return FAILURE;
+	}
 
 	/* if JSON_OBJECT_AS_ARRAY is set */
 	if (Z_TYPE_P(object) == IS_ARRAY) {
@@ -1804,94 +1921,55 @@ static int php_jsond_parser_object_update(php_jsond_parser *parser, zval *object
 	return SUCCESS;
 }
 
+static zend_result php_jsond_parser_decode_schema_object_start(php_jsond_parser *parser)
+{
+	return PHP_JSOND_CONV_JSO_RC(jso_schema_validation_stream_object_start(parser->schema_stream));
+}
+
+static zend_result php_jsond_parser_decode_schema_object_end(php_jsond_parser *parser, zval *object)
+{
+	return PHP_JSOND_CONV_JSO_RC(jso_schema_validation_stream_object_end(parser->schema_stream));
+}
+
+static zend_result php_jsond_parser_decode_schema_scalar_value(php_jsond_parser *parser, zval *value)
+{
+	return PHP_JSOND_CONV_JSO_RC(jso_schema_validation_stream_value(parser->schema_stream, value));
+}
+
 /* VALIDATE BASIC */
 
-static int php_jsond_parser_array_create_validate(php_jsond_parser *parser, zval *array)
+static zend_result php_jsond_parser_validate_array_create(php_jsond_parser *parser, zval *array)
 {
 	ZVAL_NULL(array);
 	return SUCCESS;
 }
 
-static int php_jsond_parser_array_append_validate(php_jsond_parser *parser, zval *array, zval *zvalue)
+static zend_result php_jsond_parser_validate_array_append(php_jsond_parser *parser, zval *array, zval *zvalue)
 {
 	return SUCCESS;
 }
 
-static int php_jsond_parser_object_create_validate(php_jsond_parser *parser, zval *object)
-{
-	ZVAL_NULL(object);
-	return SUCCESS;
-}
-
-static int php_jsond_parser_object_update_validate(php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue)
-{
-	return SUCCESS;
-}
-
-/* VALIDATE SCHEMA */
-
-static int php_jsond_parser_array_create_validate_schema(php_jsond_parser *parser, zval *array)
-{
-	ZVAL_NULL(array);
-	return SUCCESS;
-}
-
-static int php_jsond_parser_array_append_validate_schema(php_jsond_parser *parser, zval *array, zval *zvalue)
-{
-	return SUCCESS;
-}
-
-static int php_jsond_parser_array_start_validate_schema(php_jsond_parser *parser)
-{
-	return SUCCESS;
-}
-
-static int php_jsond_parser_array_end_validate_schema(php_jsond_parser *parser, zval *array)
-{
-	ZVAL_NULL(array);
-	return SUCCESS;
-}
-
-static int php_jsond_parser_object_create_validate_schema(php_jsond_parser *parser, zval *object)
+static zend_result php_jsond_parser_validate_object_create(php_jsond_parser *parser, zval *object)
 {
 	ZVAL_NULL(object);
 	return SUCCESS;
 }
 
-static int php_jsond_parser_object_update_validate_schema(php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue)
+static zend_result php_jsond_parser_validate_object_update(php_jsond_parser *parser, zval *object, zend_string *key, zval *zvalue)
 {
 	return SUCCESS;
 }
 
-static int php_jsond_parser_object_start_validate_schema(php_jsond_parser *parser)
-{
-	return SUCCESS;
-}
-
-static int php_jsond_parser_object_end_validate_schema(php_jsond_parser *parser, zval *object)
-{
-	ZVAL_NULL(object);
-	return SUCCESS;
-}
-
-static int php_jsond_parser_scalar_value_validate_schema(php_jsond_parser *parser, zval *value)
-{
-	ZVAL_NULL(value);
-	return SUCCESS;
-}
-
+/* LEXING AND PARSING */
 
 int php_jsond_yylex(union YYSTYPE *value, php_jsond_parser *parser)
 {
 	int token = php_jsond_scan(&parser->scanner);
 	value->value = parser->scanner.value;
 
-	bool validate = parser->methods.array_create == php_jsond_parser_array_create_validate
-		&& parser->methods.array_append == php_jsond_parser_array_append_validate
-		&& parser->methods.object_create == php_jsond_parser_object_create_validate
-		&& parser->methods.object_update == php_jsond_parser_object_update_validate;
+	bool pure_validate = parser->methods.array_create == php_jsond_parser_validate_array_create;
 
-	if (validate) {
+	if (pure_validate) {
 		zval_ptr_dtor_str(&(parser->scanner.value));
 		ZVAL_UNDEF(&value->value);
 	} else {
@@ -1915,12 +1993,13 @@ PHP_JSOND_API php_jsond_error_code php_jsond_parser_error_code(const php_jsond_p
 
 static const php_jsond_parser_methods decode_parser_methods =
 {
-	php_jsond_parser_array_create,
-	php_jsond_parser_array_append,
+	php_jsond_parser_decode_array_create,
+	php_jsond_parser_decode_array_append,
 	NULL,
 	NULL,
-	php_jsond_parser_object_create,
-	php_jsond_parser_object_update,
+	php_jsond_parser_decode_object_create,
+	NULL,
+	php_jsond_parser_decode_object_update,
 	NULL,
 	NULL,
 	NULL,
@@ -1929,41 +2008,45 @@ static const php_jsond_parser_methods decode_parser_methods =
 
 static const php_jsond_parser_methods decode_schema_parser_methods =
 {
-	php_jsond_parser_array_create,
-	php_jsond_parser_array_append,
-	NULL,
-	NULL,
-	php_jsond_parser_object_create,
-	php_jsond_parser_object_update,
-	NULL,
-	NULL,
-	NULL,
+	php_jsond_parser_decode_schema_array_create,
+	php_jsond_parser_decode_schema_array_append,
+	php_jsond_parser_decode_schema_array_start,
+	php_jsond_parser_decode_schema_array_end,
+	php_jsond_parser_decode_schema_object_create,
+	php_jsond_parser_decode_schema_object_key,
+	php_jsond_parser_decode_schema_object_update,
+	php_jsond_parser_decode_schema_object_start,
+	php_jsond_parser_decode_schema_object_end,
+	php_jsond_parser_decode_schema_scalar_value,
 };
 
 static const php_jsond_parser_methods validate_parser_methods =
 {
-	php_jsond_parser_array_create_validate,
-	php_jsond_parser_array_append_validate,
+	php_jsond_parser_validate_array_create,
+	php_jsond_parser_validate_array_append,
 	NULL,
 	NULL,
-	php_jsond_parser_object_create_validate,
-	php_jsond_parser_object_update_validate,
+	php_jsond_parser_validate_object_create,
+	NULL,
+	php_jsond_parser_validate_object_update,
 	NULL,
 	NULL,
 	NULL,
 };
 
+// same as decode for now
 static const php_jsond_parser_methods validate_schema_parser_methods =
 {
-	php_jsond_parser_array_create_validate_schema,
-	php_jsond_parser_array_append_validate_schema,
-	php_jsond_parser_array_start_validate_schema,
-	php_jsond_parser_array_end_validate_schema,
-	php_jsond_parser_object_create_validate_schema,
-	php_jsond_parser_object_update_validate_schema,
-	php_jsond_parser_object_start_validate_schema,
-	php_jsond_parser_object_end_validate_schema,
-	php_jsond_parser_scalar_value_validate_schema,
+	php_jsond_parser_decode_schema_array_create,
+	php_jsond_parser_decode_schema_array_append,
+	php_jsond_parser_decode_schema_array_start,
+	php_jsond_parser_decode_schema_array_end,
+	php_jsond_parser_decode_schema_object_create,
+	php_jsond_parser_decode_schema_object_key,
+	php_jsond_parser_decode_schema_object_update,
+	php_jsond_parser_decode_schema_object_start,
+	php_jsond_parser_decode_schema_object_end,
+	php_jsond_parser_decode_schema_scalar_value,
 };
 
 PHP_JSOND_API void php_jsond_parser_init_ex(
