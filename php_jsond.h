@@ -147,6 +147,12 @@ ZEND_TSRMLS_CACHE_EXTERN();
 #endif
 
 #include "php_jsond_buffer.h"
+#include "jso_schema.h"
+
+typedef struct _php_jsond_schema_object {
+	jso_schema *schema;
+	zend_object std;
+} php_jsond_schema_object;
 
 PHP_JSOND_API zend_result php_jsond_encode(php_jsond_buffer *buf, zval *val, int options);
 PHP_JSOND_API zend_result php_jsond_decode_ex(zval *return_value, const char *str, size_t str_len, int options, int depth);
