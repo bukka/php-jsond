@@ -154,6 +154,10 @@ typedef struct _php_jsond_schema_object {
 	zend_object std;
 } php_jsond_schema_object;
 
+static inline php_jsond_schema_object *php_jsond_schema_object_from_zend_object(zend_object *zobj) {
+	return (php_jsond_schema_object *)(((char *)zobj) - XtOffsetOf(php_jsond_schema_object, std));
+}
+
 PHP_JSOND_API zend_result php_jsond_encode(php_jsond_buffer *buf, zval *val, int options);
 PHP_JSOND_API zend_result php_jsond_decode_ex(zval *return_value, const char *str, size_t str_len, int options, int depth);
 PHP_JSOND_API bool php_jsond_validate_ex(const char *str, size_t str_len, zend_long options, zend_long depth);

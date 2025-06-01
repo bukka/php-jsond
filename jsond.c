@@ -34,6 +34,7 @@ PHP_JSOND_API zend_class_entry *php_jsond_serializable_ce;
 PHP_JSOND_API zend_class_entry *php_jsond_exception_ce;
 PHP_JSOND_API zend_class_entry *php_jsond_schema_exception_ce;
 PHP_JSOND_API zend_class_entry *php_jsond_schema_ce;
+static zend_object_handlers php_jsond_schema_object_handlers;
 
 PHP_JSOND_API ZEND_DECLARE_MODULE_GLOBALS(jsond)
 
@@ -47,6 +48,35 @@ PHP_JSOND_API ZEND_DECLARE_MODULE_GLOBALS(jsond)
 
 #define PHP_JSOND_REGISTER_SCHEMA_CONSTANT(_name, _jso_const) \
 	PHP_JSOND_REGISTER_LONG_CONSTANT(_name, (int) (_jso_const) + 1000)
+
+#define PHP_JSOND_SCHEMA_OBJ_FROM_ZOBJ php_jsond_schema_object_from_zend_object
+
+static void php_jsond_schema_free_object_storage(zend_object *obj) /* {{{ */
+{
+	php_jsond_schema_object *intern = PHP_JSOND_SCHEMA_OBJ_FROM_ZOBJ(obj);
+
+	jso_schema_free(intern->schema);
+	zend_object_std_dtor(&intern->std);
+}
+
+static inline zend_object *php_jsond_schema_create_object_ex(zend_class_entry *ce, jso_schema **schema)
+{
+	php_jsond_schema_object *intern = zend_object_alloc(sizeof(php_jsond_schema_object), ce);
+
+	zend_object_std_init(&intern->std, ce);
+	object_properties_init(&intern->std, ce);
+
+	intern->schema = jso_schema_alloc();
+	*schema = intern->schema;
+
+	return &intern->std;
+}
+
+static zend_object *php_jsond_schema_create_object(zend_class_entry *ce)
+{
+	jso_schema *schema;
+	return php_jsond_schema_create_object_ex(ce, &schema);
+}
 
 /* MINIT */
 static PHP_MINIT_FUNCTION(jsond)
@@ -68,6 +98,12 @@ static PHP_MINIT_FUNCTION(jsond)
 
 	/* register JSONd schema */
 	php_jsond_schema_ce = register_class_JsondSchema();
+	php_jsond_schema_ce->create_object = php_jsond_schema_create_object;
+	php_jsond_schema_ce->default_object_handlers = &php_jsond_schema_object_handlers;
+
+	memcpy(&php_jsond_schema_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+	php_jsond_schema_object_handlers.offset = XtOffsetOf(php_jsond_schema_object, std);
+	php_jsond_schema_object_handlers.free_obj = php_jsond_schema_free_object_storage;
 
 	/* decoding options */
 	PHP_JSOND_REGISTER_LONG_CONSTANT("OBJECT_AS_ARRAY",  PHP_JSOND_OBJECT_AS_ARRAY);
@@ -430,4 +466,21 @@ PHP_FUNCTION(jsond_last_error_msg)
 	ZEND_PARSE_PARAMETERS_NONE();
 
 	RETURN_STRING(php_jsond_get_error_msg(JSOND_G(error_code)));
+}
+
+PHP_METHOD(JsondSchema, __construct)
+{
+	zend_throw_error(NULL, "Cannot directly construct JsondSchema, use create methods instead");
+}
+
+PHP_METHOD(JsondSchema, createFromString)
+{
+	const char *source;
+	size_t source_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &source, &source_len) == FAILURE) {
+		RETURN_THROWS();
+	}
+
+	// TODO: jso load data to jso value, create object, parse its schema and return object
 }

@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 19c6712092a1fd8fda7de83d775b09fe3f5747df */
+ * Stub hash: 3f9916cdb15b3176f356f3e37c80997e22a2b588 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_jsond_encode, 0, 1, MAY_BE_STRING|MAY_BE_FALSE)
 	ZEND_ARG_TYPE_INFO(0, value, IS_MIXED, 0)
@@ -34,8 +34,8 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_JsondSchema___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_JsondSchema_fromString, 0, 1, JsondSchema, 0)
-	ZEND_ARG_TYPE_INFO(0, json, IS_STRING, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_JsondSchema_createFromString, 0, 1, JsondSchema, 0)
+	ZEND_ARG_TYPE_INFO(0, source, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_FUNCTION(jsond_encode);
@@ -44,7 +44,7 @@ ZEND_FUNCTION(jsond_validate);
 ZEND_FUNCTION(jsond_last_error);
 ZEND_FUNCTION(jsond_last_error_msg);
 ZEND_METHOD(JsondSchema, __construct);
-ZEND_METHOD(JsondSchema, fromString);
+ZEND_METHOD(JsondSchema, createFromString);
 
 static const zend_function_entry ext_functions[] = {
 	ZEND_FE(jsond_encode, arginfo_jsond_encode)
@@ -61,8 +61,8 @@ static const zend_function_entry class_JsondSerializable_methods[] = {
 };
 
 static const zend_function_entry class_JsondSchema_methods[] = {
-	ZEND_ME(JsondSchema, __construct, arginfo_class_JsondSchema___construct, ZEND_ACC_PRIVATE)
-	ZEND_ME(JsondSchema, fromString, arginfo_class_JsondSchema_fromString, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(JsondSchema, __construct, arginfo_class_JsondSchema___construct, ZEND_ACC_PRIVATE|ZEND_ACC_FINAL)
+	ZEND_ME(JsondSchema, createFromString, arginfo_class_JsondSchema_createFromString, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_FE_END
 };
 

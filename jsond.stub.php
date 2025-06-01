@@ -18,9 +18,9 @@ class JsondSchemaException extends JsondException
 /** @not-serializable */
 class JsondSchema
 {
-    private function __construct() {}
+    private final function __construct() {}
 
-    public static function fromString(string $json): JsondSchema {}
+    public static function createFromString(string $source): JsondSchema {}
 }
 
 function jsond_encode(mixed $value, int $flags = 0, int $depth = 512): string|false {}
