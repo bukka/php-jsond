@@ -24,6 +24,8 @@
 #include "php_jsond_parser.h"
 #include "jsond_arginfo.h"
 #include <zend_exceptions.h>
+#include "jso.h"
+#include "jso_parser.h"
 
 /* PHP init and user functions */
 static PHP_MINFO_FUNCTION(jsond);
@@ -46,10 +48,15 @@ PHP_JSOND_API ZEND_DECLARE_MODULE_GLOBALS(jsond)
 		} \
 	} while(0)
 
+#define PHP_JSOND_SHEMA_ERROR_VALUE_OFFSET 1000
+#define PHP_JSOND_SHEMA_ERROR_VALUE(_jso_const) \
+	((int) (_jso_const) + PHP_JSOND_SHEMA_ERROR_VALUE_OFFSET)
+
 #define PHP_JSOND_REGISTER_SCHEMA_CONSTANT(_name, _jso_const) \
-	PHP_JSOND_REGISTER_LONG_CONSTANT(_name, (int) (_jso_const) + 1000)
+	PHP_JSOND_REGISTER_LONG_CONSTANT(_name, (int) PHP_JSOND_SHEMA_ERROR_VALUE(_jso_const))
 
 #define PHP_JSOND_SCHEMA_OBJ_FROM_ZOBJ php_jsond_schema_object_from_zend_object
+#define PHP_JSOND_SCHEMA_OBJ_FROM_ZV(_zv) php_jsond_schema_object_from_zend_object(Z_OBJ_P(_zv))
 
 static void php_jsond_schema_free_object_storage(zend_object *obj) /* {{{ */
 {
@@ -251,6 +258,9 @@ static const char *php_jsond_get_error_msg(php_jsond_error_code error_code) /* {
 		case PHP_JSOND_ERROR_NON_BACKED_ENUM:
 			return "Non-backed enums have no default serialization";
 		default:
+			if (error_code > PHP_JSOND_SHEMA_ERROR_VALUE_OFFSET) {
+				return "JSON schema error";
+			}
 			return "Unknown error";
 	}
 }
@@ -274,12 +284,14 @@ PHP_JSOND_API zend_result php_jsond_encode(php_jsond_buffer *buf, zval *val, int
 	return php_jsond_encode_ex(buf, val, options, JSOND_G(encode_max_depth));
 }
 
-PHP_JSOND_API zend_result php_jsond_decode_ex(
-		zval *return_value, const char *str, size_t str_len, int options, int depth)
+PHP_JSOND_API zend_result php_jsond_decode_ex(zval *return_value, const char *str,
+		size_t str_len, int options, int depth, jso_schema *schema)
 {
 	php_jsond_parser parser;
+	const php_jsond_parser_methods* parser_methods = php_jsond_get_decode_methods(schema);
 
-	php_jsond_parser_init(&parser, return_value, str, str_len, options, depth);
+	php_jsond_parser_init_ex(&parser, return_value, str, str_len, options, depth, schema,
+			parser_methods);
 
 	if (php_jsond_parse(&parser)) {
 		php_jsond_error_code error_code = php_jsond_parser_error_code(&parser);
@@ -293,19 +305,39 @@ PHP_JSOND_API zend_result php_jsond_decode_ex(
 		return FAILURE;
 	}
 
+	if (schema != NULL && JSO_SCHEMA_ERROR_TYPE(schema) != JSO_SCHEMA_ERROR_NONE) {
+		int error_code = PHP_JSOND_SHEMA_ERROR_VALUE(JSO_SCHEMA_ERROR_TYPE(schema));
+		if (!(options & PHP_JSOND_THROW_ON_ERROR)) {
+			JSOND_G(error_code) = error_code;
+		} else {
+			zend_throw_exception(php_jsond_schema_exception_ce,
+					JSO_SCHEMA_ERROR_MESSAGE(schema), error_code);
+		}
+		RETVAL_NULL();
+		return FAILURE;
+	}
+
 	return SUCCESS;
 }
 
-PHP_JSOND_API bool php_jsond_validate_ex(const char *str, size_t str_len, zend_long options, zend_long depth)
+PHP_JSOND_API bool php_jsond_validate_ex(const char *str, size_t str_len, zend_long options,
+		zend_long depth, jso_schema *schema)
 {
 	php_jsond_parser parser;
 	zval tmp;
-	const php_jsond_parser_methods* parser_validate_methods = php_jsond_get_validate_methods(NULL);
-	php_jsond_parser_init_ex(&parser, &tmp, str, str_len, (int)options, (int)depth, NULL, parser_validate_methods);
+	const php_jsond_parser_methods* parser_methods = php_jsond_get_validate_methods(schema);
+
+	php_jsond_parser_init_ex(&parser, &tmp, str, str_len, (int)options, (int)depth, schema,
+			parser_methods);
 
 	if (php_jsond_parse(&parser)) {
 		php_jsond_error_code error_code = php_jsond_parser_error_code(&parser);
 		JSOND_G(error_code) = error_code;
+		return false;
+	}
+
+	if (schema != NULL && JSO_SCHEMA_ERROR_TYPE(schema) != JSO_SCHEMA_ERROR_NONE) {
+		JSOND_G(error_code) = PHP_JSOND_SHEMA_ERROR_VALUE(JSO_SCHEMA_ERROR_TYPE(schema));
 		return false;
 	}
 
@@ -362,6 +394,8 @@ PHP_FUNCTION(jsond_decode)
 	bool assoc_null = 1;
 	zend_long depth = PHP_JSOND_PARSER_DEFAULT_DEPTH;
 	zend_long options = 0;
+	zend_object *schema_object = NULL;
+	jso_schema *schema = NULL;
 
 	ZEND_PARSE_PARAMETERS_START(1, 4)
 		Z_PARAM_STRING(str, str_len)
@@ -369,6 +403,7 @@ PHP_FUNCTION(jsond_decode)
 		Z_PARAM_BOOL_OR_NULL(assoc, assoc_null)
 		Z_PARAM_LONG(depth)
 		Z_PARAM_LONG(options)
+		Z_PARAM_OBJ_OF_CLASS(schema_object, php_jsond_schema_ce)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if (!(options & PHP_JSOND_THROW_ON_ERROR)) {
@@ -405,7 +440,12 @@ PHP_FUNCTION(jsond_decode)
 		}
 	}
 
-	php_jsond_decode_ex(return_value, str, (size_t) str_len, (int) options, (int) depth);
+	if (schema_object != NULL) {
+		php_jsond_schema_object *intern = PHP_JSOND_SCHEMA_OBJ_FROM_ZOBJ(schema_object);
+		schema = intern->schema;
+	}
+
+	php_jsond_decode_ex(return_value, str, (size_t) str_len, (int) options, (int) depth, schema);
 }
 
 /* Validates if a string contains a valid json */
@@ -415,12 +455,15 @@ PHP_FUNCTION(jsond_validate)
 	size_t str_len;
 	zend_long depth = PHP_JSOND_PARSER_DEFAULT_DEPTH;
 	zend_long options = 0;
+	zend_object *schema_object = NULL;
+	jso_schema *schema = NULL;
 
 	ZEND_PARSE_PARAMETERS_START(1, 3)
 		Z_PARAM_STRING(str, str_len)
 		Z_PARAM_OPTIONAL
 		Z_PARAM_LONG(depth)
 		Z_PARAM_LONG(options)
+		Z_PARAM_OBJ_OF_CLASS(schema_object, php_jsond_schema_ce)
 	ZEND_PARSE_PARAMETERS_END();
 
 
@@ -446,7 +489,12 @@ PHP_FUNCTION(jsond_validate)
 		RETURN_THROWS();
 	}
 
-	RETURN_BOOL(php_jsond_validate_ex(str, str_len, options, depth));
+	if (schema_object != NULL) {
+		php_jsond_schema_object *intern = PHP_JSOND_SCHEMA_OBJ_FROM_ZOBJ(schema_object);
+		schema = intern->schema;
+	}
+
+	RETURN_BOOL(php_jsond_validate_ex(str, str_len, options, depth, schema));
 }
 
 /* Returns the error code of the last json_encode() or json_decode() call. */
@@ -477,10 +525,38 @@ PHP_METHOD(JsondSchema, createFromString)
 {
 	const char *source;
 	size_t source_len;
+	jso_value value;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &source, &source_len) == FAILURE) {
 		RETURN_THROWS();
 	}
 
-	// TODO: jso load data to jso value, create object, parse its schema and return object
+	/* Parse JSON string to JSO value*/
+	jso_parser_options options;
+	options.max_depth = PHP_JSOND_PARSER_DEFAULT_DEPTH;
+	if (jso_parse_cstr(source, source_len, &options, &value) == JSO_FAILURE) {
+		const char *err_desc = jso_value_get_error_description(&value);
+		if (err_desc == NULL) {
+			zend_throw_exception(php_jsond_schema_exception_ce, "Syntax error in JSON schem",
+				PHP_JSOND_ERROR_SCHEMA_SYNTAX);
+			RETURN_THROWS();
+		}
+
+		zend_throw_exception_ex(php_jsond_schema_exception_ce, PHP_JSOND_ERROR_SCHEMA_SYNTAX,
+				"JSON Schema syntax error (%s) at %zu:%zu\n", err_desc,
+				JSO_ELOC(value).first_line, JSO_ELOC(value).first_column);
+		RETURN_THROWS();
+	}
+
+	/* Parse the JSON schema */
+	jso_schema *schema = jso_schema_alloc();
+	if (jso_schema_parse(schema, &value) == JSO_FAILURE) {
+		zend_throw_exception_ex(php_jsond_schema_exception_ce, PHP_JSOND_ERROR_SCHEMA_SYNTAX,
+				"JSON Schema parsing error (%s)\n", JSO_SCHEMA_ERROR_MESSAGE(schema));
+	}
+
+	/* Create schema object */
+	object_init_ex(return_value, php_jsond_schema_ce);
+	php_jsond_schema_object *intern = PHP_JSOND_SCHEMA_OBJ_FROM_ZV(return_value);
+	intern->schema = schema;
 }

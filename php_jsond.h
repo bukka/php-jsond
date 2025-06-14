@@ -97,7 +97,8 @@ typedef enum {
 	PHP_JSOND_ERROR_UNSUPPORTED_TYPE,
 	PHP_JSOND_ERROR_INVALID_PROPERTY_NAME,
 	PHP_JSOND_ERROR_UTF16,
-	PHP_JSOND_ERROR_NON_BACKED_ENUM
+	PHP_JSOND_ERROR_NON_BACKED_ENUM,
+	PHP_JSOND_ERROR_SCHEMA_SYNTAX
 } php_jsond_error_code;
 
 /* json_encode() options */
@@ -159,14 +160,16 @@ static inline php_jsond_schema_object *php_jsond_schema_object_from_zend_object(
 }
 
 PHP_JSOND_API zend_result php_jsond_encode(php_jsond_buffer *buf, zval *val, int options);
-PHP_JSOND_API zend_result php_jsond_decode_ex(zval *return_value, const char *str, size_t str_len, int options, int depth);
-PHP_JSOND_API bool php_jsond_validate_ex(const char *str, size_t str_len, zend_long options, zend_long depth);
+PHP_JSOND_API zend_result php_jsond_decode_ex(zval *return_value, const char *str, size_t str_len,
+		int options, int depth, jso_schema *schema);
+PHP_JSOND_API bool php_jsond_validate_ex(const char *str, size_t str_len, zend_long options,
+		zend_long depth, jso_schema *schema);
 
 extern PHP_JSOND_API zend_class_entry *php_jsond_serializable_ce;
 
 static inline zend_result php_jsond_decode(zval *return_value, char *str, size_t str_len, bool assoc, int depth)
 {
-	return php_jsond_decode_ex(return_value, str, str_len, assoc ? PHP_JSOND_OBJECT_AS_ARRAY : 0, depth);
+	return php_jsond_decode_ex(return_value, str, str_len, assoc ? PHP_JSOND_OBJECT_AS_ARRAY : 0, depth, NULL);
 }
 
 #endif	/* PHP_JSOND_H */
