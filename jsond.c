@@ -397,7 +397,7 @@ PHP_FUNCTION(jsond_decode)
 	zend_object *schema_object = NULL;
 	jso_schema *schema = NULL;
 
-	ZEND_PARSE_PARAMETERS_START(1, 4)
+	ZEND_PARSE_PARAMETERS_START(1, 5)
 		Z_PARAM_STRING(str, str_len)
 		Z_PARAM_OPTIONAL
 		Z_PARAM_BOOL_OR_NULL(assoc, assoc_null)
@@ -458,7 +458,7 @@ PHP_FUNCTION(jsond_validate)
 	zend_object *schema_object = NULL;
 	jso_schema *schema = NULL;
 
-	ZEND_PARSE_PARAMETERS_START(1, 3)
+	ZEND_PARSE_PARAMETERS_START(1, 4)
 		Z_PARAM_STRING(str, str_len)
 		Z_PARAM_OPTIONAL
 		Z_PARAM_LONG(depth)
