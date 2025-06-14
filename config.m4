@@ -31,11 +31,11 @@ if test "$PHP_JSOND" != "no"; then
     jso/jso_ht.c
     jso/jso_number.c
     jso/jso_object.c
-    jso/jso_parser.c
     jso/jso_parser.tab.c
     jso/jso_re.c
     jso/jso_scanner.c
     jso/jso_value.c
+    jso/parser/jso_parser.c
     jso/parser/jso_parser_hooks_decode.c
     jso/pointer/jso_pointer.c
     jso/pointer/jso_pointer_error.c
