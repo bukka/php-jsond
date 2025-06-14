@@ -21,6 +21,7 @@ if test "$PHP_JSOND" != "no"; then
     jso/io/jso_io.c
     jso/io/jso_io_file.c
     jso/io/jso_io_memory.c
+    jso/io/jso_io_string.c
     jso/jso_array.c
     jso/jso_builder.c
     jso/jso_cli.c
@@ -30,6 +31,7 @@ if test "$PHP_JSOND" != "no"; then
     jso/jso_ht.c
     jso/jso_number.c
     jso/jso_object.c
+    jso/jso_parser.c
     jso/jso_parser.tab.c
     jso/jso_re.c
     jso/jso_scanner.c

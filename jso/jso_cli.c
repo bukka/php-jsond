@@ -86,30 +86,6 @@ JSO_API void jso_cli_register_default_params(jso_cli_ctx *ctx)
 	jso_cli_register_params(ctx, jso_cli_default_params);
 }
 
-JSO_API jso_rc jso_cli_parse_io(jso_io *io, jso_cli_options *options, jso_value *result)
-{
-	jso_rc rc;
-	jso_parser parser;
-
-	/* init scanner */
-	jso_parser_init(&parser);
-	jso_scanner_init(&parser.scanner, io);
-
-	/* set max depth (0 = unlimited) */
-	parser.max_depth = options->max_depth;
-
-	/* parse */
-	if (jso_yyparse(&parser) == 0) {
-		rc = JSO_SUCCESS;
-	} else {
-		rc = JSO_FAILURE;
-	}
-
-	*result = parser.result;
-
-	return rc;
-}
-
 static void jso_cli_print_parsing_error(
 		const char *file_path, jso_cli_options *options, jso_value *error)
 {
@@ -167,7 +143,8 @@ static jso_rc jso_cli_parse_file_ex(
 		return JSO_FAILURE;
 	}
 
-	jso_rc rc = jso_cli_parse_io(io, options, result);
+	jso_parser_options parser_options = { .max_depth = options->max_depth };
+	jso_rc rc = jso_parse_io(io, &parser_options, result);
 	if (rc == JSO_FAILURE) {
 		jso_cli_print_parsing_error(file_path, options, result);
 	}

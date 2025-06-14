@@ -152,15 +152,6 @@ JSO_API void jso_cli_options_init_post(jso_cli_options *options);
 JSO_API jso_rc jso_cli_options_destroy(jso_cli_options *options);
 
 /**
- * Parse IO input with supplied options.
- * @param io stream that is parsed
- * @param options CLI options
- * @param result pointer to value where the result is saved to (memory managed by caller)
- * @return @ref JSO_SUCCESS on success, otherwise @ref JSO_FAILURE.
- */
-JSO_API jso_rc jso_cli_parse_io(jso_io *io, jso_cli_options *options, jso_value *result);
-
-/**
  * Parse file input with supplied options.
  * @param file_path the file that is parsed
  * @param options CLI options

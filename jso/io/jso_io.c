@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2023 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2012-2025 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -54,6 +54,14 @@ static void jso_io_pointers_set(jso_io *io, jso_ctype *pos)
 	JSO_IO_STR_SET_START(io);
 }
 
+JSO_API void jso_io_buffer_init(jso_io *io, jso_ctype *buf, size_t size)
+{
+	JSO_IO_SIZE(io) = size;
+	JSO_IO_BUFFER(io) = buf;
+	JSO_IO_LIMIT(io) = buf;
+	jso_io_pointers_set(io, buf);
+}
+
 static void jso_io_buffer_diffs_save(jso_io *io, jso_io_buffer_diffs *diffs)
 {
 	diffs->token = JSO_IO_TOKEN(io) - JSO_IO_BUFFER(io);
@@ -85,10 +93,7 @@ static jso_rc jso_io_buffer_alloc_new(jso_io *io, size_t size)
 		return JSO_FAILURE;
 	}
 
-	JSO_IO_SIZE(io) = size;
-	JSO_IO_BUFFER(io) = buf;
-	JSO_IO_LIMIT(io) = buf;
-	jso_io_pointers_set(io, buf);
+	jso_io_buffer_init(io, buf, size);
 
 	return JSO_SUCCESS;
 }

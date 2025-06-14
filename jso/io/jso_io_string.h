@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2025 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2025 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22,33 +22,28 @@
  */
 
 /**
- * @file jso_io_memory.h
- * @brief Memory IO
+ * @file jso_io_string.h
+ * @brief String IO
  */
 
-#ifndef JSO_IO_MEMORY_H
-#define JSO_IO_MEMORY_H
+#ifndef JSO_IO_STRING_H
+#define JSO_IO_STRING_H
 
 #include "jso_io.h"
 
 /**
- * @brief Internal buffer size
- */
-#define JSO_IO_MEMORY_BUFF_SIZE 128
-
-/**
- * Open memory IO with supplied initial size and flags
- * @param size allocated size when created
- * @param flags extra customization flags
- * @return New IO.
- * @note There are no flags defined as yet.
- */
-JSO_API jso_io *jso_io_memory_open_ex(size_t size, int flags);
-
-/**
- * Open memory IO with a default initial size and flags
+ * Open string IO for the supplied string
+ * @param cstr the C string buffer
+ * @param len the buffer len
  * @return New IO.
  */
-JSO_API jso_io *jso_io_memory_open();
+JSO_API jso_io *jso_io_string_open_from_cstr(const char *cstr, size_t len);
 
-#endif // JSO_IO_MEMORY_H
+/**
+ * Open string IO for the supplied string
+ * @param str the string
+ * @return New IO.
+ */
+JSO_API jso_io *jso_io_string_open_from_str(jso_string *str);
+
+#endif // JSO_IO_STRING_H

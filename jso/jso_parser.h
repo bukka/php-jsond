@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2023 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2012-2025 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -59,6 +59,13 @@ typedef struct _jso_parser_hooks {
 	jso_parser_hook_object_key_t object_key;
 	jso_parser_hook_value_t value;
 } jso_parser_hooks;
+
+/**
+ * @brief Parser options.
+ */
+typedef struct _jso_parser_options {
+	jso_uint max_depth;
+} jso_parser_options;
 
 /**
  * @brief Parser location type.
@@ -130,5 +137,27 @@ JSO_API void jso_parser_init(jso_parser *parser);
  * @return int Parsing result - 0 on success otherwise non zero value is returned.
  */
 JSO_API int jso_yyparse(jso_parser *parser);
+
+/**
+ * Parse data from IO to result.
+ *
+ * @param io IO to parse data from
+ * @param options parser options
+ * @param result value holding the result
+ * @return @ref JSO_SUCCESS on success, otherwise @ref JSO_FAILURE.
+ */
+JSO_API jso_rc jso_parse_io(jso_io *io, jso_parser_options *options, jso_value *result);
+
+/**
+ * Parse data from IO to result.
+ *
+ * @param cstr C string holding the data to parse
+ * @param len C string length
+ * @param options parser options
+ * @param result value holding the result
+ * @return @ref JSO_SUCCESS on success, otherwise @ref JSO_FAILURE.
+ */
+JSO_API jso_rc jso_parse_cstr(
+		const char *cstr, size_t len, jso_parser_options *options, jso_value *result);
 
 #endif /* JSO_SCANNER_H */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2023 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2012-2025 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -37,7 +37,7 @@
 typedef struct _jso_io jso_io;
 
 /**
- * @brief Read operation function type.
+ * @brief Read an operation function type.
  * @param io IO handle
  * @param size requested number of bytes to read
  * @return Number of characters read to the buffer.
@@ -46,7 +46,7 @@ typedef struct _jso_io jso_io;
 typedef size_t (*jso_io_read_t)(jso_io *io, size_t size);
 
 /**
- * @brief Write operation function type.
+ * @brief Write an operation function type.
  * @param io IO handle
  * @param buffer character buffer to be written
  * @param size the supplied buffer size
@@ -91,12 +91,12 @@ typedef int (*jso_io_free_t)(jso_io *io);
 /**
  * @brief IO structure.
  *
- * This data structure contains all IO informations for the scanner and other parts
- * using the IO. The members should never be accessed directly but instead the
- * accesor macros should be used.
+ * This data structure contains all IO information for the scanner and other parts
+ * using the IO. The members should never be accessed directly, but instead the
+ * accessor macros should be used.
  */
 struct _jso_io {
-	/** the position of  first character in the buffer */
+	/** the position of the first character in the buffer */
 	jso_ctype *buffer;
 	/** cursor position */
 	jso_ctype *cursor;
@@ -150,7 +150,7 @@ struct _jso_io {
 /**
  * Buffer accessor.
  * @param io IO handle
- * @return Pointer to the beginning of buffer.
+ * @return Pointer to the beginning of the buffer.
  */
 #define JSO_IO_BUFFER(io) ((io)->buffer)
 
@@ -164,7 +164,7 @@ struct _jso_io {
 /**
  * Token accessor.
  * @param io IO handle
- * @return Pointer to the beggining of the scanned token.
+ * @return Pointer to the beginning of the scanned token.
  */
 #define JSO_IO_TOKEN(io) ((io)->token)
 
@@ -211,7 +211,7 @@ struct _jso_io {
 #define JSO_IO_ERROR_CODE(io) ((io)->error_code)
 
 /**
- * Handle accessors for pointer.
+ * Handle accessors for the pointer.
  * @param io IO handle
  */
 #define JSO_IO_HANDLE_PTR(io) ((io)->handle.ptr)
@@ -223,20 +223,20 @@ struct _jso_io {
 #define JSO_IO_HANDLE_DSC(io) ((io)->handle.dsc)
 
 /**
- * Save start position of the string.
+ * Save the start position of the string.
  * @param io IO handle
  */
 #define JSO_IO_STR_SET_START(io) ((io)->str_start = (io)->cursor)
 
 /**
- * Save start position of the string after `n` characters.
+ * Save the start position of the string after `n` characters.
  * @param io IO handle
  * @param n number of characters to set position after
  */
 #define JSO_IO_STR_SET_START_AFTER(io, n) ((io)->str_start = (io)->cursor + n)
 
 /**
- * Rave start position of the string.
+ * Get the start position of the string.
  * @param io IO handle
  */
 #define JSO_IO_STR_GET_START(io) ((io)->str_start)
@@ -382,6 +382,14 @@ struct _jso_io {
  * @note It is bigger than needed for future strategies
  */
 #define JSO_IO_BUFFER_ALLOC_STRATEGY_MASK 7
+
+/**
+ * Initialize IO with supplied buffer.
+ * @param io IO handle
+ * @param buf Used buffer
+ * @param size buffer size
+ */
+JSO_API void jso_io_buffer_init(jso_io *io, jso_ctype *buf, size_t size);
 
 /**
  * Alloc memory space for buffer with supplied flags.
