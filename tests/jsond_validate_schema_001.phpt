@@ -1,43 +1,57 @@
 --TEST--
-jsond_validate() - General usage
+jsond_validate() - Schema validation 001
 --EXTENSIONS--
 jsond
 --FILE--
 <?php
 
-var_dump(
-  jsond_validate(""),
-  jsond_validate("."),
-  jsond_validate("<?>"),
-  jsond_validate(";"),
-  jsond_validate("руссиш"),
-  jsond_validate("blah"),
-  jsond_validate('{ "": "": "" } }'),
-  jsond_validate('{ "": { "": "" }'),
-  jsond_validate('{ "test": {} "foo": "bar" }, "test2": {"foo" : "bar" }, "test2": {"foo" : "bar" } }'),
+// Define a simple JSON schema for a person object
+$schemaJson = '{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "age": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "email": {
+            "type": "string",
+            "format": "email"
+        }
+    },
+    "required": ["name", "age"]
+}';
 
-  jsond_validate('{ "test": { "foo": "bar" } }'),
-  jsond_validate('{ "test": { "foo": "" } }'),
-  jsond_validate('{ "": { "foo": "" } }'),
-  jsond_validate('{ "": { "": "" } }'),
-  jsond_validate('{ "test": {"foo": "bar"}, "test2": {"foo" : "bar" }, "test2": {"foo" : "bar" } }'),
-  jsond_validate('{ "test": {"foo": "bar"}, "test2": {"foo" : "bar" }, "test3": {"foo" : "bar" } }'),
-);
+// Create schema object
+$schema = JsondSchema::createFromString($schemaJson);
+
+// Test valid JSON
+$validJson = '{"name": "John Doe", "age": 30, "email": "john@example.com"}';
+var_dump(jsond_validate($validJson, 512, 0, $schema));
+
+// Test invalid JSON - missing required field
+$invalidJson1 = '{"name": "Jane Doe"}';
+var_dump(jsond_validate($invalidJson1, 512, 0, $schema));
+
+// Test invalid JSON - wrong type
+$invalidJson2 = '{"name": "Bob", "age": "thirty"}';
+var_dump(jsond_validate($invalidJson2, 512, 0, $schema));
+
+// Test invalid JSON - negative age
+$invalidJson3 = '{"name": "Alice", "age": -5}';
+var_dump(jsond_validate($invalidJson3, 512, 0, $schema));
+
+// Test without schema (should always return true for valid JSON)
+$validJsonNoSchema = '{"any": "data", "works": true}';
+var_dump(jsond_validate($validJsonNoSchema));
 
 ?>
 --EXPECT--
-bool(false)
-bool(false)
-bool(false)
-bool(false)
-bool(false)
-bool(false)
-bool(false)
-bool(false)
-bool(false)
 bool(true)
-bool(true)
-bool(true)
-bool(true)
-bool(true)
+bool(false)
+bool(false)
+bool(false)
 bool(true)
