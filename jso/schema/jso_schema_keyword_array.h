@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_KEYWORD_ARRAY_H
 #define JSO_SCHEMA_KEYWORD_ARRAY_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 jso_rc jso_schema_keyword_validate_array_of_strings(
 		jso_schema *schema, const char *key, jso_array *arr, jso_uint32 keyword_flags);

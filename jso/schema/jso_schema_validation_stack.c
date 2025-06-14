@@ -21,12 +21,11 @@
  *
  */
 
-#include "jso_schema.h"
 #include "jso_schema_validation_stack.h"
 
 #include "jso_schema_error.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 jso_rc jso_schema_validation_stack_init(
 		jso_schema *schema, jso_schema_validation_stack *stack, size_t capacity)

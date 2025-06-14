@@ -25,7 +25,7 @@
 #include "jso_schema_error.h"
 #include "jso_schema_version.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 jso_rc jso_schema_version_set(
 		jso_schema *schema, jso_value *data, jso_schema_version default_version)

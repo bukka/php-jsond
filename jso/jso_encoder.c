@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2023 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2012-2025 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,14 +21,14 @@
  *
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
 #include "jso.h"
 #include "jso_io.h"
 #include "jso_object.h"
 #include "jso_encoder.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
 
 #define JSO_INT_BUFFER_SIZE 32
 

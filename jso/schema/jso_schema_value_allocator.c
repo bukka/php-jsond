@@ -25,7 +25,7 @@
 #include "jso_schema_keyword_freer.h"
 #include "jso_schema_value.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 jso_schema_value *jso_schema_value_alloc(jso_schema *schema, const char *type_name)
 {

@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_KEYWORD_SINGLE_H
 #define JSO_SCHEMA_KEYWORD_SINGLE_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 jso_schema_keyword *jso_schema_keyword_get_ex(jso_schema *schema, jso_value *data, const char *key,
 		jso_schema_value *parent, jso_schema_keyword_type keyword_type, jso_uint32 keyword_flags,

@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_VALIDATION_SCALAR_H
 #define JSO_SCHEMA_VALIDATION_SCALAR_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 jso_schema_validation_result jso_schema_validation_null_value(jso_schema *schema,
 		jso_schema_validation_stack *stack, jso_schema_validation_position *pos,

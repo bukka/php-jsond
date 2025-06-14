@@ -28,8 +28,6 @@
 #include "jso_schema_keyword_scalar.h"
 #include "jso_schema_keyword.h"
 
-#include "jso.h"
-
 typedef void (*jso_schema_keyword_free_callback)(jso_schema_keyword *schema_keyword);
 
 static const jso_schema_keyword_free_callback schema_keyword_free_callbacks[] = {

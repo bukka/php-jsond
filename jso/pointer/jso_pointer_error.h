@@ -29,7 +29,7 @@
 #ifndef JSO_POINTER_ERROR_H
 #define JSO_POINTER_ERROR_H
 
-#include "jso_pointer.h"
+#include "../jso_pointer.h"
 
 #define JSO_POINTER_ERROR_FORMAT_SIZE 512
 

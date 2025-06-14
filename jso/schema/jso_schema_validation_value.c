@@ -30,7 +30,7 @@
 #include "jso_schema_validation_string.h"
 #include "jso_schema_validation_value.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 static const jso_schema_validation_value_callback schema_validation_value_callbacks[] = {
 	[JSO_SCHEMA_VALUE_TYPE_NULL] = jso_schema_validation_null_value,

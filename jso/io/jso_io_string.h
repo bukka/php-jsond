@@ -29,7 +29,7 @@
 #ifndef JSO_IO_STRING_H
 #define JSO_IO_STRING_H
 
-#include "jso_io.h"
+#include "../jso_io.h"
 
 /**
  * Open string IO for the supplied string

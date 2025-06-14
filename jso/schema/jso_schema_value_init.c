@@ -28,7 +28,7 @@
 #include "jso_schema_reference.h"
 #include "jso_schema_uri.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 jso_schema_value *jso_schema_value_init(jso_schema *schema, jso_value *data,
 		jso_schema_value *parent, const char *type_name, size_t value_size,

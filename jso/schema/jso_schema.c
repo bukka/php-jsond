@@ -26,9 +26,9 @@
 #include "jso_schema_value.h"
 #include "jso_schema_version.h"
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 JSO_API jso_schema *jso_schema_alloc()
 {

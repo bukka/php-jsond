@@ -29,8 +29,7 @@
 #ifndef JSO_SCHEMA_REFERENCE_H
 #define JSO_SCHEMA_REFERENCE_H
 
-#include "jso_schema.h"
-#include "jso_schema_uri.h"
+#include "../jso_schema.h"
 
 jso_schema_reference *jso_schema_reference_create(
 		jso_schema *schema, jso_string *ref_uri, jso_schema_value *value);

@@ -21,11 +21,12 @@
  *
  */
 
+#include "../jso_io.h"
+#include "../jso.h"
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
-#include "jso_io.h"
-#include "jso.h"
 
 /**
  * @brief IO Buffer pointers differences struct

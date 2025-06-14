@@ -26,10 +26,9 @@
 
 #include "jso_schema_error.h"
 #include "jso_schema_keyword.h"
-#include "jso_schema_value.h"
 
-#include "jso.h"
-#include "jso_number.h"
+#include "../jso.h"
+#include "../jso_number.h"
 
 #include <math.h>
 

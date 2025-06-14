@@ -32,7 +32,7 @@
 #include "jso_schema_error.h"
 #include "jso_schema_keyword.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 static inline jso_schema_validation_result jso_schema_validation_array_push_value(
 		jso_schema_validation_stack *stack, jso_schema_value *current_value,

@@ -25,7 +25,7 @@
 #include "jso_schema_error.h"
 #include "jso_schema_keyword_scalar.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 #include <math.h>
 

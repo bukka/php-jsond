@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_KEYWORD_SCALAR_H
 #define JSO_SCHEMA_KEYWORD_SCALAR_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 jso_schema_keyword *jso_schema_keyword_get_any(jso_schema *schema, jso_value *data, const char *key,
 		jso_bool error_on_invalid_type, jso_uint32 keyword_flags,

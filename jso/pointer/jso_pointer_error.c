@@ -23,7 +23,7 @@
 
 #include "jso_pointer_error.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 #include <stdarg.h>
 #include <stdio.h>

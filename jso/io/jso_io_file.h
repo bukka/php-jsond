@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2023 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2012-2025 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,9 @@
 #ifndef JSO_IO_FILE_H
 #define JSO_IO_FILE_H
 
-#include "jso_io.h"
+#include "../jso_io.h"
+
+#include <stdio.h>
 
 /**
  * @brief Internal buffer size

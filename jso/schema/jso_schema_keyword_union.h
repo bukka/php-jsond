@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_KEYWORD_UNION_H
 #define JSO_SCHEMA_KEYWORD_UNION_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 #define JSO_SCHEMA_KW_VALUE_TYPES_SIZE 8
 

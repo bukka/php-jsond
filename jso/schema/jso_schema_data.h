@@ -29,9 +29,7 @@
 #ifndef JSO_SCHEMA_DATA_H
 #define JSO_SCHEMA_DATA_H
 
-#include "jso_schema.h"
-
-#include <stdlib.h>
+#include "../jso_schema.h"
 
 void jso_schema_data_type_error(jso_schema *schema, const char *key, jso_value *val,
 		const jso_value_type *expected_types, size_t expected_types_count);

@@ -31,8 +31,8 @@
 #include "jso_schema_error.h"
 #include "jso_schema_keyword.h"
 
-#include "jso_re.h"
-#include "jso.h"
+#include "../jso_re.h"
+#include "../jso.h"
 
 jso_schema_validation_result jso_schema_validation_object_key(jso_schema_validation_stack *stack,
 		jso_schema_validation_position *pos, jso_virt_string *key)

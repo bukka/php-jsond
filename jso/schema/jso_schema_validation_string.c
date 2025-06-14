@@ -26,10 +26,9 @@
 
 #include "jso_schema_error.h"
 #include "jso_schema_keyword.h"
-#include "jso_schema_value.h"
 
-#include "jso.h"
-#include "jso_re.h"
+#include "../jso.h"
+#include "../jso_re.h"
 
 jso_schema_validation_result jso_schema_validation_string_value_str(
 		jso_schema *schema, jso_schema_validation_position *pos, jso_virt_string *instance_str)

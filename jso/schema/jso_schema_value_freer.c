@@ -25,7 +25,7 @@
 #include "jso_schema_reference.h"
 #include "jso_schema_uri.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 typedef void (*jso_schema_value_free_callback)(jso_schema_value *val);
 

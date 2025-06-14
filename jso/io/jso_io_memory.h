@@ -29,7 +29,7 @@
 #ifndef JSO_IO_MEMORY_H
 #define JSO_IO_MEMORY_H
 
-#include "jso_io.h"
+#include "../jso_io.h"
 
 /**
  * @brief Internal buffer size

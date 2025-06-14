@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_VALIDATION_OBJECT_H
 #define JSO_SCHEMA_VALIDATION_OBJECT_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 jso_schema_validation_result jso_schema_validation_object_key(jso_schema_validation_stack *stack,
 		jso_schema_validation_position *pos, jso_virt_string *key);

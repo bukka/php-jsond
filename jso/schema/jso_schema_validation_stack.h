@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023-2024 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2023-2025 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_VALIDATION_STACK_H
 #define JSO_SCHEMA_VALIDATION_STACK_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 /**
  * @brief JsonSchema validation stack layer iterator.

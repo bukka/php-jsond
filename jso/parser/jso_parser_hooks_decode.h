@@ -29,7 +29,7 @@
 #ifndef JSO_PARSER_HOOKS_DECODE_H
 #define JSO_PARSER_HOOKS_DECODE_H
 
-#include "jso_parser_hooks.h"
+#include "../jso_parser_hooks.h"
 
 jso_error_type jso_parser_decode_array_create(jso_parser *parser, jso_array **array);
 jso_error_type jso_parser_decode_array_append(

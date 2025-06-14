@@ -23,8 +23,9 @@
 
 #include "jso_schema_validation_result.h"
 
-#include "jso.h"
 #include "jso_schema_error.h"
+
+#include "../jso.h"
 
 void jso_schema_validation_result_propagate(jso_schema *schema, jso_schema_validation_position *pos)
 {

@@ -24,7 +24,7 @@
 #include "jso_schema_error.h"
 #include "jso_schema_uri.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 static void jso_schema_uri_parse_internal(jso_schema_uri *uri, jso_string *uri_value)
 {

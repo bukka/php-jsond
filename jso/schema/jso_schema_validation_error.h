@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_VALIDATION_ERROR_H
 #define JSO_SCHEMA_VALIDATION_ERROR_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 jso_schema_validation_result jso_schema_validation_value_type_error_ex(jso_schema *schema,
 		jso_schema_validation_position *pos, jso_value_type expected,

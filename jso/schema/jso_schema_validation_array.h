@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_VALIDATION_ARRAY_H
 #define JSO_SCHEMA_VALIDATION_ARRAY_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 jso_schema_validation_result jso_schema_validation_array_start(
 		jso_schema_validation_stack *stack, jso_schema_validation_position *pos);

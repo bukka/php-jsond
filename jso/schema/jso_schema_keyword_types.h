@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_KEYWORD_TYPES_H
 #define JSO_SCHEMA_KEYWORD_TYPES_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 size_t jso_schema_keyword_get_types(jso_schema *schema, const char *key,
 		jso_schema_keyword_type keyword_type, jso_value_type *types, size_t types_size);

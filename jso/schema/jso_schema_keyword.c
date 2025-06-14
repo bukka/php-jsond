@@ -25,9 +25,8 @@
 #include "jso_schema_keyword_freer.h"
 #include "jso_schema_keyword_single.h"
 #include "jso_schema_keyword_union.h"
-#include "jso_schema_value.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 static inline jso_rc jso_schema_keyword_check(
 		jso_schema *schema, jso_schema_keyword *keyword, jso_schema_value *value)

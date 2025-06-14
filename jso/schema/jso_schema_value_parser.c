@@ -27,7 +27,7 @@
 #include "jso_schema_keyword.h"
 #include "jso_schema_value.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 static jso_schema_value *jso_schema_value_parse_mixed(
 		jso_schema *schema, jso_value *data, jso_schema_value *parent)

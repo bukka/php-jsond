@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_KEYWORD_FREER_H
 #define JSO_SCHEMA_KEYWORD_FREER_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 void jso_schema_keyword_free(jso_schema_keyword *keyword);
 

@@ -21,9 +21,8 @@
  *
  */
 
-#include "jso_schema.h"
-
-#include "jso.h"
+#include "../jso_schema.h"
+#include "../jso.h"
 
 jso_rc jso_schema_validate_instance(jso_schema_validation_stream *stream, jso_virt_value *instance)
 {

@@ -30,7 +30,6 @@
 #define JSO_POINTER_H
 
 #include "jso_types.h"
-#include "jso_ht.h"
 
 /**
  * @brief Pointer error type.

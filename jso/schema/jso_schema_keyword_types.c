@@ -22,10 +22,9 @@
  */
 
 #include "jso_schema_keyword_types.h"
-
 #include "jso_schema_error.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 static inline size_t jso_schema_keyword_add_type(jso_schema *schema, const char *key,
 		jso_value_type type, size_t pos, jso_value_type *types, size_t types_size)

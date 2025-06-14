@@ -160,4 +160,4 @@ JSO_API jso_rc jso_parse_io(jso_io *io, jso_parser_options *options, jso_value *
 JSO_API jso_rc jso_parse_cstr(
 		const char *cstr, size_t len, jso_parser_options *options, jso_value *result);
 
-#endif /* JSO_SCANNER_H */
+#endif /* JSO_PARSER_H */

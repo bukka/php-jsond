@@ -21,10 +21,6 @@
  *
  */
 
-#include "jso.h"
-
-#include "jso_schema.h"
-
 #include "jso_schema_validation_composition.h"
 #include "jso_schema_validation_array.h"
 #include "jso_schema_validation_error.h"
@@ -33,6 +29,8 @@
 #include "jso_schema_validation_stack.h"
 #include "jso_schema_validation_stream.h"
 #include "jso_schema_validation_value.h"
+
+#include "../jso.h"
 
 JSO_API void jso_schema_validation_stream_clear(jso_schema_validation_stream *stream)
 {

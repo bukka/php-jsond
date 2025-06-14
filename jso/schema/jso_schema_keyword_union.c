@@ -23,15 +23,10 @@
 
 #include "jso_schema_data.h"
 #include "jso_schema_keyword_union.h"
-#include "jso_schema_keyword_array.h"
-#include "jso_schema_keyword_object.h"
-#include "jso_schema_keyword_regexp.h"
-#include "jso_schema_keyword_scalar.h"
 #include "jso_schema_keyword_single.h"
 #include "jso_schema_keyword_types.h"
-#include "jso_schema_keyword.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 jso_schema_keyword *jso_schema_keyword_get_union_of_2_types(jso_schema *schema, jso_value *data,
 		const char *key, jso_schema_value *parent, jso_schema_keyword_type keyword_union_type_1,

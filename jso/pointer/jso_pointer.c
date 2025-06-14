@@ -21,9 +21,9 @@
  *
  */
 
-#include "jso_pointer.h"
 #include "jso_pointer_error.h"
-#include "jso.h"
+#include "../jso_pointer.h"
+#include "../jso.h"
 
 static inline jso_string *jso_pointer_create_token(
 		jso_pointer *jp, jso_ctype *start, jso_ctype *end)

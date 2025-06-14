@@ -31,6 +31,8 @@
 
 #include "jso_types.h"
 
+#include <stddef.h>
+
 typedef struct _jso_builder_value jso_builder_value;
 
 /**

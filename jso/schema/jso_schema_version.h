@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_VERSION_H
 #define JSO_SCHEMA_VERSION_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 jso_rc jso_schema_version_set(
 		jso_schema *schema, jso_value *data, jso_schema_version default_version);

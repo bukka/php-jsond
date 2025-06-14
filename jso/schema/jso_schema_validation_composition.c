@@ -25,11 +25,9 @@
 #include "jso_schema_validation_stack.h"
 
 #include "jso_schema_array.h"
-#include "jso_schema_keyword.h"
-#include "jso_schema_error.h"
 #include "jso_schema_reference.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 static jso_rc jso_schema_validation_composition_push_keyword_schema_objects_ex(
 		jso_schema_validation_stack *stack, jso_schema_validation_position *pos,

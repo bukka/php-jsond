@@ -21,9 +21,11 @@
  *
  */
 
-#include <stdlib.h>
 #include "jso_io_string.h"
-#include "jso.h"
+
+#include "../jso.h"
+
+#include <stdlib.h>
 
 static size_t jso_io_string_read(jso_io *io, size_t size)
 {

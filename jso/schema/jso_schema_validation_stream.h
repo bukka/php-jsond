@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_VALIDATION_STREAM_H
 #define JSO_SCHEMA_VALIDATION_STREAM_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 static inline jso_bool jso_schema_validation_stream_should_terminate(
 		jso_schema *schema, jso_schema_validation_position *pos)

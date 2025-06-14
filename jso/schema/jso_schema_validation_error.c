@@ -23,7 +23,7 @@
 
 #include "jso_schema_error.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 jso_schema_validation_result jso_schema_validation_value_type_error_ex(jso_schema *schema,
 		jso_schema_validation_position *pos, jso_value_type expected,

@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_KEYWORD_H
 #define JSO_SCHEMA_KEYWORD_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 #define JSO_SCHEMA_KW_TYPE(_kw_type) JSO_SCHEMA_KEYWORD_##_kw_type
 

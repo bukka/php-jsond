@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_VALUE_H
 #define JSO_SCHEMA_VALUE_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 #define JSO_SCHEMA_VALUE_TYPE_NAME(_value_type) JSO_SCHEMA_VALUE_##_value_type
 

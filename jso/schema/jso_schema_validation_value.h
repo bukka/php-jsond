@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_VALIDATION_VALUE_H
 #define JSO_SCHEMA_VALIDATION_VALUE_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 typedef jso_schema_validation_result (*jso_schema_validation_value_callback)(jso_schema *schema,
 		jso_schema_validation_stack *stack, jso_schema_validation_position *pos,

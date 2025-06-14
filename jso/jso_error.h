@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2023 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2012-2025 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -52,7 +52,7 @@ JSO_API jso_error *jso_error_new(jso_error_type type, size_t first_column, size_
 		size_t last_column, size_t last_line);
 
 /**
- * Get description for the supplied error type.
+ * Get the description for the supplied error type.
  * @param type error type
  * @return error type description
  */

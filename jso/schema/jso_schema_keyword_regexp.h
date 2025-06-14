@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_KEYWORD_REGEXP_H
 #define JSO_SCHEMA_KEYWORD_REGEXP_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 jso_re_code *jso_schema_keyword_get_regexp_code(
 		jso_schema *schema, const char *keyword_key, jso_string *object_key, jso_string *val);

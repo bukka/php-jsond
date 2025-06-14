@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_ERROR_H
 #define JSO_SCHEMA_ERROR_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 #define JSO_SCHEMA_ERROR_FORMAT_SIZE 512
 

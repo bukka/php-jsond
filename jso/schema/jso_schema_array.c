@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2023-2025 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -24,7 +24,7 @@
 #include "jso_schema_array.h"
 #include "jso_schema_value.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 jso_schema_array *jso_schema_array_alloc(size_t size)
 {

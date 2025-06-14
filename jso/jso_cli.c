@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2023 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2012-2025 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,16 +21,17 @@
  *
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include "jso.h"
 #include "jso_cli.h"
-#include "jso_scanner.h"
 #include "jso_parser.h"
 #include "jso_encoder.h"
 #include "jso_schema.h"
+
 #include "io/jso_io_file.h"
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 static jso_rc jso_cli_param_callback_depth(const char *value, jso_cli_options *options);
 static jso_rc jso_cli_param_callback_output(const char *value, jso_cli_options *options);

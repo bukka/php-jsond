@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023-2024 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2023-2025 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,7 +30,7 @@
 #define JSO_SCHEMA_VALIDATION_COMPOSITION_H
 
 #include "jso_schema_validation_stream.h"
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 jso_schema_validation_result jso_schema_validation_composition_push(
 		jso_schema_validation_stack *stack, jso_schema_validation_position *pos);

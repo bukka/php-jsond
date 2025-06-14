@@ -24,7 +24,7 @@
 #include "jso_schema_data.h"
 #include "jso_schema_error.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 #define JSO_SCHEMA_DATA_TYPES_BUF_SIZE 256
 

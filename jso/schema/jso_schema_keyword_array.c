@@ -27,7 +27,7 @@
 #include "jso_schema_keyword.h"
 #include "jso_schema_value.h"
 
-#include "jso.h"
+#include "../jso.h"
 
 #include <math.h>
 

@@ -29,7 +29,7 @@
 #ifndef JSO_SCHEMA_URI_H
 #define JSO_SCHEMA_URI_H
 
-#include "jso_schema.h"
+#include "../jso_schema.h"
 
 #define JSO_SCHEMA_URI_FRAGMENT_START(_uri) (_uri).fragment_start
 
