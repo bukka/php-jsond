@@ -336,9 +336,12 @@ PHP_JSOND_API bool php_jsond_validate_ex(const char *str, size_t str_len, zend_l
 		return false;
 	}
 
-	if (schema != NULL && JSO_SCHEMA_ERROR_TYPE(schema) != JSO_SCHEMA_ERROR_NONE) {
-		JSOND_G(error_code) = PHP_JSOND_SHEMA_ERROR_VALUE(JSO_SCHEMA_ERROR_TYPE(schema));
-		return false;
+	if (schema != NULL) {
+		zval_ptr_dtor(parser.return_value);
+		if (JSO_SCHEMA_ERROR_TYPE(schema) != JSO_SCHEMA_ERROR_NONE) {
+			JSOND_G(error_code) = PHP_JSOND_SHEMA_ERROR_VALUE(JSO_SCHEMA_ERROR_TYPE(schema));
+			return false;
+		}
 	}
 
 	return true;
