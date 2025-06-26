@@ -45,6 +45,16 @@ jso_cleanup() {
   rm -rf "$jso_src_dir" "$jsond_base_dir/ar-lib" "$jsond_base_dir/compile" "$jsond_base_dir/depcomp" "$jsond_base_dir/test-driver"
 }
 
+# post-process files to replace PCRE headers
+jso_process_pcre_headers() {
+  # Find all .c and .h files in the destination directory
+  find "$jso_dest_dir" -type f \( -name "*.c" -o -name "*.h" \) -exec \
+    sed -i.bak 's|#include <pcre2\.h>|#include "ext/pcre/php_pcre.h"|g' {} \;
+  
+  # Remove backup files created by sed
+  find "$jso_dest_dir" -name "*.bak" -delete
+}
+
 # collect C and header files
 jso_collect_files() {
   cd "$jso_src_dir"
@@ -58,6 +68,9 @@ jso_collect_files() {
   done
 
   rm $jso_dest_dir/jso_virt.h
+  
+  # Process PCRE headers after files are collected
+  jso_process_pcre_headers
 }
 
 jso_update_config_m4() {

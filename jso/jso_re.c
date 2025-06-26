@@ -25,7 +25,7 @@
 #include "jso_string.h"
 #include "jso.h"
 
-#include <pcre2.h>
+#include "ext/pcre/php_pcre.h"
 
 JSO_API jso_re_code *jso_re_code_alloc()
 {

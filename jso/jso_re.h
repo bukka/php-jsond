@@ -34,7 +34,7 @@
 
 #define PCRE2_CODE_UNIT_WIDTH 8
 
-#include <pcre2.h>
+#include "ext/pcre/php_pcre.h"
 
 /**
  * @brief Regular expression compiled code structure.
