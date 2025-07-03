@@ -46,7 +46,9 @@ int json_yydebug = 1;
 
 %define api.prefix {php_jsond_yy}
 %define api.pure full
+%header "jsond_parser.tab.h"
 %param { php_jsond_parser *parser }
+
 
 %union {
 	zval value;
@@ -63,7 +65,7 @@ int json_yydebug = 1;
 %token PHP_JSOND_T_EOI
 %token PHP_JSOND_T_ERROR
 
-%type <value> start object key value scalar_value array
+%type <value> start object key value values array
 %type <value> members member elements element
 
 %destructor { zval_ptr_dtor_nogc(&$$); } <value>
@@ -201,9 +203,7 @@ key:
 ;
 
 value:
-		object
-	|	array
-	|	scalar_value
+		values
 			{
 				if (parser->methods.scalar_value && FAILURE == parser->methods.scalar_value(parser, &$1)) {
 					YYERROR;
@@ -211,8 +211,10 @@ value:
 				$$ = $1;
 			}
 
-scalar_value:
-		PHP_JSOND_T_STRING
+values:
+		object
+	|	array
+	|	PHP_JSOND_T_STRING
 	|	PHP_JSOND_T_ESTRING
 	|	PHP_JSOND_T_INT
 	|	PHP_JSOND_T_DOUBLE
@@ -513,7 +515,13 @@ PHP_JSOND_API int php_jsond_parse(php_jsond_parser *parser)
 		}
 	}
 
-	return php_jsond_yyparse(parser);
+	int rc = php_jsond_yyparse(parser);
+
+	if (parser->schema_stream != NULL) {
+		jso_schema_validation_stream_clear(parser->schema_stream);
+	}
+
+	return rc;
 }
 
 
