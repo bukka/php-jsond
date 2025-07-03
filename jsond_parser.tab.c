@@ -1853,7 +1853,7 @@ PHP_JSOND_API int php_jsond_parse(php_jsond_parser *parser)
 	}
 
 	int rc = php_jsond_yyparse(parser);
-	
+
 	if (parser->schema_stream != NULL) {
 		jso_schema_validation_stream_clear(parser->schema_stream);
 	}

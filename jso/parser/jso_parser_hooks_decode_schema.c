@@ -39,7 +39,8 @@ jso_error_type jso_parser_decode_schema_array_create(jso_parser *parser, jso_arr
 jso_error_type jso_parser_decode_schema_array_append(
 		jso_parser *parser, jso_array *array, jso_value *value)
 {
-	if (jso_schema_validation_stream_array_append(parser->schema_stream, array, value)
+	if (jso_schema_validation_stream_array_append(parser->schema_stream,
+				jso_array_to_virt_array(array), jso_value_to_virt_value(value))
 			== JSO_FAILURE) {
 		return JSO_ERROR_SCHEMA;
 	}
@@ -75,7 +76,9 @@ jso_error_type jso_parser_decode_schema_object_create(jso_parser *parser, jso_ob
 jso_error_type jso_parser_decode_schema_object_update(
 		jso_parser *parser, jso_object *object, jso_string *key, jso_value *value)
 {
-	if (jso_schema_validation_stream_object_update(parser->schema_stream, object, key, value)
+	if (jso_schema_validation_stream_object_update(parser->schema_stream,
+				jso_object_to_virt_object(object), jso_string_to_virt_string(key),
+				jso_value_to_virt_value(value))
 			== JSO_FAILURE) {
 		return JSO_ERROR_SCHEMA;
 	}
@@ -101,7 +104,9 @@ jso_error_type jso_parser_decode_schema_object_end(jso_parser *parser)
 
 jso_error_type jso_parser_decode_schema_object_key(jso_parser *parser, jso_string *key)
 {
-	return jso_schema_validation_stream_object_key(parser->schema_stream, key) == JSO_FAILURE
+	return jso_schema_validation_stream_object_key(
+				   parser->schema_stream, jso_string_to_virt_string(key))
+					== JSO_FAILURE
 			? JSO_ERROR_SCHEMA
 			: JSO_ERROR_NONE;
 	;
@@ -109,7 +114,8 @@ jso_error_type jso_parser_decode_schema_object_key(jso_parser *parser, jso_strin
 
 jso_error_type jso_parser_decode_schema_value(jso_parser *parser, jso_value *value)
 {
-	return jso_schema_validation_stream_value(parser->schema_stream, value) == JSO_FAILURE
+	return jso_schema_validation_stream_value(parser->schema_stream, jso_value_to_virt_value(value))
+					== JSO_FAILURE
 			? JSO_ERROR_SCHEMA
 			: JSO_ERROR_NONE;
 	;

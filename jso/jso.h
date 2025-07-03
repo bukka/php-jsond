@@ -41,6 +41,58 @@
 #include "jso_re.h"
 #include "jso_virt.h"
 
+#ifndef JSO_VIRT_IS_JSO
+#define JSO_VIRT_IS_JSO 0
+#endif
+
+/**
+ * Safely cast value to virt value.
+ *
+ * @param val Value to cast
+ * @return Cast value
+ */
+static inline jso_virt_value *jso_value_to_virt_value(jso_value *val)
+{
+	JSO_ASSERT(JSO_VIRT_IS_JSO);
+	return (jso_virt_value *) val;
+}
+
+/**
+ * Safely cast array to virt array.
+ *
+ * @param arr Array to cast
+ * @return Cast array
+ */
+static inline jso_virt_array *jso_array_to_virt_array(jso_array *arr)
+{
+	JSO_ASSERT(JSO_VIRT_IS_JSO);
+	return (jso_virt_array *) arr;
+}
+
+/**
+ * Safely cast object to virt object.
+ *
+ * @param obj Object to cast
+ * @return Cast object
+ */
+static inline jso_virt_object *jso_object_to_virt_object(jso_object *obj)
+{
+	JSO_ASSERT(JSO_VIRT_IS_JSO);
+	return (jso_virt_object *) obj;
+}
+
+/**
+ * Safely cast string to virt string.
+ *
+ * @param str String to cast
+ * @return Cast string
+ */
+static inline jso_virt_string *jso_string_to_virt_string(jso_string *str)
+{
+	JSO_ASSERT(JSO_VIRT_IS_JSO);
+	return (jso_virt_string *) str;
+}
+
 /**
  * Get a max of two values.
  * @param value_1 first value
