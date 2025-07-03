@@ -94,7 +94,17 @@ JSO_API jso_value *jso_value_copy(jso_value *val)
 
 /* ERROR */
 
-/* return error description if val is error */
+/* return an error type if val is error */
+JSO_API jso_error_type jso_value_get_error_type(jso_value *val)
+{
+	if (JSO_TYPE_P(val) != JSO_TYPE_ERROR) {
+		return JSO_ERROR_NONE;
+	}
+
+	return JSO_ETYPE_P(val);
+}
+
+/* return an error description if val is error */
 JSO_API const char *jso_value_get_error_description(jso_value *val)
 {
 	if (JSO_TYPE_P(val) != JSO_TYPE_ERROR) {

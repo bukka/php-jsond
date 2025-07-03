@@ -68,11 +68,31 @@ jso_rc jso_schema_error_format(
 	return jso_schema_error_set(schema, type, buf);
 }
 
-void jso_schema_error_free(jso_schema *schema)
+void jso_schema_error_clear(jso_schema_error *error)
 {
-	if (JSO_SCHEMA_ERROR_MESSAGE(schema)) {
-		jso_free(JSO_SCHEMA_ERROR_MESSAGE(schema));
-		JSO_SCHEMA_ERROR_MESSAGE(schema) = NULL;
+	if (error->message) {
+		jso_free(error->message);
+		error->message = NULL;
 	}
-	jso_schema_error_reset(schema);
+	error->type = JSO_SCHEMA_ERROR_NONE;
+}
+
+void jso_schema_error_free(jso_schema_error *error)
+{
+	jso_schema_error_clear(error);
+	jso_free(error);
+}
+
+JSO_API jso_schema_error *jso_schema_move_error(jso_schema *schema)
+{
+	jso_schema_error *schema_error = JSO_SCHEMA_ERROR(schema);
+	jso_schema_error *new_error = jso_malloc(sizeof(jso_schema_error));
+	if (new_error == NULL) {
+		return NULL;
+	}
+	*new_error = *schema_error;
+	schema_error->message = NULL;
+	schema_error->type = JSO_SCHEMA_ERROR_NONE;
+
+	return new_error;
 }

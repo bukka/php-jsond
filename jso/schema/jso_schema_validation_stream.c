@@ -63,6 +63,8 @@ JSO_API jso_rc jso_schema_validation_stream_object_start(jso_schema_validation_s
 	jso_schema_validation_stack *stack = JSO_STREAM_VALIDATION_STREAM_STACK_P(stream);
 	jso_schema *schema = stack->root_schema;
 
+	JSO_DBG_SV("OBJECT START");
+
 	// Iterate to do a composition check and initial type check.
 	jso_schema_validation_stack_layer_iterator_start(stack, &iterator);
 	while ((pos = jso_schema_validation_stack_layer_iterator_next(stack, &iterator))) {
@@ -72,7 +74,7 @@ JSO_API jso_rc jso_schema_validation_stream_object_start(jso_schema_validation_s
 				return JSO_FAILURE;
 			}
 		} else {
-			pos->validation_result = jso_schema_validation_value_type_error(
+			pos->validation_result = jso_schema_validation_schema_value_type_error(
 					schema, pos, JSO_SCHEMA_VALUE_TYPE_P(value), JSO_SCHEMA_VALUE_TYPE_OBJECT);
 		}
 	}
@@ -87,6 +89,8 @@ JSO_API jso_rc jso_schema_validation_stream_object_key(
 	jso_schema_validation_position *pos;
 	jso_schema_validation_stack *stack = JSO_STREAM_VALIDATION_STREAM_STACK_P(stream);
 	jso_schema *schema = stack->root_schema;
+
+	JSO_DBG_SV("OBJECT KEY (%s)", jso_virt_string_val(key));
 
 	// Start parent iteration.
 	jso_schema_validation_stack_layer_iterator_start(stack, &iterator);
@@ -117,13 +121,14 @@ JSO_API jso_rc jso_schema_validation_stream_object_update(jso_schema_validation_
 		jso_virt_object *instance_object, jso_virt_string *instance_key,
 		jso_virt_value *instance_item)
 {
+	JSO_DBG_SV("OBJECT UPDATE (key=%s)", jso_virt_string_val(instance_key));
 	// Currently there is nothing to do.
 	return JSO_SUCCESS;
 }
 
 JSO_API jso_rc jso_schema_validation_stream_object_end(jso_schema_validation_stream *stream)
 {
-	// Currently there is nothing to do.
+	JSO_DBG_SV("OBJECT END");
 	return JSO_SUCCESS;
 }
 
@@ -134,6 +139,8 @@ JSO_API jso_rc jso_schema_validation_stream_array_start(jso_schema_validation_st
 	jso_schema_validation_stack *stack = JSO_STREAM_VALIDATION_STREAM_STACK_P(stream);
 	jso_schema *schema = stack->root_schema;
 
+	JSO_DBG_SV("ARRAY START");
+
 	// Iterate to do a composition check and initial type check.
 	jso_schema_validation_stack_layer_iterator_start(stack, &iterator);
 	while ((pos = jso_schema_validation_stack_layer_iterator_next(stack, &iterator))) {
@@ -143,7 +150,7 @@ JSO_API jso_rc jso_schema_validation_stream_array_start(jso_schema_validation_st
 				return JSO_FAILURE;
 			}
 		} else {
-			pos->validation_result = jso_schema_validation_value_type_error(
+			pos->validation_result = jso_schema_validation_schema_value_type_error(
 					schema, pos, JSO_SCHEMA_VALUE_TYPE_P(value), JSO_SCHEMA_VALUE_TYPE_ARRAY);
 		}
 	}
@@ -183,6 +190,8 @@ JSO_API jso_rc jso_schema_validation_stream_array_append(jso_schema_validation_s
 	jso_schema_validation_position *pos;
 	jso_schema_validation_stack *stack = JSO_STREAM_VALIDATION_STREAM_STACK_P(stream);
 
+	JSO_DBG_SV("ARRAY APPEND");
+
 	// Start iteration round in the parent.
 	jso_schema_validation_stack_layer_iterator_start(stack, &iterator);
 	// Push separator so the schema for the item at the current index is added to the new layer.
@@ -209,6 +218,7 @@ JSO_API jso_rc jso_schema_validation_stream_array_append(jso_schema_validation_s
 
 JSO_API jso_rc jso_schema_validation_stream_array_end(jso_schema_validation_stream *stream)
 {
+	JSO_DBG_SV("ARRAY END");
 	// Remove layer for previously added schema in the last append.
 	jso_schema_validation_stack_layer_remove(JSO_STREAM_VALIDATION_STREAM_STACK_P(stream));
 	return JSO_SUCCESS;
@@ -221,6 +231,8 @@ JSO_API jso_rc jso_schema_validation_stream_value(
 	jso_schema_validation_position *pos;
 	jso_schema_validation_stack *stack = JSO_STREAM_VALIDATION_STREAM_STACK_P(stream);
 	jso_schema *schema = stack->root_schema;
+
+	JSO_DBG_SV("VALUE");
 
 	jso_value_type instance_type = jso_virt_value_type(instance);
 	// Array has already added composition during array start so skip it.

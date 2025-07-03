@@ -37,30 +37,30 @@ jso_schema_validation_result jso_schema_validation_common_value(jso_schema *sche
 		if (!pos->any_of_valid) {
 			jso_schema_error_set(schema, JSO_SCHEMA_ERROR_VALIDATION_COMPOSITION,
 					"No anyOf subschema was valid");
-			pos->validation_invalid_reason = JSO_SCHEMA_ERROR_VALIDATION_COMPOSITION;
+			pos->validation_invalid_reason = JSO_SCHEMA_VALIDATION_INVALID_REASON_COMPOSITION;
 			return JSO_SCHEMA_VALIDATION_INVALID;
 		}
-		jso_schema_error_reset(schema);
+		jso_schema_reset_error(schema);
 	}
 
 	if (JSO_SCHEMA_KW_IS_SET(comval->one_of)) {
 		if (!pos->one_of_valid) {
 			jso_schema_error_set(schema, JSO_SCHEMA_ERROR_VALIDATION_COMPOSITION,
 					"No oneOf subschema was valid");
-			pos->validation_invalid_reason = JSO_SCHEMA_ERROR_VALIDATION_COMPOSITION;
+			pos->validation_invalid_reason = JSO_SCHEMA_VALIDATION_INVALID_REASON_COMPOSITION;
 			return JSO_SCHEMA_VALIDATION_INVALID;
 		}
-		jso_schema_error_reset(schema);
+		jso_schema_reset_error(schema);
 	}
 
 	if (JSO_SCHEMA_KW_IS_SET(comval->type_list)) {
 		if (!pos->type_valid) {
 			jso_schema_error_set(schema, JSO_SCHEMA_ERROR_VALIDATION_TYPE,
 					"Value is not any of the listed types");
-			pos->validation_invalid_reason = JSO_SCHEMA_ERROR_VALIDATION_COMPOSITION;
+			pos->validation_invalid_reason = JSO_SCHEMA_VALIDATION_INVALID_REASON_TYPE;
 			return JSO_SCHEMA_VALIDATION_INVALID;
 		}
-		jso_schema_error_reset(schema);
+		jso_schema_reset_error(schema);
 	}
 
 	if (JSO_SCHEMA_KW_IS_SET(comval->enum_elements)) {
@@ -78,7 +78,7 @@ jso_schema_validation_result jso_schema_validation_common_value(jso_schema *sche
 		if (!found) {
 			jso_schema_error_format(schema, JSO_SCHEMA_ERROR_VALIDATION_KEYWORD,
 					"Instance value not found in enum values");
-			pos->validation_invalid_reason = JSO_SCHEMA_ERROR_VALIDATION_COMPOSITION;
+			pos->validation_invalid_reason = JSO_SCHEMA_VALIDATION_INVALID_REASON_KEYWORD;
 			return JSO_SCHEMA_VALIDATION_INVALID;
 		}
 	}
@@ -87,7 +87,7 @@ jso_schema_validation_result jso_schema_validation_common_value(jso_schema *sche
 		if (!jso_virt_value_equals(instance, JSO_SCHEMA_KEYWORD_DATA_ANY(comval->const_value))) {
 			jso_schema_error_format(schema, JSO_SCHEMA_ERROR_VALIDATION_KEYWORD,
 					"Instance value is not equal to const value");
-			pos->validation_invalid_reason = JSO_SCHEMA_ERROR_VALIDATION_COMPOSITION;
+			pos->validation_invalid_reason = JSO_SCHEMA_VALIDATION_INVALID_REASON_KEYWORD;
 			return JSO_SCHEMA_VALIDATION_INVALID;
 		}
 	}

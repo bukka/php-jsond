@@ -141,3 +141,13 @@ jso_schema_validation_result jso_schema_validation_composition_push(
 
 	return JSO_SCHEMA_VALIDATION_VALID;
 }
+
+static const char *type_names[]
+		= { "none", "type any", "type list", "all", "any", "one", "not", "ref" };
+
+const char *jso_schema_validation_composition_type_to_string(
+		jso_schema_validation_composition_type type)
+{
+	JSO_ASSERT_LT(type, sizeof(type_names) / sizeof(const char *));
+	return type_names[(int) type];
+}

@@ -83,7 +83,7 @@ static inline void jso_schema_empty(jso_schema *schema)
 {
 	jso_schema_value_free(schema->root);
 	jso_value_free(&schema->doc);
-	jso_schema_error_free(schema);
+	jso_schema_error_clear(&schema->error);
 	jso_ht_clear(&schema->uri_deref_cache);
 }
 

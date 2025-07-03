@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2023 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,25 +21,49 @@
  *
  */
 
-/**
- * @file jso_schema_validation_error.h
- * @brief JsonSchema validation error helpers.
- */
+#include "jso_parser_hooks_validate.h"
 
-#ifndef JSO_SCHEMA_VALIDATION_ERROR_H
-#define JSO_SCHEMA_VALIDATION_ERROR_H
+#include "../jso.h"
+#include "../jso_parser.h"
 
-#include "../jso_schema.h"
+jso_error_type jso_parser_validate_array_create(jso_parser *parser, jso_array **array)
+{
+	*array = NULL;
+	return JSO_ERROR_NONE;
+}
 
-jso_schema_validation_result jso_schema_validation_value_type_error_ex(jso_schema *schema,
-		jso_schema_validation_position *pos, jso_value_type expected,
-		jso_value_type expected_alternative, jso_value_type actual);
+jso_error_type jso_parser_validate_array_append(
+		jso_parser *parser, jso_array *array, jso_value *value)
+{
+	return JSO_ERROR_NONE;
+}
 
-jso_schema_validation_result jso_schema_validation_value_type_error(jso_schema *schema,
-		jso_schema_validation_position *pos, jso_value_type expected, jso_value_type actual);
+jso_error_type jso_parser_validate_object_create(jso_parser *parser, jso_object **object)
+{
+	*object = NULL;
+	return JSO_ERROR_NONE;
+}
 
-jso_schema_validation_result jso_schema_validation_schema_value_type_error(jso_schema *schema,
-		jso_schema_validation_position *pos, jso_schema_value_type expected,
-		jso_schema_value_type actual);
+jso_error_type jso_parser_validate_object_update(
+		jso_parser *parser, jso_object *object, jso_string *key, jso_value *value)
+{
+	return JSO_ERROR_NONE;
+}
 
-#endif /* JSO_SCHEMA_VALIDATION_ERROR_H */
+static const jso_parser_hooks parser_hooks = {
+	jso_parser_validate_array_create,
+	jso_parser_validate_array_append,
+	NULL,
+	NULL,
+	jso_parser_validate_object_create,
+	jso_parser_validate_object_update,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+};
+
+JSO_API const jso_parser_hooks *jso_parser_hooks_validate()
+{
+	return &parser_hooks;
+}

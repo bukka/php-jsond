@@ -156,6 +156,15 @@
 #define JSO_ETYPE_P(_pjv) (_pjv)->data.err->type
 
 /**
+ * Get an error schema error of the supplied pointer to value.
+ *
+ * @param _pjv pointer to @ref jso_value
+ * @return Pointer to @ref jso_schema_error.
+ * @note This must be called only if the error is set.
+ */
+#define JSO_ESCHEMAE_P(_pjv) (_pjv)->data.err->schema_error
+
+/**
  * Get a type of the supplied value.
  *
  * @param _jv variable of @ref jso_value type
@@ -278,6 +287,15 @@
 #define JSO_ETYPE(_jv) JSO_ETYPE_P(&(_jv))
 
 /**
+ * Get an error schema error of the supplied value.
+ *
+ * @param _jv variable of @ref jso_value type
+ * @return Pointer to @ref jso_schema_error.
+ * @note This must be called only if the error is set.
+ */
+#define JSO_ESCHEMAE(_jv) JSO_ESCHEMAE_P(&(_jv))
+
+/**
  * Set error to the supplied value.
  *
  * @param _jv variable of @ref jso_value type
@@ -394,6 +412,18 @@
 	do { \
 		JSO_TYPE(_pjv) = JSO_TYPE_SCHEMA_VALUE; \
 		JSO_SVVAL(_pjv) = (_sv); \
+	} while (0)
+
+/**
+ * Set error to the supplied value pointer.
+ *
+ * @param _pjv pointer to variable of @ref jso_value type
+ * @param _eval error value
+ */
+#define JSO_VALUE_SET_ERROR_P(_jv, _eval) \
+	do { \
+		JSO_TYPE_P(_jv) = JSO_TYPE_ERROR; \
+		JSO_EVAL_P(_jv) = _eval; \
 	} while (0)
 
 /**
@@ -527,7 +557,15 @@ JSO_API void jso_value_free(jso_value *val);
 JSO_API jso_value *jso_value_copy(jso_value *val);
 
 /**
- * Return error type for the provided value.
+ * Return an error type for the provided value.
+ *
+ * @param val value
+ * @return Error type
+ */
+JSO_API jso_error_type jso_value_get_error_type(jso_value *val);
+
+/**
+ * Return an error description for the provided value.
  *
  * @param val value
  * @return Error description or NULL if val is not an error

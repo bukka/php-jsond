@@ -171,7 +171,8 @@ enum yysymbol_kind_t
   YYSYMBOL_element = 29,                   /* element  */
   YYSYMBOL_key = 30,                       /* key  */
   YYSYMBOL_value = 31,                     /* value  */
-  YYSYMBOL_errlex = 32                     /* errlex  */
+  YYSYMBOL_values = 32,                    /* values  */
+  YYSYMBOL_errlex = 33                     /* errlex  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -546,18 +547,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  18
+#define YYFINAL  19
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   51
+#define YYLAST   45
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  19
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  14
+#define YYNNTS  15
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  32
+#define YYNRULES  33
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  43
+#define YYNSTATES  44
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   267
@@ -609,8 +610,8 @@ static const yytype_int16 yyrline[] =
 {
        0,   126,   126,   133,   141,   140,   154,   158,   162,   167,
      172,   179,   184,   192,   191,   205,   209,   213,   218,   223,
-     230,   235,   243,   244,   245,   246,   247,   248,   249,   250,
-     251,   252,   257
+     230,   235,   243,   250,   251,   252,   253,   254,   255,   256,
+     257,   258,   259,   264
 };
 #endif
 
@@ -631,7 +632,7 @@ static const char *const yytname[] =
   "JSO_T_STRING", "JSO_T_ESTRING", "JSO_T_ENOMEM", "JSO_T_EOI",
   "JSO_T_ERROR", "'{'", "'}'", "','", "':'", "'['", "']'", "$accept",
   "start", "object", "$@1", "members", "member", "pair", "array", "$@2",
-  "elements", "element", "key", "value", "errlex", YY_NULLPTR
+  "elements", "element", "key", "value", "values", "errlex", YY_NULLPTR
 };
 
 static const char *
@@ -641,7 +642,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-23)
+#define YYPACT_NINF (-25)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -655,11 +656,11 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      34,   -23,   -23,   -23,   -23,   -23,   -23,   -23,   -23,   -23,
-     -23,     6,   -23,   -23,    17,   -23,    -6,    18,   -23,   -23,
-     -23,   -23,   -23,   -23,   -23,     1,   -23,    -7,   -23,   -23,
-      -8,   -23,   -23,    24,   -23,    34,   -23,    34,   -23,   -23,
-     -23,   -23,   -23
+       0,   -25,   -25,   -25,   -25,   -25,   -25,   -25,   -25,   -25,
+     -25,     1,   -25,   -25,    21,   -25,   -25,    20,    18,   -25,
+     -25,   -25,   -25,   -25,   -25,   -25,    27,   -25,    -1,   -25,
+     -25,    25,   -25,   -25,    36,   -25,     0,   -25,     0,   -25,
+     -25,   -25,   -25,   -25
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -667,25 +668,25 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,    28,    29,    30,    26,    27,    24,    25,    32,     4,
-      13,     0,    22,    23,     0,    31,     0,     0,     1,     2,
-       3,    20,    21,     6,     5,     0,     8,     0,    15,    14,
-       0,    17,     7,     0,    10,     0,    12,     0,    16,    19,
-       9,    11,    18
+       0,    29,    30,    31,    27,    28,    25,    26,    33,     4,
+      13,     0,    23,    24,     0,    22,    32,     0,     0,     1,
+       2,     3,    20,    21,     6,     5,     0,     8,     0,    15,
+      14,     0,    17,     7,     0,    10,     0,    12,     0,    16,
+      19,     9,    11,    18
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -23,   -23,   -23,   -23,   -23,   -23,   -22,   -23,   -23,   -23,
-     -23,   -23,   -17,   -13
+     -25,   -25,   -25,   -25,   -25,   -25,   -24,   -25,   -25,   -25,
+     -25,   -25,   -18,   -25,   -12
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,    11,    12,    16,    24,    25,    26,    13,    17,    29,
-      30,    27,    14,    15
+       0,    11,    12,    17,    25,    26,    27,    13,    18,    30,
+      31,    28,    14,    15,    16
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -693,22 +694,20 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      31,    20,    21,    22,     8,     8,    18,    37,    23,    35,
-      38,    40,    34,     8,    36,    32,    33,    39,    41,     0,
-      42,     1,     2,     3,     4,     5,     6,     7,    19,     8,
-       8,     9,    21,    22,     0,    10,    28,     1,     2,     3,
-       4,     5,     6,     7,     0,     0,     8,     9,     0,     0,
-       0,    10
+      32,    19,    21,     1,     2,     3,     4,     5,     6,     7,
+      41,     8,     8,     9,    35,    36,    37,    10,    42,    40,
+      43,     1,     2,     3,     4,     5,     6,     7,    22,    23,
+       8,     9,    20,     8,    24,    10,    29,     8,     0,     8,
+      38,    33,    34,    39,    22,    23
 };
 
 static const yytype_int8 yycheck[] =
 {
-      17,    14,     8,     9,    12,    12,     0,    15,    14,    16,
-      18,    33,    25,    12,    27,    14,    15,    30,    35,    -1,
-      37,     3,     4,     5,     6,     7,     8,     9,    11,    12,
-      12,    13,     8,     9,    -1,    17,    18,     3,     4,     5,
-       6,     7,     8,     9,    -1,    -1,    12,    13,    -1,    -1,
-      -1,    17
+      18,     0,    14,     3,     4,     5,     6,     7,     8,     9,
+      34,    12,    12,    13,    26,    16,    28,    17,    36,    31,
+      38,     3,     4,     5,     6,     7,     8,     9,     8,     9,
+      12,    13,    11,    12,    14,    17,    18,    12,    -1,    12,
+      15,    14,    15,    18,     8,     9
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -716,10 +715,10 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,     3,     4,     5,     6,     7,     8,     9,    12,    13,
-      17,    20,    21,    26,    31,    32,    22,    27,     0,    11,
-      32,     8,     9,    14,    23,    24,    25,    30,    18,    28,
-      29,    31,    14,    15,    32,    16,    32,    15,    18,    32,
-      25,    31,    31
+      17,    20,    21,    26,    31,    32,    33,    22,    27,     0,
+      11,    33,     8,     9,    14,    23,    24,    25,    30,    18,
+      28,    29,    31,    14,    15,    33,    16,    33,    15,    18,
+      33,    25,    31,    31
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
@@ -727,8 +726,8 @@ static const yytype_int8 yyr1[] =
 {
        0,    19,    20,    20,    22,    21,    23,    23,    24,    24,
       24,    25,    25,    27,    26,    28,    28,    29,    29,    29,
-      30,    30,    31,    31,    31,    31,    31,    31,    31,    31,
-      31,    31,    32
+      30,    30,    31,    32,    32,    32,    32,    32,    32,    32,
+      32,    32,    32,    33
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -737,7 +736,7 @@ static const yytype_int8 yyr2[] =
        0,     2,     2,     2,     0,     3,     1,     2,     1,     3,
        2,     3,     2,     0,     3,     1,     2,     1,     3,     2,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1
+       1,     1,     1,     1
 };
 
 
@@ -1107,6 +1106,10 @@ yydestruct (const char *yymsg,
         break;
 
     case YYSYMBOL_value: /* value  */
+            { jso_value_free(&((*yyvaluep).value)); }
+        break;
+
+    case YYSYMBOL_values: /* values  */
             { jso_value_free(&((*yyvaluep).value)); }
         break;
 
@@ -1535,7 +1538,14 @@ yyreduce:
 			}
     break;
 
-  case 32: /* errlex: JSO_T_ERROR  */
+  case 22: /* value: values  */
+                        {
+				JSO_PARSER_HOOK(value, (yylsp[0]), &(yyvsp[0].value));
+				(yyval.value) = (yyvsp[0].value);
+			}
+    break;
+
+  case 33: /* errlex: JSO_T_ERROR  */
                         {
 				parser->result = (yyvsp[0].value);
 				JSO_USE((yyval.value));

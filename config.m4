@@ -25,6 +25,7 @@ if test "$PHP_JSOND" != "no"; then
     jso/jso_array.c
     jso/jso_builder.c
     jso/jso_cli.c
+    jso/jso_dbg.c
     jso/jso_dg_dtoa.c
     jso/jso_encoder.c
     jso/jso_error.c
@@ -37,6 +38,8 @@ if test "$PHP_JSOND" != "no"; then
     jso/jso_value.c
     jso/parser/jso_parser.c
     jso/parser/jso_parser_hooks_decode.c
+    jso/parser/jso_parser_hooks_decode_schema.c
+    jso/parser/jso_parser_hooks_validate.c
     jso/pointer/jso_pointer.c
     jso/pointer/jso_pointer_error.c
     jso/schema/jso_schema_array.c
@@ -66,7 +69,7 @@ if test "$PHP_JSOND" != "no"; then
     jso/schema/jso_schema_validation_stream.c
     jso/schema/jso_schema_validation_string.c
     jso/schema/jso_schema_validation_value.c
-    jso/schema/jso_schema_value_allocator.c
+    jso/schema/jso_schema_value.c
     jso/schema/jso_schema_value_freer.c
     jso/schema/jso_schema_value_init.c
     jso/schema/jso_schema_value_parser.c

@@ -26,6 +26,7 @@
 
 #include "jso_types.h"
 #include "jso_scanner.h"
+#include "jso_schema.h"
 
 typedef struct _jso_parser jso_parser;
 
@@ -37,11 +38,10 @@ typedef jso_error_type (*jso_parser_hook_array_end_t)(jso_parser *parser);
 typedef jso_error_type (*jso_parser_hook_object_create_t)(jso_parser *parser, jso_object **object);
 typedef jso_error_type (*jso_parser_hook_object_update_t)(
 		jso_parser *parser, jso_object *object, jso_string *key, jso_value *value);
+typedef jso_error_type (*jso_parser_hook_object_key_t)(jso_parser *parser, jso_string *key);
 typedef jso_error_type (*jso_parser_hook_object_start_t)(jso_parser *parser);
 typedef jso_error_type (*jso_parser_hook_object_end_t)(jso_parser *parser);
-
 typedef jso_error_type (*jso_parser_hook_object_key_t)(jso_parser *parser, jso_string *key);
-
 typedef jso_error_type (*jso_parser_hook_value_t)(jso_parser *parser, jso_value *value);
 
 /**
@@ -65,6 +65,8 @@ typedef struct _jso_parser_hooks {
  */
 typedef struct _jso_parser_options {
 	jso_uint max_depth;
+	jso_bool validate;
+	jso_schema *schema;
 } jso_parser_options;
 
 /**
@@ -84,6 +86,8 @@ struct _jso_parser {
 	jso_scanner scanner;
 	jso_parser_hooks hooks;
 	jso_parser_location *location;
+	jso_schema *schema;
+	jso_schema_validation_stream *schema_stream;
 	jso_value result;
 	jso_uint depth;
 	jso_uint max_depth;
@@ -146,7 +150,7 @@ JSO_API int jso_yyparse(jso_parser *parser);
  * @param result value holding the result
  * @return @ref JSO_SUCCESS on success, otherwise @ref JSO_FAILURE.
  */
-JSO_API jso_rc jso_parse_io(jso_io *io, jso_parser_options *options, jso_value *result);
+JSO_API jso_rc jso_parse_io(jso_io *io, const jso_parser_options *options, jso_value *result);
 
 /**
  * Parse data from IO to result.
@@ -158,6 +162,6 @@ JSO_API jso_rc jso_parse_io(jso_io *io, jso_parser_options *options, jso_value *
  * @return @ref JSO_SUCCESS on success, otherwise @ref JSO_FAILURE.
  */
 JSO_API jso_rc jso_parse_cstr(
-		const char *cstr, size_t len, jso_parser_options *options, jso_value *result);
+		const char *cstr, size_t len, const jso_parser_options *options, jso_value *result);
 
 #endif /* JSO_PARSER_H */

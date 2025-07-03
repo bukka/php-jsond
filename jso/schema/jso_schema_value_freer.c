@@ -45,7 +45,7 @@ static void jso_schema_value_free_common(jso_schema_value *val)
 	jso_schema_keyword_free(&comval->all_of);
 	jso_schema_keyword_free(&comval->any_of);
 	jso_schema_keyword_free(&comval->one_of);
-	jso_schema_keyword_free(&comval->not );
+	jso_schema_keyword_free(&comval->not);
 	jso_schema_keyword_free(&comval->enum_elements);
 	jso_schema_keyword_free(&comval->const_value);
 	jso_schema_keyword_free(&comval->definitions);

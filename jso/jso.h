@@ -29,10 +29,11 @@
 #ifndef JSO_H
 #define JSO_H
 
-#include <config.h>
+#include "../config.h"
 
 #include "jso_types.h"
 #include "jso_assert.h"
+#include "jso_dbg.h"
 #include "jso_value.h"
 #include "jso_error.h"
 #include "jso_array.h"

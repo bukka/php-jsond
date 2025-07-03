@@ -218,7 +218,7 @@ jso_schema_validation_result jso_schema_validation_array_value(jso_schema *schem
 
 			contains_item = top_pos->validation_result == JSO_SCHEMA_VALIDATION_VALID;
 			if (contains_item) {
-				jso_schema_error_reset(schema);
+				jso_schema_reset_error(schema);
 				break;
 			}
 		}

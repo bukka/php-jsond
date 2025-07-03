@@ -51,7 +51,7 @@ void jso_schema_validation_result_propagate(jso_schema *schema, jso_schema_valid
 				if (pos->validation_result != JSO_SCHEMA_VALIDATION_VALID) {
 					if (pos->validation_invalid_reason
 							== JSO_SCHEMA_VALIDATION_INVALID_REASON_TYPE) {
-						jso_schema_error_reset(schema);
+						jso_schema_reset_error(schema);
 					} else {
 						jso_schema_validation_set_final_result(parent_pos, pos->validation_result);
 					}
@@ -62,7 +62,7 @@ void jso_schema_validation_result_propagate(jso_schema *schema, jso_schema_valid
 				if (pos->validation_result != JSO_SCHEMA_VALIDATION_VALID) {
 					if (pos->validation_invalid_reason
 							== JSO_SCHEMA_VALIDATION_INVALID_REASON_TYPE) {
-						jso_schema_error_reset(schema);
+						jso_schema_reset_error(schema);
 					} else {
 						jso_schema_validation_set_final_result(parent_pos, pos->validation_result);
 					}
@@ -104,7 +104,7 @@ void jso_schema_validation_result_propagate(jso_schema *schema, jso_schema_valid
 					jso_schema_validation_set_final_result(
 							parent_pos, JSO_SCHEMA_VALIDATION_INVALID);
 				} else {
-					jso_schema_error_reset(schema);
+					jso_schema_reset_error(schema);
 				}
 				break;
 		}

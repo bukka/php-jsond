@@ -22,6 +22,7 @@
  */
 
 #include "jso.h"
+#include "jso_schema.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,7 +38,9 @@ JSO_API jso_error *jso_error_new_ex(jso_error_type type, jso_error_location *loc
 		return NULL;
 
 	err->type = type;
-	memcpy(&err->loc, loc, sizeof(jso_error_location));
+	if (loc) {
+		memcpy(&err->loc, loc, sizeof(jso_error_location));
+	}
 
 	return err;
 }
@@ -55,10 +58,22 @@ JSO_API jso_error *jso_error_new(jso_error_type type, size_t first_column, size_
 	return jso_error_new_ex(type, &loc);
 }
 
+/* create error from schema error */
+JSO_API jso_error *jso_error_new_from_schema(jso_schema *schema)
+{
+	jso_error *error = jso_error_new_ex(JSO_ERROR_SCHEMA, NULL);
+	error->schema_error = jso_schema_move_error(schema);
+	return error;
+}
+
 /* get type description */
 JSO_API const char *jso_error_type_description(jso_error_type type)
 {
 	switch (type) {
+		case JSO_ERROR_NONE:
+			return "none";
+		case JSO_ERROR_ALLOC:
+			return "allocation";
 		case JSO_ERROR_SYNTAX:
 			return "syntax";
 		case JSO_ERROR_DEPTH:
@@ -67,12 +82,14 @@ JSO_API const char *jso_error_type_description(jso_error_type type)
 			return "invalid token";
 		case JSO_ERROR_CTRL_CHAR:
 			return "control character";
-		case JSO_ERROR_ESCAPE:
-			return "invalid escape";
-		case JSO_ERROR_UTF8:
-			return "UTF-8 encoding";
 		case JSO_ERROR_UTF16:
 			return "invalid unicode escape";
+		case JSO_ERROR_UTF8:
+			return "UTF-8 encoding";
+		case JSO_ERROR_ESCAPE:
+			return "invalid escape";
+		case JSO_ERROR_SCHEMA:
+			return "schema";
 		default:
 			return "unknown";
 	}

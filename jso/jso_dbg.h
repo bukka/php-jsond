@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025 Jakub Zelenka. All rights reserved.
+ * Copyright (c) 2025 Jakub Zelenka. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22,24 +22,37 @@
  */
 
 /**
- * @file jso_schema_validation_error.h
- * @brief JsonSchema validation error helpers.
+ * @file jso_dbg.h
+ * @brief Debugging utilities
  */
 
-#ifndef JSO_SCHEMA_VALIDATION_ERROR_H
-#define JSO_SCHEMA_VALIDATION_ERROR_H
+#ifndef JSO_DBG_H
+#define JSO_DBG_H
 
-#include "../jso_schema.h"
+#include <stdarg.h>
+#include "../config.h"
 
-jso_schema_validation_result jso_schema_validation_value_type_error_ex(jso_schema *schema,
-		jso_schema_validation_position *pos, jso_value_type expected,
-		jso_value_type expected_alternative, jso_value_type actual);
+#define JSO_DBG_DEFAULT_ENV_NAME "JSO_DEBUG_CONFIG"
 
-jso_schema_validation_result jso_schema_validation_value_type_error(jso_schema *schema,
-		jso_schema_validation_position *pos, jso_value_type expected, jso_value_type actual);
+#ifdef JSO_DEBUG_ENABLED
 
-jso_schema_validation_result jso_schema_validation_schema_value_type_error(jso_schema *schema,
-		jso_schema_validation_position *pos, jso_schema_value_type expected,
-		jso_schema_value_type actual);
+void jso_dbg_init_from_config(const char *config_string);
+void jso_dbg_init_from_env(const char *env_name);
+void jso_dbg_log(const char *type, const char *fmt, ...);
+void jso_dbg_cleanup(void);
 
-#endif /* JSO_SCHEMA_VALIDATION_ERROR_H */
+#define JSO_DBG(_type, ...) jso_dbg_log(#_type, __VA_ARGS__)
+
+#else
+#define jso_dbg_init_from_config(_config) ((void) 0)
+#define jso_dbg_init_from_env(_config) ((void) 0)
+#define jso_dbg_cleanup() ((void) 0)
+#define JSO_DBG(...) ((void) 0)
+#endif
+
+/**
+ * @brief Schema validation component debugging
+ */
+#define JSO_DBG_SV(...) JSO_DBG(SV, __VA_ARGS__)
+
+#endif /* JSO_DBG_H */

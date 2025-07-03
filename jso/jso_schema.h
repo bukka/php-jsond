@@ -472,7 +472,7 @@ typedef struct _jso_schema_keyword {
 	/** oneOf keyword */ \
 	jso_schema_keyword one_of; \
 	/** not keyword */ \
-	jso_schema_keyword not ; \
+	jso_schema_keyword not; \
 	/** definitions keyword */ \
 	jso_schema_keyword definitions; \
 	/** title keyword */ \
@@ -970,17 +970,17 @@ typedef enum _jso_schema_error_type {
 /**
  * @brief JsonSchema error.
  */
-typedef struct _jso_schema_error {
+struct _jso_schema_error {
 	/** error message */
 	char *message;
 	/** error type */
 	jso_schema_error_type type;
-} jso_schema_error;
+};
 
 /**
  * @brief JsonSchema main structure.
  */
-typedef struct _jso_schema {
+struct _jso_schema {
 	/** root value */
 	jso_schema_value *root;
 	/** schema instance */
@@ -993,7 +993,14 @@ typedef struct _jso_schema {
 	jso_schema_error error;
 	/** schema initialized */
 	jso_bool is_initialized;
-} jso_schema;
+};
+
+/**
+ * Get JsonSchema error.
+ *
+ * @param _schema shema of type @ref jso_schema
+ */
+#define JSO_SCHEMA_ERROR(_schema) &((_schema)->error)
 
 /**
  * Get JsonSchema error type.
@@ -1049,6 +1056,29 @@ static inline bool jso_schema_error_is_validation(jso_schema *schema)
 			|| type == JSO_SCHEMA_ERROR_VALIDATION_TYPE
 			|| type == JSO_SCHEMA_ERROR_VALIDATION_FALSE);
 }
+
+/**
+ * Move schema error out of the schema.
+ *
+ * This is primarily meant to be used to copy the error to the @ref jso_error and it can outlive
+ * the actual schema.
+ *
+ * @param schema shema of type @ref jso_schema
+ * @return The extracted schema error
+ */
+JSO_API jso_schema_error *jso_schema_move_error(jso_schema *schema);
+
+/**
+ * Clear schema error.
+ *
+ * @param
+ */
+JSO_API void jso_schema_error_clear(jso_schema_error *error);
+
+/**
+ * Free schema error.
+ */
+JSO_API void jso_schema_error_free(jso_schema_error *error);
 
 /**
  * Allocate new schema.

@@ -32,7 +32,8 @@
 #include "jso_types.h"
 
 /**
- * Create a new error from supplied type and location.
+ * Create a new error from the supplied type and location.
+ *
  * @param type error type
  * @param loc error location
  * @return A new error instance.
@@ -40,7 +41,8 @@
 JSO_API jso_error *jso_error_new_ex(jso_error_type type, jso_error_location *loc);
 
 /**
- * Craete a new error from supplied type and positions.
+ * Create a new error from supplied type and positions.
+ *
  * @param type error type
  * @param first_column first column position where the error was found
  * @param first_line first line position where the error was found
@@ -50,6 +52,14 @@ JSO_API jso_error *jso_error_new_ex(jso_error_type type, jso_error_location *loc
  */
 JSO_API jso_error *jso_error_new(jso_error_type type, size_t first_column, size_t first_line,
 		size_t last_column, size_t last_line);
+
+/**
+ * Create a new error from the schema error.
+ *
+ * @param schema JSON schema to create the error from
+ * @return A new error instance.
+ */
+JSO_API jso_error *jso_error_new_from_schema(jso_schema *schema);
 
 /**
  * Get the description for the supplied error type.

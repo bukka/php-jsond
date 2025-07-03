@@ -22,6 +22,7 @@
  */
 
 #include "jso_schema_error.h"
+#include "jso_schema_value.h"
 
 #include "../jso.h"
 
@@ -43,6 +44,17 @@ jso_schema_validation_result jso_schema_validation_value_type_error(jso_schema *
 	jso_schema_error_format(schema, JSO_SCHEMA_ERROR_VALIDATION_TYPE,
 			"Invalid validation type, expected %s but received %s",
 			jso_value_type_to_string(expected), jso_value_type_to_string(actual));
+	pos->validation_invalid_reason = JSO_SCHEMA_VALIDATION_INVALID_REASON_TYPE;
+	return JSO_SCHEMA_VALIDATION_INVALID;
+}
+
+jso_schema_validation_result jso_schema_validation_schema_value_type_error(jso_schema *schema,
+		jso_schema_validation_position *pos, jso_schema_value_type expected,
+		jso_schema_value_type actual)
+{
+	jso_schema_error_format(schema, JSO_SCHEMA_ERROR_VALIDATION_TYPE,
+			"Invalid schema type, expected %s but received %s",
+			jso_schema_value_type_to_string(expected), jso_schema_value_type_to_string(actual));
 	pos->validation_invalid_reason = JSO_SCHEMA_VALIDATION_INVALID_REASON_TYPE;
 	return JSO_SCHEMA_VALIDATION_INVALID;
 }

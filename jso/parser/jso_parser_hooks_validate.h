@@ -21,33 +21,21 @@
  *
  */
 
-#include "jso_schema_error.h"
-#include "jso_schema_keyword_freer.h"
-#include "jso_schema_value.h"
+/**
+ * @file jso_parser_hooks_validate.h
+ * @brief Parser hooks for validation
+ */
 
-#include "../jso.h"
+#ifndef JSO_PARSER_HOOKS_VALIDATE_H
+#define JSO_PARSER_HOOKS_VALIDATE_H
 
-jso_schema_value *jso_schema_value_alloc(jso_schema *schema, const char *type_name)
-{
-	jso_schema_value *value = jso_calloc(1, sizeof(jso_schema_value));
-	if (value == NULL) {
-		jso_schema_error_format(schema, JSO_SCHEMA_ERROR_VALUE_ALLOC,
-				"Allocating value for type %s failed", type_name);
-		return NULL;
-	}
+#include "../jso_parser_hooks.h"
 
-	return value;
-}
+jso_error_type jso_parser_validate_array_create(jso_parser *parser, jso_array **array);
+jso_error_type jso_parser_validate_array_append(
+		jso_parser *parser, jso_array *array, jso_value *value);
+jso_error_type jso_parser_validate_object_create(jso_parser *parser, jso_object **object);
+jso_error_type jso_parser_validate_object_update(
+		jso_parser *parser, jso_object *object, jso_string *key, jso_value *value);
 
-jso_schema_value_common *jso_schema_value_data_alloc(
-		size_t value_size, jso_schema *schema, const char *type_name)
-{
-	jso_schema_value_common *value_data = jso_calloc(1, value_size);
-	if (value_data == NULL) {
-		jso_schema_error_format(schema, JSO_SCHEMA_ERROR_VALUE_ALLOC,
-				"Allocating value data for type %s failed", type_name);
-		return NULL;
-	}
-
-	return value_data;
-}
+#endif /* JSO_PARSER_HOOKS_VALIDATE_H */

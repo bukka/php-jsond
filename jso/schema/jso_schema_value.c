@@ -21,19 +21,42 @@
  *
  */
 
-/**
- * @file jso_parser_hooks.h
- * @brief Parser hooks
- */
+#include "jso_schema_error.h"
+#include "jso_schema_keyword_freer.h"
+#include "jso_schema_value.h"
 
-#ifndef JSO_PARSER_HOOKS_H
-#define JSO_PARSER_HOOKS_H
+#include "../jso.h"
 
-#include "jso_types.h"
-#include "jso_parser.h"
+jso_schema_value *jso_schema_value_alloc(jso_schema *schema, const char *type_name)
+{
+	jso_schema_value *value = jso_calloc(1, sizeof(jso_schema_value));
+	if (value == NULL) {
+		jso_schema_error_format(schema, JSO_SCHEMA_ERROR_VALUE_ALLOC,
+				"Allocating value for type %s failed", type_name);
+		return NULL;
+	}
 
-JSO_API const jso_parser_hooks *jso_parser_hooks_decode();
-JSO_API const jso_parser_hooks *jso_parser_hooks_decode_schema();
-JSO_API const jso_parser_hooks *jso_parser_hooks_validate();
+	return value;
+}
 
-#endif /* JSO_PARSER_HOOKS_H */
+jso_schema_value_common *jso_schema_value_data_alloc(
+		size_t value_size, jso_schema *schema, const char *type_name)
+{
+	jso_schema_value_common *value_data = jso_calloc(1, value_size);
+	if (value_data == NULL) {
+		jso_schema_error_format(schema, JSO_SCHEMA_ERROR_VALUE_ALLOC,
+				"Allocating value data for type %s failed", type_name);
+		return NULL;
+	}
+
+	return value_data;
+}
+
+static const char *type_names[] = { "mixed", "null", "boolean", "integer", "number", "string",
+	"string", "array", "object", "boolean object" };
+
+const char *jso_schema_value_type_to_string(jso_schema_value_type type)
+{
+	JSO_ASSERT_LT(type, sizeof(type_names) / sizeof(const char *));
+	return type_names[(int) type];
+}

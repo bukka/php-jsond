@@ -90,6 +90,18 @@ JSO_API void jso_cli_register_default_params(jso_cli_ctx *ctx)
 static void jso_cli_print_parsing_error(
 		const char *file_path, jso_cli_options *options, jso_value *error)
 {
+	jso_error_type error_type = jso_value_get_error_type(error);
+	if (error_type == JSO_ERROR_NONE) {
+		JSO_IO_PRINTF(options->es, "Error is not set for failed parsing\n");
+		return;
+	}
+
+	if (error_type == JSO_ERROR_SCHEMA) {
+		jso_schema_error *schema_error = JSO_ESCHEMAE_P(error);
+		JSO_IO_PRINTF(options->es, "Schema error: %s\n", schema_error->message);
+		return;
+	}
+
 	const char *err_desc = jso_value_get_error_description(error);
 	if (err_desc == NULL) {
 		JSO_IO_PRINTF(options->es, "Error value setting failed\n");
@@ -144,7 +156,10 @@ static jso_rc jso_cli_parse_file_ex(
 		return JSO_FAILURE;
 	}
 
-	jso_parser_options parser_options = { .max_depth = options->max_depth };
+	jso_parser_options parser_options = {
+		.max_depth = options->max_depth,
+		.schema = options->schema,
+	};
 	jso_rc rc = jso_parse_io(io, &parser_options, result);
 	if (rc == JSO_FAILURE) {
 		jso_cli_print_parsing_error(file_path, options, result);

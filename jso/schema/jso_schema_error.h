@@ -38,9 +38,12 @@ jso_rc jso_schema_error_set(jso_schema *schema, jso_schema_error_type type, cons
 jso_rc jso_schema_error_format(
 		jso_schema *schema, jso_schema_error_type type, const char *format, ...);
 
-void jso_schema_error_free(jso_schema *schema);
+static inline void jso_schema_clear_error(jso_schema *schema)
+{
+	jso_schema_error_clear(JSO_SCHEMA_ERROR(schema));
+}
 
-static inline void jso_schema_error_reset(jso_schema *schema)
+static inline void jso_schema_reset_error(jso_schema *schema)
 {
 	JSO_SCHEMA_ERROR_TYPE(schema) = JSO_SCHEMA_ERROR_NONE;
 }

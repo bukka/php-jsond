@@ -31,6 +31,7 @@
 
 #include "jso_schema_validation_stream.h"
 #include "../jso_schema.h"
+#include "../jso.h"
 
 jso_schema_validation_result jso_schema_validation_composition_push(
 		jso_schema_validation_stack *stack, jso_schema_validation_position *pos);
@@ -44,5 +45,8 @@ static inline jso_rc jso_schema_validation_composition_check(
 	}
 	return JSO_SUCCESS;
 }
+
+const char *jso_schema_validation_composition_type_to_string(
+		jso_schema_validation_composition_type type);
 
 #endif /* JSO_SCHEMA_VALIDATION_COMPOSITION_H */
