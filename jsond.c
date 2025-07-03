@@ -536,6 +536,7 @@ PHP_METHOD(JsondSchema, createFromString)
 
 	/* Parse JSON string to JSO value*/
 	jso_parser_options options;
+	jso_parser_options_init(&options);
 	options.max_depth = PHP_JSOND_PARSER_DEFAULT_DEPTH;
 	if (jso_parse_cstr(source, source_len, &options, &value) == JSO_FAILURE) {
 		const char *err_desc = jso_value_get_error_description(&value);
