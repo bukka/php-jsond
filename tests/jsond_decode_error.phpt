@@ -20,10 +20,10 @@ echo "\n-- Testing jsond_decode() function with more than expected no. of argume
 jsond_expect_argument_count_error(
     function() {
         $extra_arg = 10;
-        jsond_decode('"abc"', true, 512, 0, $extra_arg);
+        jsond_decode('"abc"', true, 512, 0, null, $extra_arg);
     },
-    'jsond_decode() expects at most 4 arguments, 5 given',
-    'Warning: jsond_decode() expects at most 4 parameters, 5 given in file on line 0'
+    'jsond_decode() expects at most 5 arguments, 6 given',
+    'Warning: jsond_decode() expects at most 5 parameters, 6 given in file on line 0'
 );
 
 echo "\n-- Testing jsond_decode() function with depth below 0 --\n";
@@ -32,6 +32,12 @@ echo "\n-- Testing jsond_decode() function with depth below 0 --\n";
 try {
     var_dump(jsond_decode('"abc"', true, -1));
 } catch (\ValueError $e) {
+    echo $e->getMessage() . \PHP_EOL;
+}
+
+try {
+    var_dump(jsond_decode('"abc"', true, 1000, 0, 'schema'));
+} catch (\TypeError $e) {
     echo $e->getMessage() . \PHP_EOL;
 }
 
@@ -46,8 +52,9 @@ NULL
 
 -- Testing jsond_decode() function with more than expected no. of arguments --
 
-Warning: %s expects at most 4 parameters, 5 given in %s on line %d
+Warning: jsond_decode() expects at most 5 parameters, 6 given in %s on line %d
 NULL
 
 -- Testing jsond_decode() function with depth below 0 --
 jsond_decode(): Argument #3 ($depth) must be greater than zero
+jsond_decode(): Argument #5 ($schema) must be of type JsondSchema, string given
