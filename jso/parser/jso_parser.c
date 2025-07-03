@@ -38,6 +38,11 @@ JSO_API void jso_parser_init(jso_parser *parser)
 	jso_parser_init_ex(parser, jso_parser_hooks_decode());
 }
 
+JSO_API void jso_parser_options_init(jso_parser_options *options)
+{
+	memset(options, 0, sizeof(jso_parser_options));
+}
+
 static const jso_parser_hooks *jso_parser_get_hooks(const jso_parser_options *options)
 {
 	if (options->schema != NULL) {

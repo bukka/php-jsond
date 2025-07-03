@@ -143,6 +143,13 @@ JSO_API void jso_parser_init(jso_parser *parser);
 JSO_API int jso_yyparse(jso_parser *parser);
 
 /**
+ * Initialize parser options
+ *
+ * @param options Options to initialize
+ */
+JSO_API void jso_parser_options_init(jso_parser_options *options);
+
+/**
  * Parse data from IO to result.
  *
  * @param io IO to parse data from

@@ -156,10 +156,10 @@ static jso_rc jso_cli_parse_file_ex(
 		return JSO_FAILURE;
 	}
 
-	jso_parser_options parser_options = {
-		.max_depth = options->max_depth,
-		.schema = options->schema,
-	};
+	jso_parser_options parser_options;
+	jso_parser_options_init(&parser_options);
+	parser_options.max_depth = options->max_depth;
+	parser_options.schema = options->schema;
 	jso_rc rc = jso_parse_io(io, &parser_options, result);
 	if (rc == JSO_FAILURE) {
 		jso_cli_print_parsing_error(file_path, options, result);
