@@ -15,8 +15,11 @@ class JsondSchemaException extends JsondException
 {
 }
 
-/** @not-serializable */
-class JsondSchema
+/**
+ * @not-serializable
+ * @strict-properties
+ */
+final class JsondSchema
 {
     private final function __construct() {}
 
