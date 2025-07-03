@@ -79,6 +79,7 @@ JSO_API jso_rc jso_parse_io(jso_io *io, const jso_parser_options *options, jso_v
 	}
 
 	if (parser.schema != NULL && jso_schema_error_is_set(parser.schema)) {
+		jso_value_clear(&parser.result);
 		JSO_VALUE_SET_ERROR_P(result, jso_error_new_from_schema(parser.schema));
 		rc = JSO_FAILURE;
 	} else {

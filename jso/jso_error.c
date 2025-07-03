@@ -98,6 +98,10 @@ JSO_API const char *jso_error_type_description(jso_error_type type)
 /* free error */
 JSO_API void jso_error_free(jso_error *err)
 {
-	if (err)
+	if (err != NULL) {
+		if (err->schema_error != NULL) {
+			jso_schema_error_free(err->schema_error);
+		}
 		jso_free(err);
+	}
 }

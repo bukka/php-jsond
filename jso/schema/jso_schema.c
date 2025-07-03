@@ -95,8 +95,6 @@ JSO_API void jso_schema_clear(jso_schema *schema)
 
 JSO_API void jso_schema_free(jso_schema *schema)
 {
-	if (schema->is_initialized) {
-		jso_schema_empty(schema);
-	}
+	jso_schema_empty(schema);
 	jso_free(schema);
 }

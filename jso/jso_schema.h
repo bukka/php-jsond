@@ -991,8 +991,6 @@ struct _jso_schema {
 	jso_schema_version version;
 	/** schema error */
 	jso_schema_error error;
-	/** schema initialized */
-	jso_bool is_initialized;
 };
 
 /**
