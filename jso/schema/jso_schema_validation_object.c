@@ -264,7 +264,7 @@ jso_schema_validation_result jso_schema_validation_object_value(jso_schema *sche
 		{
 			if (!jso_virt_object_has_str_key(instance_object, JSO_STR_P(item))) {
 				jso_schema_error_format(schema, JSO_SCHEMA_ERROR_VALIDATION_KEYWORD,
-						"Object does not have requier property with key %s", JSO_SVAL_P(item));
+						"Object does not have required property with key %s", JSO_SVAL_P(item));
 				pos->validation_invalid_reason = JSO_SCHEMA_VALIDATION_INVALID_REASON_KEYWORD;
 				return JSO_SCHEMA_VALIDATION_INVALID;
 			}
