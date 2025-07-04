@@ -369,6 +369,7 @@ PHP_JSOND_API zend_result php_jsond_decode_ex(zval *return_value, const char *st
 			zend_throw_exception(php_jsond_schema_exception_ce,
 					JSO_SCHEMA_ERROR_MESSAGE(schema), error_code);
 		}
+		zval_ptr_dtor(parser.return_value);
 		RETVAL_NULL();
 		return FAILURE;
 	}
