@@ -1041,7 +1041,7 @@ static inline bool jso_schema_error_is_fatal(jso_schema *schema)
 }
 
 /**
- * Check if schema error is a validation error.
+ * Check if a schema error is a validation error.
  *
  * @param schema shema of type @ref jso_schema
  * @return JSO_TRUE if validation error, otherwise JSO_FALSE
@@ -1053,6 +1053,16 @@ static inline bool jso_schema_error_is_validation(jso_schema *schema)
 			|| type == JSO_SCHEMA_ERROR_VALIDATION_COMPOSITION
 			|| type == JSO_SCHEMA_ERROR_VALIDATION_TYPE
 			|| type == JSO_SCHEMA_ERROR_VALIDATION_FALSE);
+}
+
+/**
+ * Reset a schema error.
+ *
+ * @param schema shema of type @ref jso_schema
+ */
+static inline void jso_schema_reset_error(jso_schema *schema)
+{
+	JSO_SCHEMA_ERROR_TYPE(schema) = JSO_SCHEMA_ERROR_NONE;
 }
 
 /**

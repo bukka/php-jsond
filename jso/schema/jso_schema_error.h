@@ -43,9 +43,4 @@ static inline void jso_schema_clear_error(jso_schema *schema)
 	jso_schema_error_clear(JSO_SCHEMA_ERROR(schema));
 }
 
-static inline void jso_schema_reset_error(jso_schema *schema)
-{
-	JSO_SCHEMA_ERROR_TYPE(schema) = JSO_SCHEMA_ERROR_NONE;
-}
-
 #endif /* JSO_SCHEMA_ERROR_H */

@@ -26,6 +26,7 @@
 #include <zend_exceptions.h>
 #include "jso.h"
 #include "jso_parser.h"
+#include "jso_schema.h"
 
 /* PHP init and user functions */
 static PHP_MINFO_FUNCTION(jsond);
@@ -370,6 +371,7 @@ PHP_JSOND_API zend_result php_jsond_decode_ex(zval *return_value, const char *st
 					JSO_SCHEMA_ERROR_MESSAGE(schema), error_code);
 		}
 		zval_ptr_dtor(parser.return_value);
+		jso_schema_reset_error(schema);
 		RETVAL_NULL();
 		return FAILURE;
 	}
@@ -397,6 +399,7 @@ PHP_JSOND_API bool php_jsond_validate_ex(const char *str, size_t str_len, zend_l
 		zval_ptr_dtor(parser.return_value);
 		if (JSO_SCHEMA_ERROR_TYPE(schema) != JSO_SCHEMA_ERROR_NONE) {
 			JSOND_G(error_code) = PHP_JSOND_SCHEMA_ERROR_VALUE(JSO_SCHEMA_ERROR_TYPE(schema));
+			jso_schema_reset_error(schema);
 			return false;
 		}
 	}
