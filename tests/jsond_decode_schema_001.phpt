@@ -1,5 +1,5 @@
 --TEST--
-jsond_validate() - Schema validation 001 - simple object validation and last errors
+jsond_decode() - Schema validation 001 - simple object schema and last errors
 --EXTENSIONS--
 jsond
 --FILE--
@@ -30,44 +30,56 @@ $schema = JsondSchema::createFromString($schemaJson);
 
 // Test valid JSON
 $validJson = '{"name": "John Doe", "age": 30, "email": "john@example.com"}';
-var_dump(jsond_validate($validJson, 512, 0, $schema));
+var_dump(jsond_decode($validJson, true, 512, 0, $schema));
 
 // Test invalid JSON - missing required field
 $invalidJson1 = '{"name": "Jane Doe"}';
-var_dump(jsond_validate($invalidJson1, 512, 0, $schema));
+var_dump(jsond_decode($invalidJson1, true, 512, 0, $schema));
 var_dump(jsond_last_error_msg());
 var_dump(jsond_last_error() == JSOND_ERROR_SCHEMA_VALIDATION_KEYWORD);
 
 // Test invalid JSON - wrong type
 $invalidJson2 = '{"name": "Bob", "age": "thirty"}';
-var_dump(jsond_validate($invalidJson2, 512, 0, $schema));
+var_dump(jsond_decode($invalidJson2, true, 512, 0, $schema));
 var_dump(jsond_last_error_msg());
 var_dump(jsond_last_error() == JSOND_ERROR_SCHEMA_VALIDATION_TYPE);
 
 // Test invalid JSON - negative age
 $invalidJson3 = '{"name": "Alice", "age": -5}';
-var_dump(jsond_validate($invalidJson3, 512, 0, $schema));
+var_dump(jsond_decode($invalidJson3, true, 512, 0, $schema));
 var_dump(jsond_last_error_msg());
 var_dump(jsond_last_error() == JSOND_ERROR_SCHEMA_VALIDATION_KEYWORD);
 
 // Test without schema (should always return true for valid JSON)
 $validJsonNoSchema = '{"any": "data", "works": true}';
-var_dump(jsond_validate($validJsonNoSchema));
+var_dump(jsond_decode($validJsonNoSchema));
 var_dump(jsond_last_error_msg());
 var_dump(jsond_last_error());
 
 ?>
 --EXPECT--
-bool(true)
-bool(false)
+array(3) {
+  ["name"]=>
+  string(8) "John Doe"
+  ["age"]=>
+  int(30)
+  ["email"]=>
+  string(16) "john@example.com"
+}
+NULL
 string(37) "JSON schema error: validation keyword"
 bool(true)
-bool(false)
+NULL
 string(34) "JSON schema error: validation type"
 bool(true)
-bool(false)
+NULL
 string(37) "JSON schema error: validation keyword"
 bool(true)
-bool(true)
+object(stdClass)#2 (2) {
+  ["any"]=>
+  string(4) "data"
+  ["works"]=>
+  bool(true)
+}
 string(8) "No error"
 int(0)
