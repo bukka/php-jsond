@@ -75,6 +75,7 @@ static inline zend_object *php_jsond_schema_create_object_ex(zend_class_entry *c
 
 	zend_object_std_init(&intern->std, ce);
 	object_properties_init(&intern->std, ce);
+	intern->std.handlers = &php_jsond_schema_object_handlers;
 
 	intern->schema = jso_schema_alloc();
 	*schema = intern->schema;
@@ -109,7 +110,8 @@ static PHP_MINIT_FUNCTION(jsond)
 	/* register JSONd schema */
 	php_jsond_schema_ce = register_class_JsondSchema();
 	php_jsond_schema_ce->create_object = php_jsond_schema_create_object;
-	php_jsond_schema_ce->default_object_handlers = &php_jsond_schema_object_handlers;
+	// For PHP-8.3+, the default handlers can be used instead of setting it in create_object_ex
+	// php_jsond_schema_ce->default_object_handlers = &php_jsond_schema_object_handlers;
 
 	memcpy(&php_jsond_schema_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
 	php_jsond_schema_object_handlers.offset = XtOffsetOf(php_jsond_schema_object, std);
