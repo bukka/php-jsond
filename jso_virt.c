@@ -41,7 +41,7 @@ jso_value_type jso_virt_value_type(jso_virt_value *val)
 		case IS_STRING:
 			return JSO_TYPE_STRING;
 		case IS_ARRAY:
-			return JSO_TYPE_ARRAY;
+			return HT_IS_PACKED(Z_ARR_P(val)) ? JSO_TYPE_ARRAY : JSO_TYPE_OBJECT;
 		case IS_OBJECT:
 			return JSO_TYPE_OBJECT;
 		default:
