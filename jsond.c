@@ -48,12 +48,14 @@ PHP_JSOND_API ZEND_DECLARE_MODULE_GLOBALS(jsond)
 		} \
 	} while(0)
 
-#define PHP_JSOND_SHEMA_ERROR_VALUE_OFFSET 1000
-#define PHP_JSOND_SHEMA_ERROR_VALUE(_jso_const) \
-	((int) (_jso_const) + PHP_JSOND_SHEMA_ERROR_VALUE_OFFSET)
+#define PHP_JSOND_SCHEMA_ERROR_VALUE_OFFSET 1000
+#define PHP_JSOND_SCHEMA_ERROR_VALUE(_jso_const) \
+	((int) (_jso_const) + PHP_JSOND_SCHEMA_ERROR_VALUE_OFFSET)
+#define PHP_JSOND_JSO_SCHEMA_ERROR_VALUE(_jsond_const) \
+	((jso_schema_error_type) (_jsond_const - PHP_JSOND_SCHEMA_ERROR_VALUE_OFFSET))
 
 #define PHP_JSOND_REGISTER_SCHEMA_CONSTANT(_name, _jso_const) \
-	PHP_JSOND_REGISTER_LONG_CONSTANT(_name, (int) PHP_JSOND_SHEMA_ERROR_VALUE(_jso_const))
+	PHP_JSOND_REGISTER_LONG_CONSTANT(_name, (int) PHP_JSOND_SCHEMA_ERROR_VALUE(_jso_const))
 
 #define PHP_JSOND_SCHEMA_OBJ_FROM_ZOBJ php_jsond_schema_object_from_zend_object
 #define PHP_JSOND_SCHEMA_OBJ_FROM_ZV(_zv) php_jsond_schema_object_from_zend_object(Z_OBJ_P(_zv))
@@ -258,8 +260,62 @@ static const char *php_jsond_get_error_msg(php_jsond_error_code error_code) /* {
 		case PHP_JSOND_ERROR_NON_BACKED_ENUM:
 			return "Non-backed enums have no default serialization";
 		default:
-			if (error_code > PHP_JSOND_SHEMA_ERROR_VALUE_OFFSET) {
-				return "JSON schema error";
+			if (error_code > PHP_JSOND_SCHEMA_ERROR_VALUE_OFFSET) {
+				jso_schema_error_type schema_error_type = PHP_JSOND_JSO_SCHEMA_ERROR_VALUE(error_code);
+				switch (schema_error_type) {
+					case JSO_SCHEMA_ERROR_ID:
+						return "JSON schema error: invalid schema ID";
+					case JSO_SCHEMA_ERROR_KEYWORD_ALLOC:
+						return "JSON schema error: keyword allocation";
+					case JSO_SCHEMA_ERROR_KEYWORD_PREP:
+						return "JSON schema error: keyword preparation";
+					case JSO_SCHEMA_ERROR_KEYWORD_REQUIRED:
+						return "JSON schema error: keyword required";
+					case JSO_SCHEMA_ERROR_KEYWORD_TYPE:
+						return "JSON schema error: keyword type";
+					case JSO_SCHEMA_ERROR_REFERENCE_ALLOC:
+						return "JSON schema error: reference allocation";
+					case JSO_SCHEMA_ERROR_REFERENCE_POINTER:
+						return "JSON schema error: reference pointer";
+					case JSO_SCHEMA_ERROR_REFERENCE_RESOLVE:
+						return "JSON schema error: reference resolve";
+					case JSO_SCHEMA_ERROR_REFERENCE_EXTERNAL:
+						return "JSON schema error: external reference";
+					case JSO_SCHEMA_ERROR_REFERENCE_RECURSIVE:
+						return "JSON schema error: recursive reference";
+					case JSO_SCHEMA_ERROR_ROOT_DATA_TYPE:
+						return "JSON schema error: root data type";
+					case JSO_SCHEMA_ERROR_STACK_ALLOC:
+						return "JSON schema error: stack allocation";
+					case JSO_SCHEMA_ERROR_TYPE_INVALID:
+						return "JSON schema error: invalid type";
+					case JSO_SCHEMA_ERROR_URI_ALLOC:
+						return "JSON schema error: URI allocation";
+					case JSO_SCHEMA_ERROR_URI_INVALID:
+						return "JSON schema error: invalid URI";
+					case JSO_SCHEMA_ERROR_VALIDATION_ALLOC:
+						return "JSON schema error: validation allocation";
+					case JSO_SCHEMA_ERROR_VALIDATION_COMPOSITION:
+						return "JSON schema error: validation composition";
+					case JSO_SCHEMA_ERROR_VALIDATION_KEYWORD:
+						return "JSON schema error: validation keyword";
+					case JSO_SCHEMA_ERROR_VALIDATION_TYPE:
+						return "JSON schema error: validation type";
+					case JSO_SCHEMA_ERROR_VALIDATION_FALSE:
+						return "JSON schema error: validation false";
+					case JSO_SCHEMA_ERROR_VALUE_ALLOC:
+						return "JSON schema error: value allocation";
+					case JSO_SCHEMA_ERROR_VALUE_DATA_ALLOC:
+						return "JSON schema error: value data allocation";
+					case JSO_SCHEMA_ERROR_VALUE_DATA_DEPS:
+						return "JSON schema error: value data dependencies";
+					case JSO_SCHEMA_ERROR_VALUE_DATA_TYPE:
+						return "JSON schema error: value data type";
+					case JSO_SCHEMA_ERROR_VERSION:
+						return "JSON schema error: version";
+					default:
+						return "JSON schema error";
+				}
 			}
 			return "Unknown error";
 	}
@@ -306,7 +362,7 @@ PHP_JSOND_API zend_result php_jsond_decode_ex(zval *return_value, const char *st
 	}
 
 	if (schema != NULL && JSO_SCHEMA_ERROR_TYPE(schema) != JSO_SCHEMA_ERROR_NONE) {
-		int error_code = PHP_JSOND_SHEMA_ERROR_VALUE(JSO_SCHEMA_ERROR_TYPE(schema));
+		int error_code = PHP_JSOND_SCHEMA_ERROR_VALUE(JSO_SCHEMA_ERROR_TYPE(schema));
 		if (!(options & PHP_JSOND_THROW_ON_ERROR)) {
 			JSOND_G(error_code) = error_code;
 		} else {
@@ -339,7 +395,7 @@ PHP_JSOND_API bool php_jsond_validate_ex(const char *str, size_t str_len, zend_l
 	if (schema != NULL) {
 		zval_ptr_dtor(parser.return_value);
 		if (JSO_SCHEMA_ERROR_TYPE(schema) != JSO_SCHEMA_ERROR_NONE) {
-			JSOND_G(error_code) = PHP_JSOND_SHEMA_ERROR_VALUE(JSO_SCHEMA_ERROR_TYPE(schema));
+			JSOND_G(error_code) = PHP_JSOND_SCHEMA_ERROR_VALUE(JSO_SCHEMA_ERROR_TYPE(schema));
 			return false;
 		}
 	}
