@@ -38,6 +38,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_JsondSchema_createFromStrin
 	ZEND_ARG_TYPE_INFO(0, source, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
+
 ZEND_FUNCTION(jsond_encode);
 ZEND_FUNCTION(jsond_decode);
 ZEND_FUNCTION(jsond_validate);
@@ -45,6 +46,7 @@ ZEND_FUNCTION(jsond_last_error);
 ZEND_FUNCTION(jsond_last_error_msg);
 ZEND_METHOD(JsondSchema, __construct);
 ZEND_METHOD(JsondSchema, createFromString);
+
 
 static const zend_function_entry ext_functions[] = {
 	ZEND_FE(jsond_encode, arginfo_jsond_encode)
@@ -55,10 +57,22 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE_END
 };
 
+
 static const zend_function_entry class_JsondSerializable_methods[] = {
-	ZEND_RAW_FENTRY("jsonSerialize", NULL, arginfo_class_JsondSerializable_jsonSerialize, ZEND_ACC_PUBLIC|ZEND_ACC_ABSTRACT, NULL, NULL)
+	ZEND_ABSTRACT_ME_WITH_FLAGS(JsondSerializable, jsonSerialize, arginfo_class_JsondSerializable_jsonSerialize, ZEND_ACC_PUBLIC|ZEND_ACC_ABSTRACT)
 	ZEND_FE_END
 };
+
+
+static const zend_function_entry class_JsondException_methods[] = {
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_JsondSchemaException_methods[] = {
+	ZEND_FE_END
+};
+
 
 static const zend_function_entry class_JsondSchema_methods[] = {
 	ZEND_ME(JsondSchema, __construct, arginfo_class_JsondSchema___construct, ZEND_ACC_PRIVATE|ZEND_ACC_FINAL)
@@ -80,8 +94,8 @@ static zend_class_entry *register_class_JsondException(zend_class_entry *class_e
 {
 	zend_class_entry ce, *class_entry;
 
-	INIT_CLASS_ENTRY(ce, "JsondException", NULL);
-	class_entry = zend_register_internal_class_with_flags(&ce, class_entry_Exception, 0);
+	INIT_CLASS_ENTRY(ce, "JsondException", class_JsondException_methods);
+	class_entry = zend_register_internal_class_ex(&ce, class_entry_Exception);
 
 	return class_entry;
 }
@@ -90,8 +104,8 @@ static zend_class_entry *register_class_JsondSchemaException(zend_class_entry *c
 {
 	zend_class_entry ce, *class_entry;
 
-	INIT_CLASS_ENTRY(ce, "JsondSchemaException", NULL);
-	class_entry = zend_register_internal_class_with_flags(&ce, class_entry_JsondException, 0);
+	INIT_CLASS_ENTRY(ce, "JsondSchemaException", class_JsondSchemaException_methods);
+	class_entry = zend_register_internal_class_ex(&ce, class_entry_JsondException);
 
 	return class_entry;
 }
@@ -101,7 +115,8 @@ static zend_class_entry *register_class_JsondSchema(void)
 	zend_class_entry ce, *class_entry;
 
 	INIT_CLASS_ENTRY(ce, "JsondSchema", class_JsondSchema_methods);
-	class_entry = zend_register_internal_class_with_flags(&ce, NULL, ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_NOT_SERIALIZABLE);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+	class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_NOT_SERIALIZABLE;
 
 	return class_entry;
 }
