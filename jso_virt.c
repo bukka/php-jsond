@@ -110,7 +110,7 @@ bool jso_virt_value_equals(jso_virt_value *vval, jso_value *val)
 			return jso_virt_value_double(vval) == JSO_DVAL_P(val);
 		case JSO_TYPE_STRING:
 			return Z_STRLEN_P(vval) == JSO_SLEN_P(val) &&
-                jso_string_equals_to_cstr(JSO_STR_P(val), (const char *)jso_virt_value_string(vval));
+                jso_string_equals_to_cstr(JSO_STR_P(val), (const char *)(Z_STRVAL_P(vval)));
 		case JSO_TYPE_ARRAY:
 			return jso_virt_array_equals(jso_virt_value_array(vval), JSO_ARRVAL_P(val));
 		case JSO_TYPE_OBJECT:
