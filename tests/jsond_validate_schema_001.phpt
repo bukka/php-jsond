@@ -60,13 +60,13 @@ var_dump(jsond_last_error());
 --EXPECT--
 bool(true)
 bool(false)
-string(37) "JSON schema error: validation keyword"
+string(84) "JSON schema validation keyword (Object does not have required property with key age)"
 bool(true)
 bool(false)
-string(34) "JSON schema error: validation type"
+string(97) "JSON schema validation type (Invalid validation type, expected int or double but received string)"
 bool(true)
 bool(false)
-string(37) "JSON schema error: validation keyword"
+string(71) "JSON schema validation keyword (Value -5 is lower than minimum value 0)"
 bool(true)
 bool(true)
 string(8) "No error"

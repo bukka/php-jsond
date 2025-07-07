@@ -138,6 +138,8 @@ ZEND_BEGIN_MODULE_GLOBALS(jsond)
 	int encoder_depth;
 	int encode_max_depth;
 	php_jsond_error_code error_code;
+	char *error_message;
+	size_t error_message_capacity;
 ZEND_END_MODULE_GLOBALS(jsond)
 PHP_JSOND_API ZEND_EXTERN_MODULE_GLOBALS(jsond)
 
